@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -37,7 +37,7 @@ public class History<O> implements Cloneable {
 	public History<O> clone() throws CloneNotSupportedException {
 		Set<HistoryItem<O>> newItems = new LinkedHashSet<HistoryItem<O>>();
 		for (HistoryItem<O> historyItem : this.list) {
-			newItems.add(historyItem.clone());
+			newItems.add(historyItem);
 		}
 		return new History<O>(newItems);
 	}
@@ -61,7 +61,7 @@ public class History<O> implements Cloneable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @see java.util.List#clear()
 	 */
 	public void clear() {

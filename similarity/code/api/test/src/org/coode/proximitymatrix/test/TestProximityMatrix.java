@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -118,9 +118,9 @@ public class TestProximityMatrix extends TestCase {
 				for (OWLEntity anotherOWLEntity : signature) {
 					double distance = distanceMatrix.getDistance(owlEntity,
 							anotherOWLEntity);
-					double agglomeratedDistance = minimumDistancePair.getElements()
+					double agglomeratedDistance = minimumDistancePair
 							.contains(Collections.singleton(owlEntity))
-							|| minimumDistancePair.getElements().contains(
+							|| minimumDistancePair.contains(
 									Collections.singleton(anotherOWLEntity)) ? 0
 							: agglomerated.getDistance(Collections.singleton(owlEntity),
 									Collections.singleton(anotherOWLEntity));
@@ -134,9 +134,9 @@ public class TestProximityMatrix extends TestCase {
 									agglomerated.getColumnIndex(Collections
 											.singleton(anotherOWLEntity)), distance,
 									agglomeratedDistance),
-							minimumDistancePair.getElements().contains(
+							minimumDistancePair.contains(
 									Collections.singleton(owlEntity))
-									|| minimumDistancePair.getElements().contains(
+									|| minimumDistancePair.contains(
 											Collections.singleton(anotherOWLEntity))
 									|| distance == agglomeratedDistance);
 				}

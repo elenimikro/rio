@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -45,7 +45,7 @@ public class Utility {
 			Set<OWLEntity> unwrappedSecond = unwrapObjects(second, equivalenceClass);
 			Pair<Collection<? extends OWLEntity>> newPair = new SimplePair<Collection<? extends OWLEntity>>(
 					unwrappedFirst, unwrappedSecond);
-			Set<Collection<? extends DistanceTableObject<OWLEntity>>> items = historyItem
+			Collection<Collection<? extends DistanceTableObject<OWLEntity>>> items = historyItem
 					.getItems();
 			Collection<Collection<? extends OWLEntity>> newItems = new ArrayList<Collection<? extends OWLEntity>>(
 					items.size());

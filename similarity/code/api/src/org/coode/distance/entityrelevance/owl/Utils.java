@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -21,37 +21,37 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 public class Utils {
-	public static RelevancePolicy<OWLObject> toOWLObjectRelevancePolicy(
-			final RelevancePolicy<OWLEntity> policy) {
-		return new RelevancePolicy<OWLObject>() {
-			public boolean isRelevant(OWLObject object) {
-				return object.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-					@Override
-					public Boolean visit(OWLClass desc) {
-						return policy.isRelevant(desc);
-					}
+    public static RelevancePolicy<OWLObject> toOWLObjectRelevancePolicy(
+            final RelevancePolicy<OWLEntity> policy) {
+        return new RelevancePolicy<OWLObject>() {
+            public boolean isRelevant(final OWLObject object) {
+                return object.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
+                    @Override
+                    public Boolean visit(final OWLClass desc) {
+                        return policy.isRelevant(desc);
+                    }
 
-					@Override
-					public Boolean visit(OWLAnnotationProperty property) {
-						return policy.isRelevant(property);
-					}
+                    @Override
+                    public Boolean visit(final OWLAnnotationProperty property) {
+                        return policy.isRelevant(property);
+                    }
 
-					@Override
-					public Boolean visit(OWLDataProperty property) {
-						return policy.isRelevant(property);
-					}
+                    @Override
+                    public Boolean visit(final OWLDataProperty property) {
+                        return policy.isRelevant(property);
+                    }
 
-					@Override
-					public Boolean visit(OWLObjectProperty property) {
-						return policy.isRelevant(property);
-					}
+                    @Override
+                    public Boolean visit(final OWLObjectProperty property) {
+                        return policy.isRelevant(property);
+                    }
 
-					@Override
-					public Boolean visit(OWLNamedIndividual individual) {
-						return policy.isRelevant(individual);
-					}
-				});
-			}
-		};
-	}
+                    @Override
+                    public Boolean visit(final OWLNamedIndividual individual) {
+                        return policy.isRelevant(individual);
+                    }
+                });
+            }
+        };
+    }
 }

@@ -4,23 +4,23 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package org.coode.pair;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Luigi Iannone
- * 
+ *
  */
 public interface Pair<O> {
-	Set<O> getElements();
+	List<O> getElements();
 
 	boolean contains(Object o);
 

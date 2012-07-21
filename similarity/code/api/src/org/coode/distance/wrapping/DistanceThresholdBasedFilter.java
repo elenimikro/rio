@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -14,77 +14,75 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.coode.metrics.SparseMatrix;
 import org.coode.pair.filter.PairFilter;
 
 public class DistanceThresholdBasedFilter<O> implements
-		PairFilter<Collection<? extends DistanceTableObject<O>>> {
-	private final double[][] distance;
-	private final double threshold;
+        PairFilter<Collection<? extends DistanceTableObject<O>>> {
+    private final SparseMatrix distance;
+    private final double threshold;
 
-	private DistanceThresholdBasedFilter(double[][] distance, double threshold) {
-		if (distance == null) {
-			throw new NullPointerException("The distance cannot be null");
-		}
-		this.distance = distance;
-		this.threshold = threshold;
-	}
+    private DistanceThresholdBasedFilter(final SparseMatrix distance,
+            final double threshold) {
+        if (distance == null) {
+            throw new NullPointerException("The distance cannot be null");
+        }
+        this.distance = distance;
+        this.threshold = threshold;
+    }
 
-	/**
-	 * @see org.coode.pair.filter.PairFilter#accept(java.lang.Objefilteredjava.lang.Object)
-	 */
-	public boolean accept(Collection<? extends DistanceTableObject<O>> first,
-			Collection<? extends DistanceTableObject<O>> second) {
-		if (first instanceof List && second instanceof List) {
-			return listAccept((List<DistanceTableObject<O>>) first,
-					(List<DistanceTableObject<O>>) second);
-		}
-		Iterator<? extends DistanceTableObject<O>> iterator = first.iterator();
-		boolean found = false;
-		while (!found && iterator.hasNext()) {
-			DistanceTableObject<O> object = iterator.next();
-			Iterator<? extends DistanceTableObject<O>> anotherIterator = second
-					.iterator();
-			while (!found && anotherIterator.hasNext()) {
-				DistanceTableObject<O> anotherObject = anotherIterator.next();
-				found = this.getDistance()[object.getIndex()][anotherObject.getIndex()] >= this
-						.getThreshold();
-			}
-		}
-		return !found;
-	}
+    Collection<? extends DistanceTableObject<O>> lastfirst;
+    Collection<? extends DistanceTableObject<O>> lastsecond;
+    boolean lastResult;
 
-	private boolean listAccept(List<? extends DistanceTableObject<O>> first,
-			List<? extends DistanceTableObject<O>> second) {
-		boolean found = false;
-		final int size = first.size();
-		for (int i = 0; i < size && !found; i++) {
-			DistanceTableObject<O> object = first.get(i);
-			final int secondSize = second.size();
-			for (int j = 0; j < secondSize && !found; j++) {
-				DistanceTableObject<O> anotherObject = second.get(j);
-				found = this.getDistance()[object.getIndex()][anotherObject.getIndex()] >= this
-						.getThreshold();
-			}
-		}
-		return !found;
-	}
+    /** @see org.coode.pair.filter.PairFilter#accept(java.lang.Objefilteredjava.lang.Object) */
+    public boolean accept(final Collection<? extends DistanceTableObject<O>> first,
+            final Collection<? extends DistanceTableObject<O>> second) {
+        if (lastfirst == first && lastsecond == second) {
+            return lastResult;
+        }
+        // System.out.println("DistanceThresholdBasedFilter.accept() " +
+        // hashCode() + "\t"
+        // + first.hashCode() + "\t" + second.hashCode());
+        lastfirst = first;
+        lastsecond = second;
+        if (first instanceof List && second instanceof List) {
+            lastResult = listAccept((List<DistanceTableObject<O>>) first,
+                    (List<DistanceTableObject<O>>) second);
+        } else {
+            Iterator<? extends DistanceTableObject<O>> iterator = first.iterator();
+            boolean found = false;
+            while (!found && iterator.hasNext()) {
+                DistanceTableObject<O> object = iterator.next();
+                Iterator<? extends DistanceTableObject<O>> anotherIterator = second
+                        .iterator();
+                while (!found && anotherIterator.hasNext()) {
+                    DistanceTableObject<O> anotherObject = anotherIterator.next();
+                    found = this.distance
+                            .get(object.getIndex(), anotherObject.getIndex()) >= this.threshold;
+                }
+            }
+            lastResult = !found;
+        }
+        return lastResult;
+    }
 
-	public static <P> DistanceThresholdBasedFilter<P> build(double[][] distance,
-			double threshold) {
-		return new DistanceThresholdBasedFilter<P>(distance, threshold);
-	}
+    private boolean listAccept(final List<? extends DistanceTableObject<O>> first,
+            final List<? extends DistanceTableObject<O>> second) {
+        boolean found = false;
+        final int size = first.size();
+        for (int i = 0; i < size && !found; i++) {
+            DistanceTableObject<O> object = first.get(i);
+            final int secondSize = second.size();
+            for (int j = 0; j < secondSize && !found; j++) {
+                found = this.distance.get(object.getIndex(), second.get(j).getIndex()) >= this.threshold;
+            }
+        }
+        return !found;
+    }
 
-	/**
-	 * @return the threshold
-	 */
-	protected double getThreshold() {
-		return this.threshold;
-	}
-
-	/**
-	 * @return the distance
-	 */
-	protected double[][] getDistance() {
-		return this.distance;
-	}
+    public static <P> DistanceThresholdBasedFilter<P> build(final SparseMatrix distance,
+            final double threshold) {
+        return new DistanceThresholdBasedFilter<P>(distance, threshold);
+    }
 }

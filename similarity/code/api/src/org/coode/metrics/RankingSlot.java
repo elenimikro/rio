@@ -4,19 +4,24 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.metrics;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class RankingSlot<O, R> {
-	private final Set<O> members = new HashSet<O>();
 	private final R value;
+	private final Collection<? extends O> toReturn;
+	private final int size;
+	   private int hashCode=0;
 
 	public RankingSlot(R value, Collection<? extends O> members) {
 		if (value == null) {
@@ -29,16 +34,27 @@ public class RankingSlot<O, R> {
 			throw new IllegalArgumentException("The members collection cannot be empty");
 		}
 		this.value = value;
-		this.members.addAll(members);
+		toReturn=members;
+		size=toReturn.size();
 	}
 
 	/**
 	 * @return the members
 	 */
-	public Set<O> getMembers() {
-		return new HashSet<O>(this.members);
+	public Collection<? extends O> getMembers() {
+		return toReturn;
 	}
 
+	public int getMembersSize() {
+		return this.size;
+	}
+
+	public int getMembersHashCode() {
+	    if(hashCode==0) {
+	        hashCode=toReturn.hashCode();
+	    }
+		return this.hashCode;
+	}
 	/**
 	 * @return the value
 	 */

@@ -4,23 +4,25 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.owl.generalise;
 
 public abstract class GeneralisationTreeNodeVisitorAdapter implements
-		GeneralisationTreeNodeVisitor {
-	public void visitAxiomGeneralisationTreeNode(
-			AxiomGeneralisationTreeNode axiomGeneralisationTreeNode) {}
+        GeneralisationTreeNodeVisitor {
+    public void visitAxiomGeneralisationTreeNode(
+            final AxiomGeneralisationTreeNode axiomGeneralisationTreeNode) {}
 
-	public void visitVariableGeneralisationTreeNode(
-			VariableGeneralisationTreeNode variableGeneralisationTreeNode) {}
+    public void visitVariableGeneralisationTreeNode(
+            final VariableGeneralisationTreeNode variableGeneralisationTreeNode) {}
 
-	public void visitBindingNodeGeneralisationTreeNode(
-			BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {}
+    public void visitBindingNodeGeneralisationTreeNode(
+            final BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {}
 
-	public void visitAxiomAtomicDecompositionGeneralisationTreeNode(
-			AxiomAtomicDecompositionGeneralisationTreeNode axiomAtomicDecompositionGeneralisationTreeNode) {}
+    public
+            void
+            visitAxiomAtomicDecompositionGeneralisationTreeNode(
+                    final AxiomAtomicDecompositionGeneralisationTreeNode axiomAtomicDecompositionGeneralisationTreeNode) {}
 }

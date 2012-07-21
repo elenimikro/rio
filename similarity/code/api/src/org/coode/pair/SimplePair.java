@@ -4,43 +4,48 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package org.coode.pair;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * @author Luigi Iannone
- * 
+ *
  */
 public class SimplePair<O> implements Pair<O> {
 	private final O first;
 	private final O second;
 
 	public SimplePair(O first, O second) {
+	    if(first==null) {
+            throw new IllegalArgumentException("first cannot be null");
+        }if(second==null) {
+            throw new IllegalArgumentException("second cannot be null");
+        }
 		this.first = first;
 		this.second = second;
 	}
 
 	public SimplePair(Pair<O> pair) {
-		this.first = pair.getFirst();
-		this.second = pair.getSecond();
+	    this( pair.getFirst(), pair.getSecond());
 	}
 
-	public Set<O> getElements() {
-		return new LinkedHashSet<O>(Arrays.<O> asList(this.first, this.second));
+	public List<O> getElements() {
+		return Arrays.<O> asList(this.first, this.second);
 	}
 
 	public boolean contains(Object o) {
-		return this.getElements().contains(o);
+	    return first.equals(o)||second.equals(o);
 	}
 
 	public static <P> SimplePair<P> build(P object, P anotherObject) {
@@ -66,11 +71,6 @@ public class SimplePair<O> implements Pair<O> {
 		return this.second;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -80,11 +80,7 @@ public class SimplePair<O> implements Pair<O> {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

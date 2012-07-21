@@ -4,135 +4,75 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package org.coode.distance.entityrelevance.owl;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.coode.distance.entityrelevance.AbstractRankingRelevancePolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
-import org.coode.distance.owl.OWLEntityReplacer;
-import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.metrics.AbstractRanking;
 import org.coode.metrics.Metric;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
-	private final OWLAxiom axiom;
-	private final OWLDataFactory dataFactory;
-	private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-	private final OWLEntityReplacer replacer;
-	private final AxiomMap axiomMap;
-	private final AbstractRanking<OWLEntity, Double> ranking;
-	private final RelevancePolicy<OWLEntity> relevance;
+    private final RelevancePolicy<OWLEntity> relevance;
 
-	/**
-	 * @param axiom
-	 */
-	public AxiomRelevancePolicy(OWLAxiom axiom, OWLDataFactory dataFactory,
-			Collection<? extends OWLOntology> ontologies, AxiomMap axiomMap) {
-		if (axiom == null) {
-			throw new NullPointerException("The axiom cannot be null");
-		}
-		if (dataFactory == null) {
-			throw new NullPointerException("The dataFactory cannot be null");
-		}
-		if (ontologies == null) {
-			throw new NullPointerException("The ontolgy collection cannot be null");
-		}
-		if (axiomMap == null) {
-			throw new NullPointerException("The axiom map cannot be null");
-		}
-		this.dataFactory = dataFactory;
-		this.replacer = new OWLEntityReplacer(dataFactory, new ReplacementByKindStrategy(
-				this.getDataFactory()));
-		this.axiomMap = axiomMap;
-		this.axiom = axiom;
-		this.ranking = this.buildRanking();
-		this.relevance = AbstractRankingRelevancePolicy
-				.getAbstractRankingRelevancePolicy(this.ranking);
-	}
+    /** @param axiom */
+    public AxiomRelevancePolicy(final OWLAxiom replacedAxiom, final AxiomMap axiomMap) {
+        relevance = AbstractRankingRelevancePolicy
+                .getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom, axiomMap));
+    }
 
-	private AbstractRanking<OWLEntity, Double> buildRanking() {
-		OWLAxiom axiom = this.getAxiom();
-		final OWLAxiom replaced = (OWLAxiom) axiom.accept(this.replacer);
-		final Map<OWLEntity, Integer> entityMap = this.axiomMap.get(replaced);
-		Metric<OWLEntity, Double> m = new Metric<OWLEntity, Double>() {
-			public Double getValue(OWLEntity object) {
-				Integer value = entityMap.get(object);
-				if (value == null) {
-					value = 0;
-				}
-				double d = value;
-				double total = AxiomRelevancePolicy.this.axiomMap.getAxiomCount(replaced);
-				return d / total;
-			}
-		};
-		AbstractRanking<OWLEntity, Double> ranking = new AbstractRanking<OWLEntity, Double>(
-				m, entityMap.keySet()) {
-			public boolean isAverageable() {
-				return true;
-			}
+    public static AbstractRanking<OWLEntity, Double> buildRanking(final OWLAxiom replacedAxiom, final AxiomMap axiomMap) {
+        final Map<OWLEntity, AtomicInteger> entityMap = axiomMap.get(replacedAxiom);
+        Metric<OWLEntity, Double> m = new Metric<OWLEntity, Double>() {
+            public Double getValue(final OWLEntity object) {
+                AtomicInteger value = entityMap.get(object);
+                double d = 0;
+                if (value != null) {
+                    d = value.doubleValue();
+                }
+                double total = axiomMap.getAxiomCount(replacedAxiom);
+                return d / total;
+            }
+        };
+        AbstractRanking<OWLEntity, Double> ranking = new AbstractRanking<OWLEntity, Double>(
+                m, entityMap.keySet()) {
+            public boolean isAverageable() {
+                return true;
+            }
 
-			@Override
-			protected Double computeAverage() {
-				Set<Double> values = this.getValues();
-				Double toReturn = 0d;
-				if (!values.isEmpty()) {
-					double total = 0;
-					for (Double d : values) {
-						total += d;
-					}
-					toReturn = total / values.size();
-				}
-				return toReturn;
-			}
-		};
-		return ranking;
-	}
+            @Override
+            protected Double computeAverage() {
+                List<Double> values = getValuesList();
+                final int size = values.size();
+                if (size == 0) {
+                    return 0D;
+                }
+                double total = 0;
+                for (int i = 0; i < size; i++) {
+                    total += values.get(i);
+                }
+                return total / values.size();
+            }
+        };
+        return ranking;
+    }
 
-	/**
-	 * @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
-	 *      .Object)
-	 */
-	public boolean isRelevant(OWLEntity object) {
-		return this.relevance.isRelevant(object);
-	}
-
-	/**
-	 * @return the axiom
-	 */
-	public OWLAxiom getAxiom() {
-		return this.axiom;
-	}
-
-	/**
-	 * @return the ontologies
-	 */
-	public Set<OWLOntology> getOntologies() {
-		return new HashSet<OWLOntology>(this.ontologies);
-	}
-
-	/**
-	 * @return the dataFactory
-	 */
-	public OWLDataFactory getDataFactory() {
-		return this.dataFactory;
-	}
+    /** @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
+     *      .Object) */
+    public boolean isRelevant(final OWLEntity object) {
+        return relevance.isRelevant(object);
+    }
 }

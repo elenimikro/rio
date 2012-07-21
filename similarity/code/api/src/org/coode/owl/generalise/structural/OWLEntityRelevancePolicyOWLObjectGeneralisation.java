@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -17,11 +17,12 @@ import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.OWLObject;
 
 public class OWLEntityRelevancePolicyOWLObjectGeneralisation extends
-		AbstractOWLObjectGeneralisation {
-	public OWLEntityRelevancePolicyOWLObjectGeneralisation(RelevancePolicy<OWLObject> policy,
-			OWLObject owlObject, OWLEntityProvider entityProvider,
-			ConstraintSystem constraintSystem) {
-		super(new OWLEntityReplacementVariableProvider(policy, owlObject,
-				entityProvider, constraintSystem), constraintSystem);
-	}
+        AbstractOWLObjectGeneralisation {
+    public OWLEntityRelevancePolicyOWLObjectGeneralisation(
+            final RelevancePolicy<OWLObject> policy,
+            final OWLEntityProvider entityProvider,
+            final ConstraintSystem constraintSystem) {
+        super(new OWLEntityReplacementVariableProvider(policy, entityProvider,
+                constraintSystem));
+    }
 }

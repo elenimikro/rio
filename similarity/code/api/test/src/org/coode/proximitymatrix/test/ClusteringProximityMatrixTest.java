@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,8 +115,8 @@ public class ClusteringProximityMatrixTest extends TestCase {
 								return first.size() > 1;
 							}
 						}, filter));
-		Set<Collection<? extends OWLEntity>> difference = reducedMultipleFilter
-				.getObjects();
+		Set<Collection<? extends OWLEntity>> difference = new HashSet<Collection<? extends OWLEntity>>( reducedMultipleFilter
+				.getObjects());
 		difference.removeAll(reducedSingleFilter.getObjects());
 		assertTrue(String.format("Non identical, the difference is %s", difference),
 				reducedSingleFilter.getObjects().size() == reducedMultipleFilter

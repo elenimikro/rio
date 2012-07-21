@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -42,27 +42,26 @@ import org.coode.oppl.bindingtree.BindingNode;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
-/**
- * Visitor that abstracts OWLObjects into variables.
+/** Visitor that abstracts OWLObjects into variables.
  * 
- * @author Luigi Iannone
- * 
- */
+ * @author Luigi Iannone */
 public class OWLObjectGeneralisation extends AbstractOWLObjectGeneralisation implements
-		OWLObjectVisitorEx<OWLObject> {
-	private final Set<BindingNode> bindingNodes = new HashSet<BindingNode>();
+        OWLObjectVisitorEx<OWLObject> {
+    private final Set<BindingNode> bindingNodes = new HashSet<BindingNode>();
 
-	public OWLObjectGeneralisation(Collection<? extends BindingNode> bindingNodes,
-			ConstraintSystem constraintSystem) {
-		super(new AssignmentMapBasedVariableProvider(new AssignmentMap(bindingNodes),
-				constraintSystem), constraintSystem);
-		if (bindingNodes == null) {
-			throw new NullPointerException("The binding node collection cannot be null");
-		}
-		this.bindingNodes.addAll(bindingNodes);
-	}
+    public OWLObjectGeneralisation(final Collection<? extends BindingNode> bindingNodes,
+            final ConstraintSystem constraintSystem) {
+        super(new AssignmentMapBasedVariableProvider(new AssignmentMap(bindingNodes),
+                constraintSystem));
+        setConstraintSystem(constraintSystem);
+        getVariableProvider().setConstraintSystem(constraintSystem);
+        if (bindingNodes == null) {
+            throw new NullPointerException("The binding node collection cannot be null");
+        }
+        this.bindingNodes.addAll(bindingNodes);
+    }
 
-	public AssignmentMap getAssignmentMap() {
-		return new AssignmentMap(this.bindingNodes);
-	}
+    public AssignmentMap getAssignmentMap() {
+        return new AssignmentMap(bindingNodes);
+    }
 }

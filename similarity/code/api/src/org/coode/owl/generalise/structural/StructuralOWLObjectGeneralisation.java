@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -15,9 +15,10 @@ import org.coode.owl.generalise.AbstractOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OWLEntityProvider;
 
 public class StructuralOWLObjectGeneralisation extends AbstractOWLObjectGeneralisation {
-	public StructuralOWLObjectGeneralisation(OWLEntityProvider entityProvider,
-			ConstraintSystem constraintSystem) {
-		super(new StructuralVariableProvider(entityProvider, constraintSystem),
-				constraintSystem);
-	}
+    public StructuralOWLObjectGeneralisation(final OWLEntityProvider entityProvider,
+            final ConstraintSystem constraintSystem) {
+        super(new StructuralVariableProvider(entityProvider, constraintSystem));
+        setConstraintSystem(constraintSystem);
+        getVariableProvider().setConstraintSystem(constraintSystem);
+    }
 }

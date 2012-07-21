@@ -4,12 +4,12 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package org.coode.proximitymatrix.ui;
 
@@ -46,95 +46,92 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class ProximityMatrixGUI extends JFrame {
-	/**
-	 * 
+    /**
+	 *
 	 */
-	private static final long serialVersionUID = 3154241412745213737L;
-	private final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-	private final JTable table = new JTable();
-	private final JList clusterList = new JList();
+    private static final long serialVersionUID = 3154241412745213737L;
+    private final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+    private final JTable table = new JTable();
+    private final JList clusterList = new JList();
 
-	public ProximityMatrixGUI(Collection<? extends IRI> iris) {
-		if (iris == null) {
-			throw new NullPointerException("The IRI collection cannot be null");
-		}
-		for (IRI iri : iris) {
-			try {
-				URI uri = iri.toURI();
-				if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-					File file = new File(uri);
-					File parentFile = file.getParentFile();
-					if (parentFile.isDirectory()) {
-						this.manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-					}
-				}
-				this.manager.loadOntology(iri);
-			} catch (OWLOntologyCreationException e) {
-				JOptionPane.showMessageDialog(this, e.getMessage(),
-						"Error in loading ontology", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		this.reset();
-		this.initGUI();
-	}
+    public ProximityMatrixGUI(final Collection<? extends IRI> iris) {
+        if (iris == null) {
+            throw new NullPointerException("The IRI collection cannot be null");
+        }
+        for (IRI iri : iris) {
+            try {
+                URI uri = iri.toURI();
+                if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
+                    File file = new File(uri);
+                    File parentFile = file.getParentFile();
+                    if (parentFile.isDirectory()) {
+                        manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
+                    }
+                }
+                manager.loadOntology(iri);
+            } catch (OWLOntologyCreationException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(),
+                        "Error in loading ontology", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        reset();
+        initGUI();
+    }
 
-	private void reset() {
-		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-			public int compare(OWLEntity o1, OWLEntity o2) {
-				return shortFormProvider.getShortForm(o1).compareTo(
-						shortFormProvider.getShortForm(o2));
-			}
-		});
-		for (OWLOntology ontology : this.manager.getOntologies()) {
-			entities.addAll(ontology.getSignature());
-		}
-		Distance<OWLEntity> distance = new AxiomBasedDistance(
-				this.manager.getOntologies(), this.manager.getOWLDataFactory(),
-				DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), this.manager);
-		ProximityMatrix<OWLEntity> matrix = new SimpleProximityMatrix<OWLEntity>(
-				entities, distance);
-		Set<OWLEntity> objects = matrix.getObjects();
-		List<String> columnNames = new ArrayList<String>(objects.size());
-		columnNames.add("*");
-		for (OWLEntity owlEntity : objects) {
-			columnNames.add(shortFormProvider.getShortForm(owlEntity));
-		}
-		Set<Set<OWLEntity>> clusters = new HashSet<Set<OWLEntity>>(objects.size());
-		for (OWLEntity owlEntity : objects) {
-			clusters.add(Collections.singleton(owlEntity));
-		}
-		this.table.setModel(new ProximityMatrixTableModel(matrix, columnNames
-				.toArray(new String[columnNames.size()])));
-		this.clusterList.setModel(new ClusterListModel<OWLEntity>(clusters));
-	}
+    private void reset() {
+        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            public int compare(final OWLEntity o1, final OWLEntity o2) {
+                return shortFormProvider.getShortForm(o1).compareTo(
+                        shortFormProvider.getShortForm(o2));
+            }
+        });
+        for (OWLOntology ontology : manager.getOntologies()) {
+            entities.addAll(ontology.getSignature());
+        }
+        Distance<OWLEntity> distance = new AxiomBasedDistance(manager.getOntologies(),
+                manager.getOWLDataFactory(),
+                DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
+        ProximityMatrix<OWLEntity> matrix = new SimpleProximityMatrix<OWLEntity>(
+                entities, distance);
+        Collection<OWLEntity> objects = matrix.getObjects();
+        List<String> columnNames = new ArrayList<String>(objects.size());
+        columnNames.add("*");
+        for (OWLEntity owlEntity : objects) {
+            columnNames.add(shortFormProvider.getShortForm(owlEntity));
+        }
+        Set<Set<OWLEntity>> clusters = new HashSet<Set<OWLEntity>>(objects.size());
+        for (OWLEntity owlEntity : objects) {
+            clusters.add(Collections.singleton(owlEntity));
+        }
+        table.setModel(new ProximityMatrixTableModel(matrix, columnNames
+                .toArray(new String[columnNames.size()])));
+        clusterList.setModel(new ClusterListModel<OWLEntity>(clusters));
+    }
 
-	private void initGUI() {
-		this.setLayout(new BorderLayout());
-		JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		this.clusterList.setCellRenderer(new ClusterListOWLObjectCellRenderer(
-				new SimpleShortFormProvider()));
-		mainPane.setLeftComponent(new JScrollPane(this.clusterList));
-		mainPane.setRightComponent(new JScrollPane(this.table));
-		mainPane.setResizeWeight(.5);
-		mainPane.setDividerLocation(.5);
-		this.add(mainPane, BorderLayout.CENTER);
-	}
+    private void initGUI() {
+        setLayout(new BorderLayout());
+        JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        clusterList.setCellRenderer(new ClusterListOWLObjectCellRenderer(
+                new SimpleShortFormProvider()));
+        mainPane.setLeftComponent(new JScrollPane(clusterList));
+        mainPane.setRightComponent(new JScrollPane(table));
+        mainPane.setResizeWeight(.5);
+        mainPane.setDividerLocation(.5);
+        this.add(mainPane, BorderLayout.CENTER);
+    }
 
-	public static void main(String[] args) {
-		List<IRI> iris = new ArrayList<IRI>(args.length);
-		for (String string : args) {
-			iris.add(IRI.create(string));
-		}
-		ProximityMatrixGUI frame = new ProximityMatrixGUI(iris);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	}
+    public static void main(final String[] args) {
+        List<IRI> iris = new ArrayList<IRI>(args.length);
+        for (String string : args) {
+            iris.add(IRI.create(string));
+        }
+        ProximityMatrixGUI frame = new ProximityMatrixGUI(iris);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 }
