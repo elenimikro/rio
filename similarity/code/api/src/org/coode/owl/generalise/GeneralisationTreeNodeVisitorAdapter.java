@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
+@SuppressWarnings("unused")
 public abstract class GeneralisationTreeNodeVisitorAdapter implements
         GeneralisationTreeNodeVisitor {
     public void visitAxiomGeneralisationTreeNode(

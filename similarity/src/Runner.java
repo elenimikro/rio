@@ -12,8 +12,6 @@ import java.io.File;
 
 import org.coode.proximitymatrix.cluster.commandline.AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll;
 import org.coode.proximitymatrix.cluster.commandline.AtomicDecompositionEquivalenceClassesAgglomerateAll;
-import org.coode.proximitymatrix.cluster.commandline.StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll;
-import org.coode.proximitymatrix.cluster.commandline.WrappingEquivalenceClassesAgglomerateAll;
 
 public class Runner {
 	public static void main(String[] args) {

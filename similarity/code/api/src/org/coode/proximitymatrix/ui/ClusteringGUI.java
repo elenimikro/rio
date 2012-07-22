@@ -103,6 +103,7 @@ import org.w3c.dom.Document;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 /** @author Luigi Iannone */
+@SuppressWarnings("unused")
 public class ClusteringGUI extends JFrame {
     private final class Reducer
             extends
@@ -131,21 +132,21 @@ public class ClusteringGUI extends JFrame {
             extends
             SwingWorker<ClusteringProximityMatrix<OWLEntity>, ClusteringProximityMatrix<OWLEntity>> {
         private final ClusteringProximityMatrix<OWLEntity> start;
-        private final PairFilter<Collection<? extends OWLEntity>> filter;
+        private final PairFilter<Collection<? extends OWLEntity>> pairFilter;
         private int count = 0;
 
         /** @param start
-         * @param filter */
+         * @param pairFilter */
         public Agglomerator(final ClusteringProximityMatrix<OWLEntity> start,
                 final PairFilter<Collection<? extends OWLEntity>> filter) {
             if (start == null) {
                 throw new NullPointerException("The start cannot be null");
             }
             if (filter == null) {
-                throw new NullPointerException("The filter cannot be null");
+                throw new NullPointerException("The pairFilter cannot be null");
             }
             this.start = start;
-            this.filter = filter;
+            pairFilter = filter;
         }
 
         protected abstract boolean stop(ClusteringProximityMatrix<OWLEntity> matrix);
@@ -194,9 +195,9 @@ public class ClusteringGUI extends JFrame {
             return start;
         }
 
-        /** @return the filter */
+        /** @return the pairFilter */
         public PairFilter<Collection<? extends OWLEntity>> getFilter() {
-            return filter;
+            return pairFilter;
         }
     }
 

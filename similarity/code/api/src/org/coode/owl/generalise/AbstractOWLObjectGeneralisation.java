@@ -131,6 +131,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
             if (variable != null) {
                 toReturn = variable.getType().accept(
                         new VariableTypeVisitorEx<OWLClassExpression>() {
+                            @SuppressWarnings("unused")
                             public OWLClassExpression visitCLASSVariableType(
                                     final CLASSVariableType classVariableType) {
                                 @SuppressWarnings("unchecked")
@@ -152,11 +153,9 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                                 return values.getVariable().getType() == variableType;
                                             }
 
-                                            public
-                                                    String
-                                                    render(final ConstraintSystem constraintSystem) {
-                                                return values
-                                                        .render(getConstraintSystem());
+                                            public String
+                                                    render(final ConstraintSystem c) {
+                                                return values.render(c);
                                             }
 
                                             public
@@ -171,6 +170,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                 return factory.getOWLClass(generatedVariable.getIRI());
                             }
 
+                            @SuppressWarnings("unused")
                             public
                                     OWLClassExpression
                                     visitOBJECTPROPERTYVariableType(
@@ -178,6 +178,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                 return ce;
                             }
 
+                            @SuppressWarnings("unused")
                             public
                                     OWLClassExpression
                                     visitDATAPROPERTYVariableType(
@@ -185,16 +186,19 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                 return ce;
                             }
 
+                            @SuppressWarnings("unused")
                             public OWLClassExpression visitINDIVIDUALVariableType(
                                     final INDIVIDUALVariableType individualVariableType) {
                                 return ce;
                             }
 
+                            @SuppressWarnings("unused")
                             public OWLClassExpression visitCONSTANTVariableType(
                                     final CONSTANTVariableType constantVariableType) {
                                 return ce;
                             }
 
+                            @SuppressWarnings("unused")
                             public
                                     OWLClassExpression
                                     visitANNOTATIONPROPERTYVariableType(
@@ -296,8 +300,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
                             visitor.visitValuesVariableAtttribute(values);
                         }
 
-                        public String render(final ConstraintSystem constraintSystem) {
-                            return values.render(constraintSystem);
+                        public String render(final ConstraintSystem c) {
+                            return values.render(c);
                         }
 
                         public String render(final ShortFormProvider shortFormProvider) {
@@ -311,8 +315,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
                     return values.getVariable().getType() == variableType;
                 }
 
-                public String render(final ConstraintSystem constraintSystem) {
-                    return values.render(constraintSystem);
+                public String render(final ConstraintSystem c) {
+                    return values.render(c);
                 }
 
                 public String render(final ShortFormProvider shortFormProvider) {

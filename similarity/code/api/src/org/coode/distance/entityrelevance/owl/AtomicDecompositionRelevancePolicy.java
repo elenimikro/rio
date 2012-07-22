@@ -19,8 +19,6 @@ import java.util.Set;
 
 import org.coode.distance.entityrelevance.AtomicDecompositionRankingRelevancePolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
-import org.coode.distance.owl.OWLEntityReplacer;
-import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.metrics.AbstractRanking;
 import org.coode.metrics.Metric;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -36,8 +34,8 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
     private final OWLAxiom axiom;
     private final OWLDataFactory dataFactory;
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-    private final OWLEntityReplacer replacer;
-    private final AxiomMap axiomMap;
+    // private final OWLEntityReplacer replacer;
+    // private final AxiomMap axiomMap;
     private final AbstractRanking<OWLEntity, Double> ranking;
     private final RelevancePolicy<OWLEntity> relevance;
     MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
@@ -64,9 +62,10 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
         }
         this.dataFactory = dataFactory;
         this.ontologies.addAll(ontologies);
-        replacer = new OWLEntityReplacer(dataFactory, new ReplacementByKindStrategy(
-                getDataFactory()));
-        this.axiomMap = axiomMap;
+        // replacer = new OWLEntityReplacer(dataFactory, new
+        // ReplacementByKindStrategy(
+        // getDataFactory()));
+        // this.axiomMap = axiomMap;
         this.axiom = axiom;
         this.entityAtomDependencies.putAll(entityAtomDependencies);
         ranking = buildRanking();
@@ -76,16 +75,16 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
     }
 
     private AbstractRanking<OWLEntity, Double> buildRanking() {
-        final OWLAxiom replaced = (OWLAxiom) getAxiom().accept(replacer);
+        // final OWLAxiom replaced = (OWLAxiom) getAxiom().accept(replacer);
         Metric<OWLEntity, Double> m = new Metric<OWLEntity, Double>() {
             public Double getValue(final OWLEntity object) {
                 double value = entityAtomDependencies.get(object).size();
                 // edit this metric and add the one for the atomic decomposition
-                double total = entityAtomDependencies.getAllValues().size();
+                // double total = entityAtomDependencies.getAllValues().size();
                 return value;
             }
         };
-        AbstractRanking<OWLEntity, Double> ranking = new AbstractRanking<OWLEntity, Double>(
+        AbstractRanking<OWLEntity, Double> toReturn = new AbstractRanking<OWLEntity, Double>(
                 m, entityAtomDependencies.keySet()) {
             public boolean isAverageable() {
                 return true;
@@ -94,18 +93,18 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
             @Override
             protected Double computeAverage() {
                 Set<Double> values = getValues();
-                Double toReturn = 0d;
+                Double average = 0d;
                 if (!values.isEmpty()) {
                     double total = 0;
                     for (Double d : values) {
                         total += d;
                     }
-                    toReturn = total / values.size();
+                    average = total / values.size();
                 }
-                return toReturn;
+                return average;
             }
         };
-        return ranking;
+        return toReturn;
     }
 
     /** @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang

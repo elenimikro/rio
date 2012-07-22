@@ -121,6 +121,7 @@ public class Utils {
         }
     }
 
+    @SuppressWarnings("unused")
     private final static class Handler extends DefaultHandler {
         private final OWLOntologyManager manager;
         private final Set<Set<OWLEntity>> clusters = new LinkedHashSet<Set<OWLEntity>>();
@@ -448,6 +449,7 @@ public class Utils {
         return handler.getHistory();
     }
 
+    @SuppressWarnings("unused")
     private static void purgePuns(final Collection<? extends OWLEntity> collection) {
         Class<?> predominantType = null;
         int max = -1;

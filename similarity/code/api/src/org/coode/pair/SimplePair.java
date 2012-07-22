@@ -14,9 +14,7 @@
 package org.coode.pair;
 
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Luigi Iannone

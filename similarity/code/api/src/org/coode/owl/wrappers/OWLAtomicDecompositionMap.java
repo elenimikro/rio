@@ -19,11 +19,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 
-import edu.arizona.bio5.onto.decomposition.Atom;
-
 import uk.ac.manchester.cs.demost.ui.adextension.ChiaraAtomicDecomposition;
 import uk.ac.manchester.cs.demost.ui.adextension.ChiaraDecompositionAlgorithm;
 import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
+import edu.arizona.bio5.onto.decomposition.Atom;
 
 public class OWLAtomicDecompositionMap {
 

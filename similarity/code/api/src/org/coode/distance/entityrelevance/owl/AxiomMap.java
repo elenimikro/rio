@@ -36,6 +36,7 @@ public class AxiomMap {
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final OWLOntologyManager ontologyManager;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @SuppressWarnings("unused")
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomMap.this.buildMaps(ontologies);

@@ -21,20 +21,15 @@ import javax.swing.table.TableModel;
 
 import org.coode.proximitymatrix.ProximityMatrix;
 
-/**
- * @author Luigi Iannone
- *
- */
+/** @author Luigi Iannone */
 public class ProximityMatrixTableModel implements TableModel {
     private final ProximityMatrix<?> proximityMatrix;
     private final String[] columnNames;
     private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    /**
-     * @param proximityMatrix
-     */
-    public ProximityMatrixTableModel(ProximityMatrix<?> proximityMatrix,
-            String[] columnNames) {
+    /** @param proximityMatrix */
+    public ProximityMatrixTableModel(final ProximityMatrix<?> proximityMatrix,
+            final String[] columnNames) {
         if (proximityMatrix == null) {
             throw new NullPointerException("Proximity matrix cannot be null");
         }
@@ -43,54 +38,55 @@ public class ProximityMatrixTableModel implements TableModel {
         this.proximityMatrix = proximityMatrix;
     }
 
-    public void addTableModelListener(TableModelListener l) {
+    public void addTableModelListener(final TableModelListener l) {
         if (l != null) {
-            this.listeners.add(l);
+            listeners.add(l);
         }
     }
 
-    public Class<?> getColumnClass(int i) {
+    @SuppressWarnings("unused")
+    public Class<?> getColumnClass(final int i) {
         return Object.class;
     }
 
     public int getColumnCount() {
-		return this.getProximityMatrix().getData().length() + 1;
+        return getProximityMatrix().getData().length() + 1;
     }
 
-    public String getColumnName(int i) {
-        return this.columnNames[i];
+    public String getColumnName(final int i) {
+        return columnNames[i];
     }
 
     public int getRowCount() {
-		return this.getProximityMatrix().getData().length()+1;
+        return getProximityMatrix().getData().length() + 1;
     }
 
-    public Object getValueAt(int row, int column) {
+    public Object getValueAt(final int row, final int column) {
         Object toReturn = null;
         if (column == 0) {
-            toReturn = this.columnNames[row + 1];
+            toReturn = columnNames[row + 1];
         } else {
-			toReturn = this.getProximityMatrix().getData().get(row,column - 1);
+            toReturn = getProximityMatrix().getData().get(row, column - 1);
         }
         return toReturn;
     }
 
-    public boolean isCellEditable(int arg0, int arg1) {
+    @SuppressWarnings("unused")
+    public boolean isCellEditable(final int arg0, final int arg1) {
         return false;
     }
 
-    public void removeTableModelListener(TableModelListener l) {
-        this.listeners.remove(l);
+    public void removeTableModelListener(final TableModelListener l) {
+        listeners.remove(l);
     }
 
-    public void setValueAt(Object arg0, int arg1, int arg2) {
+    @SuppressWarnings("unused")
+    public void setValueAt(final Object arg0, final int arg1, final int arg2) {
         // TODO Auto-generated method stub
     }
 
-    /**
-     * @return the proximityMatrix
-     */
+    /** @return the proximityMatrix */
     public ProximityMatrix<?> getProximityMatrix() {
-        return this.proximityMatrix;
+        return proximityMatrix;
     }
 }

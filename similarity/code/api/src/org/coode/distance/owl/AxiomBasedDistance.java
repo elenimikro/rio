@@ -48,6 +48,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
     private final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantiationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @SuppressWarnings("unused")
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomBasedDistance.this

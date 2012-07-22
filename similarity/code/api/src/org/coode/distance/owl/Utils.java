@@ -4,7 +4,7 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
@@ -20,40 +20,41 @@ import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 public class Utils {
-	private final static OWLObjectVisitorEx<Boolean> ENTITY_RECOGNISER = new OWLObjectVisitorExAdapter<Boolean>(
-			false) {
-		@Override
-		public Boolean visit(OWLClass desc) {
-			return true;
-		}
+    @SuppressWarnings("unused")
+    private final static OWLObjectVisitorEx<Boolean> ENTITY_RECOGNISER = new OWLObjectVisitorExAdapter<Boolean>(
+            false) {
+        @Override
+        public Boolean visit(final OWLClass desc) {
+            return true;
+        }
 
-		@Override
-		public Boolean visit(OWLAnnotationProperty property) {
-			return true;
-		}
+        @Override
+        public Boolean visit(final OWLAnnotationProperty property) {
+            return true;
+        }
 
-		@Override
-		public Boolean visit(OWLDataProperty property) {
-			return true;
-		}
+        @Override
+        public Boolean visit(final OWLDataProperty property) {
+            return true;
+        }
 
-		@Override
-		public Boolean visit(OWLObjectProperty property) {
-			return true;
-		}
+        @Override
+        public Boolean visit(final OWLObjectProperty property) {
+            return true;
+        }
 
-		@Override
-		public Boolean visit(OWLDatatype node) {
-			return true;
-		}
+        @Override
+        public Boolean visit(final OWLDatatype node) {
+            return true;
+        }
 
-		@Override
-		public Boolean visit(OWLNamedIndividual individual) {
-			return true;
-		}
-	};
+        @Override
+        public Boolean visit(final OWLNamedIndividual individual) {
+            return true;
+        }
+    };
 
-	public static OWLObjectVisitorEx<Boolean> getOWLEntityRecogniser() {
-		return ENTITY_RECOGNISER;
-	}
+    public static OWLObjectVisitorEx<Boolean> getOWLEntityRecogniser() {
+        return ENTITY_RECOGNISER;
+    }
 }

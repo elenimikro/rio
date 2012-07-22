@@ -52,6 +52,7 @@ public class AxiomRelevanceAtomicDecompositionBasedDistanceNEW implements
     private final OWLEntityProvider entityProvider;
     private OWLAtomicDecompositionMap atomicMap;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @SuppressWarnings("unused")
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomRelevanceAtomicDecompositionBasedDistanceNEW.this

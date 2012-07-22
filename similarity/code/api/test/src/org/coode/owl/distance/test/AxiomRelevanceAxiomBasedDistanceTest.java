@@ -36,6 +36,7 @@ public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
             }
 
             @Override
+            @SuppressWarnings("unused")
             public AbstractAxiomBasedDistance getDistance(final OWLOntology o,
                     final RelevancePolicy<OWLEntity> rp) {
                 return null;

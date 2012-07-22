@@ -4,20 +4,27 @@
  * are made available under the terms of the GNU Lesser Public License v2.1
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * 
+ *
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.owl.structural.difference;
 
+@SuppressWarnings("unused")
 public class StructuralDifferenceReportVisitorAdapter implements
-		StructuralDifferenceReportVisitor {
-	public void visitNoDifferenceStructuralDifferenceReport(
-			NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {}
+        StructuralDifferenceReportVisitor {
+    public
+            void
+            visitNoDifferenceStructuralDifferenceReport(
+                    final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {}
 
-	public void visitIncomparableObjectsStructuralDifferenceReport(
-			IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {}
+    public
+            void
+            visitIncomparableObjectsStructuralDifferenceReport(
+                    final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {}
 
-	public void visitSomeDifferenceStructuralDifferenceReport(
-			SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {}
+    public
+            void
+            visitSomeDifferenceStructuralDifferenceReport(
+                    final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {}
 }

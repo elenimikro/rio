@@ -59,6 +59,7 @@ public class AxiomRelevanceAtomicDecompositionBasedDistance implements
     private final OWLEntityProvider entityProvider;
     MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @SuppressWarnings("unused")
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomRelevanceAtomicDecompositionBasedDistance.this.buildOntologySignature();

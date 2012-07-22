@@ -30,7 +30,6 @@ import javax.swing.ListCellRenderer;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.metrics.Ranking;
 import org.coode.metrics.RankingSlot;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * @author Luigi Iannone

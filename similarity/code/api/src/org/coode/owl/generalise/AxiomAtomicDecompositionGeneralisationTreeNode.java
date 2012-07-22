@@ -197,47 +197,48 @@ public class AxiomAtomicDecompositionGeneralisationTreeNode extends
         return true;
     }
 
-    private boolean haveEqualDependenciesEx(final Map<BindingNode, AssignmentMap> map,
-            final Set<Variable<?>> otherVariables) {
-        Collection<AssignmentMap> assignmentMaps = map.values();
-        for (AssignmentMap assignmentMap : assignmentMaps) {
-            for (Variable<?> variable : otherVariables) {
-                Set<OWLObject> assignments = assignmentMap.get(variable);
-                if (assignments.size() > 1) {
-                    // find dependencies for every assignment
-                    MultiMap<OWLObject, Atom> assignmentAtomDependencies = new MultiMap<OWLObject, Atom>();
-                    for (OWLObject assignment : assignments) {
-                        if (assignment instanceof OWLEntity) {
-                            Collection<Atom> atoms = atomicDecomposition
-                                    .getEntitiesToAtom().get((OWLEntity) assignment);
-                            if (atoms != null) {
-                                Set<Atom> dependencies = new HashSet<Atom>();
-                                for (Atom atom : atoms) {
-                                    if (atomicDecomposition != null) {
-                                        Set<Atom> set = atomicDecomposition
-                                                .getDependencies(atom);
-                                        if (set.size() > 0) {
-                                            dependencies.addAll(set);
-                                        }
-                                    }
-                                }
-                                dependencies.removeAll(atoms);
-                                assignmentAtomDependencies.setEntry(assignment,
-                                        dependencies);
-                            }
-                        }
-                    }
-                    // check if all the objects have the same dependencies
-                    boolean equal = assignmentAtomDependencies.isValueSetsEqual();
-                    if (!equal) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
+    // private boolean haveEqualDependenciesEx(final Map<BindingNode,
+    // AssignmentMap> map,
+    // final Set<Variable<?>> otherVariables) {
+    // Collection<AssignmentMap> assignmentMaps = map.values();
+    // for (AssignmentMap assignmentMap : assignmentMaps) {
+    // for (Variable<?> variable : otherVariables) {
+    // Set<OWLObject> assignments = assignmentMap.get(variable);
+    // if (assignments.size() > 1) {
+    // // find dependencies for every assignment
+    // MultiMap<OWLObject, Atom> assignmentAtomDependencies = new
+    // MultiMap<OWLObject, Atom>();
+    // for (OWLObject assignment : assignments) {
+    // if (assignment instanceof OWLEntity) {
+    // Collection<Atom> atoms = atomicDecomposition
+    // .getEntitiesToAtom().get((OWLEntity) assignment);
+    // if (atoms != null) {
+    // Set<Atom> dependencies = new HashSet<Atom>();
+    // for (Atom atom : atoms) {
+    // if (atomicDecomposition != null) {
+    // Set<Atom> set = atomicDecomposition
+    // .getDependencies(atom);
+    // if (set.size() > 0) {
+    // dependencies.addAll(set);
+    // }
+    // }
+    // }
+    // dependencies.removeAll(atoms);
+    // assignmentAtomDependencies.setEntry(assignment,
+    // dependencies);
+    // }
+    // }
+    // }
+    // // check if all the objects have the same dependencies
+    // boolean equal = assignmentAtomDependencies.isValueSetsEqual();
+    // if (!equal) {
+    // return false;
+    // }
+    // }
+    // }
+    // }
+    // return true;
+    // }
     public void accept(final GeneralisationTreeNodeVisitor visitor) {
         visitor.visitAxiomAtomicDecompositionGeneralisationTreeNode(this);
     }
