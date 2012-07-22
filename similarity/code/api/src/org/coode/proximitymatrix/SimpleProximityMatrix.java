@@ -22,8 +22,8 @@ import java.util.Set;
 
 import org.apache.commons.math.linear.MatrixIndexException;
 import org.coode.distance.Distance;
-import org.coode.metrics.SparseMatrix;
-import org.coode.metrics.SparseMatrixFactory;
+import org.coode.distance.SparseMatrix;
+import org.coode.distance.SparseMatrixFactory;
 import org.coode.pair.Pair;
 import org.coode.pair.SimplePair;
 import org.coode.pair.filter.PairFilter;

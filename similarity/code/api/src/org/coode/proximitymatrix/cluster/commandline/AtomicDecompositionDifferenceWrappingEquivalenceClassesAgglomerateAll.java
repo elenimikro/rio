@@ -11,14 +11,11 @@
 package org.coode.proximitymatrix.cluster.commandline;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -26,38 +23,19 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.coode.distance.Distance;
 import org.coode.distance.owl.AtomicDecompositionGeneralisationTreeBasedDistance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.distance.wrapping.DistanceThresholdBasedFilter;
-import org.coode.oppl.ConstraintSystem;
-import org.coode.oppl.OPPLFactory;
-import org.coode.oppl.exceptions.OPPLException;
-import org.coode.oppl.exceptions.QuickFailRuntimeExceptionHandler;
-import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.pair.filter.PairFilter;
 import org.coode.proximitymatrix.AddLeftOversHistoryItemFactory;
 import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
-import org.coode.proximitymatrix.ProximityMatrix;
 import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
-import org.coode.proximitymatrix.cluster.ClusterStatistics;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
-import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
-import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -67,9 +45,6 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
-import org.w3c.dom.Document;
-
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll {
     /** @param args */
@@ -140,6 +115,9 @@ public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateA
                             .next());
                 }
             };
+            // it passes the threshold for the distance (criterion for stopping
+            // clustering)
+            // In this case is 1.
             PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter = DistanceThresholdBasedFilter
                     .build(distanceMatrix.getData(), 1);
             System.out.println("Building clustering matrix....");
@@ -167,8 +145,9 @@ public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateA
                     iterator.remove();
                 }
             }
-            clusteringMatrix.setHistoryItemFactory(AddLeftOversHistoryItemFactory
-                    .build(leftOvers));
+            // uncomment if we want to store the history
+            // clusteringMatrix.setHistoryItemFactory(AddLeftOversHistoryItemFactory
+            // .build(leftOvers));
             while (clusteringMatrix.getMinimumDistancePair() != null
                     && filter.accept(
                             clusteringMatrix.getMinimumDistancePair().getFirst(),
@@ -177,145 +156,25 @@ public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateA
                 System.out.println(String.format("Agglomerations: %d for %d clusters",
                         i++, clusteringMatrix.getObjects().size()));
                 if (clusteringMatrix.getMinimumDistancePair() != null) {
-                    System.out.println(String
-                            .format("Next Pair %s %s %f", render(clusteringMatrix
-                                    .getMinimumDistancePair().getFirst()),
-                                    render(clusteringMatrix.getMinimumDistancePair()
-                                            .getSecond()), clusteringMatrix
-                                            .getMinimumDistance()));
+                    System.out.println(String.format("Next Pair %s %s %f",
+                            Utils.render(clusteringMatrix.getMinimumDistancePair()
+                                    .getFirst()), Utils.render(clusteringMatrix
+                                    .getMinimumDistancePair().getSecond()),
+                            clusteringMatrix.getMinimumDistance()));
                 }
             }
-            Set<Cluster<OWLEntity>> clusters = buildClusters(clusteringMatrix,
+            Set<Cluster<OWLEntity>> clusters = Utils.buildClusters(clusteringMatrix,
                     baseDistanceMatrix, equivalenceClasses);
             System.out.println(String.format(
                     "Finished clustering after %d agglomerations no of clusters %d", i,
                     clusters.size()));
-            // History<Collection<? extends DistanceTableObject<OWLEntity>>>
-            // history = clusteringMatrix.getHistory();
-            save(clusters, manager, outfile);
+            Utils.save(clusters, manager, outfile);
         } else {
             System.out
                     .println(String
                             .format("Usage java -cp ... %s <saveResultFilePath> <ontology> ... <ontology>",
                                     AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll.class
                                             .getCanonicalName()));
-        }
-    }
-
-    private static String render(
-            final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
-        Formatter out = new Formatter();
-        Iterator<? extends DistanceTableObject<OWLEntity>> iterator = cluster.iterator();
-        while (iterator.hasNext()) {
-            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-            OWLEntity owlEntity = iterator.next().getObject();
-            out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
-        }
-        return out.toString();
-    }
-
-    private static <P> Set<Cluster<P>> buildClusters(
-            final ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
-            final ProximityMatrix<P> distanceMatrix,
-            final MultiMap<P, P> equivalenceClasses) {
-        Collection<Collection<? extends DistanceTableObject<P>>> objects = clusteringMatrix
-                .getObjects();
-        Set<Cluster<P>> toReturn = new HashSet<Cluster<P>>(objects.size());
-        for (Collection<? extends DistanceTableObject<P>> collection : objects) {
-            toReturn.add(new SimpleCluster<P>(Utility.unwrapObjects(collection,
-                    equivalenceClasses), distanceMatrix));
-        }
-        for (P key : equivalenceClasses.keySet()) {
-            Collection<P> set = equivalenceClasses.get(key);
-            if (set.size() > 1) {
-                boolean found = false;
-                Iterator<Cluster<P>> iterator = toReturn.iterator();
-                while (!found && iterator.hasNext()) {
-                    Cluster<P> cluster = iterator.next();
-                    found = cluster.contains(key);
-                }
-                if (!found) {
-                    toReturn.add(new SimpleCluster<P>(set, distanceMatrix));
-                }
-            }
-        }
-        return toReturn;
-    }
-
-    /** It saves the clusters in an xml. In this version the history is not
-     * saved.
-     * 
-     * @param clusters
-     * @param manager
-     * @param file */
-    public static <P extends OWLEntity> void save(
-            final Collection<? extends Cluster<P>> _clusters,
-            final OWLOntologyManager manager, final File file) {
-        try {
-            List<Cluster<P>> sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
-            for (Cluster<P> c : _clusters) {
-                if (c.size() > 1) {
-                    sortedClusters.add(c);
-                }
-            }
-            Collections.sort(sortedClusters, ClusterStatisticsTableModel.SIZE_COMPARATOR);
-            OWLOntology ontology = manager.getOntologies().iterator().next();
-            ConstraintSystem constraintSystem = new OPPLFactory(manager, ontology, null)
-                    .createConstraintSystem();
-            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                    sortedClusters, manager.getOntologies(), constraintSystem);
-            printExtraStats(file, sortedClusters);
-            Document xml = Utils.toXML(sortedClusters, manager.getOntologies(),
-                    new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation,
-                    new QuickFailRuntimeExceptionHandler());
-            Transformer t = TransformerFactory.newInstance().newTransformer();
-            StreamResult result = new StreamResult(file);
-            t.setOutputProperty(OutputKeys.INDENT, "yes");
-            t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
-            t.transform(new DOMSource(xml), result);
-            System.out.println(String.format("Results saved in %s",
-                    file.getAbsolutePath()));
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerFactoryConfigurationError e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        } catch (OPPLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static <P> void printExtraStats(final File file,
-            final Collection<Cluster<P>> sortedClusters) {
-        try {
-            PrintStream out = new PrintStream(file.getName() + ".csv");
-            int index = 0;
-            out.println("cluster index, cluster size, "
-                    + "average internal distance, average external distance, "
-                    + "max internal distance, min internal distance, "
-                    + "max external distance, min external distance, homogeneity");
-            for (Cluster<P> cluster : sortedClusters) {
-                ClusterStatistics<P> stats = ClusterStatistics.buildStatistics(cluster);
-                out.print("cluster " + index);
-                index++;
-                out.println("," + cluster.size() + ","
-                        + stats.getAverageInternalDistance() + ","
-                        + stats.getAverageExternalDistance() + ","
-                        + stats.getMaxInternalDistance() + ","
-                        + stats.getMinInternalDistance() + ","
-                        + stats.getMaxExternalDistance() + ","
-                        + stats.getMinExternalDistance() + ","
-                        + (1 - stats.getAverageInternalDistance()));
-            }
-            out.close();
-        } catch (IOException e) {
-            System.out
-                    .println("AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll.save() Cannot save extra metrics for "
-                            + file.getName());
-            e.printStackTrace(System.out);
         }
     }
 }

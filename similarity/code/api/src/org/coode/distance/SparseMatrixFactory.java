@@ -1,4 +1,4 @@
-package org.coode.metrics;
+package org.coode.distance;
 
 public class SparseMatrixFactory {
     public static SparseMatrix create(final int size) {

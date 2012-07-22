@@ -1,4 +1,4 @@
-package org.coode.metrics;
+package org.coode.distance;
 
 import java.io.PrintWriter;
 import java.util.Arrays;

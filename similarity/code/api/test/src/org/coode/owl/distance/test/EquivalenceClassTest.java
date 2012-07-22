@@ -59,7 +59,7 @@ public class EquivalenceClassTest extends TestCase {
                     ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                             ontologyManager.getOWLDataFactory()));
             final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                    ontologies, ontologyManager, owlEntityReplacer);
+                    ontologies, owlEntityReplacer, ontologyManager);
             MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils
                     .getEquivalenceClasses(entities, distance);
             int i = 0;
@@ -121,7 +121,7 @@ public class EquivalenceClassTest extends TestCase {
                     ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                             ontologyManager.getOWLDataFactory()));
             final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                    ontologies, ontologyManager, owlEntityReplacer);
+                    ontologies, owlEntityReplacer, ontologyManager);
             MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils
                     .getEquivalenceClasses(entities, distance);
             int i = 0;
@@ -172,7 +172,7 @@ public class EquivalenceClassTest extends TestCase {
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
         final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                ontologies, ontologyManager, owlEntityReplacer);
+                ontologies, owlEntityReplacer, ontologyManager);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils.getEquivalenceClasses(
                 entities, distance);
         int i = 0;

@@ -20,7 +20,7 @@ import org.coode.owl.structural.difference.NoDifferenceStructuralDifferenceRepor
 import org.coode.owl.structural.difference.SomeDifferenceStructuralDifferenceReport;
 import org.coode.owl.structural.difference.StructuralDifference;
 import org.coode.owl.structural.difference.StructuralDifferenceReport;
-import org.coode.owl.structural.difference.StructuralDifferenceReportVisitor;
+import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorAdapter;
 import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorExAdapter;
 import org.coode.owl.structural.position.Position;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -41,40 +41,90 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 public class TestStructuralDifference extends TestCase {
-    public void testGetTopDifference() {
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-        try {
-            OWLOntology ontology = ontologyManager
-                    .loadOntology(IRI
-                            .create("http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl"));
-            StructuralDifference difference = new StructuralDifference();
-            for (OWLAxiom axiom : ontology.getAxioms()) {
-                StructuralDifferenceReport topDifference = difference.getTopDifference(
-                        axiom, axiom);
-                assertTrue(topDifference == StructuralDifferenceReport.NO_DIFFERENCE);
-                topDifference = difference.getTopDifference(ontology, axiom);
-                assertTrue(topDifference == StructuralDifferenceReport.INCOMPARABLE);
-            }
-        } catch (OWLOntologyCreationException e) {
-            e.printStackTrace();
-            fail(e.getMessage());
+    private static class DiffAdapter extends StructuralDifferenceReportVisitorAdapter {
+        @Override
+        @SuppressWarnings("unused")
+        public
+                void
+                visitNoDifferenceStructuralDifferenceReport(
+                        final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
+            fail("Wrong kind of report");
+        }
+
+        @Override
+        @SuppressWarnings("unused")
+        public
+                void
+                visitIncomparableObjectsStructuralDifferenceReport(
+                        final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
+            fail("Wrong kind of report");
         }
     }
 
-    public void testAreComparable() {
+    private final class Personalized3 extends
+            StructuralDifferenceReportVisitorExAdapter<List<Integer>> {
+        private Personalized3(final List<Integer> defaultValue) {
+            super(defaultValue);
+        }
+
+        @Override
+        public
+                List<Integer>
+                visitSomeDifferenceStructuralDifferenceReport(
+                        final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
+            return someDifferenceStructuralDifferenceReport.getPosition();
+        }
+    }
+
+    private final class Personalized1 extends DiffAdapter {
+        @Override
+        public
+                void
+                visitSomeDifferenceStructuralDifferenceReport(
+                        final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
+            List<Integer> position = someDifferenceStructuralDifferenceReport
+                    .getPosition();
+            assertTrue(position.size() == 1);
+            assertTrue(position.get(0).intValue() == 2);
+        }
+    }
+
+    private static final class PersonalizedReportVisitor extends DiffAdapter {
+        @Override
+        public
+                void
+                visitSomeDifferenceStructuralDifferenceReport(
+                        final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
+            List<Integer> position = someDifferenceStructuralDifferenceReport
+                    .getPosition();
+            assertTrue(position.size() == 2);
+            assertTrue(position.get(0).intValue() == 2);
+            assertTrue(position.get(1).intValue() == 2);
+        }
+    }
+
+    public void testGetTopDifference() throws OWLOntologyCreationException {
         OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-        try {
-            OWLOntology ontology = ontologyManager
-                    .loadOntology(IRI
-                            .create("http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl"));
-            StructuralDifference difference = new StructuralDifference();
-            for (OWLAxiom axiom : ontology.getAxioms()) {
-                boolean areComparable = difference.areComparable(axiom, axiom);
-                assertTrue(areComparable);
-            }
-        } catch (OWLOntologyCreationException e) {
-            e.printStackTrace();
-            fail(e.getMessage());
+        OWLOntology ontology = ontologyManager.loadOntology(IRI
+                .create("http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl"));
+        StructuralDifference difference = new StructuralDifference();
+        for (OWLAxiom axiom : ontology.getAxioms()) {
+            StructuralDifferenceReport topDifference = difference.getTopDifference(axiom,
+                    axiom);
+            assertTrue(topDifference == StructuralDifferenceReport.NO_DIFFERENCE);
+            topDifference = difference.getTopDifference(ontology, axiom);
+            assertTrue(topDifference == StructuralDifferenceReport.INCOMPARABLE);
+        }
+    }
+
+    public void testAreComparable() throws OWLOntologyCreationException {
+        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = ontologyManager.loadOntology(IRI
+                .create("http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl"));
+        StructuralDifference difference = new StructuralDifference();
+        for (OWLAxiom axiom : ontology.getAxioms()) {
+            boolean areComparable = difference.areComparable(axiom, axiom);
+            assertTrue(areComparable);
         }
     }
 
@@ -100,111 +150,16 @@ public class TestStructuralDifference extends TestCase {
         StructuralDifferenceReport topDifference = difference.getTopDifference(aANDb,
                 aANDc);
         System.out.printf("Between {%s, %s} is %s \n", aANDb, aANDc, topDifference);
-        topDifference.accept(new StructuralDifferenceReportVisitor() {
-            public
-                    void
-                    visitSomeDifferenceStructuralDifferenceReport(
-                            final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-                List<Integer> position = someDifferenceStructuralDifferenceReport
-                        .getPosition();
-                assertTrue(position.size() == 1);
-                assertTrue(position.get(0).intValue() == 2);
-            }
-
-            @SuppressWarnings("unused")
-            public
-                    void
-                    visitNoDifferenceStructuralDifferenceReport(
-                            final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
-                fail("Wrong kind of report");
-            }
-
-            @SuppressWarnings("unused")
-            public
-                    void
-                    visitIncomparableObjectsStructuralDifferenceReport(
-                            final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
-                fail("Wrong kind of report");
-            }
-        });
+        topDifference.accept(new Personalized1());
         topDifference = difference.getTopDifference(somePAANDB, somePAANDC);
         System.out.printf("Between {%s, %s} is %s \n", somePAANDB, somePAANDC,
                 topDifference);
-        topDifference.accept(new StructuralDifferenceReportVisitor() {
-            public
-                    void
-                    visitSomeDifferenceStructuralDifferenceReport(
-                            final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-                List<Integer> position = someDifferenceStructuralDifferenceReport
-                        .getPosition();
-                assertTrue(position.size() == 2);
-                assertTrue(position.get(0).intValue() == 2);
-                assertTrue(position.get(1).intValue() == 2);
-            }
-
-            @SuppressWarnings("unused")
-            public
-                    void
-                    visitNoDifferenceStructuralDifferenceReport(
-                            final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
-                fail("Wrong kind of report");
-            }
-
-            @SuppressWarnings("unused")
-            public
-                    void
-                    visitIncomparableObjectsStructuralDifferenceReport(
-                            final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
-                fail("Wrong kind of report");
-            }
-        });
+        topDifference.accept(new PersonalizedReportVisitor());
         topDifference = difference.getTopDifference(somePAANDB, somePAORC);
-        System.out
-                .printf("Between {%s, %s} is at %s  which is %s \n",
-                        somePAANDB,
-                        somePAORC,
-                        topDifference,
-                        Position.get(
-                                somePAANDB,
-                                topDifference
-                                        .accept(new StructuralDifferenceReportVisitorExAdapter<List<Integer>>(
-                                                Collections.<Integer> emptyList()) {
-                                            @Override
-                                            public
-                                                    List<Integer>
-                                                    visitSomeDifferenceStructuralDifferenceReport(
-                                                            final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-                                                return someDifferenceStructuralDifferenceReport
-                                                        .getPosition();
-                                            }
-                                        })));
-        topDifference.accept(new StructuralDifferenceReportVisitor() {
-            public
-                    void
-                    visitSomeDifferenceStructuralDifferenceReport(
-                            final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-                List<Integer> position = someDifferenceStructuralDifferenceReport
-                        .getPosition();
-                assertTrue(position.size() == 1);
-                assertTrue(position.get(0).intValue() == 2);
-            }
-
-            @SuppressWarnings("unused")
-            public
-                    void
-                    visitNoDifferenceStructuralDifferenceReport(
-                            final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
-                fail("Wrong kind of report");
-            }
-
-            @SuppressWarnings("unused")
-            public
-                    void
-                    visitIncomparableObjectsStructuralDifferenceReport(
-                            final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
-                fail("Wrong kind of report");
-            }
-        });
+        System.out.printf("Between {%s, %s} is at %s  which is %s \n", somePAANDB,
+                somePAORC, topDifference, Position.get(somePAANDB, topDifference
+                        .accept(new Personalized3(Collections.<Integer> emptyList()))));
+        topDifference.accept(new Personalized1());
     }
 
     public void testSomeDifferenceComplete() {
@@ -232,34 +187,7 @@ public class TestStructuralDifference extends TestCase {
                 topDifferences);
         assertTrue(topDifferences.size() == 1);
         for (StructuralDifferenceReport topDifference : topDifferences) {
-            topDifference.accept(new StructuralDifferenceReportVisitor() {
-                public
-                        void
-                        visitSomeDifferenceStructuralDifferenceReport(
-                                final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-                    List<Integer> position = someDifferenceStructuralDifferenceReport
-                            .getPosition();
-                    assertTrue(position.size() == 2);
-                    assertTrue(position.get(0).intValue() == 2);
-                    assertTrue(position.get(1).intValue() == 2);
-                }
-
-                @SuppressWarnings("unused")
-                public
-                        void
-                        visitNoDifferenceStructuralDifferenceReport(
-                                final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
-                    fail("Wrong kind of report");
-                }
-
-                @SuppressWarnings("unused")
-                public
-                        void
-                        visitIncomparableObjectsStructuralDifferenceReport(
-                                final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
-                    fail("Wrong kind of report");
-                }
-            });
+            topDifference.accept(new PersonalizedReportVisitor());
         }
         topDifferences = difference.getTopDifferences(somePAANDB, someQAANDC);
         System.out.printf("Between {%s, %s} is %s \n", somePAANDB, someQAANDC,

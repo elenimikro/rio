@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math.linear.MatrixIndexException;
+import org.coode.distance.SparseMatrix;
+import org.coode.distance.SparseMatrixFactory;
 import org.coode.distance.TableDistance;
-import org.coode.metrics.SparseMatrix;
-import org.coode.metrics.SparseMatrixFactory;
 import org.coode.pair.Pair;
 import org.coode.pair.filter.PairFilter;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;

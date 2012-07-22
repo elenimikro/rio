@@ -22,29 +22,13 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.coode.distance.Distance;
 import org.coode.distance.TableDistance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
-import org.coode.oppl.ConstraintSystem;
-import org.coode.oppl.OPPLFactory;
-import org.coode.oppl.exceptions.OPPLException;
-import org.coode.oppl.exceptions.QuickFailRuntimeExceptionHandler;
-import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.pair.filter.PairFilter;
 import org.coode.pair.filter.commons.DistanceThresholdBasedFilter;
 import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
@@ -56,7 +40,6 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
-import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -65,7 +48,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
-import org.w3c.dom.Document;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
@@ -108,7 +90,7 @@ public class AgglomerateAll {
                     manager.getOWLDataFactory(), new ReplacementByKindStrategy(
                             manager.getOWLDataFactory()));
             final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-                    manager.getOntologies(), manager, owlEntityReplacer);
+                    manager.getOntologies(), owlEntityReplacer, manager);
             final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                     entities, distance);
             System.out.println(String.format(
@@ -154,11 +136,12 @@ public class AgglomerateAll {
                                             .getMinimumDistance()));
                 }
             }
+            Set<Cluster<OWLEntity>> clusters = buildClusters(clusteringMatrix,
+                    distanceMatrix);
             System.out.println(String.format(
                     "Finished clustering after %d agglomerations no of clusters %d", i,
-                    clusteringMatrix.getObjects().size()));
-            save(clusteringMatrix, distanceMatrix, manager.getOntologies(), manager,
-                    outfile);
+                    clusters.size()));
+            Utils.save(clusters, manager, outfile);
         } else {
             System.out
                     .println("Usage java -cp ... org.coode.owl.distance.test.AgglomerateAll <saveResultFilePath> <ontology> ... <ontology>");
@@ -186,41 +169,5 @@ public class AgglomerateAll {
             toReturn.add(new SimpleCluster<OWLEntity>(collection, distanceMatrix));
         }
         return toReturn;
-    }
-
-    private static void save(final ClusteringProximityMatrix<OWLEntity> clusteringMatrix,
-            final ProximityMatrix<OWLEntity> distanceMatrix,
-            final Collection<? extends OWLOntology> ontologies,
-            final OWLOntologyManager manager, final File file) {
-        try {
-            OWLOntology ontology = manager.getOntologies().iterator().next();
-            OPPLFactory factory = new OPPLFactory(manager, ontology, null);
-            ConstraintSystem constraintSystem = factory.createConstraintSystem();
-            SortedSet<Cluster<OWLEntity>> sortedClusters = new TreeSet<Cluster<OWLEntity>>(
-                    ClusterStatisticsTableModel.SIZE_COMPARATOR);
-            sortedClusters.addAll(buildClusters(clusteringMatrix, distanceMatrix));
-            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                    sortedClusters, ontologies, constraintSystem);
-            Document xml = Utils.toXML(sortedClusters, manager.getOntologies(),
-                    new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation,
-                    new QuickFailRuntimeExceptionHandler());
-            Transformer t = TransformerFactory.newInstance().newTransformer();
-            StreamResult result = new StreamResult(file);
-            t.setOutputProperty(OutputKeys.INDENT, "yes");
-            t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
-            t.transform(new DOMSource(xml), result);
-            System.out.println(String.format("Results saved in %s",
-                    file.getAbsolutePath()));
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerFactoryConfigurationError e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        } catch (OPPLException e) {
-            e.printStackTrace();
-        }
     }
 }

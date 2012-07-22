@@ -67,11 +67,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.coode.distance.Distance;
+import org.coode.distance.SparseMatrix;
 import org.coode.distance.TableDistance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
-import org.coode.metrics.SparseMatrix;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
 import org.coode.oppl.exceptions.OPPLException;
@@ -468,7 +468,7 @@ public class ClusteringGUI extends JFrame {
                 manager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         manager.getOWLDataFactory()));
         final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-                manager.getOntologies(), manager, owlEntityReplacer);
+                manager.getOntologies(), owlEntityReplacer, manager);
         // final Distance<OWLEntity> distance = new EditDistance(
         // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
         // this.manager);

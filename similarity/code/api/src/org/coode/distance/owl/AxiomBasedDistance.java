@@ -57,6 +57,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     };
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
+    private final RelevancePolicyOWLObjectGeneralisation replacer;
 
     private void buildAxiomMap(final Collection<? extends OWLOntology> ontos) {
         Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
@@ -96,6 +97,10 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
         entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
         factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(),
                 null);
+        replacer = new RelevancePolicyOWLObjectGeneralisation(
+                org.coode.distance.entityrelevance.owl.Utils
+                        .toOWLObjectRelevancePolicy(getRelevancePolicy()),
+                getEntityProvider());
     }
 
     /** @see org.coode.distance.Distance#getDistance(java.lang.Object,
@@ -132,18 +137,13 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     /** @param owlEntity
      * @return */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
-        RelevancePolicyOWLObjectGeneralisation replacer = new RelevancePolicyOWLObjectGeneralisation(
-                org.coode.distance.entityrelevance.owl.Utils
-                        .toOWLObjectRelevancePolicy(getRelevancePolicy()),
-                getEntityProvider());
-        final ConstraintSystem cs = factory.createConstraintSystem();
-        replacer.setConstraintSystem(cs);
-        replacer.getVariableProvider().setConstraintSystem(cs);
+        for (OWLAxiom axiom : candidates.get(owlEntity)) {
         ((SingleOWLEntityReplacementVariableProvider) replacer.getVariableProvider())
                 .setOWLObject(owlEntity);
-        Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
-        types.remove(AxiomType.DECLARATION);
-        for (OWLAxiom axiom : candidates.get(owlEntity)) {
+            final ConstraintSystem createConstraintSystem = factory
+                    .createConstraintSystem();
+            replacer.setConstraintSystem(createConstraintSystem);
+            replacer.getVariableProvider().setConstraintSystem(createConstraintSystem);
             OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
             if (isRelevant(replaced)) {
                 cache.put(owlEntity, replaced);

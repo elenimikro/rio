@@ -63,7 +63,7 @@ public class TableDistanceTest extends TestCase {
                     ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                             ontologyManager.getOWLDataFactory()));
             final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                    ontologies, ontologyManager, owlEntityReplacer);
+                    ontologies, owlEntityReplacer, ontologyManager);
             SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                     entities, distance);
             Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
@@ -113,7 +113,7 @@ public class TableDistanceTest extends TestCase {
                     ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                             ontologyManager.getOWLDataFactory()));
             final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                    ontologies, ontologyManager, owlEntityReplacer);
+                    ontologies, owlEntityReplacer, ontologyManager);
             SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                     entities, distance);
             TableDistance<OWLEntity> tableDistance = new TableDistance<OWLEntity>(
@@ -154,7 +154,7 @@ public class TableDistanceTest extends TestCase {
                     ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                             ontologyManager.getOWLDataFactory()));
             final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                    ontologies, ontologyManager, owlEntityReplacer);
+                    ontologies, owlEntityReplacer, ontologyManager);
             SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                     entities, distance);
             TableDistance<OWLEntity> tableDistance = new TableDistance<OWLEntity>(
@@ -218,7 +218,7 @@ public class TableDistanceTest extends TestCase {
                     ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                             ontologyManager.getOWLDataFactory()));
             final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                    ontologies, ontologyManager, owlEntityReplacer);
+                    ontologies, owlEntityReplacer, ontologyManager);
             SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                     entities, distance);
             TableDistance<OWLEntity> tableDistance = new TableDistance<OWLEntity>(

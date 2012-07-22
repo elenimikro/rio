@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.coode.metrics.SparseMatrix;
+import org.coode.distance.SparseMatrix;
 import org.coode.pair.filter.PairFilter;
 
 public class DistanceThresholdBasedFilter<O> implements

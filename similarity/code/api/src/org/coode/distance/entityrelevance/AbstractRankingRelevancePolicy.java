@@ -90,22 +90,6 @@ public final class AbstractRankingRelevancePolicy<P> implements RelevancePolicy<
                 / Math.sqrt(this.getSampleSize());
     }
 
-    // private double computeZeta() {
-    // double toReturn = 0;
-    // if (zetaTable95.containsKey(this.getSampleSize())) {
-    // return toReturn;
-    // }
-    // double difference = Integer.MAX_VALUE;
-    // Iterator<Integer> iterator = zetaTable95.keySet().iterator();
-    // while (iterator.hasNext()) {
-    // Integer integer = iterator.next();
-    // if (Math.abs(this.getSampleSize() - integer) < difference) {
-    // toReturn = zetaTable95.get(integer);
-    // difference = Math.abs(this.getSampleSize() - integer);
-    // }
-    // }
-    // return toReturn;
-    // }
     public boolean isRelevant(final P object) {
         boolean isCached = this.cache.containsKey(object);
         return isCached ? this.cache.get(object) : this.computeIsRelevant(object);

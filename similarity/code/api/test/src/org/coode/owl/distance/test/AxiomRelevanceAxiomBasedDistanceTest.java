@@ -32,7 +32,7 @@ public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
                         new ReplacementByKindStrategy(o.getOWLOntologyManager()
                                 .getOWLDataFactory()));
                 return new AxiomRelevanceAxiomBasedDistance(o.getImportsClosure(),
-                        o.getOWLOntologyManager(), owlEntityReplacer);
+                        owlEntityReplacer, o.getOWLOntologyManager());
             }
 
             @Override

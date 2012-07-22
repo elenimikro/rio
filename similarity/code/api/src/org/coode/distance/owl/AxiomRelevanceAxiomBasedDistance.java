@@ -13,10 +13,13 @@
  */
 package org.coode.distance.owl;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
@@ -37,6 +40,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
@@ -48,21 +52,22 @@ public class AxiomRelevanceAxiomBasedDistance implements AbstractAxiomBasedDista
     private final AxiomMap axiomMap;
     private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
     private final OWLEntityProvider entityProvider;
+    private final OWLEntityReplacer replacer;
     private final OPPLFactory factory;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomRelevanceAxiomBasedDistance.this.buildOntologySignature();
-            AxiomRelevanceAxiomBasedDistance.this
-                    .buildAxiomEntityMap(AxiomRelevanceAxiomBasedDistance.this
-                            .getOntologies());
+            AxiomRelevanceAxiomBasedDistance.this.buildAxiomEntityMap(ontologies);
         }
     };
-    private final OWLEntityReplacer replacer;
+    private final static List<AxiomType<?>> types = new ArrayList<AxiomType<?>>(
+            AxiomType.AXIOM_TYPES);
+    static {
+        types.remove(AxiomType.DECLARATION);
+    }
 
     private void buildAxiomEntityMap(final Collection<? extends OWLOntology> ontos) {
-        Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
-        types.remove(AxiomType.DECLARATION);
         for (OWLOntology ontology : ontos) {
             for (AxiomType<?> t : types) {
                 for (OWLAxiom ax : ontology.getAxioms(t)) {
@@ -76,19 +81,24 @@ public class AxiomRelevanceAxiomBasedDistance implements AbstractAxiomBasedDista
 
     private void buildOntologySignature() {
         ontologySignature.clear();
-        for (OWLOntology ontology : getOntologies()) {
+        for (OWLOntology ontology : ontologies) {
             ontologySignature.addAll(ontology.getSignature());
         }
     }
 
+    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
+
     public AxiomRelevanceAxiomBasedDistance(
             final Collection<? extends OWLOntology> ontologies,
-            final OWLOntologyManager manager, final OWLEntityReplacer replacer) {
+            final OWLEntityReplacer replacer, final OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
         if (manager == null) {
             throw new NullPointerException("The ontolgy manager cannot be null");
+        }
+        if (replacer == null) {
+            throw new NullPointerException("The replacer cannot be null");
         }
         this.replacer = replacer;
         axiomMap = new AxiomMap(ontologies, manager, replacer);
@@ -129,29 +139,38 @@ public class AxiomRelevanceAxiomBasedDistance implements AbstractAxiomBasedDista
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-                : new HashSet<OWLAxiom>(cached);
+                : new CollectionFactory.ConditionalCopySet<OWLAxiom>(cached, false);
     }
 
     /** @param owlEntity
      * @return */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
-        Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
-        types.remove(AxiomType.DECLARATION);
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
-            AxiomRelevancePolicy policy = new AxiomRelevancePolicy(
-                    (OWLAxiom) axiom.accept(replacer), axiomMap);
-            RelevancePolicyOWLObjectGeneralisation genreplacer = new RelevancePolicyOWLObjectGeneralisation(
-                    Utils.toOWLObjectRelevancePolicy(policy), getEntityProvider());
-            ConstraintSystem cs = factory.createConstraintSystem();
-            ((SingleOWLEntityReplacementVariableProvider) genreplacer
+            // RelevancePolicyOWLObjectGeneralisation generalReplacer = new
+            // RelevancePolicyOWLObjectGeneralisation(
+            // Utils.toOWLObjectRelevancePolicy(new AxiomRelevancePolicy(
+            // (OWLAxiom) axiom.accept(replacer), axiomMap)),
+            // getEntityProvider(), factory.createConstraintSystem());
+            RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
+            if (generalReplacer == null) {
+                generalReplacer = new RelevancePolicyOWLObjectGeneralisation(
+                        Utils.toOWLObjectRelevancePolicy(new AxiomRelevancePolicy(
+                                (OWLAxiom) axiom.accept(replacer), axiomMap)),
+                        getEntityProvider());
+                replacers.put(axiom, generalReplacer);
+            }
+            ((SingleOWLEntityReplacementVariableProvider) generalReplacer
                     .getVariableProvider()).setOWLObject(owlEntity);
-            genreplacer.getVariableProvider().setConstraintSystem(cs);
-            OWLAxiom replaced = (OWLAxiom) axiom.accept(genreplacer);
+            final ConstraintSystem cs = factory.createConstraintSystem();
+            generalReplacer.getVariableProvider().setConstraintSystem(cs);
+            generalReplacer.setConstraintSystem(cs);
+            OWLAxiom replaced = (OWLAxiom) axiom.accept(generalReplacer);
             if (isRelevant(replaced)) {
                 cache.put(owlEntity, replaced);
             }
         }
-        return new HashSet<OWLAxiom>(cache.get(owlEntity));
+        return new CollectionFactory.ConditionalCopySet<OWLAxiom>(cache.get(owlEntity),
+                false);
     }
 
     protected boolean isRelevant(final OWLAxiom replaced) {
@@ -166,11 +185,6 @@ public class AxiomRelevanceAxiomBasedDistance implements AbstractAxiomBasedDista
             found = replaced.accept(AxiomGeneralityDetector.getInstance());
         }
         return found;
-    }
-
-    /** @return the ontologies */
-    public Set<OWLOntology> getOntologies() {
-        return new HashSet<OWLOntology>(ontologies);
     }
 
     public void dispose() {

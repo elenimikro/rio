@@ -1,4 +1,4 @@
-package org.coode.metrics;
+package org.coode.distance;
 
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -7,34 +7,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.math.util.OpenIntToDoubleHashMap;
-
-public class SparseMatrixListImpl implements SparseMatrix {
-    private final OpenIntToDoubleHashMap m;
-    // private static class Record {
-    // int y;
-    // double d;
-    // }
-    // private final List<List<Record>> matrix;
-    // private final List<Map<Integer, Double>> matrix;
-    private final int size;
+public class SparseMatrixSmallSize implements SparseMatrix {
+    double[][] matrix;
+    final int size;
     private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
 
-    public SparseMatrixListImpl(final int size) {
-        m = new OpenIntToDoubleHashMap(1D);
+    public SparseMatrixSmallSize(final int size) {
         this.size = size;
-    }
-
-    public SparseMatrixListImpl(final SparseMatrixListImpl m) {
-        this(m.length());
+        matrix = new double[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                final double d = m.get(i, j);
-                if (d < 1D) {
-                    set(i, j, d);
-                }
+                matrix[i][j] = i == j ? 0D : 1D;
             }
         }
+    }
+
+    public SparseMatrixSmallSize(final SparseMatrixSmallSize m) {
+        this(m.length());
+        System.arraycopy(m.matrix, 0, matrix, 0, m.matrix.length);
     }
 
     public int length() {
@@ -43,12 +33,9 @@ public class SparseMatrixListImpl implements SparseMatrix {
 
     public double get(final int _i, final int _j) {
         if (_i < size && _j < size) {
-            if (_i == _j) {
-                return 0D;
-            }
-            int i = _i < _j ? _i : _j;
-            int j = _i < _j ? _j : _i;
-            return m.get(i * size + j);
+            // int i = _i < _j ? _i : _j;
+            // int j = _i < _j ? _j : _i;
+            return matrix[_i][_j];
         }
         throw new IllegalArgumentException("Table of size " + size
                 + " does not contain (" + _i + "," + _j + ")");
@@ -71,16 +58,9 @@ public class SparseMatrixListImpl implements SparseMatrix {
         // System.out.println("SparseMatrixSmallSize.set() " + _i + "\t" + _j +
         // "\t" + d);
         if (_i < size && _j < size) {
-            if (_i == _j) {
-                return;
-            }
-            int i = _i < _j ? _i : _j;
-            int j = _i < _j ? _j : _i;
-            if (d == 1D) {
-                m.remove(i * size + j);
-            } else {
-                m.put(i * size + j, d);
-            }
+            // int i = _i < _j ? _i : _j;
+            // int j = _i < _j ? _j : _i;
+            matrix[_i][_j] = d;
         } else {
             throw new IllegalArgumentException("Table of size " + size
                     + " does not contain (" + _i + "," + _j + ")");

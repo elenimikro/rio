@@ -15,8 +15,6 @@ package org.coode.distance;
 
 import java.util.Collection;
 
-import org.coode.metrics.SparseMatrix;
-import org.coode.metrics.SparseMatrixFactory;
 
 /** @author Luigi Iannone */
 public final class TableDistance<O> implements Distance<O> {

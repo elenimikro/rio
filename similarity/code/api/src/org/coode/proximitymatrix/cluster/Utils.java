@@ -10,8 +10,10 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,14 +34,25 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.oppl.ConstraintSystem;
+import org.coode.oppl.OPPLFactory;
 import org.coode.oppl.PartialOWLObjectInstantiator;
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.Assignment;
 import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.oppl.bindingtree.BindingNode;
 import org.coode.oppl.exceptions.OPPLException;
+import org.coode.oppl.exceptions.QuickFailRuntimeExceptionHandler;
 import org.coode.oppl.exceptions.RuntimeExceptionHandler;
 import org.coode.oppl.function.SimpleValueComputationParameters;
 import org.coode.oppl.rendering.ManchesterSyntaxRenderer;
@@ -54,8 +67,12 @@ import org.coode.owl.wrappers.OWLAxiomProvider;
 import org.coode.owl.wrappers.OWLOntologyManagerBasedOWLAxiomProvider;
 import org.coode.pair.Pair;
 import org.coode.pair.SimplePair;
+import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.History;
 import org.coode.proximitymatrix.HistoryItem;
+import org.coode.proximitymatrix.ProximityMatrix;
+import org.coode.proximitymatrix.cluster.commandline.Utility;
+import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
 import org.coode.utils.owl.LeastCommonSubsumer;
 import org.semanticweb.owlapi.io.OWLObjectRenderer;
 import org.semanticweb.owlapi.io.ToStringRenderer;
@@ -767,5 +784,134 @@ public class Utils {
             }
         }
         return toReturn;
+    }
+
+    public static String render(
+            final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
+        Formatter out = new Formatter();
+        Iterator<? extends DistanceTableObject<OWLEntity>> iterator = cluster.iterator();
+        while (iterator.hasNext()) {
+            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
+            OWLEntity owlEntity = iterator.next().getObject();
+            out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
+        }
+        return out.toString();
+    }
+
+    public static String renderManchester(
+            final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
+        Formatter out = new Formatter();
+        Iterator<? extends DistanceTableObject<OWLEntity>> iterator = cluster.iterator();
+        while (iterator.hasNext()) {
+            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
+            OWLEntity owlEntity = iterator.next().getObject();
+            out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
+        }
+        return out.toString();
+    }
+
+    public static <P> Set<Cluster<P>> buildClusters(
+            final ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
+            final ProximityMatrix<P> distanceMatrix,
+            final MultiMap<P, P> equivalenceClasses) {
+        Collection<Collection<? extends DistanceTableObject<P>>> objects = clusteringMatrix
+                .getObjects();
+        Set<Cluster<P>> toReturn = new HashSet<Cluster<P>>(objects.size());
+        for (Collection<? extends DistanceTableObject<P>> collection : objects) {
+            toReturn.add(new SimpleCluster<P>(Utility.unwrapObjects(collection,
+                    equivalenceClasses), distanceMatrix));
+        }
+        for (P key : equivalenceClasses.keySet()) {
+            Collection<P> set = equivalenceClasses.get(key);
+            if (set.size() > 1) {
+                boolean found = false;
+                Iterator<Cluster<P>> iterator = toReturn.iterator();
+                while (!found && iterator.hasNext()) {
+                    Cluster<P> cluster = iterator.next();
+                    found = cluster.contains(key);
+                }
+                if (!found) {
+                    toReturn.add(new SimpleCluster<P>(set, distanceMatrix));
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    /** It saves the clusters in an xml. In this version the history is not
+     * saved.
+     * 
+     * @param clusters
+     * @param manager
+     * @param file */
+    public static <P extends OWLEntity> void save(
+            final Collection<? extends Cluster<P>> _clusters,
+            final OWLOntologyManager manager, final File file) {
+        try {
+            List<Cluster<P>> sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
+            for (Cluster<P> c : _clusters) {
+                if (c.size() > 1) {
+                    sortedClusters.add(c);
+                }
+            }
+            Collections.sort(sortedClusters, ClusterStatisticsTableModel.SIZE_COMPARATOR);
+            OWLOntology ontology = manager.getOntologies().iterator().next();
+            ConstraintSystem constraintSystem = new OPPLFactory(manager, ontology, null)
+                    .createConstraintSystem();
+            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
+                    sortedClusters, manager.getOntologies(), constraintSystem);
+            printExtraStats(file, sortedClusters);
+            Document xml = Utils.toXML(sortedClusters, manager.getOntologies(),
+                    new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation,
+                    new QuickFailRuntimeExceptionHandler());
+            Transformer t = TransformerFactory.newInstance().newTransformer();
+            StreamResult result = new StreamResult(file);
+            t.setOutputProperty(OutputKeys.INDENT, "yes");
+            t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
+            t.transform(new DOMSource(xml), result);
+            System.out.println(String.format("Results saved in %s",
+                    file.getAbsolutePath()));
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerFactoryConfigurationError e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (OPPLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <P> void printExtraStats(final File file,
+            final Collection<Cluster<P>> sortedClusters) {
+        try {
+            PrintStream out = new PrintStream(file.getName() + ".csv");
+            int index = 0;
+            out.println("cluster index, cluster size, "
+                    + "average internal distance, average external distance, "
+                    + "max internal distance, min internal distance, "
+                    + "max external distance, min external distance, homogeneity");
+            for (Cluster<P> cluster : sortedClusters) {
+                ClusterStatistics<P> stats = ClusterStatistics.buildStatistics(cluster);
+                out.print("cluster " + index);
+                index++;
+                out.println("," + cluster.size() + ","
+                        + stats.getAverageInternalDistance() + ","
+                        + stats.getAverageExternalDistance() + ","
+                        + stats.getMaxInternalDistance() + ","
+                        + stats.getMinInternalDistance() + ","
+                        + stats.getMaxExternalDistance() + ","
+                        + stats.getMinExternalDistance() + ","
+                        + (1 - stats.getAverageInternalDistance()));
+            }
+            out.close();
+        } catch (IOException e) {
+            System.out
+                    .println("AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll.save() Cannot save extra metrics for "
+                            + file.getName());
+            e.printStackTrace(System.out);
+        }
     }
 }

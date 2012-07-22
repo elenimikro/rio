@@ -12,7 +12,7 @@ package org.coode.proximitymatrix;
 
 import java.util.Collection;
 
-import org.coode.metrics.SparseMatrix;
+import org.coode.distance.SparseMatrix;
 import org.coode.pair.Pair;
 import org.coode.pair.filter.PairFilter;
 

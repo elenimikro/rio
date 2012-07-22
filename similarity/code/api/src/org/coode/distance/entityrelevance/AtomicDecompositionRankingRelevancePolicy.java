@@ -11,7 +11,6 @@
 package org.coode.distance.entityrelevance;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public final class AtomicDecompositionRankingRelevancePolicy<P> implements
     // private final boolean anyRelenant;
     private final static Map<Integer, Double> zetaTable95 = new HashMap<Integer, Double>();
     private final double zeta;
-    private final double sampleSize;
+    private final int sampleSize;
     private final double upperLimit;
     private final double lowerLimit;
     /*
@@ -58,7 +57,7 @@ public final class AtomicDecompositionRankingRelevancePolicy<P> implements
         this.standardDeviation = this.computeStandardDeviation();
         this.mean = this.computeMean();
         this.sampleSize = this.computeSampleSize();
-        this.zeta = this.computeZeta();
+        this.zeta = AtomicDecompositionRankingRelevancePolicy.getZeta(sampleSize);
         this.upperLimit = this.computeUpperLimit();
         this.lowerLimit = this.computeLowerLimit();
         // this.anyRelenant = ranking.getTopValue() < this.getLowerLimit();
@@ -74,21 +73,32 @@ public final class AtomicDecompositionRankingRelevancePolicy<P> implements
                 / Math.sqrt(this.getSampleSize());
     }
 
-    private double computeZeta() {
-        Double d = zetaTable95.get(this.getSampleSize());
-        double toReturn = 0;
-        double difference = Integer.MAX_VALUE;
-        if (d == null) {
-            Iterator<Integer> iterator = zetaTable95.keySet().iterator();
-            while (iterator.hasNext()) {
-                Integer integer = iterator.next();
-                if (Math.abs(this.getSampleSize() - integer) < difference) {
-                    toReturn = zetaTable95.get(integer);
-                    difference = Math.abs(this.getSampleSize() - integer);
-                }
-            }
+    public static double getZeta(final int sample) {
+        if (sample <= 2) {
+            return 4.303d;
         }
-        return toReturn;
+        if (sample == 3) {
+            return 3.182d;
+        }
+        if (sample == 4) {
+            return 2.776d;
+        }
+        if (sample <= 6) {
+            return 2.571d;
+        }
+        if (sample <= 9) {
+            return 2.306d;
+        }
+        if (sample <= 15) {
+            return 2.228d;
+        }
+        if (sample <= 35) {
+            return 2.086d;
+        }
+        if (sample <= 75) {
+            return 2.009d;
+        }
+        return 1.984d;
     }
 
     public boolean isRelevant(final P object) {
@@ -124,7 +134,7 @@ public final class AtomicDecompositionRankingRelevancePolicy<P> implements
         return sd.getResult();
     }
 
-    private final double computeSampleSize() {
+    private final int computeSampleSize() {
         int size = 0;
         for (RankingSlot<P, Double> slot : this.getRanking().getUnorderedRanking()) {
             size += slot.getMembersSize();
