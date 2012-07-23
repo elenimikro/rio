@@ -16,6 +16,7 @@ package org.coode.owl.distance.test;
 import java.io.File;
 import java.util.Set;
 
+import org.coode.basetest.TestHelper;
 import org.coode.distance.entityrelevance.AbstractRankingRelevancePolicy;
 import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
@@ -57,7 +58,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     }
 
     public void testPizza() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy());
         final Set<OWLEntity> signature = o.getSignature(true);
@@ -65,7 +66,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     }
 
     public void testMargheritaSundriedTomatoTopping() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
                 DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy());
         OWLClass[] classes = getClasses(pizza_ns + "Margherita", pizza_ns
@@ -74,7 +75,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     }
 
     public void testMargheritaSiciliana() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
                 DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy());
         OWLClass[] classes = getClasses(pizza_ns + "Margherita", pizza_ns + "Siciliana");
@@ -82,7 +83,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     }
 
     public void testNapoletanaParmaHamTopping() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
                 DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy());
         OWLClass[] classes = getClasses(pizza_ns + "Napoletana", pizza_ns
@@ -91,7 +92,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     }
 
     public void testUnclosedPizzaIceCream() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder()
                 .getDistance(
                         o,
@@ -103,7 +104,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     }
 
     public void testMargheritaSicilianaPopularityRelevance() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         OWLEntityPopularityRanking ranking = OWLEntityPopularityRanking.buildRanking(o
                 .getImportsClosure());
         RelevancePolicy<OWLEntity> policy = AbstractRankingRelevancePolicy
@@ -123,7 +124,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     }
 
     public void testSpicinessSauceToppingPopularityRelevance() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         OWLEntityPopularityRanking ranking = OWLEntityPopularityRanking.buildRanking(o
                 .getImportsClosure());
         RelevancePolicy<OWLEntity> policy = AbstractRankingRelevancePolicy

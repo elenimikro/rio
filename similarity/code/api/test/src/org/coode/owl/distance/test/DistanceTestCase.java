@@ -32,118 +32,117 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public abstract class DistanceTestCase extends TestCase {
-	protected static final String pizza_ns = "http://www.co-ode.org/ontologies/pizza/pizza.owl#";
-	protected static final String pizza_iri = "http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl";
+    protected static final String pizza_ns = "http://www.co-ode.org/ontologies/pizza/pizza.owl#";
 
-	protected abstract DistanceBuilder getDistanceBuilder();
-	
-	private OWLOntologyManager ontologyManager;
+    protected abstract DistanceBuilder getDistanceBuilder();
 
-	protected OWLOntologyManager getOntologyManager() {
-		return ontologyManager;
-	}
+    private OWLOntologyManager ontologyManager;
 
-	@Override
-	protected void setUp() throws Exception {
-		ToStringRenderer.getInstance().setRenderer(new ManchesterSyntaxRenderer());
-	}
+    protected OWLOntologyManager getOntologyManager() {
+        return ontologyManager;
+    }
 
-	protected void properTest(AbstractAxiomBasedDistance distance, OWLOntology o,
-			OWLEntity... entities) {
-		for (OWLEntity c : entities) {
-			System.out.println(c.toString());
-			System.out.println(distance.getAxioms(c));
-		}
-		for (int i = 0; i < entities.length; i++) {
-			for (int j = 0; j < entities.length; j++) {
-				final double d = distance.getDistance(entities[i], entities[j]);
-				if (i == j) {
-					assertTrue(Double.compare(d, 0D) == 0);
-					assertTrue(Double.compare(
-							distance.getDistance(entities[j], entities[i]), 0D) == 0);
-				} else {
-					Set<OWLAxiom> axioms_i = distance.getAxioms(entities[i]);
-					Set<OWLAxiom> axioms_j = distance.getAxioms(entities[j]);
-					axioms_i.retainAll(axioms_j);
-					if (axioms_i.isEmpty()) {
-						assertTrue(entities[i] + "\t" + entities[j]
-								+ " expected: 1; actual: " + d,
-								Double.compare(d, 1D) == 0);
-						assertTrue(Double.compare(
-								distance.getDistance(entities[j], entities[i]), 1D) == 0);
-					} else {
-						double inverse_d = distance.getDistance(entities[j], entities[i]);
-						System.out.println("Intersection between " + entities[i]
-								+ " and " + entities[j]);
-						for (OWLAxiom ax : axioms_i) {
-							System.out.println(ax);
-						}
-						assertTrue("Expected positive was " + d,
-								Double.compare(0D, d) <= 0);
-						assertTrue("Expected <1 was " + d, Double.compare(d, 1D) < 0);
-						assertTrue("Expected equal was " + d + " " + inverse_d,
-								Double.compare(d, inverse_d) == 0);
-					}
-				}
-			}
-		}
-	}
+    @Override
+    protected void setUp() throws Exception {
+        ToStringRenderer.getInstance().setRenderer(new ManchesterSyntaxRenderer());
+    }
 
-	protected OWLOntology getOntology(File f) {
-		 this.ontologyManager = OWLManager.createOWLOntologyManager();
-		try {
-			return ontologyManager.loadOntologyFromOntologyDocument(f);
-		} catch (OWLOntologyCreationException e) {
-			e.printStackTrace(System.out);
-			fail("Cannot load ontology: " + f.getName());
-			return null;
-		}
-	}
+    protected void properTest(final AbstractAxiomBasedDistance distance,
+            final OWLOntology o, final OWLEntity... entities) {
+        for (OWLEntity c : entities) {
+            System.out.println(c.toString());
+            System.out.println(distance.getAxioms(c));
+        }
+        for (int i = 0; i < entities.length; i++) {
+            for (int j = 0; j < entities.length; j++) {
+                final double d = distance.getDistance(entities[i], entities[j]);
+                if (i == j) {
+                    assertTrue(Double.compare(d, 0D) == 0);
+                    assertTrue(Double.compare(
+                            distance.getDistance(entities[j], entities[i]), 0D) == 0);
+                } else {
+                    Set<OWLAxiom> axioms_i = distance.getAxioms(entities[i]);
+                    Set<OWLAxiom> axioms_j = distance.getAxioms(entities[j]);
+                    axioms_i.retainAll(axioms_j);
+                    if (axioms_i.isEmpty()) {
+                        assertTrue(entities[i] + "\t" + entities[j]
+                                + " expected: 1; actual: " + d,
+                                Double.compare(d, 1D) == 0);
+                        assertTrue(Double.compare(
+                                distance.getDistance(entities[j], entities[i]), 1D) == 0);
+                    } else {
+                        double inverse_d = distance.getDistance(entities[j], entities[i]);
+                        System.out.println("Intersection between " + entities[i]
+                                + " and " + entities[j]);
+                        for (OWLAxiom ax : axioms_i) {
+                            System.out.println(ax);
+                        }
+                        assertTrue("Expected positive was " + d,
+                                Double.compare(0D, d) <= 0);
+                        assertTrue("Expected <1 was " + d, Double.compare(d, 1D) < 0);
+                        assertTrue("Expected equal was " + d + " " + inverse_d,
+                                Double.compare(d, inverse_d) == 0);
+                    }
+                }
+            }
+        }
+    }
 
-	protected OWLOntology getOntology(String iri) {
-		this.ontologyManager = OWLManager.createOWLOntologyManager();
-		try {
-			return ontologyManager.loadOntology(IRI.create(iri));
-		} catch (OWLOntologyCreationException e) {
-			e.printStackTrace(System.out);
-			fail("Cannot load ontology: " + iri);
-			return null;
-		}
-	}
+    protected OWLOntology getOntology(final File f) {
+        ontologyManager = OWLManager.createOWLOntologyManager();
+        try {
+            return ontologyManager.loadOntologyFromOntologyDocument(f);
+        } catch (OWLOntologyCreationException e) {
+            e.printStackTrace(System.out);
+            fail("Cannot load ontology: " + f.getName());
+            return null;
+        }
+    }
 
-	protected OWLClass[] getClasses(String... strings) {
-		final OWLDataFactory f = OWLManager.getOWLDataFactory();
-		OWLClass[] toReturn = new OWLClass[strings.length];
-		for (int i = 0; i < strings.length; i++) {
-			toReturn[i] = f.getOWLClass(IRI.create(strings[i]));
-		}
-		return toReturn;
-	}
+    protected OWLOntology getOntology(final String iri) {
+        ontologyManager = OWLManager.createOWLOntologyManager();
+        try {
+            return ontologyManager.loadOntology(IRI.create(iri));
+        } catch (OWLOntologyCreationException e) {
+            e.printStackTrace(System.out);
+            fail("Cannot load ontology: " + iri);
+            return null;
+        }
+    }
 
-	protected OWLObjectProperty[] getObjectProperties(String... strings) {
-		final OWLDataFactory f = OWLManager.getOWLDataFactory();
-		OWLObjectProperty[] toReturn = new OWLObjectProperty[strings.length];
-		for (int i = 0; i < strings.length; i++) {
-			toReturn[i] = f.getOWLObjectProperty(IRI.create(strings[i]));
-		}
-		return toReturn;
-	}
+    protected OWLClass[] getClasses(final String... strings) {
+        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+        OWLClass[] toReturn = new OWLClass[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            toReturn[i] = f.getOWLClass(IRI.create(strings[i]));
+        }
+        return toReturn;
+    }
 
-	protected OWLDataProperty[] getDataProperties(String... strings) {
-		final OWLDataFactory f = OWLManager.getOWLDataFactory();
-		OWLDataProperty[] toReturn = new OWLDataProperty[strings.length];
-		for (int i = 0; i < strings.length; i++) {
-			toReturn[i] = f.getOWLDataProperty(IRI.create(strings[i]));
-		}
-		return toReturn;
-	}
+    protected OWLObjectProperty[] getObjectProperties(final String... strings) {
+        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+        OWLObjectProperty[] toReturn = new OWLObjectProperty[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            toReturn[i] = f.getOWLObjectProperty(IRI.create(strings[i]));
+        }
+        return toReturn;
+    }
 
-	protected OWLNamedIndividual[] getNamedIndividuals(String... strings) {
-		final OWLDataFactory f = OWLManager.getOWLDataFactory();
-		OWLNamedIndividual[] toReturn = new OWLNamedIndividual[strings.length];
-		for (int i = 0; i < strings.length; i++) {
-			toReturn[i] = f.getOWLNamedIndividual(IRI.create(strings[i]));
-		}
-		return toReturn;
-	}
+    protected OWLDataProperty[] getDataProperties(final String... strings) {
+        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+        OWLDataProperty[] toReturn = new OWLDataProperty[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            toReturn[i] = f.getOWLDataProperty(IRI.create(strings[i]));
+        }
+        return toReturn;
+    }
+
+    protected OWLNamedIndividual[] getNamedIndividuals(final String... strings) {
+        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+        OWLNamedIndividual[] toReturn = new OWLNamedIndividual[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            toReturn[i] = f.getOWLNamedIndividual(IRI.create(strings[i]));
+        }
+        return toReturn;
+    }
 }

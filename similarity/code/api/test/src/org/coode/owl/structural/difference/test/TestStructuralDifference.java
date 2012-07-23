@@ -15,6 +15,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.coode.basetest.TestHelper;
 import org.coode.owl.structural.difference.IncomparableObjectsStructuralDifferenceReport;
 import org.coode.owl.structural.difference.NoDifferenceStructuralDifferenceReport;
 import org.coode.owl.structural.difference.SomeDifferenceStructuralDifferenceReport;
@@ -104,9 +105,8 @@ public class TestStructuralDifference extends TestCase {
     }
 
     public void testGetTopDifference() throws OWLOntologyCreationException {
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-        OWLOntology ontology = ontologyManager.loadOntology(IRI
-                .create("http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl"));
+        OWLOntology ontology = TestHelper.getPizza();
+        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         StructuralDifference difference = new StructuralDifference();
         for (OWLAxiom axiom : ontology.getAxioms()) {
             StructuralDifferenceReport topDifference = difference.getTopDifference(axiom,
@@ -118,9 +118,8 @@ public class TestStructuralDifference extends TestCase {
     }
 
     public void testAreComparable() throws OWLOntologyCreationException {
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
-        OWLOntology ontology = ontologyManager.loadOntology(IRI
-                .create("http://www.co-ode.org/ontologies/pizza/2007/02/12/pizza.owl"));
+        OWLOntology ontology = TestHelper.getPizza();
+        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         StructuralDifference difference = new StructuralDifference();
         for (OWLAxiom axiom : ontology.getAxioms()) {
             boolean areComparable = difference.areComparable(axiom, axiom);

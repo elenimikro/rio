@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
-import java.io.File;
-
+import org.coode.basetest.TestHelper;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
@@ -45,21 +44,21 @@ public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
     }
 
     public void testGetAxiomsMozzarellaTopping() {
-        OWLOntology o = getOntology(new File("code/api/test/resources/pizza.owl"));
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "MozzarellaTopping");
         properTest(distance, o, classes);
     }
 
     public void testGetAxiomsPepperTopping() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "PepperTopping");
         properTest(distance, o, classes);
     }
 
     public void testDistanceGarlicToppingPizza() {
-        OWLOntology o = getOntology(pizza_iri);
+        OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "GarlicTopping", pizza_ns + "Pizza");
         properTest(distance, o, classes);

@@ -74,6 +74,7 @@ import org.coode.proximitymatrix.ProximityMatrix;
 import org.coode.proximitymatrix.cluster.commandline.Utility;
 import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
 import org.coode.utils.owl.LeastCommonSubsumer;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLObjectRenderer;
 import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -82,6 +83,7 @@ import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -252,6 +254,7 @@ public class Utils {
                     final Collection<? extends OWLOntology> ontologies,
                     final ConstraintSystem constraintSystem) throws OPPLException {
         int i = 0;
+        OWLDataFactory factory = OWLManager.getOWLDataFactory();
         Set<BindingNode> bindings = new HashSet<BindingNode>(set.size());
         // I need to preload all the constants into a variable before I start
         Set<OWLLiteral> constants = new HashSet<OWLLiteral>();
@@ -280,8 +283,7 @@ public class Utils {
         for (Collection<? extends O> cluster : set) {
             if (!cluster.isEmpty()) {
                 LeastCommonSubsumer<O, ?> lcs = LeastCommonSubsumer.build(cluster,
-                        axiomProvider, constraintSystem.getOntologyManager()
-                                .getOWLDataFactory());
+                        axiomProvider, factory);
                 String name;
                 ManchesterSyntaxRenderer renderer = constraintSystem.getOPPLFactory()
                         .getManchesterSyntaxRenderer(constraintSystem);
