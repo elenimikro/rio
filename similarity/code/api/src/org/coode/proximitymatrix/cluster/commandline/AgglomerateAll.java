@@ -11,7 +11,6 @@
 package org.coode.proximitymatrix.cluster.commandline;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.TableDistance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
@@ -45,36 +45,23 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 public class AgglomerateAll extends AgglomeratorBase {
-    /** @param args */
-    public static void main(final String[] args) {
+    /** @param args
+     * @throws OWLOntologyCreationException */
+    public static void main(final String[] args) throws OWLOntologyCreationException {
         AgglomerateAll agglomerator = new AgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
-    public void run(final File outfile, final List<IRI> iris) {
+    public void run(final File outfile, final List<IRI> iris)
+            throws OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        for (IRI iri : iris) {
-            try {
-                URI uri = iri.toURI();
-                if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-                    File file = new File(uri);
-                    File parentFile = file.getParentFile();
-                    if (parentFile.isDirectory()) {
-                        manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-                    }
-                }
-                manager.loadOntology(iri);
-            } catch (OWLOntologyCreationException e) {
-                e.printStackTrace();
-            }
-        }
+        TestHelper.loadIRIMappers(iris, manager);
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
             public int compare(final OWLEntity o1, final OWLEntity o2) {

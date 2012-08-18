@@ -14,8 +14,6 @@
 package org.coode.proximitymatrix.ui;
 
 import java.awt.BorderLayout;
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
+import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
 import org.coode.distance.owl.AxiomBasedDistance;
@@ -43,7 +42,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author Luigi Iannone */
@@ -60,21 +58,12 @@ public class ProximityMatrixGUI extends JFrame {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
         }
-        for (IRI iri : iris) {
-            try {
-                URI uri = iri.toURI();
-                if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-                    File file = new File(uri);
-                    File parentFile = file.getParentFile();
-                    if (parentFile.isDirectory()) {
-                        manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-                    }
-                }
-                manager.loadOntology(iri);
-            } catch (OWLOntologyCreationException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(),
-                        "Error in loading ontology", JOptionPane.ERROR_MESSAGE);
-            }
+        try {
+            Collection<IRI> collection = new ArrayList<IRI>(iris);
+            TestHelper.loadIRIMappers(collection, manager);
+        } catch (OWLOntologyCreationException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(),
+                    "Error in loading ontology", JOptionPane.ERROR_MESSAGE);
         }
         reset();
         initGUI();

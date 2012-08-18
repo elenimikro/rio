@@ -1,7 +1,5 @@
 package org.coode.popularitydistance.profiling;
 
-import java.io.File;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
@@ -28,7 +27,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
@@ -48,14 +46,7 @@ public class PopularityDistanceSlice {
         String ontology_iri = obi_iri;
         IRI iri = IRI.create(ontology_iri);
         try {
-            URI uri = iri.toURI();
-            if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-                File file = new File(uri);
-                File parentFile = file.getParentFile();
-                if (parentFile.isDirectory()) {
-                    manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-                }
-            }
+            TestHelper.loadIRIMappers(Collections.singleton(iri), manager);
             OWLOntology onto = manager.loadOntology(iri);
             System.out.println("PopularityDistanceSlice.main() Ontology "
                     + onto.getOntologyID() + " was loaded");

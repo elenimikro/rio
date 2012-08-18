@@ -18,11 +18,12 @@ import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll extends
         AgglomeratorBase {
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws OWLOntologyCreationException {
         AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll runner = new AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll();
         runner.checkArgumentsAndRun(args);
     }

@@ -11,7 +11,6 @@
 package org.coode.proximitymatrix.cluster.commandline;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.distance.wrapping.DistanceThresholdBasedFilter;
@@ -40,12 +40,12 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 public abstract class AgglomeratorBase implements Agglomerator {
-    public void checkArgumentsAndRun(final String[] args) {
+    public void checkArgumentsAndRun(final String[] args)
+            throws OWLOntologyCreationException {
         if (args.length >= 2) {
             List<IRI> iris = new ArrayList<IRI>(args.length);
             File outfile = new File(args[0]);
@@ -61,24 +61,12 @@ public abstract class AgglomeratorBase implements Agglomerator {
         }
     }
 
-    /** @param args */
-    public void run(final File outfile, final List<IRI> iris) {
+    /** @param args
+     * @throws OWLOntologyCreationException */
+    public void run(final File outfile, final List<IRI> iris)
+            throws OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        for (IRI iri : iris) {
-            try {
-                URI uri = iri.toURI();
-                if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-                    File file = new File(uri);
-                    File parentFile = file.getParentFile();
-                    if (parentFile.isDirectory()) {
-                        manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-                    }
-                }
-                manager.loadOntology(iri);
-            } catch (OWLOntologyCreationException e) {
-                e.printStackTrace();
-            }
-        }
+        TestHelper.loadIRIMappers(iris, manager);
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         // Set the policy and the distance
         final Distance<OWLEntity> distance = getDistance(manager);

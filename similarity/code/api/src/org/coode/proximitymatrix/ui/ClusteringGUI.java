@@ -24,7 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -66,6 +65,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.SparseMatrix;
 import org.coode.distance.TableDistance;
@@ -96,7 +96,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.w3c.dom.Document;
 
@@ -423,22 +422,13 @@ public class ClusteringGUI extends JFrame {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
         }
-        for (IRI iri : iris) {
-            try {
-                URI uri = iri.toURI();
-                if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-                    File file = new File(uri);
-                    File parentFile = file.getParentFile();
-                    if (parentFile.isDirectory()) {
-                        manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-                    }
-                }
-                manager.loadOntology(iri);
-            } catch (OWLOntologyCreationException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(),
-                        "Error in loading ontology", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
-            }
+        try {
+            Collection<IRI> collection = new ArrayList<IRI>(iris);
+            TestHelper.loadIRIMappers(collection, manager);
+        } catch (OWLOntologyCreationException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(),
+                    "Error in loading ontology", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
         System.out.println(String.format("Loaded %d ontologies ", manager.getOntologies()
                 .size()));

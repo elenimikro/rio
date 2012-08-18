@@ -12,6 +12,7 @@ package org.coode.owl.distance.test;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashSet;
@@ -27,11 +28,11 @@ import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
@@ -138,10 +139,8 @@ public class EquivalenceClassTest extends TestCase {
     public void testGetEquivalenceClassesTravel() throws Exception {
         OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
         File file = new File("code/test/resources/c16.rdf.owl");
-        File parentFile = file.getParentFile();
-        if (parentFile.isDirectory()) {
-            ontologyManager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-        }
+        TestHelper.loadIRIMappers(Collections.singleton(IRI.create(file)),
+                ontologyManager);
         ontologyManager.loadOntologyFromOntologyDocument(file);
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();

@@ -20,6 +20,7 @@ import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** Class for computing syntactic similarities, using the AxiomBased distance
@@ -27,8 +28,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * 
  * @author elenimikroyannidi */
 public class WrappingEquivalenceClassesAgglomerateAll extends AgglomeratorBase {
-    /** @param args */
-    public static void main(final String[] args) {
+    /** @param args
+     * @throws OWLOntologyCreationException */
+    public static void main(final String[] args) throws OWLOntologyCreationException {
         WrappingEquivalenceClassesAgglomerateAll agglomerator = new WrappingEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }

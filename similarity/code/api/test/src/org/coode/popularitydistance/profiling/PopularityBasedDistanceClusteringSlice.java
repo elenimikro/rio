@@ -24,6 +24,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.coode.aiontologygeneration.ClusteringUtils;
+import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
@@ -52,7 +53,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AutoIRIMapper;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.w3c.dom.Document;
@@ -86,7 +86,7 @@ public class PopularityBasedDistanceClusteringSlice {
                     + "_clustering_results.xml";
             line = r.readLine();
             IRI iri = IRI.create(ontology);
-            manager.addIRIMapper(new AutoIRIMapper(ontology.getParentFile(), true));
+            TestHelper.loadIRIMappers(Collections.singleton(iri), manager);
             try {
                 OWLOntology onto = manager.loadOntology(iri);
                 // System.out.println("PopularityDistanceSlice.main() Ontology "
