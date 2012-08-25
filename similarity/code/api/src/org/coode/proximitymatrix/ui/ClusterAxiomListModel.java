@@ -16,6 +16,8 @@ package org.coode.proximitymatrix.ui;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -56,8 +58,12 @@ public class ClusterAxiomListModel implements ListModel {
 					"The colleciton of ontologies cannot be null");
 		}
 		DefaultListModel defaultListModel = new DefaultListModel();
+		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+		for(OWLOntology ont : ontologies){
+			axioms.addAll(ont.getAxioms());
+		}
 		final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
-				.buildGeneralisationMap(cluster, ontologies, generalisation,
+				.buildGeneralisationMap(cluster, ontologies, axioms, generalisation,
 						runtimeExceptionHandler);
 		Comparator<OWLAxiom> comparator = new Comparator<OWLAxiom>() {
 			public int compare(OWLAxiom axiom, OWLAxiom anotherAxiom) {
