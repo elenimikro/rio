@@ -29,29 +29,6 @@ import org.semanticweb.owlapi.util.MultiMap;
 import org.xml.sax.SAXException;
 
 public class ClusteringUtils {
-    public static MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap(
-            final OWLOntology onto, final String xml) {
-        OWLOntologyManager ontologyManager = onto.getOWLOntologyManager();
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-        try {
-            Set<Set<OWLEntity>> clusters = loadClustersFromFile(xml,
-                    onto.getOWLOntologyManager());
-            OPPLFactory opplFactory = new OPPLFactory(ontologyManager, onto, null);
-            ConstraintSystem constraintSystem = opplFactory.createConstraintSystem();
-            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                    clusters, ontologyManager.getOntologies(), constraintSystem);
-            RuntimeExceptionHandler runtimeExceptionHandler = new QuickFailRuntimeExceptionHandler();
-            for (Set<OWLEntity> cluster : clusters) {
-                MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils
-                        .buildGeneralisationMap(cluster, ontologyManager.getOntologies(),
-                                generalisation, runtimeExceptionHandler);
-                generalisationMap.putAll(map);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return generalisationMap;
-    }
 
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap(
             final OWLOntology onto, final Set<Set<OWLEntity>> clusters) {
@@ -65,7 +42,7 @@ public class ClusteringUtils {
             RuntimeExceptionHandler runtimeExceptionHandler = new QuickFailRuntimeExceptionHandler();
             for (Set<OWLEntity> cluster : clusters) {
                 MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils
-                        .buildGeneralisationMap(cluster, ontologyManager.getOntologies(),
+                        .buildGeneralisationMap(cluster, onto.getImportsClosure(), onto.getAxioms(),
                                 generalisation, runtimeExceptionHandler);
                 generalisationMap.putAll(map);
             }
