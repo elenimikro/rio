@@ -61,7 +61,7 @@ public class OPPLAssignmentMapTest extends TestCase{
 		AssignmentMap anothermap = new AssignmentMap(anothernodeset);
 		
 		
-		List<AssignmentMap> maps = new ArrayList<>();		
+		List<AssignmentMap> maps = new ArrayList<AssignmentMap>();		
 		
 		maps.add(anothermap);
 		maps.add(map);
