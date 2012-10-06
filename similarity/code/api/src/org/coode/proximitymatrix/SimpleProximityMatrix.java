@@ -162,18 +162,25 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
             }
             found = false;
         }
-        SparseMatrix newDistances = SparseMatrixFactory.create(reducedObjects.size());
-        List<O> list = new ArrayList<O>(reducedObjects);
-        final int size = list.size();
-        for (int i = 0; i < size; i++) {
-            O a = list.get(i);
-            for (int j = i + 1; j < size; j++) {
-                O b = list.get(j);
-                newDistances.set(i, j, a == b ? 0 : this.getDistance(a, b));
-            }
+        if(!reducedObjects.isEmpty()){
+        	 SparseMatrix newDistances = SparseMatrixFactory.create(reducedObjects.size());
+             List<O> list = new ArrayList<O>(reducedObjects);
+             final int size = list.size();
+             for (int i = 0; i < size; i++) {
+                 O a = list.get(i);
+                 for (int j = i + 1; j < size; j++) {
+                     O b = list.get(j);
+                     newDistances.set(i, j, a == b ? 0 : this.getDistance(a, b));
+                 }
+             }
+             return new SimpleProximityMatrix<O>(reducedObjects, newDistances,
+                     this.getFilter(), comparator);
         }
-        return new SimpleProximityMatrix<O>(reducedObjects, newDistances,
-                this.getFilter(), comparator);
+      //the proximity matrix cannot be reduced any more so return the same instance
+        else{
+        	 return this;
+        }
+       
     }
 
     public final int getRowIndex(final O o) {
