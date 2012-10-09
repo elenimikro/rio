@@ -13,7 +13,6 @@ import java.util.Set;
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
-import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -25,16 +24,21 @@ public class ClusterDecompositionModel<P> {
 	List<Cluster<P>> sortedClusters;
 	private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
 
-	public ClusterDecompositionModel(Collection<? extends Cluster<P>> _clusters, Collection<? extends OWLOntology> ontologies) {
+	public ClusterDecompositionModel(
+			Collection<? extends Cluster<P>> _clusters,
+			Collection<? extends OWLOntology> ontologie) {
 		sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
 		for (Cluster<P> c : _clusters) {
-			if (c.size() > 1) sortedClusters.add(c);
+			if (c.size() > 1)
+				sortedClusters.add(c);
 		}
-		Collections.sort(sortedClusters, ClusterStatisticsTableModel.SIZE_COMPARATOR);
+		Collections.sort(sortedClusters,
+				ClusterStatisticsTableModel.SIZE_COMPARATOR);
 		this.ontologies.addAll(ontologies);
 	}
 
-	public void put(Cluster<P> cluster, MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
+	public void put(Cluster<P> cluster,
+			MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
 		fullGeneralisationMap.put(cluster, map);
 	}
 
@@ -49,31 +53,35 @@ public class ClusterDecompositionModel<P> {
 	public Set<OWLOntology> getOntologies() {
 		return ontologies;
 	}
-	
-	public Variable<?> getVariableRepresentative(Cluster<P> c){
-		if(variableMap == null || variableMap.isEmpty()){
+
+	public Variable<?> getVariableRepresentative(Cluster<P> c) {
+		if (variableMap == null || variableMap.isEmpty()) {
 			buildVariableMap();
 		}
 		return variableMap.get(c);
 	}
 
 	private void buildVariableMap() {
-		for(Cluster<P> cluster : sortedClusters){
-			MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = fullGeneralisationMap.get(cluster);
+		for (Cluster<P> cluster : sortedClusters) {
+			MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = fullGeneralisationMap
+					.get(cluster);
 			OWLAxiom exampleLogicGeneralisation = getExampleLogicGeneralisation(multiMap);
-			if(exampleLogicGeneralisation != null){
-				Collection<OWLAxiomInstantiation> collection = multiMap.get(exampleLogicGeneralisation);
-				OWLAxiomInstantiation exampleInst = collection.iterator().next();
+			if (exampleLogicGeneralisation != null) {
+				Collection<OWLAxiomInstantiation> collection = multiMap
+						.get(exampleLogicGeneralisation);
+				OWLAxiomInstantiation exampleInst = collection.iterator()
+						.next();
 				AssignmentMap substitutions = exampleInst.getSubstitutions();
-				for(Variable<?> var : substitutions.getVariables()){
-					if(cluster.containsAll(substitutions.get(var)))
+				for (Variable<?> var : substitutions.getVariables()) {
+					if (cluster.containsAll(substitutions.get(var)))
 						variableMap.put(cluster, var);
 				}
 			}
 		}
 	}
 
-	private OWLAxiom getExampleLogicGeneralisation(MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap) {
+	private OWLAxiom getExampleLogicGeneralisation(
+			MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap) {
 		if (multiMap != null) {
 			for (OWLAxiom ax : multiMap.keySet()) {
 				if (ax.isLogicalAxiom())
@@ -82,6 +90,5 @@ public class ClusterDecompositionModel<P> {
 		}
 		return null;
 	}
-	
-	
+
 }
