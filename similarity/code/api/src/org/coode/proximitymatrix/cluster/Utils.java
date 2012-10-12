@@ -281,6 +281,7 @@ public class Utils {
 		OWLAxiomProvider axiomProvider = new OWLOntologyManagerBasedOWLAxiomProvider(
 				constraintSystem.getOntologyManager());
 		for (Collection<? extends O> cluster : set) {
+			checkForPuns(cluster);
 			if (!cluster.isEmpty()) {
 				LeastCommonSubsumer<O, ?> lcs = LeastCommonSubsumer.build(
 						cluster, axiomProvider, constraintSystem
@@ -352,6 +353,18 @@ public class Utils {
 		}
 	}
 
+	
+	public static <O extends OWLObject> void checkForPuns(Collection<? extends O> cluster){
+		String name = cluster.iterator().next().getClass().getName();
+		Set<String> otherNames = new HashSet<String>();
+		for(OWLObject o : cluster){
+			otherNames.add(o.getClass().getName());
+		}
+		if(otherNames.size()>1){
+			purgePuns((Collection<? extends OWLEntity>) cluster);
+		}
+	}
+	
 	public static <O extends OWLEntity> Document toXML(
 			final Collection<? extends Cluster<O>> clusters,
 			final Collection<? extends OWLOntology> ontologies,
