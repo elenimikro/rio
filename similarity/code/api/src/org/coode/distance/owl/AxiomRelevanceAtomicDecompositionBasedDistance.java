@@ -46,8 +46,8 @@ import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 import edu.arizona.bio5.onto.decomposition.Atom;
 
 /** @author Luigi Iannone */
-public class AxiomRelevanceAtomicDecompositionBasedDistance implements
-        AbstractAxiomBasedDistance {
+public class AxiomRelevanceAtomicDecompositionBasedDistance extends
+        AbstractAxiomBasedDistanceImpl {
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final OWLDataFactory dataFactory;
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
@@ -133,31 +133,6 @@ public class AxiomRelevanceAtomicDecompositionBasedDistance implements
         buildAxiomEntityMap(ontologies);
         this.dataFactory = dataFactory;
         entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
-    }
-
-    /** @see org.coode.distance.Distance#getDistance(java.lang.Object,
-     *      java.lang.Object) */
-    public double getDistance(final OWLEntity a, final OWLEntity b) {
-        double toReturn = a.equals(b) ? 0 : 1;
-        if (toReturn == 1) {
-            Set<OWLAxiom> axiomsForA = getAxioms(a);
-            Set<OWLAxiom> axiomsForB = getAxioms(b);
-            if (!axiomsForA.isEmpty() || !axiomsForB.isEmpty()) {
-                int AorB = axiomsForA.size();
-                int AandB = 0;
-                for (OWLAxiom e1 : axiomsForB) {
-                    if (!axiomsForA.contains(e1)) {
-                        // union increases for every non duplicate
-                        AorB++;
-                    } else {
-                        // intersection increases for each common element
-                        AandB++;
-                    }
-                }
-                toReturn = (double) (AorB - AandB) / AorB;
-            }
-        }
-        return toReturn;
     }
 
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {

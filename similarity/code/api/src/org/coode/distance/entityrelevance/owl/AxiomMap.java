@@ -33,13 +33,13 @@ public class AxiomMap {
     private final Map<OWLAxiom, Map<OWLEntity, AtomicInteger>> delegate = new HashMap<OWLAxiom, Map<OWLEntity, AtomicInteger>>();
     private final Map<OWLAxiom, AtomicInteger> axiomCountMap = new HashMap<OWLAxiom, AtomicInteger>();
     private final OWLEntityReplacer replacer;
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
     private final OWLOntologyManager ontologyManager;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @SuppressWarnings("unused")
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
-            AxiomMap.this.buildMaps(ontologies);
+            AxiomMap.this.buildMaps(axioms);
         }
     };
 
@@ -54,39 +54,57 @@ public class AxiomMap {
         this.ontologyManager = ontologyManager;
         this.replacer = replacer;
         ontologyManager.addOntologyChangeListener(listener);
-        buildMaps(ontologies);
+        for(OWLOntology o : ontologies){
+        	this.axioms.addAll(o.getAxioms());
+        }
+        buildMaps(axioms);
+    }
+    
+    
+    public AxiomMap(Set<OWLAxiom> axioms,
+            final OWLOntologyManager ontologyManager, final OWLEntityReplacer replacer) {
+        if (axioms == null) {
+            throw new NullPointerException("The set of axioms cannot be null");
+        }
+        if (ontologyManager == null) {
+            throw new NullPointerException("The ontology manager cannot be null");
+        }
+        this.ontologyManager = ontologyManager;
+        this.replacer = replacer;
+        ontologyManager.addOntologyChangeListener(listener);
+        this.axioms.addAll(axioms);
+        buildMaps(axioms);
     }
 
-    private void buildMaps(final Collection<? extends OWLOntology> ontologies) {
+    private void buildMaps(final Set<OWLAxiom> axioms) {
         delegate.clear();
         axiomCountMap.clear();
-        for (OWLOntology owlOntology : ontologies) {
-            for (OWLAxiom axiom : owlOntology.getAxioms()) {
-                if (axiom.getAxiomType() != AxiomType.DECLARATION) {
-                    OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
-                    Map<OWLEntity, AtomicInteger> entityMap = delegate.get(replaced);
-                    AtomicInteger d = axiomCountMap.get(replaced);
-                    if (d == null) {
-                        d = new AtomicInteger();
-                        axiomCountMap.put(replaced, d);
-                    }
-                    d.incrementAndGet();
-                    if (entityMap == null) {
-                        entityMap = new HashMap<OWLEntity, AtomicInteger>();
-                        delegate.put(replaced, entityMap);
-                    }
-                    Set<OWLEntity> signature = axiom.getSignature();
-                    for (OWLEntity owlEntity : signature) {
-                        AtomicInteger integer = entityMap.get(owlEntity);
-                        if (integer == null) {
-                            integer = new AtomicInteger();
-                            entityMap.put(owlEntity, integer);
-                        }
-                        integer.incrementAndGet();
-                    }
-                }
-            }
-        }
+		for (OWLAxiom axiom : axioms) {
+			if (axiom.getAxiomType() != AxiomType.DECLARATION) {
+				OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
+				Map<OWLEntity, AtomicInteger> entityMap = delegate
+						.get(replaced);
+				AtomicInteger d = axiomCountMap.get(replaced);
+				if (d == null) {
+					d = new AtomicInteger();
+					axiomCountMap.put(replaced, d);
+				}
+				d.incrementAndGet();
+				if (entityMap == null) {
+					entityMap = new HashMap<OWLEntity, AtomicInteger>();
+					delegate.put(replaced, entityMap);
+				}
+				Set<OWLEntity> signature = axiom.getSignature();
+				for (OWLEntity owlEntity : signature) {
+					AtomicInteger integer = entityMap.get(owlEntity);
+					if (integer == null) {
+						integer = new AtomicInteger();
+						entityMap.put(owlEntity, integer);
+					}
+					integer.incrementAndGet();
+				}
+			}
+		}
     }
 
     public Map<OWLEntity, AtomicInteger> get(final OWLAxiom object) {

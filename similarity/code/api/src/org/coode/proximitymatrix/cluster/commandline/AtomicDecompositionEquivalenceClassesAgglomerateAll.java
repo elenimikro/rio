@@ -13,7 +13,7 @@ package org.coode.proximitymatrix.cluster.commandline;
 import java.util.Collection;
 
 import org.coode.distance.Distance;
-import org.coode.distance.owl.AxiomRelevanceAtomicDecompositionBasedDistanceNEW;
+import org.coode.distance.owl.AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.Utils;
@@ -42,7 +42,7 @@ public class AtomicDecompositionEquivalenceClassesAgglomerateAll extends Agglome
 
     @Override
     public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-        return new AxiomRelevanceAtomicDecompositionBasedDistanceNEW(
+        return new AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance(
                 manager.getOntologies(), manager.getOWLDataFactory(), manager);
     }
 }

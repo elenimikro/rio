@@ -75,6 +75,7 @@ public class PopularityBasedDistanceClusteringSlice {
         BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(
                 ontologyList)));
         String line = r.readLine();
+        System.out.println("PopularityBasedDistanceClusteringSlice.main() line: \t" + line);
         boolean correct = true;
         while (line != null && !line.trim().isEmpty() && correct) {
             OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -82,11 +83,11 @@ public class PopularityBasedDistanceClusteringSlice {
             Calendar c = Calendar.getInstance();
             String saveTo = "results/" + ontology.getName() + "_"
                     + c.get(Calendar.DAY_OF_MONTH) + "_" + c.get(Calendar.HOUR) + ".xml";
-            String compareTo = "results/" + ontology.getName()
+            String compareTo = "similarity/profiling_data/results/" + ontology.getName()
                     + "_clustering_results.xml";
             line = r.readLine();
             IRI iri = IRI.create(ontology);
-            TestHelper.loadIRIMappers(Collections.singleton(iri), manager);
+            //TestHelper.loadIRIMappers(Collections.singleton(iri), manager);
             try {
                 OWLOntology onto = manager.loadOntology(iri);
                 // System.out.println("PopularityDistanceSlice.main() Ontology "

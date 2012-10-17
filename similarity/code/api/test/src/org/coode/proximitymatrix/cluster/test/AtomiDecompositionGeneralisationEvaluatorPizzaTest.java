@@ -24,6 +24,7 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
+import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -65,7 +66,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 		for (OWLOntology ontology : manager.getOntologies()) {
 			entities.addAll(ontology.getSignature());
 		}
-		model = clusterer.runClustering(pizza, distance, entities);
+		model = clusterer.agglomerateAll(pizza, distance, entities);
 	}
 
 	@Test
@@ -143,6 +144,20 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 							+ mergedAtoms.get(col));
 			assertTrue(mergedAtoms.get(col).size()>1);
 		}
+	}
+	
+	@Test
+	public void testGeneralisedAtomicDecompositionStats(){
+		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
+				model, pizza);
+		GeneralisedAtomicDecompositionMetrics gadstats = GeneralisedAtomicDecompositionMetrics.buildMetrics(gad);
+		assertEquals(0.82, gadstats.getAtomicDecompositionCompression(), 0.1);
+		System.out
+				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() MeanMergedAxiomsPerGeneralisation: " 
+		+ gadstats.getMeanMergedAxiomsPerGeneralisation());
+		System.out
+				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() RatioOfMergedGeneralisations: " +
+		gadstats.getRatioOfMergedGeneralisations());
 	}
 
 }

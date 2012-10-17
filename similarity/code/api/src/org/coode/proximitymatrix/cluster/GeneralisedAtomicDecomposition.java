@@ -208,4 +208,10 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 	public MultiMap<OWLEntity, Atom> getEntitiesToAtom() {
 		return entityAtomMap;
 	}
+
+	public MultiMap<OWLAxiom, OWLAxiomInstantiation> getSyntacticRegularities() {
+		return regularitiesMap;
+	}
+	
+	
 }

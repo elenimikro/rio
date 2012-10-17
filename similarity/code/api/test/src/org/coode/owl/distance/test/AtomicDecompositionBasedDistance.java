@@ -20,7 +20,7 @@ import org.coode.distance.entityrelevance.AtomicDecompositionRankingRelevancePol
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.distance.owl.AxiomBasedDistance;
-import org.coode.distance.owl.AxiomRelevanceAtomicDecompositionBasedDistanceNEW;
+import org.coode.distance.owl.AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance;
 import org.coode.metrics.RankingSlot;
 import org.coode.metrics.owl.AtomicDecompositionRanking;
 import org.coode.owl.wrappers.OWLAtomicDecompositionMap;
@@ -36,7 +36,7 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
         return new DistanceBuilder() {
             @Override
             public AbstractAxiomBasedDistance getDistance(final OWLOntology o) {
-                return new AxiomRelevanceAtomicDecompositionBasedDistanceNEW(
+                return new AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance(
                         o.getImportsClosure(), o.getOWLOntologyManager()
                                 .getOWLDataFactory(), o.getOWLOntologyManager());
             }

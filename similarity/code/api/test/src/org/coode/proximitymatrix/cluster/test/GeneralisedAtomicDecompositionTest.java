@@ -20,6 +20,7 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
+import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -106,7 +107,7 @@ public class GeneralisedAtomicDecompositionTest {
 		for (OWLOntology ontology : m.getOntologies()) {
 			entities.addAll(ontology.getSignature());
 		}
-		model = clusterer.runClustering(o, distance, entities);
+		model = clusterer.agglomerateAll(o, distance, entities);
 
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
 		for (int counter = 0; counter < clusterList.size(); counter++) {
@@ -149,6 +150,20 @@ public class GeneralisedAtomicDecompositionTest {
 					.println("GeneralisationAtomicDecompositionTest.testGeneralisationAtomicDecomposition() Duplicate Atoms "
 							+ mergedAtoms.get(col));
 		}
+	}
+	
+	@Test
+	public void testGeneralisedAtomicDecompositionStats(){
+		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
+				model, o);
+		GeneralisedAtomicDecompositionMetrics gadstats = GeneralisedAtomicDecompositionMetrics.buildMetrics(gad);
+		assertEquals(0.5, gadstats.getAtomicDecompositionCompression());
+		System.out
+				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() MeanMergedAxiomsPerGeneralisation: " 
+		+ gadstats.getMeanMergedAxiomsPerGeneralisation());
+		System.out
+				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() RatioOfMergedGeneralisations: " +
+		gadstats.getRatioOfMergedGeneralisations());
 	}
 
 }

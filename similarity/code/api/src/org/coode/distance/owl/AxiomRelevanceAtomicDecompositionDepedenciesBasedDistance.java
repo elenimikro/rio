@@ -41,7 +41,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Eleni Mikroyannidi */
-public class AxiomRelevanceAtomicDecompositionBasedDistanceNEW implements
+public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implements
         AbstractAxiomBasedDistance {
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final OWLDataFactory dataFactory;
@@ -55,10 +55,10 @@ public class AxiomRelevanceAtomicDecompositionBasedDistanceNEW implements
         @SuppressWarnings("unused")
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
-            AxiomRelevanceAtomicDecompositionBasedDistanceNEW.this
+            AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance.this
                     .buildOntologySignature();
-            AxiomRelevanceAtomicDecompositionBasedDistanceNEW.this
-                    .buildAxiomEntityMap(AxiomRelevanceAtomicDecompositionBasedDistanceNEW.this
+            AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance.this
+                    .buildAxiomEntityMap(AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance.this
                             .getOntologies());
             atomicMap = new OWLAtomicDecompositionMap(getOntologies(),
                     getOntologyManger());
@@ -86,7 +86,7 @@ public class AxiomRelevanceAtomicDecompositionBasedDistanceNEW implements
         }
     }
 
-    public AxiomRelevanceAtomicDecompositionBasedDistanceNEW(
+    public AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance(
             final Collection<? extends OWLOntology> ontologies,
             final OWLDataFactory dataFactory, final OWLOntologyManager manager) {
         if (ontologies == null) {
