@@ -95,7 +95,7 @@ public class KnowledgeExplorerAxiomRelevanceDistanceAgglomerateAll{
 				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
 		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(
-				reasoner, manager);
+				reasoner);
 		// KnowledgeExplorer ke = new
 		// KnowledgeExplorerMaxFillerJFactImpl(reasoner, manager);
 		Set<OWLEntity> entities = getEntitiesForClustering(ke.getEntities());

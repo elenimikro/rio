@@ -44,14 +44,10 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
 
 	OWLClass rootClass = null;
 
-	public KnowledgeExplorerMaxFillersFactplusplusImpl(OWLReasoner reasoner,
-			OWLOntologyManager manager) {
+	public KnowledgeExplorerMaxFillersFactplusplusImpl(OWLReasoner reasoner) {
 		if (reasoner == null) {
 			throw new NullPointerException(
 					"OWLKnowledgeExplorerReasoner cannot be null");
-		}
-		if (manager == null) {
-			throw new NullPointerException("Ontology manager cannot be null");
 		}
 		this.o = reasoner.getRootOntology();
 		this.reasoner = reasoner;
@@ -60,7 +56,7 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
 		 this.r = new OWLKnowledgeExplorationReasonerWrapper(
 		 (FaCTPlusPlusReasoner) new FaCTPlusPlusReasonerFactory()
 		 .createReasoner(reasoner.getRootOntology()));
-		this.manager = manager;
+		this.manager = o.getOWLOntologyManager();
 		dataFactory = this.manager.getOWLDataFactory();
 		this.buildAxiomMap();
 	}
@@ -172,9 +168,9 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
 			for (RootNode n : r.getObjectNeighbours(node,
 					prop.asOWLObjectProperty())) {
 				if (!visited.contains(n)) {
-					System.out
-							.println("KnowledgeExplorerGraph.getMaxFillers() visiting "
-									+ n);
+//					System.out
+//							.println("KnowledgeExplorerGraph.getMaxFillers() visiting "
+//									+ n);
 					for (OWLClassExpression f : getMaxFillers(n, visited)) {
 						OWLClassExpression exists = dataFactory
 								.getOWLObjectSomeValuesFrom(prop, f);

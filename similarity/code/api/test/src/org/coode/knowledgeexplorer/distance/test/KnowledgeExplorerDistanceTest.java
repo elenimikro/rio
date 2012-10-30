@@ -93,7 +93,7 @@ public class KnowledgeExplorerDistanceTest {
 		JFactReasoner reasoner = new JFactReasoner(o, new SimpleConfiguration(),
                 BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner, m);
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner);
 		Set<OWLEntity> set = ke.getEntities();
 		assertNotNull(set);
 	}
@@ -104,7 +104,7 @@ public class KnowledgeExplorerDistanceTest {
 		JFactReasoner reasoner = new JFactReasoner(o, new SimpleConfiguration(),
                 BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner, m);
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner);
 		Distance<OWLEntity> distance = DistanceCreator.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(m, ke);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(

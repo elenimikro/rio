@@ -44,14 +44,13 @@ import uk.ac.manchester.cs.jfact.JFactReasoner;
 public class SemanticClusteringWithADEvaluationExperiment extends ClusteringWithADEvaluationExperimentBase{
 	
 
-	private final static String RESULTS_BASE = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-results/semantic"; 
+	private final static String RESULTS_BASE = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-results/semantic/"; 
 	
 //	private static MultiArrayMap<String, SimpleMetric<?>> metricMap = new MultiArrayMap<String, SimpleMetric<?>>();
 //	private static Map<String, MultiArrayMap<String, Number>> detailedMetricMap = new HashMap<String, MultiArrayMap<String,Number>>();
 
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException, FileNotFoundException {
-
 		String base = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-ontologies/";
 		String[] input = new String[] { "amino-acid-original.owl",
 				"flowers7.owl", "wine.owl",
@@ -59,7 +58,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends ClusteringWith
 				"kupkb/kupkb.owl", "obi.owl", "ChronicALLModule.owl",
 				"tambis-full.owl", "galen.owl" };
 		// long currentTimeMillis = System.currentTimeMillis();
-		File file = new File(RESULTS_BASE + "allstats.csv");
+		File file = new File(RESULTS_BASE + "semantic-qualitative-stats.csv");
 
 		setupClusteringExperiment(base, input, file);
 	}
@@ -77,7 +76,6 @@ public class SemanticClusteringWithADEvaluationExperiment extends ClusteringWith
 			String filename = RESULTS_BASE + substring.replaceAll(".owl", ".csv");
 			String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
 			File f = new File(filename);
-			String type;
 			if (!f.exists()) {
 				PrintStream singleOut = new PrintStream(f);
 				current = baseDir + s;
@@ -93,7 +91,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends ClusteringWith
 						new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 				reasoner.precomputeInferences();
 				KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(
-						reasoner, m);
+						reasoner);
 				Set<OWLAxiom> entailments = ke.getAxioms();
 				
 				//popularity distance
@@ -147,7 +145,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends ClusteringWith
 		return toReturn;
 	}
 	
-	private static Set<OWLEntity> getSignatureWithoutProperties(KnowledgeExplorer ke) {
+	public static Set<OWLEntity> getSignatureWithoutProperties(KnowledgeExplorer ke) {
 		// final SimpleShortFormProvider shortFormProvider = new
 		// SimpleShortFormProvider();
 		Set<OWLEntity> entities = new HashSet<OWLEntity>();

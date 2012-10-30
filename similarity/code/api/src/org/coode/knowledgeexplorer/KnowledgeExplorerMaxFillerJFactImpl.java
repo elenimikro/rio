@@ -44,14 +44,10 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 
 	OWLClass rootClass = null;
 
-	public KnowledgeExplorerMaxFillerJFactImpl(OWLReasoner reasoner,
-			OWLOntologyManager manager) {
+	public KnowledgeExplorerMaxFillerJFactImpl(OWLReasoner reasoner) {
 		if (reasoner == null) {
 			throw new NullPointerException(
 					"OWLKnowledgeExplorerReasoner cannot be null");
-		}
-		if (manager == null) {
-			throw new NullPointerException("Ontology manager cannot be null");
 		}
 		this.o = reasoner.getRootOntology();
 		this.reasoner = reasoner;
@@ -60,7 +56,7 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 //		 this.r = new OWLKnowledgeExplorationReasonerWrapper(
 //		 (FaCTPlusPlusReasoner) new FaCTPlusPlusReasonerFactory()
 //		 .createReasoner(reasoner.getRootOntology()));
-		this.manager = manager;
+		this.manager = o.getOWLOntologyManager();
 		dataFactory = this.manager.getOWLDataFactory();
 		this.buildAxiomMap();
 	}

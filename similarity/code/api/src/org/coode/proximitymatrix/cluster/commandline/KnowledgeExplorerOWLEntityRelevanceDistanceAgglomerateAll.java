@@ -95,7 +95,7 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll{
 	 JFactReasoner reasoner = new JFactReasoner(ontology, new SimpleConfiguration(),
 	                BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(reasoner, manager);
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(reasoner);
 		//KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner, manager);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
