@@ -37,6 +37,18 @@ public class ClusterDecompositionModel<P> {
 				ClusterStatisticsTableModel.SIZE_COMPARATOR);
 		this.ontologies.addAll(ontologies);
 	}
+	
+	
+	public ClusterDecompositionModel(
+			Collection<? extends Cluster<P>> _clusters) {
+		sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
+		for (Cluster<P> c : _clusters) {
+			if (c.size() > 1)
+				sortedClusters.add(c);
+		}
+		Collections.sort(sortedClusters,
+				ClusterStatisticsTableModel.SIZE_COMPARATOR);
+	}
 
 	public void put(Cluster<P> cluster,
 			MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {

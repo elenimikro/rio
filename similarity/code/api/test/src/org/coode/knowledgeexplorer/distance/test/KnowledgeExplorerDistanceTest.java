@@ -15,6 +15,7 @@ import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillerJFactImpl;
 import org.coode.oppl.exceptions.OPPLException;
+import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,7 +123,8 @@ public class KnowledgeExplorerDistanceTest {
 			}
 		}
 		ClusterCreator clusterer = new ClusterCreator();
-		ClusterDecompositionModel<OWLEntity> model = clusterer.agglomerateAll(o, distance, entities);
+		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o, distance, entities);
+		ClusterDecompositionModel<OWLEntity> model =  clusterer.buildClusterDecompositionModel(o, m, clusters);
 		assertNotNull(model);	
 	}
 }

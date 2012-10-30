@@ -13,6 +13,9 @@
  */
 package org.coode.distance.entityrelevance;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLEntity;
 
@@ -22,27 +25,41 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * 
  */
 public final class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolicy<OWLEntity> {
-	private final EntityType<?> type;
+	//private EntityType<?> type;
+	private final Set<EntityType<?>> types = new HashSet<EntityType<?>>();
 	private final boolean relevant;
 	private final static RelevancePolicy<OWLEntity> OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
 			true, EntityType.OBJECT_PROPERTY);
 	private final static RelevancePolicy<OWLEntity> ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
-			false, null);
+			false);
 	private final static RelevancePolicy<OWLEntity> ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
-			true, null);
+			true);
+	private static final RelevancePolicy<OWLEntity> PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
+			true, EntityType.OBJECT_PROPERTY, EntityType.DATA_PROPERTY,
+			EntityType.DATATYPE, EntityType.ANNOTATION_PROPERTY);
 
-	private DefaultOWLEntityTypeRelevancePolicy(boolean relevant, EntityType<?> type) {
-		this.type = type;
+	private DefaultOWLEntityTypeRelevancePolicy(boolean relevant, EntityType<?>... types) {
+		if (types.length != 0) {
+			for (EntityType<?> t : types) {
+				this.types.add(t);
+			}
+		}
 		this.relevant = relevant;
 	}
-
+	
 	public boolean isRelevant(OWLEntity object) {
-		if(object.isType(type) || type == null)
+		if (types == null
+				|| types.contains(object.getEntityType()) || types.isEmpty()) {
 			return this.relevant;
-		else
+		} else {
 			return !this.relevant;
+		}
 	}
 
+	public static RelevancePolicy<OWLEntity> getPropertiesAlwaysRelevantPolicy() {
+		return PROPERTIES_ALWAYS_RELEVANT_POLICY;
+	}
+	
 	public static RelevancePolicy<OWLEntity> getObjectPropertyAlwaysRelevantPolicy() {
 		return OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY;
 	}

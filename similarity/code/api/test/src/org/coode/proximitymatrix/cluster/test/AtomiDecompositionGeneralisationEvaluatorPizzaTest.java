@@ -66,7 +66,8 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 		for (OWLOntology ontology : manager.getOntologies()) {
 			entities.addAll(ontology.getSignature());
 		}
-		model = clusterer.agglomerateAll(pizza, distance, entities);
+		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(pizza, distance, entities);
+		model = clusterer.buildClusterDecompositionModel(pizza, manager, clusters);
 	}
 
 	@Test

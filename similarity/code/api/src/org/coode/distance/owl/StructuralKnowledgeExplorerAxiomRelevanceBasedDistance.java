@@ -24,6 +24,7 @@ import java.util.Set;
 import org.coode.distance.entityrelevance.CollectionBasedRelevantPolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
+import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
 import org.coode.owl.generalise.AxiomGeneralisationTreeNode;
@@ -47,7 +48,7 @@ import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
-public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
+public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends AbstractAxiomBasedDistanceImpl {
 	protected final class AxiomRelevanceMap extends AxiomRelevanceMapBase {
 		public AxiomRelevanceMap(final Collection<? extends OWLAxiom> axioms,
 				final OWLEntityProvider entityProvider,
@@ -75,9 +76,8 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 			}
 		}
 	}
-
-	private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-	private final OWLDataFactory dataFactory;
+	
+	private final KnowledgeExplorer ke;
 	private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
 	private final OWLOntologyManager ontologyManger;
 	private final OWLEntityProvider entityProvider;
@@ -85,74 +85,49 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 	private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
 	private final AxiomRelevanceMap axiomRelevanceMap;
 	private final OPPLFactory opplfactory;
-	private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-		public void ontologiesChanged(
-				final List<? extends OWLOntologyChange> changes)
-				throws OWLException {
-			StructuralAxiomRelevanceAxiomBasedDistance.this
-					.buildOntologySignature();
-			StructuralAxiomRelevanceAxiomBasedDistance.this
-					.buildAxiomEntityMap(StructuralAxiomRelevanceAxiomBasedDistance.this
-							.getOntologies());
-		}
-	};
 
 	private void buildAxiomEntityMap(
-			final Collection<? extends OWLOntology> ontos) {
-		Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(
-				AxiomType.AXIOM_TYPES);
-		types.remove(AxiomType.DECLARATION);
-		for (OWLOntology ontology : ontos) {
-			for (AxiomType<?> t : types) {
-				for (OWLAxiom ax : ontology.getAxioms(t)) {
-					for (OWLEntity e : ax.getSignature()) {
-						candidates.put(e, ax);
-					}
+			final Set<OWLAxiom> set) {
+		for(OWLAxiom ax : set){
+			if(!ax.isOfType(AxiomType.DECLARATION)){
+				for (OWLEntity e : ax.getSignature()) {
+					candidates.put(e, ax);
 				}
 			}
 		}
 	}
 
-	private void buildOntologySignature() {
+	private void buildSignature() {
 		ontologySignature.clear();
-		for (OWLOntology ontology : getOntologies()) {
-			ontologySignature.addAll(ontology.getSignature());
-		}
+		ontologySignature.addAll(ke.getEntities());
 	}
 
 	private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
 
-	public StructuralAxiomRelevanceAxiomBasedDistance(
-			final Collection<? extends OWLOntology> ontologies,
-			final OWLDataFactory dataFactory, final OWLOntologyManager manager) {
-		if (ontologies == null) {
-			throw new NullPointerException("The ontolgies canont be null");
+	public StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
+			final OWLOntology ontology,
+			final KnowledgeExplorer knowledgeExplorer) {
+		if (ontology == null) {
+			throw new NullPointerException("The ontolgy canont be null");
 		}
-		if (dataFactory == null) {
-			throw new NullPointerException("The data factory cannot be null");
+		if (knowledgeExplorer == null) {
+			throw new NullPointerException("The knowledge explorer cannot be null");
 		}
-		if (manager == null) {
-			throw new NullPointerException("The ontolgy manager cannot be null");
-		}
-		this.ontologies.addAll(ontologies);
-		ontologyManger = manager;
-		buildOntologySignature();
-		buildAxiomEntityMap(ontologies);
+		this.ke = knowledgeExplorer;
+		this.ontologyManger = ontology.getOWLOntologyManager();
+		buildSignature();
+		buildAxiomEntityMap(ke.getAxioms());
 		axiomRelevanceMap = buildAxiomRelevanceMap();
-		this.dataFactory = dataFactory;
 		entityProvider = new OntologyManagerBasedOWLEntityProvider(
 				getOntologyManger());
-		opplfactory = new OPPLFactory(getOntologyManger(), this.ontologies
-				.iterator().next(), null);
+		opplfactory = new OPPLFactory(getOntologyManger(), ontology, null);
 	}
 
 	protected AxiomRelevanceMap buildAxiomRelevanceMap() {
 		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-		for (OWLOntology ontology : ontologies) {
-			for (OWLAxiom axiom : ontology.getAxioms()) {
-				if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
-					axioms.add(axiom);
-				}
+		for (OWLAxiom axiom : ke.getAxioms()) {
+			if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
+				axioms.add(axiom);
 			}
 		}
 		OPPLFactory factory = new OPPLFactory(getOntologyManger(),
@@ -217,19 +192,6 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 		return found;
 	}
 
-	/** @return the ontologies */
-	public Set<OWLOntology> getOntologies() {
-		return new HashSet<OWLOntology>(ontologies);
-	}
-
-	/** @return the dataFactory */
-	public OWLDataFactory getDataFactory() {
-		return dataFactory;
-	}
-
-	public void dispose() {
-		ontologyManger.removeOntologyChangeListener(listener);
-	}
 
 	/** @return the ontologyManger */
 	public OWLOntologyManager getOntologyManger() {

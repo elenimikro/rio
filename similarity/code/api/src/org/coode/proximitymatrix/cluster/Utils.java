@@ -84,6 +84,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLLiteral;
@@ -549,16 +550,28 @@ public class Utils {
 			final Collection<? extends OWLOntology> ontologies,
 			final OWLObjectGeneralisation generalisation,
 			final RuntimeExceptionHandler runtimeExceptionHandler) {
-		MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+		
 		Set<OWLAxiom> ontologyAxioms = new HashSet<OWLAxiom>();
 		for (OWLOntology ontology : ontologies) {
 			Set<OWLAnnotationAssertionAxiom> axioms = ontology
 					.getAxioms(AxiomType.ANNOTATION_ASSERTION);
+			Set<OWLDeclarationAxiom> declaxioms = ontology.getAxioms(AxiomType.DECLARATION);
 			ontologyAxioms.addAll(ontology.getAxioms());
 			ontologyAxioms.removeAll(axioms);
+			ontologyAxioms.removeAll(declaxioms);
 		}
+		return buildGeneralisationMap(cluster, ontologies, generalisation,
+				ontologyAxioms);
+	}
+
+	private static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
+			final Collection<? extends OWLEntity> cluster,
+			final Collection<? extends OWLOntology> ontologies,
+			final OWLObjectGeneralisation generalisation,
+			Set<OWLAxiom> ontologyAxioms) {
 		OWLOntologyAnnotationClusterDetector visitor = new OWLOntologyAnnotationClusterDetector(
 				cluster, ontologies);
+		MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 		for (OWLAxiom axiom : ontologyAxioms) {
 			Set<OWLEntity> signature = axiom.getSignature();
 			boolean intersection = false;
@@ -567,6 +580,28 @@ public class Utils {
 				intersection = cluster.contains(it.next());
 			}
 			if (intersection || axiom.accept(visitor)) {
+				generalisation.clearSubstitutions();
+				OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
+				generalisationMap.put(generalised, new OWLAxiomInstantiation(
+						axiom, generalisation.getSubstitutions()));
+			}
+		}
+		return generalisationMap;
+	}
+	
+	public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildKnowledgeExplorerGeneralisationMap(
+			final Collection<? extends OWLEntity> cluster,
+			final OWLObjectGeneralisation generalisation,
+			Set<OWLAxiom> axioms) {
+		MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+		for (OWLAxiom axiom : axioms) {
+			Set<OWLEntity> signature = axiom.getSignature();
+			boolean intersection = false;
+			Iterator<OWLEntity> it = signature.iterator();
+			while (!intersection && it.hasNext()) {
+				intersection = cluster.contains(it.next());
+			}
+			if (intersection) {
 				generalisation.clearSubstitutions();
 				OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
 				generalisationMap.put(generalised, new OWLAxiomInstantiation(
@@ -928,6 +963,75 @@ public class Utils {
 		return toReturn;
 	}
 
+	public static <P extends OWLEntity> void saveToXML(
+			final ClusterDecompositionModel<P> model,
+			final OWLOntologyManager manager, final File file)
+			throws ParserConfigurationException,
+			TransformerFactoryConfigurationError, TransformerException {
+		List<Cluster<P>> clusterList = model.getClusterList();
+		ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
+	
+		Document document = toXML(model, clusterList, renderer);
+		
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		StreamResult result = new StreamResult(file);
+		t.setOutputProperty(OutputKeys.INDENT, "yes");
+		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount",
+				"3");
+		t.transform(new DOMSource(document), result);
+		System.out.println(String.format("Results saved in %s",
+				file.getAbsolutePath()));
+	
+	}
+
+	private static <P extends OWLEntity> Document toXML(
+			final ClusterDecompositionModel<P> model,
+			List<Cluster<P>> clusterList,
+			ManchesterOWLSyntaxOWLObjectRendererImpl renderer)
+			throws ParserConfigurationException {
+		Document document = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder().newDocument();
+		Element root = document.createElement("Clusters");
+		document.appendChild(root);
+		for (Cluster<P> cluster : clusterList) {
+			Element clusterNode = document.createElement("Cluster");
+			root.appendChild(clusterNode);
+			for (P o : cluster) {
+				Element itemNode = document.createElement("Item");
+				itemNode.setAttribute("iri", o.getIRI().toString());
+				clusterNode.appendChild(itemNode);
+			}
+			clusterNode.setAttribute("size",
+					String.format("%d", cluster.size()));
+			Element generalisations = document.createElement("Generalisations");
+			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = model.get(cluster);
+			for (OWLAxiom generalisedAxiom : generalisationMap.keySet()) {
+				Element generalisedAxiomNode = document
+						.createElement("Generalisation");
+				generalisedAxiomNode.setAttribute("axiom",
+						renderer.render(generalisedAxiom));
+				Collection<OWLAxiomInstantiation> generalisationChildren = generalisationMap
+						.get(generalisedAxiom);
+				generalisedAxiomNode.setAttribute("count",
+						Integer.toString(generalisationChildren.size()));
+				generalisedAxiomNode
+						.setAttribute(
+								"instantiationStats",
+								Utils.renderInstantiationsStats(buildAssignmentMap(generalisationChildren)));
+				for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
+					Element axiomNode = document.createElement("Axiom");
+					axiomNode.setAttribute("axiom",
+							renderer.render(owlAxiomInstantiation.getAxiom()));
+					generalisedAxiomNode.appendChild(axiomNode);
+				}
+				generalisations.appendChild(generalisedAxiomNode);
+			}
+			clusterNode.appendChild(generalisations);
+		}
+		return document;
+	}
+	
+	
 	/**
 	 * It saves the clusters in an xml. In this version the history is not
 	 * saved.
@@ -1035,6 +1139,24 @@ public class Utils {
 			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
 					.buildGeneralisationMap(cluster, ontologies,
 							generalisation, runtimeExceptionHandler);
+			model.put(cluster, generalisationMap);
+		}
+		return model;
+	}
+	
+	
+	public static <P extends OWLEntity> ClusterDecompositionModel<P> toKnowledgeExplorerClusterDecompositionModel(
+			Collection<? extends Cluster<P>> _clusters,
+			Collection<? extends OWLOntology> ontologies,
+			Set<OWLAxiom> axioms,
+			OWLObjectGeneralisation generalisation,
+			RuntimeExceptionHandler runtimeExceptionHandler)
+			throws ParserConfigurationException {
+		ClusterDecompositionModel<P> model = new ClusterDecompositionModel<P>(
+				_clusters, ontologies);
+		for (Cluster<P> cluster : _clusters) {
+			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
+					.buildKnowledgeExplorerGeneralisationMap(cluster, generalisation, axioms);
 			model.put(cluster, generalisationMap);
 		}
 		return model;

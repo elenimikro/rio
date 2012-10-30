@@ -42,4 +42,19 @@ public class TestHelper {
             manager.loadOntology(iri);
         }
     }
+    
+	public static OWLOntology loadIRIMappers(final IRI iri,
+			final OWLOntologyManager manager)
+			throws OWLOntologyCreationException {
+		URI uri = iri.toURI();
+		if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
+			File file = new File(uri);
+			File parentFile = file.getParentFile();
+			if (parentFile.isDirectory()) {
+				manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
+			}
+		}
+		return manager.loadOntology(iri);
+	}
+    
 }
