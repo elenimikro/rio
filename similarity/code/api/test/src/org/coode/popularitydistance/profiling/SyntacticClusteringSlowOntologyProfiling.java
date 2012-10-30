@@ -1,6 +1,8 @@
 package org.coode.popularitydistance.profiling;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -12,6 +14,8 @@ import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -21,8 +25,8 @@ import experiments.ExperimentHelper;
 
 public class SyntacticClusteringSlowOntologyProfiling {
 
-	private static String ontoName = "similarity/documents/ChronicALLModule.owl";
-	private static String xml = "similarity/documents/ChronicALLModule-syntactic-popularity.xml";
+    private static String ontoName = "documents/ChronicALLModule.owl";
+    private static String xml = "documents/ChronicALLModule-syntactic-popularity.xml";
 
 	public static void testSyntacticClustering()
 			throws OWLOntologyCreationException, OPPLException,
@@ -32,8 +36,11 @@ public class SyntacticClusteringSlowOntologyProfiling {
 		OWLOntology o = m.loadOntologyFromOntologyDocument(new File(ontoName));
 		System.out.println("SyntacticClusteringTest.testSyntacticClustering() " + ontoName);
 		System.out.println("SyntacticClusteringTest.testSyntacticClustering() Ontology was loaded");
-
-		Distance<OWLEntity> distance = DistanceCreator
+        o.getOWLOntologyManager().removeAxioms(
+                o,
+                new HashSet<OWLAnnotationAssertionAxiom>(o
+                        .getAxioms(AxiomType.ANNOTATION_ASSERTION)));
+        Distance<OWLEntity> distance = DistanceCreator
 				.createAxiomRelevanceAxiomBasedDistance(m);
 		System.out.println("SyntacticClusteringTest.testSyntacticClustering() Distance was created");
 		ClusterDecompositionModel<OWLEntity> model = ExperimentHelper
@@ -43,8 +50,8 @@ public class SyntacticClusteringSlowOntologyProfiling {
 
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException,
-			TransformerFactoryConfigurationError, TransformerException {
-		testSyntacticClustering();
+            TransformerFactoryConfigurationError, TransformerException, IOException {
+        testSyntacticClustering();
 	}
 
 }
