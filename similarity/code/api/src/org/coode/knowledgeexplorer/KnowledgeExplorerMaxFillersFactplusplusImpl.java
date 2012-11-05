@@ -32,7 +32,8 @@ import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 
-public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExplorer {
+public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
+		KnowledgeExplorer {
 
 	private final OWLKnowledgeExplorerReasoner r;
 	private final OWLReasoner reasoner;
@@ -51,11 +52,11 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
 		}
 		this.o = reasoner.getRootOntology();
 		this.reasoner = reasoner;
-//		this.r = new JFactReasoner(reasoner.getRootOntology(),
-//				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-		 this.r = new OWLKnowledgeExplorationReasonerWrapper(
-		 (FaCTPlusPlusReasoner) new FaCTPlusPlusReasonerFactory()
-		 .createReasoner(reasoner.getRootOntology()));
+		// this.r = new JFactReasoner(reasoner.getRootOntology(),
+		// new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
+		this.r = new OWLKnowledgeExplorationReasonerWrapper(
+				(FaCTPlusPlusReasoner) new FaCTPlusPlusReasonerFactory()
+						.createReasoner(reasoner.getRootOntology()));
 		this.manager = o.getOWLOntologyManager();
 		dataFactory = this.manager.getOWLDataFactory();
 		this.buildAxiomMap();
@@ -144,13 +145,11 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
 			label.add(c);
 		}
 		OWLClassExpression LabC;
-		if (label.size() == 0){
+		if (label.size() == 0) {
 			LabC = null;
-		}
-		else if (label.size() == 1){
+		} else if (label.size() == 1) {
 			LabC = label.iterator().next();
-		}
-		else{
+		} else {
 			LabC = dataFactory.getOWLObjectIntersectionOf(label);
 		}
 		// if(LabC!=null)
@@ -168,9 +167,9 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
 			for (RootNode n : r.getObjectNeighbours(node,
 					prop.asOWLObjectProperty())) {
 				if (!visited.contains(n)) {
-//					System.out
-//							.println("KnowledgeExplorerGraph.getMaxFillers() visiting "
-//									+ n);
+					// System.out
+					// .println("KnowledgeExplorerGraph.getMaxFillers() visiting "
+					// + n);
 					for (OWLClassExpression f : getMaxFillers(n, visited)) {
 						OWLClassExpression exists = dataFactory
 								.getOWLObjectSomeValuesFrom(prop, f);
@@ -184,7 +183,7 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
 			}
 		}
 		if (fillers.isEmpty()) {
-			if (LabC == null){
+			if (LabC == null) {
 				LabC = dataFactory.getOWLThing();
 			}
 			fillers.add(LabC);

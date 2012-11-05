@@ -81,6 +81,7 @@ public class SyntacticClusteringWithADEvaluationExperiment extends ClusteringWit
 				OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 				OWLOntology o = m.loadOntologyFromOntologyDocument(new File(
 						current));
+				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
 				metrics.add(new SimpleMetric<String>("Ontology", s));
 				metrics.addAll(getBasicOntologyMetrics(m));
 				

@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,6 +23,8 @@ import org.coode.proximitymatrix.cluster.ClusterStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisationStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -260,6 +263,13 @@ public class ExperimentHelper {
 		}
 		// empty line to separate clusters
 		output.println();
+	}
+	
+	public static void stripOntologyFromAnnotationAssertions(OWLOntology o){
+		o.getOWLOntologyManager().removeAxioms(
+                o,
+                new HashSet<OWLAnnotationAssertionAxiom>(o
+                        .getAxioms(AxiomType.ANNOTATION_ASSERTION)));
 	}
 
 }

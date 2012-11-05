@@ -43,12 +43,12 @@ import uk.ac.manchester.cs.jfact.JFactReasoner;
 
 public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends SyntacticClusteringWithADEvaluationExperiment{
 
-	private final static String RESULTS_BASE = "similarity/experiment-results/syntactic/bioportal/"; 
+	private final static String RESULTS_BASE = "similarity/experiment-results/semantic/bioportal/"; 
 
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException, FileNotFoundException {
 
-		String bioportalList = "similarity/BioPortal_LocalRepositoryIRIs.txt";
+		String bioportalList = "similarity/BioPortal_relativeRepositoryIRIs.txt";
 //		BufferedReader d = new BufferedReader(new InputStreamReader(
 //				new FileInputStream(new File(bioportalList))));
 		BufferedReader d = new BufferedReader(new FileReader(new File(bioportalList)));
@@ -86,63 +86,46 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends Synta
 			if (!f.exists()) {
 				final PrintStream singleOut = new PrintStream(f);
 
-				final OWLOntologyManager m = OWLManager
-						.createOWLOntologyManager();
-				final OWLOntology o = m
-						.loadOntologyFromOntologyDocument(IRI.create(s));
-				final AtomicReference<JFactReasoner>   reasoner = new AtomicReference<JFactReasoner>(); 
-				final AtomicReference<KnowledgeExplorer> ke = new AtomicReference<KnowledgeExplorer>();
+//				final OWLOntologyManager m = OWLManager
+//						.createOWLOntologyManager();
+//				final OWLOntology o = m
+//						.loadOntologyFromOntologyDocument(IRI.create(s));
+//				final AtomicReference<JFactReasoner>   reasoner = new AtomicReference<JFactReasoner>(); 
+//				final AtomicReference<KnowledgeExplorer> ke = new AtomicReference<KnowledgeExplorer>();
 				Callable<Object> task1 = new Callable<Object>() {
-					public Object call() throws OWLOntologyCreationException {
+					public Object call() throws OWLOntologyCreationException, OPPLException, ParserConfigurationException {
 						//load ontology and get general ontology metrics
+						OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+						OWLOntology o = m.loadOntologyFromOntologyDocument(new File(s));
+						ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
 						metrics.add(new SimpleMetric<String>("Ontology", s));
-						metrics.addAll(SemanticClusteringWithADEvaluationExperiment.getBasicOntologyMetrics(m));
-						reasoner.set(new JFactReasoner(o,
-								new SimpleConfiguration(), BufferingMode.NON_BUFFERING));
-						reasoner.get().precomputeInferences();
-						ke.set(new KnowledgeExplorerMaxFillersFactplusplusImpl(
-								reasoner.get()));
+						metrics.addAll(getBasicOntologyMetrics(m));
 						
-						return null;
-					}
-				};
-				runTaskWithTimeout(task1, 5, TimeUnit.MINUTES);
-				
-				Set<OWLAxiom> entailments = ke.get().getAxioms();
-				Callable<Object> task2 = new Callable<Object>() {
-					public Object call() throws OPPLException, ParserConfigurationException {
+						JFactReasoner reasoner = new JFactReasoner(o,
+								new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
+						reasoner.precomputeInferences();
+						KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(
+								reasoner);
+						Set<OWLAxiom> entailments = ke.getAxioms();
+						
 						//popularity distance
 						Distance<OWLEntity> distance = DistanceCreator
-								.createAxiomRelevanceAxiomBasedDistance(m);
-						
-						SyntacticClusteringWithADEvaluationExperiment.run("popularity", metrics, singleOut, o, distance, null);
-						return null;
-					}
-				};
-				runTaskWithTimeout(task2, 30, TimeUnit.MINUTES);
-				
-				Callable<Object> task3 = new Callable<Object>() {
-					public Object call() throws OPPLException, ParserConfigurationException {
+								.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(m, ke);
+						SemanticClusteringWithADEvaluationExperiment.run("popularity", metrics, singleOut, o, distance, ke.getEntities(), entailments);
+							
 						//property relevance
-						Set<OWLEntity> set = SyntacticClusteringWithADEvaluationExperiment.getSignatureWithoutProperties(o);
-						Distance<OWLEntity> distance = DistanceCreator
-								.createOWLEntityRelevanceAxiomBasedDistance(m);
-						SyntacticClusteringWithADEvaluationExperiment.run("object-property-relevance", metrics, singleOut, o, distance, set);
+						Set<OWLEntity> filteredSignature = SemanticClusteringWithADEvaluationExperiment.getSignatureWithoutProperties(ke);
+						distance = DistanceCreator
+								.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(m, ke);
+						SemanticClusteringWithADEvaluationExperiment.run("object-property-relevance", metrics, singleOut, o, distance, filteredSignature, entailments);
+						
+						//structural
+						distance = DistanceCreator.createStructuralKnowledgeExplorerAxiomRelevanceBasedDistance(o, ke);
+						SemanticClusteringWithADEvaluationExperiment.run("structural-relevance", metrics, singleOut, o, distance,  ke.getEntities(), entailments);
 						return null;
 					}
 				};
-				runTaskWithTimeout(task3, 30, TimeUnit.MINUTES);
-				
-				//structural
-				Callable<Object> task4 = new Callable<Object>() {
-					public Object call() throws OPPLException, ParserConfigurationException {
-						Distance<OWLEntity> distance = DistanceCreator
-								.createStructuralAxiomRelevanceAxiomBasedDistance(m);
-						SyntacticClusteringWithADEvaluationExperiment.run("structural", metrics, singleOut, o, distance, null);
-						return null;
-					}
-				};
-				runTaskWithTimeout(task4, 30, TimeUnit.MINUTES);
+				runTaskWithTimeout(task1, 45, TimeUnit.MINUTES);
 								
 				printMetrics(metrics, allResultsFile);
 				firstTime = false;

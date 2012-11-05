@@ -39,7 +39,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends Synt
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException, FileNotFoundException {
 
-		String bioportalList = "similarity/BioPortal_LocalRepositoryIRIs.txt";
+		String bioportalList = "similarity/BioPortal_relativeRepositoryIRIs.txt";
 //		BufferedReader d = new BufferedReader(new InputStreamReader(
 //				new FileInputStream(new File(bioportalList))));
 		BufferedReader d = new BufferedReader(new FileReader(new File(bioportalList)));
@@ -80,7 +80,8 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends Synt
 				final OWLOntologyManager m = OWLManager
 						.createOWLOntologyManager();
 				final OWLOntology o = m
-						.loadOntologyFromOntologyDocument(IRI.create(s));
+						.loadOntologyFromOntologyDocument(new File(s));
+				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
 				Callable<Object> task1 = new Callable<Object>() {
 					public Object call() throws OWLOntologyCreationException {
 						//load ontology and get general ontology metrics
@@ -123,7 +124,8 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends Synt
 						return null;
 					}
 				};
-				runTaskWithTimeout(task4, 30, TimeUnit.MINUTES);
+				runTaskWithTimeout(task4, 5, TimeUnit.SECONDS);
+				//runTaskWithTimeout(task4, 30, TimeUnit.MINUTES);
 								
 				printMetrics(metrics, allResultsFile);
 				firstTime = false;
