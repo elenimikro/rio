@@ -1,12 +1,10 @@
 package org.coode.knowledgeexplorer.distance.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Set;
 
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerChainsawJFactImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillerJFactImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,19 +21,29 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.InferenceType;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
+import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner;
+import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner.RootNode;
 
+import uk.ac.manchester.cs.chainsaw.ChainsawReasoner;
+import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
+import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
+import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 
 public class ChainsawKnowledgeExplorerTest {
 
-	private OWLOntology o;
+    private OWLOntology o;
+    private OWLOntology o1;
 	private OWLOntologyManager m;
-
+    OWLClass c10;
 	@Before
 	public void setUp() throws OWLOntologyCreationException {
 		m = OWLManager.createOWLOntologyManager();
 		o = m.createOntology();
+        o1 = m.createOntology();
 		OWLDataFactory f = m.getOWLDataFactory();
 		OWLClass c1 = f.getOWLClass(IRI.create("urn:test#C1"));
 		OWLClass c2 = f.getOWLClass(IRI.create("urn:test#C2"));
@@ -50,7 +58,7 @@ public class ChainsawKnowledgeExplorerTest {
 		OWLClass c7 = f.getOWLClass(IRI.create("urn:test#C7"));
 		OWLClass c8 = f.getOWLClass(IRI.create("urn:test#C8"));
 		OWLClass c9 = f.getOWLClass(IRI.create("urn:test#C9"));
-		OWLClass c10 = f.getOWLClass(IRI.create("urn:test#C10"));
+        c10 = f.getOWLClass(IRI.create("urn:test#C10"));
 		OWLClass c11 = f.getOWLClass(IRI.create("urn:test#C11"));
 		OWLClass c12 = f.getOWLClass(IRI.create("urn:test#C12"));
 
@@ -68,27 +76,50 @@ public class ChainsawKnowledgeExplorerTest {
 
 		// m.addAxiom(o, c1equiv);
 		// m.addAxiom(o, c4equiv);
-		m.addAxiom(o, c7Subc8);
-		m.addAxiom(o, c8Subc9);
-		m.addAxiom(o, c10Subc11);
-		m.addAxiom(o, c11Subc9);
-		m.addAxiom(o, c12Subc11);
+        m.addAxiom(o, c7Subc8);
+        m.addAxiom(o, c8Subc9);
+        m.addAxiom(o, c10Subc11);
+        m.addAxiom(o, c11Subc9);
+        m.addAxiom(o, c12Subc11);
+        m.addAxiom(o1, c10Subc11);
+        m.addAxiom(o1, c11Subc9);
+        System.out.println("onto: " + c7Subc8);
+        System.out.println("onto: " + c8Subc9);
+        System.out.println("onto: " + c10Subc11);
+        System.out.println("onto: " + c11Subc9);
+        System.out.println("onto: " + c12Subc11);
 	}
 
-	@Test
-	public void chainsawKnowledgeExplorerTest() {
-		// compare results of chainsaw with normal JFact...
-		assertEquals(5, o.getAxiomCount());
-		JFactReasoner reasoner = new JFactReasoner(o,
-				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner);
-		Set<OWLEntity> set = ke.getEntities();
-		assertNotNull(set);
+    @Test
+    public void chainsawKnowledgeExplorerTest() {
+        // compare results of chainsaw with normal JFact...
+        assertEquals(5, o.getAxiomCount());
+        OWLReasoner reasoner = new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
+                BufferingMode.NON_BUFFERING);
+        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner,
+                new OWLKnowledgeExplorationReasonerWrapper(new FaCTPlusPlusReasoner(o,
+                        new SimpleConfiguration(), BufferingMode.NON_BUFFERING)));
+        Set<OWLEntity> set = ke.getEntities();
+        assertNotNull(set);
+        KnowledgeExplorer chainke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner,
+                new ChainsawReasoner(new FaCTPlusPlusReasonerFactory(), o,
+                        new SimpleConfiguration()));
+        assertEquals(ke.getAxioms(), chainke.getAxioms());
+    }
 
-		KnowledgeExplorer chainke = new KnowledgeExplorerChainsawJFactImpl(
-				reasoner);
-		assertEquals(ke.getAxioms().size(), chainke.getAxioms().size());
-	}
+    @Test
+    public void shouldHaveSameLabels() {
+        JFactReasoner first = new JFactReasoner(o, new SimpleConfiguration(),
+                BufferingMode.NON_BUFFERING);
+        first.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        RootNode n1 = first.getRoot(c10);
+        OWLKnowledgeExplorerReasoner second = new OWLKnowledgeExplorationReasonerWrapper(
+                new FaCTPlusPlusReasoner(o1, new SimpleConfiguration(),
+                        BufferingMode.NON_BUFFERING));
+        second.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        RootNode n2 = second.getRoot(c10);
+        assertEquals(first.getObjectLabel(n1, true), second.getObjectLabel(n2, true));
+    }
 
 }
