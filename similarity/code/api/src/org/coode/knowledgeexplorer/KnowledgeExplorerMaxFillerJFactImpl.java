@@ -19,18 +19,12 @@ import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner;
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner.RootNode;
 import org.semanticweb.owlapi.util.MultiMap;
-
-import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
-import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
-import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
-import uk.ac.manchester.cs.jfact.JFactReasoner;
 
 public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 
@@ -42,23 +36,20 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 	private final MultiMap<OWLEntity, OWLAxiom> axiomMap = new MultiMap<OWLEntity, OWLAxiom>();
 	private final OWLDataFactory dataFactory;
 
-	OWLClass rootClass = null;
 
-	public KnowledgeExplorerMaxFillerJFactImpl(OWLReasoner reasoner) {
+    public KnowledgeExplorerMaxFillerJFactImpl(OWLReasoner reasoner,
+            OWLKnowledgeExplorerReasoner r) {
 		if (reasoner == null) {
 			throw new NullPointerException(
 					"OWLKnowledgeExplorerReasoner cannot be null");
 		}
-		this.o = reasoner.getRootOntology();
+		o = reasoner.getRootOntology();
 		this.reasoner = reasoner;
-		this.r = new JFactReasoner(reasoner.getRootOntology(),
-				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-//		 this.r = new OWLKnowledgeExplorationReasonerWrapper(
-//		 (FaCTPlusPlusReasoner) new FaCTPlusPlusReasonerFactory()
-//		 .createReasoner(reasoner.getRootOntology()));
-		this.manager = o.getOWLOntologyManager();
-		dataFactory = this.manager.getOWLDataFactory();
-		this.buildAxiomMap();
+        this.r = r;
+        this.r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+		manager = o.getOWLOntologyManager();
+		dataFactory = manager.getOWLDataFactory();
+		buildAxiomMap();
 	}
 
 	private void buildAxiomMap() {
@@ -71,34 +62,33 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 
 		for (OWLClass c : satisfiable) {
 			RootNode root = r.getRoot(c);
-			rootClass = c;
-			// System.out.println("KnowledgeExplorerGraph.computeAxioms() ROOT CLASS "
-			// + rootClass);
-			Set<OWLAxiom> computeAxioms = computeAxioms(root);
+            System.out.println(r.getClass().getSimpleName() + " ROOT CLASS " + c);
+            Set<OWLAxiom> computeAxioms = computeAxioms(root, c);
+
 			computeAxioms.addAll(getNamedSubClassAxioms(root, c));
+            System.out.println(computeAxioms);
 			for (OWLAxiom ax : computeAxioms) {
 				Set<OWLEntity> sig = ax.getSignature();
 				for (OWLEntity e : sig) {
 					axiomMap.put(e, ax);
-					if (!e.isOWLObjectProperty())
-						signature.add(e);
+					if (!e.isOWLObjectProperty()) {
+                        signature.add(e);
+                    }
 				}
 			}
 			// signature.add(c);
 		}
 	}
 
-	private Set<OWLAxiom> computeAxioms(RootNode root) {
+    private Set<OWLAxiom> computeAxioms(RootNode root, OWLClass rootClass) {
 		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
 
-		Node<? extends OWLObjectPropertyExpression> objectNeighbours = this.r
+		Node<? extends OWLObjectPropertyExpression> objectNeighbours = r
 				.getObjectNeighbours(root, false);
 		Set<? extends OWLObjectPropertyExpression> entities = objectNeighbours
 				.getEntities();
 		for (OWLObjectPropertyExpression prop : entities) {
 			if (prop instanceof OWLObjectProperty) {
-				// System.out.println("KnowledgeExplorerGraph.computeAxioms() "
-				// + prop);
 				Collection<RootNode> objectRootNodes = r.getObjectNeighbours(
 						root, prop.asOWLObjectProperty());
 				Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
@@ -124,10 +114,10 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 		for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
 				false).getEntities()) {
 			for (RootNode n : r.getObjectNeighbours(node,
-					prop.asOWLObjectProperty())) { // for every neighbour of a
-													// Node...
-				for (OWLClassExpression f : getFillers(n)) { // and every its
-																// filler
+ prop.asOWLObjectProperty())) {
+                // for every neighbour of a Node...
+                for (OWLClassExpression f : getFillers(n)) {
+                    // and every its filler
 					fillers.add(dataFactory.getOWLObjectSomeValuesFrom(prop, f));
 				}
 			}
@@ -153,24 +143,13 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 		else{
 			LabC = dataFactory.getOWLObjectIntersectionOf(label);
 		}
-		// if(LabC!=null)
-		// System.out.println("KnowledgeExplorerGraph.getMaxFillers() Label " +
-		// LabC);
 
 		visited.add(node);
-		// System.out.println("KnowledgeExplorerGraph.getMaxFillers() node " +
-		// node);
 		for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
 				false).getEntities()) {
-			// System.out
-			// .println("KnowledgeExplorerGraph.getMaxFillers() property " +
-			// prop);
 			for (RootNode n : r.getObjectNeighbours(node,
 					prop.asOWLObjectProperty())) {
 				if (!visited.contains(n)) {
-					System.out
-							.println("KnowledgeExplorerGraph.getMaxFillers() visiting "
-									+ n);
 					for (OWLClassExpression f : getMaxFillers(n, visited)) {
 						OWLClassExpression exists = dataFactory
 								.getOWLObjectSomeValuesFrom(prop, f);
@@ -245,12 +224,12 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 				false);
 		for (OWLClassExpression ex : classes) {
 			if (ex instanceof OWLClass && !ex.asOWLClass().equals(c)) {
-				OWLSubClassOfAxiom ax = this.dataFactory.getOWLSubClassOfAxiom(
+				OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(
 						c, ex);
 				if (reasoner.isEntailed(ax)) {
 					toReturn.add(ax);
 				}
-				OWLEquivalentClassesAxiom ax2 = this.dataFactory
+				OWLEquivalentClassesAxiom ax2 = dataFactory
 						.getOWLEquivalentClassesAxiom(c, ex);
 				if (reasoner.isEntailed(ax2)) {
 					toReturn.add(ax2);
@@ -272,7 +251,7 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 
 	@Override
 	public OWLKnowledgeExplorerReasoner getKnowledgeExplorerReasoner() {
-		return (OWLKnowledgeExplorerReasoner) r;
+		return r;
 	}
 
 	@Override
@@ -282,9 +261,11 @@ public class KnowledgeExplorerMaxFillerJFactImpl implements KnowledgeExplorer {
 
 	public Set<OWLClass> getOWLClasses() {
 		Set<OWLClass> toReturn = new HashSet<OWLClass>();
-		for (OWLEntity e : signature)
-			if (e.isOWLClass())
-				toReturn.add(e.asOWLClass());
+		for (OWLEntity e : signature) {
+            if (e.isOWLClass()) {
+                toReturn.add(e.asOWLClass());
+            }
+        }
 		return toReturn;
 	}
 }
