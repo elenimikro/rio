@@ -35,6 +35,8 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 public class ClusterCreator {
 
+	private ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix;
+
 	public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(
 			OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> entities)
 			throws OPPLException, ParserConfigurationException {
@@ -76,14 +78,16 @@ public class ClusterCreator {
 		// In this case is 1.
 		PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter = DistanceThresholdBasedFilter
 				.build(distanceMatrix.getData(), 1);
-		
-		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance, wrappedMatrix, filter, singletonDistance, newObjects, equivalenceClasses, baseDistanceMatrix);
+
+		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
+				wrappedMatrix, filter, singletonDistance, newObjects,
+				equivalenceClasses, baseDistanceMatrix);
 		return clusters;
 	}
-	
-	
+
 	private <P extends OWLEntity> Set<Cluster<OWLEntity>> runClustering(
-			OWLOntology o, Distance<OWLEntity> distance, 
+			OWLOntology o,
+			Distance<OWLEntity> distance,
 			final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix,
 			PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter,
 			Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance,
@@ -91,10 +95,10 @@ public class ClusterCreator {
 			MultiMap<OWLEntity, OWLEntity> equivalenceClasses,
 			SimpleProximityMatrix<OWLEntity> baseDistanceMatrix)
 			throws OPPLException, ParserConfigurationException {
-		
+
 		OWLOntologyManager manager = o.getOWLOntologyManager();
 		System.out.println("Building clustering matrix....");
-		ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix = ClusteringProximityMatrix
+		clusteringMatrix = ClusteringProximityMatrix
 				.build(wrappedMatrix,
 						new CentroidProximityMeasureFactory(),
 						filter,
@@ -137,10 +141,8 @@ public class ClusterCreator {
 						.format("Finished clustering after %d agglomerations no of clusters %d",
 								i, clusters.size()));
 
-
 		return clusters;
 	}
-
 
 	public <P extends OWLEntity> ClusterDecompositionModel<P> buildClusterDecompositionModel(
 			OWLOntology o, OWLOntologyManager manager,
@@ -152,17 +154,15 @@ public class ClusterCreator {
 				.getOWLObjectGeneralisation(clusters, o.getImportsClosure(),
 						constraintSystem);
 		ClusterDecompositionModel<P> clusterModel = (ClusterDecompositionModel<P>) Utils
-				.toClusterDecompositionModel(
-						clusters, o.getImportsClosure(),
+				.toClusterDecompositionModel(clusters, o.getImportsClosure(),
 						generalisation, new QuickFailRuntimeExceptionHandler());
 		return clusterModel;
 	}
 
-	
 	public <P extends OWLEntity> ClusterDecompositionModel<P> buildKnowledgeExplorerClusterDecompositionModel(
-			OWLOntology o, Set<OWLAxiom> entailements, OWLOntologyManager manager,
-			Set<Cluster<OWLEntity>> clusters) throws OPPLException,
-			ParserConfigurationException {
+			OWLOntology o, Set<OWLAxiom> entailements,
+			OWLOntologyManager manager, Set<Cluster<OWLEntity>> clusters)
+			throws OPPLException, ParserConfigurationException {
 		ConstraintSystem constraintSystem = new OPPLFactory(manager, o, null)
 				.createConstraintSystem();
 		OWLObjectGeneralisation generalisation = Utils
@@ -172,11 +172,10 @@ public class ClusterCreator {
 				.toKnowledgeExplorerClusterDecompositionModel(clusters,
 						o.getImportsClosure(), entailements, generalisation,
 						new QuickFailRuntimeExceptionHandler());
-				
-						
+
 		return clusterModel;
 	}
-	
+
 	public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateZeros(
 			OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> entities)
 			throws OPPLException, ParserConfigurationException {
@@ -218,13 +217,13 @@ public class ClusterCreator {
 		// In this case is 0. -> mapped to agglomerateZeros
 		PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter = DistanceThresholdBasedFilter
 				.build(distanceMatrix.getData(), 0);
-		
-		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance, wrappedMatrix, filter, singletonDistance, newObjects, equivalenceClasses, baseDistanceMatrix);
+
+		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
+				wrappedMatrix, filter, singletonDistance, newObjects,
+				equivalenceClasses, baseDistanceMatrix);
 		return clusters;
 	}
-	
-	
-	
+
 	public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
 		System.out
 				.println(String.format(
@@ -235,4 +234,9 @@ public class ClusterCreator {
 								.getMinimumDistancePair().getSecond()),
 						clusteringMatrix.getMinimumDistance()));
 	}
+
+	public ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> getClusteringMatrix() {
+		return clusteringMatrix;
+	}
+
 }

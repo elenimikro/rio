@@ -4,50 +4,67 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Properties;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.coode.basetest.ClusterCreator;
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
+import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.oppl.exceptions.OPPLException;
+import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.ClusterStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisationStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
+import org.coode.utils.owl.ManchesterSyntaxRenderer;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
+import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 public class ExperimentHelper {
 
-	public static ClusterDecompositionModel<OWLEntity> startSyntacticClustering(
-			 OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> clusteringSignature)
-			throws OPPLException, ParserConfigurationException {
+	private static ClusterCreator clusterer;
 
+	public static ClusterDecompositionModel<OWLEntity> startSyntacticClustering(
+			OWLOntology o, Distance<OWLEntity> distance,
+			Set<OWLEntity> clusteringSignature) throws OPPLException,
+			ParserConfigurationException, OWLOntologyCreationException {
+		// make copy
+		OWLOntology original = OWLManager.createOWLOntologyManager()
+				.createOntology(o.getAxioms());
 		OWLOntologyManager m = o.getOWLOntologyManager();
-		ClusterCreator clusterer = new ClusterCreator();
+		clusterer = new ClusterCreator();
 		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
 				clusteringSignature, m, clusterer);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildClusterDecompositionModel(o, m, clusters);
+				.buildClusterDecompositionModel(original,
+						original.getOWLOntologyManager(), clusters);
 		return model;
 	}
-	
+
 	public static ClusterDecompositionModel<OWLEntity> startSemanticClustering(
-			 OWLOntology o, Set<OWLAxiom> entailments, Distance<OWLEntity> distance, Set<OWLEntity> clusteringSignature)
+			OWLOntology o, Set<OWLAxiom> entailments,
+			Distance<OWLEntity> distance, Set<OWLEntity> clusteringSignature)
 			throws OPPLException, ParserConfigurationException {
 
 		OWLOntologyManager m = o.getOWLOntologyManager();
@@ -57,7 +74,7 @@ public class ExperimentHelper {
 		ClusterDecompositionModel<OWLEntity> model = clusterer
 				.buildKnowledgeExplorerClusterDecompositionModel(o,
 						entailments, m, clusters);
-				
+
 		return model;
 	}
 
@@ -77,8 +94,7 @@ public class ExperimentHelper {
 			for (OWLOntology ontology : m.getOntologies()) {
 				entities.addAll(ontology.getSignature());
 			}
-		} 
-		else{
+		} else {
 			entities.addAll(clusteringSignature);
 		}
 		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
@@ -86,18 +102,19 @@ public class ExperimentHelper {
 		return clusters;
 	}
 
-//	public static ClusterDecompositionModel<OWLEntity> startSyntacticClustering(
-//			OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> entities)
-//			throws OPPLException, ParserConfigurationException {
-//
-//		ClusterCreator clusterer = new ClusterCreator();
-//		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
-//				distance, entities);
-//		ClusterDecompositionModel<OWLEntity> model = clusterer
-//				.buildClusterDecompositionModel(o, o.getOWLOntologyManager(),
-//						clusters);
-//		return model;
-//	}
+	// public static ClusterDecompositionModel<OWLEntity>
+	// startSyntacticClustering(
+	// OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> entities)
+	// throws OPPLException, ParserConfigurationException {
+	//
+	// ClusterCreator clusterer = new ClusterCreator();
+	// Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
+	// distance, entities);
+	// ClusterDecompositionModel<OWLEntity> model = clusterer
+	// .buildClusterDecompositionModel(o, o.getOWLOntologyManager(),
+	// clusters);
+	// return model;
+	// }
 
 	public static Collection<? extends SimpleMetric<?>> getClusteringMetrics(
 			ClusterDecompositionModel<OWLEntity> model) {
@@ -264,12 +281,28 @@ public class ExperimentHelper {
 		// empty line to separate clusters
 		output.println();
 	}
-	
-	public static void stripOntologyFromAnnotationAssertions(OWLOntology o){
+
+	public static void stripOntologyFromAnnotationAssertions(OWLOntology o) {
 		o.getOWLOntologyManager().removeAxioms(
-                o,
-                new HashSet<OWLAnnotationAssertionAxiom>(o
-                        .getAxioms(AxiomType.ANNOTATION_ASSERTION)));
+				o,
+				new HashSet<OWLAnnotationAssertionAxiom>(o
+						.getAxioms(AxiomType.ANNOTATION_ASSERTION)));
+	}
+
+	public static ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> getClusteringMatrix() {
+		return clusterer.getClusteringMatrix();
+	}
+
+	public static ManchesterSyntaxRenderer setManchesterSyntaxWithLabelRendering(
+			OWLOntologyManager manager) {
+		OWLDataFactory dataFactory = manager.getOWLDataFactory();
+		ManchesterSyntaxRenderer renderer = new ManchesterSyntaxRenderer();
+		ShortFormProvider shortFormProvider = new AnnotationValueShortFormProvider(
+				Arrays.asList(dataFactory.getRDFSLabel()),
+				Collections.<OWLAnnotationProperty, List<String>> emptyMap(),
+				manager);
+		renderer.setShortFormProvider(shortFormProvider);
+		return renderer;
 	}
 
 }

@@ -2,50 +2,41 @@ package experiments;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
-import org.coode.basetest.ClusterCreator;
 import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
+import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.oppl.exceptions.OPPLException;
-import org.coode.proximitymatrix.cluster.Cluster;
+import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
-import org.coode.proximitymatrix.cluster.ClusterStatistics;
-import org.coode.proximitymatrix.cluster.GeneralisationStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
-import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
+import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
-import uk.ac.manchester.cs.atomicdecomposition.Atom;
-import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposer;
+public class SyntacticClusteringWithADEvaluationExperiment extends
+		ClusteringWithADEvaluationExperimentBase {
 
-public class SyntacticClusteringWithADEvaluationExperiment extends ClusteringWithADEvaluationExperimentBase{
-	
+	private final static String RESULTS_BASE = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-results/";
 
-	private final static String RESULTS_BASE = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-results/"; 
-	
 	public static void main(String[] args) throws OWLOntologyCreationException,
-			OPPLException, ParserConfigurationException, FileNotFoundException {
+			OPPLException, ParserConfigurationException, FileNotFoundException,
+			TransformerFactoryConfigurationError, TransformerException {
 
 		String base = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-ontologies/";
 		String[] input = new String[] { "amino-acid-original.owl",
@@ -59,63 +50,100 @@ public class SyntacticClusteringWithADEvaluationExperiment extends ClusteringWit
 		setupClusteringExperiment(base, input, file);
 	}
 
-	public static void setupClusteringExperiment(String baseDir, String[] input,
-			File allResultsFile) throws FileNotFoundException,
+	public static void setupClusteringExperiment(String baseDir,
+			String[] input, File allResultsFile) throws FileNotFoundException,
 			OWLOntologyCreationException, OPPLException,
-			ParserConfigurationException {
+			ParserConfigurationException, TransformerFactoryConfigurationError,
+			TransformerException {
 		String current;
-		for(String s : input){
+		for (String s : input) {
 			ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
 			System.out
-					.println("\n PopularityClusteringWithADEvaluationExperiment.main() \t " + s);
-			String substring = s.substring(s.indexOf("/")+1);
-			String filename = RESULTS_BASE + substring.replaceAll(".owl", ".csv");
-			String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
+					.println("\n PopularityClusteringWithADEvaluationExperiment.main() \t "
+							+ s);
+			String substring = s.substring(s.indexOf("/") + 1);
+			String filename = RESULTS_BASE
+					+ substring.replaceAll(".owl", ".csv");
+
 			File f = new File(filename);
-			String type;
 			if (!f.exists()) {
 				PrintStream singleOut = new PrintStream(f);
 				current = baseDir + s;
-				
-				//load ontology and get general ontology metrics
+
+				// load ontology and get general ontology metrics
 				OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 				OWLOntology o = m.loadOntologyFromOntologyDocument(new File(
 						current));
-				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
 				metrics.add(new SimpleMetric<String>("Ontology", s));
 				metrics.addAll(getBasicOntologyMetrics(m));
-				
-				//popularity distance
+
+				ManchesterSyntaxRenderer renderer = ExperimentHelper
+						.setManchesterSyntaxWithLabelRendering(o
+								.getOWLOntologyManager());
+				ToStringRenderer.getInstance().setRenderer(renderer);
+
+				// popularity distance
 				Distance<OWLEntity> distance = DistanceCreator
 						.createAxiomRelevanceAxiomBasedDistance(m);
-				run("popularity", metrics, singleOut, o, distance, null);
-				
-				//structural
+				String clustering_type = "popularity";
+				ClusterDecompositionModel<OWLEntity> model = run(
+						clustering_type, metrics, singleOut, o, distance, null);
+				saveResults(substring, o, clustering_type, model, distance);
+
+				// structural
 				distance = DistanceCreator
 						.createStructuralAxiomRelevanceAxiomBasedDistance(m);
-				run("structural", metrics, singleOut, o, distance, null);
-				
-				//property relevance
+				clustering_type = "structural";
+				model = run(clustering_type, metrics, singleOut, o, distance,
+						null);
+				saveResults(substring, o, clustering_type, model, distance);
+
+				// property relevance
 				Set<OWLEntity> set = getSignatureWithoutProperties(o);
 				distance = DistanceCreator
 						.createOWLEntityRelevanceAxiomBasedDistance(m);
-				run("object-property-relevance", metrics, singleOut, o, distance, set);
-				
+				clustering_type = "object-property-relevance";
+				model = run(clustering_type, metrics, singleOut, o, distance,
+						set);
+				saveResults(substring, o, clustering_type, model, distance);
+
 				printMetrics(metrics, allResultsFile);
 				firstTime = false;
 			}
 		}
 	}
 
-	protected static void run(String distanceType, ArrayList<SimpleMetric<?>> metrics,
-			PrintStream singleOut, OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> clusteringSignature)
-			throws OPPLException, ParserConfigurationException {
-		System.out
-				.println("ClusteringWithADEvaluationExperiment.main() \t " + distanceType);
+	private static File saveResults(String substring, OWLOntology o,
+			String clustering_type, ClusterDecompositionModel<OWLEntity> model,
+			Distance<OWLEntity> distance) throws ParserConfigurationException,
+			TransformerFactoryConfigurationError, TransformerException,
+			FileNotFoundException {
+		String xmlname = RESULTS_BASE + clustering_type + "-"
+				+ substring.replaceAll(".owl", ".xml");
+		File xml = new File(xmlname);
+		PrintStream out = new PrintStream(new File(xmlname + ".txt"));
+		ClusterResultsExploitationUtils.printGeneralisationStats(model, out,
+				xmlname);
+		ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix = ExperimentHelper
+				.getClusteringMatrix();
+		ClusterResultsExploitationUtils.filterResults(clusteringMatrix, model,
+				distance, out);
+		Utils.saveToXML(model, o.getOWLOntologyManager(), xml);
+		return xml;
+	}
+
+	protected static ClusterDecompositionModel<OWLEntity> run(
+			String distanceType, ArrayList<SimpleMetric<?>> metrics,
+			PrintStream singleOut, OWLOntology o, Distance<OWLEntity> distance,
+			Set<OWLEntity> clusteringSignature) throws OPPLException,
+			ParserConfigurationException, OWLOntologyCreationException {
+		System.out.println("ClusteringWithADEvaluationExperiment.main() \t "
+				+ distanceType);
 		metrics.add(new SimpleMetric<String>("Clustering-type", distanceType));
 		ClusterDecompositionModel<OWLEntity> model = ExperimentHelper
 				.startSyntacticClustering(o, distance, clusteringSignature);
 		metrics.addAll(getMetrics(singleOut, o, model));
+		return model;
 	}
 
 	private static Collection<? extends SimpleMetric<?>> getMetrics(
@@ -132,11 +160,12 @@ public class SyntacticClusteringWithADEvaluationExperiment extends ClusteringWit
 		toReturn.addAll(getClusteringStats(singleOut, model.getClusterList()));
 		return toReturn;
 	}
-	
+
 	protected static Set<OWLEntity> getSignatureWithoutProperties(OWLOntology o) {
-		//final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		Set<OWLEntity> entities = new HashSet<OWLEntity>(); 
-		//exclude all properties
+		// final SimpleShortFormProvider shortFormProvider = new
+		// SimpleShortFormProvider();
+		Set<OWLEntity> entities = new HashSet<OWLEntity>();
+		// exclude all properties
 		for (OWLOntology ontology : o.getImportsClosure()) {
 			for (OWLEntity e : ontology.getSignature()) {
 				if (!e.isType(EntityType.OBJECT_PROPERTY)

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerChainsawJFactImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillerJFactImpl;
+import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -82,13 +83,25 @@ public class ChainsawKnowledgeExplorerTest {
 		JFactReasoner reasoner = new JFactReasoner(o,
 				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner);
-		Set<OWLEntity> set = ke.getEntities();
+		KnowledgeExplorer jfactke = new KnowledgeExplorerMaxFillerJFactImpl(
+				reasoner);
+		Set<OWLEntity> set = jfactke.getEntities();
 		assertNotNull(set);
+
+		KnowledgeExplorer factke = new KnowledgeExplorerMaxFillersFactplusplusImpl(
+				reasoner);
+		assertNotNull(factke.getEntities());
 
 		KnowledgeExplorer chainke = new KnowledgeExplorerChainsawJFactImpl(
 				reasoner);
-		assertEquals(ke.getAxioms().size(), chainke.getAxioms().size());
+		System.out
+				.println("ChainsawKnowledgeExplorerTest.chainsawKnowledgeExplorerTest() jfact axioms:");
+		System.out.println(jfactke.getAxioms());
+		System.out
+				.println("ChainsawKnowledgeExplorerTest.chainsawKnowledgeExplorerTest() fact++ axioms:");
+		System.out.println(factke.getAxioms());
+		assertEquals(jfactke.getAxioms().size(), factke.getAxioms().size());
+		assertEquals(jfactke.getAxioms().size(), chainke.getAxioms().size());
 	}
 
 }
