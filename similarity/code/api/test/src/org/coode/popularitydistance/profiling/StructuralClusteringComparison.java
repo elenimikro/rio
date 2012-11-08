@@ -27,7 +27,7 @@ public class StructuralClusteringComparison {
 		// TODO Auto-generated constructor stub
 	}
 
-	private final static String snomed_iri = "similarity/experiment-ontologies/ChronicALLModule.owl";
+	private final static String onto_iri = "similarity/experiment-ontologies/amino-acid-original.owl";
 
 	/**
 	 * @param args
@@ -37,12 +37,12 @@ public class StructuralClusteringComparison {
 	public static void main(String[] args)
 			throws TransformerFactoryConfigurationError, Exception {
 		boolean correct = true;
-		File ontology = new File(snomed_iri);
+		File ontology = new File(onto_iri);
 		Calendar c = Calendar.getInstance();
 		String saveTo = "results/" + ontology.getName() + "_"
 				+ c.get(Calendar.DAY_OF_MONTH) + "_" + c.get(Calendar.HOUR)
 				+ ".xml";
-		String compareTo = "similarity/profiling_data/results/chronic_module_structural_agglAll_results.xml";
+		String compareTo = "similarity/profiling_data/compareto_amino.xml";
 
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 		OWLOntology o = m.loadOntologyFromOntologyDocument(ontology);
