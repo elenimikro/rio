@@ -49,6 +49,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		new File(RESULTS_BASE).mkdirs();
 		File output = new File(RESULTS_BASE + "bioportal-syntactic.csv");
 		for (int i = 0; i < inputList.size(); i++) {
 			System.out.println(inputList.get(i));
@@ -81,6 +82,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 				final OWLOntology o = m
 						.loadOntologyFromOntologyDocument(new File(s));
 				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
+
 				Callable<Object> task1 = new Callable<Object>() {
 					public Object call() throws OWLOntologyCreationException {
 						// load ontology and get general ontology metrics
@@ -105,7 +107,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 						return null;
 					}
 				};
-				runTaskWithTimeout(task2, 30, TimeUnit.MINUTES);
+				runTaskWithTimeout(task2, 20, TimeUnit.MINUTES);
 
 				Callable<Object> task3 = new Callable<Object>() {
 					public Object call() throws OPPLException,
@@ -122,7 +124,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 						return null;
 					}
 				};
-				runTaskWithTimeout(task3, 30, TimeUnit.MINUTES);
+				runTaskWithTimeout(task3, 20, TimeUnit.MINUTES);
 
 				// structural
 				Callable<Object> task4 = new Callable<Object>() {
@@ -137,8 +139,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 						return null;
 					}
 				};
-				runTaskWithTimeout(task4, 5, TimeUnit.SECONDS);
-				// runTaskWithTimeout(task4, 30, TimeUnit.MINUTES);
+				runTaskWithTimeout(task4, 20, TimeUnit.MINUTES);
 
 				printMetrics(metrics, allResultsFile);
 				firstTime = false;

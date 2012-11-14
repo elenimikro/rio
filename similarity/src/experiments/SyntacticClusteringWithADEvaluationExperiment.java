@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.coode.basetest.DistanceCreator;
+import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.oppl.exceptions.OPPLException;
@@ -20,9 +21,7 @@ import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.Utils;
-import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -32,19 +31,21 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class SyntacticClusteringWithADEvaluationExperiment extends
 		ClusteringWithADEvaluationExperimentBase {
 
-	private final static String RESULTS_BASE = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-results/";
+	private final static String RESULTS_BASE = "similarity/experiment-results/syntactic/";
 
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException, FileNotFoundException,
 			TransformerFactoryConfigurationError, TransformerException {
 
-		String base = "/Users/elenimikroyannidi/eclipse-workspace/similarity/similarity/experiment-ontologies/";
+		String base = "similarity/experiment-ontologies/";
 		String[] input = new String[] { "amino-acid-original.owl",
 				"flowers7.owl", "wine.owl",
 				"sct-20100731-stated_Hypertension-subs_module.owl",
 				"kupkb/kupkb.owl", "obi.owl", "ChronicALLModule.owl",
 				"tambis-full.owl", "galen.owl" };
 		// long currentTimeMillis = System.currentTimeMillis();
+		// Calendar c = Calendar.getInstance();
+		new File(RESULTS_BASE).mkdirs();
 		File file = new File(RESULTS_BASE + "allstats.csv");
 
 		setupClusteringExperiment(base, input, file);
@@ -72,15 +73,11 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 
 				// load ontology and get general ontology metrics
 				OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-				OWLOntology o = m.loadOntologyFromOntologyDocument(new File(
-						current));
+				OWLOntology o = TestHelper
+						.loadFileMappers(new File(current), m);
 				metrics.add(new SimpleMetric<String>("Ontology", s));
 				metrics.addAll(getBasicOntologyMetrics(m));
-
-				ManchesterSyntaxRenderer renderer = ExperimentHelper
-						.setManchesterSyntaxWithLabelRendering(o
-								.getOWLOntologyManager());
-				ToStringRenderer.getInstance().setRenderer(renderer);
+				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
 
 				// popularity distance
 				Distance<OWLEntity> distance = DistanceCreator
@@ -97,8 +94,8 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						null);
 				saveResults(substring, o, clustering_type, model, distance);
-
-				// property relevance
+				//
+				// // property relevance
 				Set<OWLEntity> set = getSignatureWithoutProperties(o);
 				distance = DistanceCreator
 						.createOWLEntityRelevanceAxiomBasedDistance(m);

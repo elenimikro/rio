@@ -6,7 +6,6 @@ import static junit.framework.Assert.assertNotNull;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -41,13 +40,13 @@ import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposer;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
 
 public class GeneralisedAtomicDecompositionTest {
-	
+
 	private ClusterDecompositionModel<OWLEntity> model;
 	private AtomicDecomposer ad;
 	private OWLOntology o;
 
 	@Before
-	public void SetUp() throws Exception{
+	public ClusterDecompositionModel<OWLEntity> setUp() throws Exception {
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 		this.o = m.createOntology();
 		OWLDataFactory factory = m.getOWLDataFactory();
@@ -99,6 +98,7 @@ public class GeneralisedAtomicDecompositionTest {
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
+					@Override
 					public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
@@ -107,7 +107,8 @@ public class GeneralisedAtomicDecompositionTest {
 		for (OWLOntology ontology : m.getOntologies()) {
 			entities.addAll(ontology.getSignature());
 		}
-		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o, distance, entities);
+		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
+				distance, entities);
 		model = clusterer.buildClusterDecompositionModel(o, m, clusters);
 
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
@@ -122,23 +123,24 @@ public class GeneralisedAtomicDecompositionTest {
 				}
 			}
 		}
+		return model;
 	}
-	
+
 	@Test
 	public void testGeneralisationAtomicDecomposition()
 			throws OWLOntologyCreationException, OPPLException,
 			ParserConfigurationException {
 		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
 				model, o);
-	
+
 		assertNotNull(gad.getAtoms());
 		assertEquals(4, gad.getAtoms().size());
 
 		assertEquals(8, gad.getDirtyMap().keySet().size());
 		assertEquals(4, gad.getMergedAtoms().keySet().size());
-		MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad
-				.getMergedAtoms();
-		//assertEquals(ad.getAtoms().size() - gad.getAtoms().size(), mergedAtoms.keySet().size());
+		MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad.getMergedAtoms();
+		// assertEquals(ad.getAtoms().size() - gad.getAtoms().size(),
+		// mergedAtoms.keySet().size());
 		for (Collection<OWLAxiom> col : mergedAtoms.keySet()) {
 			System.out
 					.println("GeneralisationAtomicDecompositionTest.testGeneralisationAtomicDecomposition() Duplicate axioms ");
@@ -152,19 +154,20 @@ public class GeneralisedAtomicDecompositionTest {
 							+ mergedAtoms.get(col));
 		}
 	}
-	
+
 	@Test
-	public void testGeneralisedAtomicDecompositionStats(){
+	public void testGeneralisedAtomicDecompositionStats() {
 		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
 				model, o);
-		GeneralisedAtomicDecompositionMetrics gadstats = GeneralisedAtomicDecompositionMetrics.buildMetrics(gad);
+		GeneralisedAtomicDecompositionMetrics gadstats = GeneralisedAtomicDecompositionMetrics
+				.buildMetrics(gad);
 		assertEquals(0.5, gadstats.getAtomicDecompositionCompression());
 		System.out
-				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() MeanMergedAxiomsPerGeneralisation: " 
-		+ gadstats.getMeanMergedAxiomsPerGeneralisation());
+				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() MeanMergedAxiomsPerGeneralisation: "
+						+ gadstats.getMeanMergedAxiomsPerGeneralisation());
 		System.out
-				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() RatioOfMergedGeneralisations: " +
-		gadstats.getRatioOfMergedGeneralisations());
+				.println("GeneralisedAtomicDecompositionTest.testGeneralisedAtomicDecompositionStats() RatioOfMergedGeneralisations: "
+						+ gadstats.getRatioOfMergedGeneralisations());
 	}
 
 }

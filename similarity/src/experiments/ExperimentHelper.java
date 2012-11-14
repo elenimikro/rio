@@ -27,7 +27,6 @@ import org.coode.proximitymatrix.cluster.GeneralisationStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -49,16 +48,16 @@ public class ExperimentHelper {
 			OWLOntology o, Distance<OWLEntity> distance,
 			Set<OWLEntity> clusteringSignature) throws OPPLException,
 			ParserConfigurationException, OWLOntologyCreationException {
-		// make copy
-		OWLOntology original = OWLManager.createOWLOntologyManager()
-				.createOntology(o.getAxioms());
+
 		OWLOntologyManager m = o.getOWLOntologyManager();
+		// remove annotations
 		clusterer = new ClusterCreator();
 		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
 				clusteringSignature, m, clusterer);
+		// put annotations back in
+		// m.addAxioms(o, annotationAssertions);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildClusterDecompositionModel(original,
-						original.getOWLOntologyManager(), clusters);
+				.buildClusterDecompositionModel(o, m, clusters);
 		return model;
 	}
 
@@ -282,11 +281,16 @@ public class ExperimentHelper {
 		output.println();
 	}
 
-	public static void stripOntologyFromAnnotationAssertions(OWLOntology o) {
-		o.getOWLOntologyManager().removeAxioms(
-				o,
-				new HashSet<OWLAnnotationAssertionAxiom>(o
-						.getAxioms(AxiomType.ANNOTATION_ASSERTION)));
+	public static Set<OWLAnnotationAssertionAxiom> stripOntologyFromAnnotationAssertions(
+			OWLOntology o) {
+		Set<OWLAnnotationAssertionAxiom> set = new HashSet<OWLAnnotationAssertionAxiom>();
+		OWLOntologyManager m = o.getOWLOntologyManager();
+		for (OWLOntology onto : o.getImportsClosure()) {
+			set.addAll(onto.getAxioms(AxiomType.ANNOTATION_ASSERTION));
+			m.removeAxioms(onto, set);
+		}
+
+		return set;
 	}
 
 	public static ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> getClusteringMatrix() {

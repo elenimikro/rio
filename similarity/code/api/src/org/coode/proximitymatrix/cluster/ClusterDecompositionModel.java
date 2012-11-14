@@ -15,7 +15,6 @@ import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
@@ -37,10 +36,8 @@ public class ClusterDecompositionModel<P> {
 				ClusterStatisticsTableModel.SIZE_COMPARATOR);
 		this.ontologies.addAll(ontologies);
 	}
-	
-	
-	public ClusterDecompositionModel(
-			Collection<? extends Cluster<P>> _clusters) {
+
+	public ClusterDecompositionModel(Collection<? extends Cluster<P>> _clusters) {
 		sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
 		for (Cluster<P> c : _clusters) {
 			if (c.size() > 1)

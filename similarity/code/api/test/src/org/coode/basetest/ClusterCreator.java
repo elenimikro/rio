@@ -54,6 +54,7 @@ public class ClusterCreator {
 				DistanceTableObject.createDistanceTableObjectSet(distance,
 						distanceMatrix.getObjects()),
 				new Distance<DistanceTableObject<OWLEntity>>() {
+					@Override
 					public double getDistance(
 							final DistanceTableObject<OWLEntity> a,
 							final DistanceTableObject<OWLEntity> b) {
@@ -66,6 +67,7 @@ public class ClusterCreator {
 			newObjects.add(Collections.singletonList(object));
 		}
 		Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
+			@Override
 			public double getDistance(
 					final Collection<? extends DistanceTableObject<OWLEntity>> a,
 					final Collection<? extends DistanceTableObject<OWLEntity>> b) {
@@ -150,6 +152,9 @@ public class ClusterCreator {
 			ParserConfigurationException {
 		ConstraintSystem constraintSystem = new OPPLFactory(manager, o, null)
 				.createConstraintSystem();
+		System.out
+				.println("ClusterCreator.buildClusterDecompositionModel() clusters "
+						+ clusters);
 		OWLObjectGeneralisation generalisation = Utils
 				.getOWLObjectGeneralisation(clusters, o.getImportsClosure(),
 						constraintSystem);
@@ -193,6 +198,7 @@ public class ClusterCreator {
 				DistanceTableObject.createDistanceTableObjectSet(distance,
 						distanceMatrix.getObjects()),
 				new Distance<DistanceTableObject<OWLEntity>>() {
+					@Override
 					public double getDistance(
 							final DistanceTableObject<OWLEntity> a,
 							final DistanceTableObject<OWLEntity> b) {
@@ -205,6 +211,7 @@ public class ClusterCreator {
 			newObjects.add(Collections.singletonList(object));
 		}
 		Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
+			@Override
 			public double getDistance(
 					final Collection<? extends DistanceTableObject<OWLEntity>> a,
 					final Collection<? extends DistanceTableObject<OWLEntity>> b) {

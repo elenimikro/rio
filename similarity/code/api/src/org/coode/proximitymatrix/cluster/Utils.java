@@ -354,18 +354,18 @@ public class Utils {
 		}
 	}
 
-	
-	public static <O extends OWLObject> void checkForPuns(Collection<? extends O> cluster){
+	public static <O extends OWLObject> void checkForPuns(
+			Collection<? extends O> cluster) {
 		String name = cluster.iterator().next().getClass().getName();
 		Set<String> otherNames = new HashSet<String>();
-		for(OWLObject o : cluster){
+		for (OWLObject o : cluster) {
 			otherNames.add(o.getClass().getName());
 		}
-		if(otherNames.size()>1){
+		if (otherNames.size() > 1) {
 			purgePuns((Collection<? extends OWLEntity>) cluster);
 		}
 	}
-	
+
 	public static <O extends OWLEntity> Document toXML(
 			final Collection<? extends Cluster<O>> clusters,
 			final Collection<? extends OWLOntology> ontologies,
@@ -463,6 +463,7 @@ public class Utils {
 			final OWLOntologyManager manager)
 			throws ParserConfigurationException, SAXException, IOException {
 		Comparator<Set<OWLEntity>> sizeComparator = new Comparator<Set<OWLEntity>>() {
+			@Override
 			public int compare(final Set<OWLEntity> o1, final Set<OWLEntity> o2) {
 				int difference = o1.size() - o2.size();
 				return difference != 0 ? difference : o1.toString().hashCode()
@@ -496,26 +497,32 @@ public class Utils {
 		Class<?> predominantType = null;
 		int max = -1;
 		OWLEntityVisitorEx<Class<?>> owlEntityClassExtractor = new OWLEntityVisitorEx<Class<?>>() {
+			@Override
 			public Class<?> visit(final OWLClass cls) {
 				return OWLClass.class;
 			}
 
+			@Override
 			public Class<?> visit(final OWLObjectProperty property) {
 				return OWLObjectProperty.class;
 			}
 
+			@Override
 			public Class<?> visit(final OWLDataProperty property) {
 				return OWLDataProperty.class;
 			}
 
+			@Override
 			public Class<?> visit(final OWLNamedIndividual individual) {
 				return OWLNamedIndividual.class;
 			}
 
+			@Override
 			public Class<?> visit(final OWLDatatype datatype) {
 				return OWLDatatype.class;
 			}
 
+			@Override
 			public Class<?> visit(final OWLAnnotationProperty property) {
 				return OWLAnnotationProperty.class;
 			}
@@ -550,12 +557,13 @@ public class Utils {
 			final Collection<? extends OWLOntology> ontologies,
 			final OWLObjectGeneralisation generalisation,
 			final RuntimeExceptionHandler runtimeExceptionHandler) {
-		
+
 		Set<OWLAxiom> ontologyAxioms = new HashSet<OWLAxiom>();
 		for (OWLOntology ontology : ontologies) {
 			Set<OWLAnnotationAssertionAxiom> axioms = ontology
 					.getAxioms(AxiomType.ANNOTATION_ASSERTION);
-			Set<OWLDeclarationAxiom> declaxioms = ontology.getAxioms(AxiomType.DECLARATION);
+			Set<OWLDeclarationAxiom> declaxioms = ontology
+					.getAxioms(AxiomType.DECLARATION);
 			ontologyAxioms.addAll(ontology.getAxioms());
 			ontologyAxioms.removeAll(axioms);
 			ontologyAxioms.removeAll(declaxioms);
@@ -588,11 +596,10 @@ public class Utils {
 		}
 		return generalisationMap;
 	}
-	
+
 	public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildKnowledgeExplorerGeneralisationMap(
 			final Collection<? extends OWLEntity> cluster,
-			final OWLObjectGeneralisation generalisation,
-			Set<OWLAxiom> axioms) {
+			final OWLObjectGeneralisation generalisation, Set<OWLAxiom> axioms) {
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 		for (OWLAxiom axiom : axioms) {
 			Set<OWLEntity> signature = axiom.getSignature();
@@ -941,23 +948,29 @@ public class Utils {
 			final MultiMap<P, P> equivalenceClasses) {
 		Collection<Collection<? extends DistanceTableObject<P>>> objects = clusteringMatrix
 				.getObjects();
-		Set<Cluster<P>> toReturn = new HashSet<Cluster<P>>(objects.size());
+		Set<Cluster<P>> clusters = new HashSet<Cluster<P>>(objects.size());
 		for (Collection<? extends DistanceTableObject<P>> collection : objects) {
-			toReturn.add(new SimpleCluster<P>(Utility.unwrapObjects(collection,
+			clusters.add(new SimpleCluster<P>(Utility.unwrapObjects(collection,
 					equivalenceClasses), distanceMatrix));
 		}
 		for (P key : equivalenceClasses.keySet()) {
 			Collection<P> set = equivalenceClasses.get(key);
 			if (set.size() > 1) {
 				boolean found = false;
-				Iterator<Cluster<P>> iterator = toReturn.iterator();
+				Iterator<Cluster<P>> iterator = clusters.iterator();
 				while (!found && iterator.hasNext()) {
 					Cluster<P> cluster = iterator.next();
 					found = cluster.contains(key);
 				}
 				if (!found) {
-					toReturn.add(new SimpleCluster<P>(set, distanceMatrix));
+					clusters.add(new SimpleCluster<P>(set, distanceMatrix));
 				}
+			}
+		}
+		Set<Cluster<P>> toReturn = new HashSet<Cluster<P>>();
+		for (Cluster<P> c : clusters) {
+			if (c.size() > 1) {
+				toReturn.add(c);
 			}
 		}
 		return toReturn;
@@ -970,18 +983,17 @@ public class Utils {
 			TransformerFactoryConfigurationError, TransformerException {
 		List<Cluster<P>> clusterList = model.getClusterList();
 		ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-	
+
 		Document document = toXML(model, clusterList, renderer);
-		
+
 		Transformer t = TransformerFactory.newInstance().newTransformer();
 		StreamResult result = new StreamResult(file);
 		t.setOutputProperty(OutputKeys.INDENT, "yes");
-		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount",
-				"3");
+		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
 		t.transform(new DOMSource(document), result);
 		System.out.println(String.format("Results saved in %s",
 				file.getAbsolutePath()));
-	
+
 	}
 
 	private static <P extends OWLEntity> Document toXML(
@@ -1004,7 +1016,8 @@ public class Utils {
 			clusterNode.setAttribute("size",
 					String.format("%d", cluster.size()));
 			Element generalisations = document.createElement("Generalisations");
-			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = model.get(cluster);
+			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = model
+					.get(cluster);
 			for (OWLAxiom generalisedAxiom : generalisationMap.keySet()) {
 				Element generalisedAxiomNode = document
 						.createElement("Generalisation");
@@ -1030,8 +1043,7 @@ public class Utils {
 		}
 		return document;
 	}
-	
-	
+
 	/**
 	 * It saves the clusters in an xml. In this version the history is not
 	 * saved.
@@ -1143,12 +1155,10 @@ public class Utils {
 		}
 		return model;
 	}
-	
-	
+
 	public static <P extends OWLEntity> ClusterDecompositionModel<P> toKnowledgeExplorerClusterDecompositionModel(
 			Collection<? extends Cluster<P>> _clusters,
-			Collection<? extends OWLOntology> ontologies,
-			Set<OWLAxiom> axioms,
+			Collection<? extends OWLOntology> ontologies, Set<OWLAxiom> axioms,
 			OWLObjectGeneralisation generalisation,
 			RuntimeExceptionHandler runtimeExceptionHandler)
 			throws ParserConfigurationException {
@@ -1156,7 +1166,8 @@ public class Utils {
 				_clusters, ontologies);
 		for (Cluster<P> cluster : _clusters) {
 			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
-					.buildKnowledgeExplorerGeneralisationMap(cluster, generalisation, axioms);
+					.buildKnowledgeExplorerGeneralisationMap(cluster,
+							generalisation, axioms);
 			model.put(cluster, generalisationMap);
 		}
 		return model;
