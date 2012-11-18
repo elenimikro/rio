@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Set;
 
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillerJFactImpl;
+import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -99,13 +99,13 @@ public class ChainsawKnowledgeExplorerTest {
 		OWLReasoner reasoner = new FaCTPlusPlusReasoner(o,
 				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(
 				reasoner, new OWLKnowledgeExplorationReasonerWrapper(
 						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
 								BufferingMode.NON_BUFFERING)));
 		Set<OWLEntity> set = ke.getEntities();
 		assertNotNull(set);
-		KnowledgeExplorer chainke = new KnowledgeExplorerMaxFillerJFactImpl(
+		KnowledgeExplorer chainke = new KnowledgeExplorerMaxFillersImpl(
 				reasoner, new ChainsawReasoner(
 						new FaCTPlusPlusReasonerFactory(), o,
 						new SimpleConfiguration()));

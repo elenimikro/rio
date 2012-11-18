@@ -33,7 +33,7 @@ import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillerJFactImpl;
+import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;

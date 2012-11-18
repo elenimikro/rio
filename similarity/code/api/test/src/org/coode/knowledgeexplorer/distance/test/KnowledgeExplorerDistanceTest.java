@@ -13,7 +13,7 @@ import org.coode.basetest.ClusterCreator;
 import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillerJFactImpl;
+import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
@@ -97,7 +97,7 @@ public class KnowledgeExplorerDistanceTest {
 		JFactReasoner reasoner = new JFactReasoner(o,
 				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(
 				reasoner, new OWLKnowledgeExplorationReasonerWrapper(
 						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
 								BufferingMode.NON_BUFFERING)));
@@ -113,7 +113,7 @@ public class KnowledgeExplorerDistanceTest {
 		JFactReasoner reasoner = new JFactReasoner(o,
 				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(
 				reasoner, new OWLKnowledgeExplorationReasonerWrapper(
 						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
 								BufferingMode.NON_BUFFERING)));

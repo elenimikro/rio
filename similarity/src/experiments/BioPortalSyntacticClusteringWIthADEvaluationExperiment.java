@@ -75,63 +75,40 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 			String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
 			File f = new File(filename);
 			if (!f.exists()) {
+
 				final PrintStream singleOut = new PrintStream(f);
-
-				final OWLOntologyManager m = OWLManager
-						.createOWLOntologyManager();
-				final OWLOntology o = m
-						.loadOntologyFromOntologyDocument(new File(s));
-				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
-
 				Callable<Object> task1 = new Callable<Object>() {
-					public Object call() throws OWLOntologyCreationException {
+					@Override
+					public Object call() throws OWLOntologyCreationException,
+							OPPLException, ParserConfigurationException {
 						// load ontology and get general ontology metrics
+						OWLOntologyManager m = OWLManager
+								.createOWLOntologyManager();
+						OWLOntology o = m
+								.loadOntologyFromOntologyDocument(new File(s));
+						ExperimentHelper
+								.stripOntologyFromAnnotationAssertions(o);
 						metrics.add(new SimpleMetric<String>("Ontology", s));
 						metrics.addAll(SyntacticClusteringWithADEvaluationExperiment
 								.getBasicOntologyMetrics(m));
-						return o;
-					}
-				};
-				runTaskWithTimeout(task1, 5, TimeUnit.MINUTES);
 
-				Callable<Object> task2 = new Callable<Object>() {
-					public Object call() throws OPPLException,
-							ParserConfigurationException,
-							OWLOntologyCreationException {
 						// popularity distance
 						Distance<OWLEntity> distance = DistanceCreator
 								.createAxiomRelevanceAxiomBasedDistance(m);
 						SyntacticClusteringWithADEvaluationExperiment.run(
 								"popularity", metrics, singleOut, o, distance,
 								null);
-						return null;
-					}
-				};
-				runTaskWithTimeout(task2, 20, TimeUnit.MINUTES);
 
-				Callable<Object> task3 = new Callable<Object>() {
-					public Object call() throws OPPLException,
-							ParserConfigurationException,
-							OWLOntologyCreationException {
 						// property relevance
 						Set<OWLEntity> set = SyntacticClusteringWithADEvaluationExperiment
 								.getSignatureWithoutProperties(o);
-						Distance<OWLEntity> distance = DistanceCreator
+						distance = DistanceCreator
 								.createOWLEntityRelevanceAxiomBasedDistance(m);
 						SyntacticClusteringWithADEvaluationExperiment.run(
 								"object-property-relevance", metrics,
 								singleOut, o, distance, set);
-						return null;
-					}
-				};
-				runTaskWithTimeout(task3, 20, TimeUnit.MINUTES);
 
-				// structural
-				Callable<Object> task4 = new Callable<Object>() {
-					public Object call() throws OPPLException,
-							ParserConfigurationException,
-							OWLOntologyCreationException {
-						Distance<OWLEntity> distance = DistanceCreator
+						distance = DistanceCreator
 								.createStructuralAxiomRelevanceAxiomBasedDistance(m);
 						SyntacticClusteringWithADEvaluationExperiment.run(
 								"structural", metrics, singleOut, o, distance,
@@ -139,7 +116,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 						return null;
 					}
 				};
-				runTaskWithTimeout(task4, 20, TimeUnit.MINUTES);
+				runTaskWithTimeout(task1, 45, TimeUnit.MINUTES);
 
 				printMetrics(metrics, allResultsFile);
 				firstTime = false;

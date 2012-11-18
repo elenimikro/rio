@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 import java.util.Set;
 
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillerJFactImpl;
+import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -41,7 +41,7 @@ public class KnowledgeExplorerTest {
 		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(
 				reasoner);
 		assertNotNull(ke.getEntities());
-		ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner,
+		ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
 				new OWLKnowledgeExplorationReasonerWrapper(
 						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
 								BufferingMode.NON_BUFFERING)));

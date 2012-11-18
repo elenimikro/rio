@@ -9,14 +9,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
+import org.coode.distance.wrapping.DistanceTableObject;
+import org.coode.knowledgeexplorer.ChainsawKnowledgeExplorerMaxFillersImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerChainsawJFactImpl;
+import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.oppl.exceptions.OPPLException;
+import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -25,9 +31,14 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.InferenceType;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
-import uk.ac.manchester.cs.jfact.JFactReasoner;
+import uk.ac.manchester.cs.chainsaw.ChainsawReasoner;
+import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
+import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
+import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 
 public class SemanticClusteringWithADEvaluationExperiment extends
 		ClusteringWithADEvaluationExperimentBase {
@@ -40,13 +51,18 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 	// detailedMetricMap = new HashMap<String, MultiArrayMap<String,Number>>();
 
 	public static void main(String[] args) throws OWLOntologyCreationException,
-			OPPLException, ParserConfigurationException, FileNotFoundException {
+			OPPLException, ParserConfigurationException, FileNotFoundException,
+			TransformerFactoryConfigurationError, TransformerException {
 		String base = "similarity/experiment-ontologies/";
 		String[] input = new String[] { "amino-acid-original.owl",
 				"flowers7.owl", "wine.owl",
 				"sct-20100731-stated_Hypertension-subs_module.owl",
-				"kupkb/kupkb.owl", "obi.owl", "ChronicALLModule.owl",
-				"tambis-full.owl", "galen.owl" };
+				"kupkb/kupkb.owl", "ChronicALLModule.owl", "generations.owl" };
+		// String[] input = new String[] { "amino-acid-original.owl",
+		// "flowers7.owl", "wine.owl",
+		// "sct-20100731-stated_Hypertension-subs_module.owl",
+		// "kupkb/kupkb.owl", "obi.owl", "ChronicALLModule.owl",
+		// "tambis-full.owl", "galen.owl" };
 		// long currentTimeMillis = System.currentTimeMillis();
 		File file = new File(RESULTS_BASE + "semantic-allstats.csv");
 
@@ -56,7 +72,8 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 	public static void setupClusteringExperiment(String baseDir,
 			String[] input, File allResultsFile) throws FileNotFoundException,
 			OWLOntologyCreationException, OPPLException,
-			ParserConfigurationException {
+			ParserConfigurationException, TransformerFactoryConfigurationError,
+			TransformerException {
 		String current;
 		for (String s : input) {
 			ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
@@ -66,7 +83,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 			String substring = s.substring(s.indexOf("/") + 1);
 			String filename = RESULTS_BASE
 					+ substring.replaceAll(".owl", ".csv");
-			String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
+			// String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
 			File f = new File(filename);
 			if (!f.exists()) {
 				PrintStream singleOut = new PrintStream(f);
@@ -80,38 +97,43 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 				metrics.add(new SimpleMetric<String>("Ontology", s));
 				metrics.addAll(getBasicOntologyMetrics(m));
 
-				JFactReasoner reasoner = new JFactReasoner(o,
-						new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-				reasoner.precomputeInferences();
-
-				KnowledgeExplorer ke = new KnowledgeExplorerChainsawJFactImpl(
-						reasoner);
-				// KnowledgeExplorer ke = new
-				// KnowledgeExplorerMaxFillersFactplusplusImpl(
-				// reasoner);
+				// get KE metrics
+				KnowledgeExplorer ke = runFactplusplusKnowledgeExplorerReasoner(o);
 				Set<OWLAxiom> entailments = ke.getAxioms();
-
-				// popularity distance
-				Distance<OWLEntity> distance = DistanceCreator
-						.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-								m, ke);
-				run("popularity", metrics, singleOut, o, distance,
-						ke.getEntities(), entailments);
+				System.out
+						.println("SemanticClusteringOfBigOntologiesWithADEvaluationExperiment.setupClusteringExperiment() Entailments "
+								+ entailments.size());
+				metrics.add(new SimpleMetric<Integer>("#Entailments",
+						entailments.size()));
 
 				// property relevance
 				Set<OWLEntity> filteredSignature = getSignatureWithoutProperties(ke);
-				distance = DistanceCreator
+				Distance<OWLEntity> distance = DistanceCreator
 						.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
 								m, ke);
-				run("object-property-relevance", metrics, singleOut, o,
-						distance, filteredSignature, entailments);
+				String clustering_type = "object-property-relevance";
+				ClusterDecompositionModel<OWLEntity> model = run(
+						clustering_type, metrics, singleOut, o, distance,
+						filteredSignature, entailments);
+				saveResults(substring, o, clustering_type, model, distance);
 
 				// structural
+				clustering_type = "structural-relevance";
 				distance = DistanceCreator
 						.createStructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
 								o, ke);
-				run("structural-relevance", metrics, singleOut, o, distance,
+				model = run(clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
+				saveResults(substring, o, clustering_type, model, distance);
+
+				// popularity distance
+				clustering_type = "popularity";
+				distance = DistanceCreator
+						.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
+								m, ke);
+				model = run(clustering_type, metrics, singleOut, o, distance,
+						ke.getEntities(), entailments);
+				saveResults(substring, o, clustering_type, model, distance);
 
 				printMetrics(metrics, allResultsFile);
 
@@ -120,7 +142,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 		}
 	}
 
-	public static void run(String distanceType,
+	public static ClusterDecompositionModel<OWLEntity> run(String distanceType,
 			ArrayList<SimpleMetric<?>> metrics, PrintStream singleOut,
 			OWLOntology o, Distance<OWLEntity> distance,
 			Set<OWLEntity> clusteringSignature, Set<OWLAxiom> entailments)
@@ -135,6 +157,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 		OWLOntology inferedOnto = OWLManager.createOWLOntologyManager()
 				.createOntology(entailments);
 		metrics.addAll(getMetrics(singleOut, inferedOnto, model));
+		return model;
 	}
 
 	private static Collection<? extends SimpleMetric<?>> getMetrics(
@@ -167,5 +190,51 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 			}
 		}
 		return entities;
+	}
+
+	public static KnowledgeExplorer runChainsawFactplusplusKnowledgeExplorerReasoner(
+			OWLOntology o) {
+		OWLReasoner reasoner = new FaCTPlusPlusReasoner(o,
+				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
+		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+
+		KnowledgeExplorer chainke = new ChainsawKnowledgeExplorerMaxFillersImpl(
+				reasoner, new ChainsawReasoner(
+						new FaCTPlusPlusReasonerFactory(), o,
+						new SimpleConfiguration()));
+		return chainke;
+	}
+
+	public static KnowledgeExplorer runFactplusplusKnowledgeExplorerReasoner(
+			OWLOntology o) {
+		OWLReasoner reasoner = new FaCTPlusPlusReasoner(o,
+				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
+		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
+				new OWLKnowledgeExplorationReasonerWrapper(
+						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
+								BufferingMode.NON_BUFFERING)));
+
+		return ke;
+	}
+
+	protected static File saveResults(String substring, OWLOntology o,
+			String clustering_type, ClusterDecompositionModel<OWLEntity> model,
+			Distance<OWLEntity> distance) throws ParserConfigurationException,
+			TransformerFactoryConfigurationError, TransformerException,
+			FileNotFoundException {
+		String xmlname = RESULTS_BASE + clustering_type + "-"
+				+ substring.replaceAll(".owl", ".xml");
+		File xml = new File(xmlname);
+		PrintStream out = new PrintStream(new File(xmlname + ".txt"));
+		ClusterResultsExploitationUtils.printGeneralisationStats(model, out,
+				xmlname);
+		ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix = ExperimentHelper
+				.getClusteringMatrix();
+		ClusterResultsExploitationUtils.filterResults(clusteringMatrix, model,
+				distance, out);
+		Utils.saveToXML(model, o.getOWLOntologyManager(), xml);
+		return xml;
 	}
 }
