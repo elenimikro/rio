@@ -13,12 +13,11 @@ package org.coode.owl.generalise.structural;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.owl.generalise.AbstractOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OWLEntityProvider;
-import org.semanticweb.owlapi.model.OWLObject;
 
 public class RelevancePolicyOWLObjectGeneralisation extends
         AbstractOWLObjectGeneralisation {
     public RelevancePolicyOWLObjectGeneralisation(
-            final RelevancePolicy<OWLObject> policy,
+final RelevancePolicy policy,
             final OWLEntityProvider entityProvider) {
         super(new SingleOWLEntityReplacementVariableProvider(policy, entityProvider));
     }

@@ -10,19 +10,21 @@
  ******************************************************************************/
 package org.coode.owl.structural.difference;
 
-@SuppressWarnings("unused")
 public class StructuralDifferenceReportVisitorAdapter implements
         StructuralDifferenceReportVisitor {
+    @Override
     public
             void
             visitNoDifferenceStructuralDifferenceReport(
                     final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {}
 
+    @Override
     public
             void
             visitIncomparableObjectsStructuralDifferenceReport(
                     final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {}
 
+    @Override
     public
             void
             visitSomeDifferenceStructuralDifferenceReport(

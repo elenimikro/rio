@@ -58,9 +58,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 	}
 
 	public static void setupClusteringExperiment(ArrayList<String> input,
-			File allResultsFile) throws FileNotFoundException,
-			OWLOntologyCreationException, OPPLException,
-			ParserConfigurationException {
+            File allResultsFile) throws FileNotFoundException {
 		for (final String s : input) {
 			final ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
 			System.out
@@ -72,7 +70,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 			System.out
 					.println("BioPortalSyntacticClusteringWIthADEvaluationExperiment.setupClusteringExperiment() "
 							+ substring);
-			String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
+            // String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
 			File f = new File(filename);
 			if (!f.exists()) {
 
@@ -89,7 +87,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 						ExperimentHelper
 								.stripOntologyFromAnnotationAssertions(o);
 						metrics.add(new SimpleMetric<String>("Ontology", s));
-						metrics.addAll(SyntacticClusteringWithADEvaluationExperiment
+						metrics.addAll(ClusteringWithADEvaluationExperimentBase
 								.getBasicOntologyMetrics(m));
 
 						// popularity distance
@@ -129,7 +127,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 		ExecutorService executor = Executors.newCachedThreadPool();
 		Future<Object> future = executor.submit(task);
 		try {
-			Object result = future.get(timeout, timeUnit);
+            future.get(timeout, timeUnit);
 		} catch (TimeoutException ex) {
 			System.out.println("Took too long!");
 		} catch (InterruptedException e) {

@@ -12,34 +12,34 @@ package org.coode.metrics;
 
 import java.util.Comparator;
 
-public class MetricComparator<O, P extends Comparable<P>> implements Comparator<O> {
-	private final Metric<O, P> metric;
+public class MetricComparator<O> implements Comparator<O> {
+    private final Metric<O> metric;
 
 	/**
 	 * @param metric
 	 */
-	private MetricComparator(Metric<O, P> metric) {
+    private MetricComparator(Metric<O> metric) {
 		if (metric == null) {
 			throw new NullPointerException("The metric cannot be null");
 		}
 		this.metric = metric;
 	}
 
-	public int compare(O o1, O o2) {
-		int difference = this.getMetric().getValue(o1)
-				.compareTo(this.getMetric().getValue(o2));
+	@Override
+    public int compare(O o1, O o2) {
+        int difference = (int) Math.signum(this.getMetric().getValue(o1)
+                - this.getMetric().getValue(o2));
 		return difference == 0 ? o1.hashCode() - o2.hashCode() : difference;
 	}
 
 	/**
 	 * @return the metric
 	 */
-	public Metric<O, P> getMetric() {
+    public Metric<O> getMetric() {
 		return this.metric;
 	}
 
-	public static <R, S extends Comparable<S>> MetricComparator<R, S> build(
-			Metric<R, S> metric) {
-		return new MetricComparator<R, S>(metric);
+    public static <R> MetricComparator<R> build(Metric<R> metric) {
+        return new MetricComparator<R>(metric);
 	}
 }

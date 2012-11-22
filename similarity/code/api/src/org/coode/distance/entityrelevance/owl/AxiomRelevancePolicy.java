@@ -13,7 +13,6 @@
  */
 package org.coode.distance.entityrelevance.owl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,8 +24,8 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author Luigi Iannone */
-public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
-    private final RelevancePolicy<OWLEntity> relevance;
+public class AxiomRelevancePolicy implements RelevancePolicy {
+    private final RelevancePolicy relevance;
 
     /** @param axiom */
     public AxiomRelevancePolicy(final OWLAxiom replacedAxiom, final AxiomMap axiomMap) {
@@ -34,10 +33,12 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
                 .getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom, axiomMap));
     }
 
-    public static AbstractRanking<OWLEntity, Double> buildRanking(final OWLAxiom replacedAxiom, final AxiomMap axiomMap) {
+    public static AbstractRanking buildRanking(final OWLAxiom replacedAxiom,
+            final AxiomMap axiomMap) {
         final Map<OWLEntity, AtomicInteger> entityMap = axiomMap.get(replacedAxiom);
-        Metric<OWLEntity, Double> m = new Metric<OWLEntity, Double>() {
-            public Double getValue(final OWLEntity object) {
+        Metric<OWLEntity> m = new Metric<OWLEntity>() {
+            @Override
+            public double getValue(final OWLEntity object) {
                 AtomicInteger value = entityMap.get(object);
                 double d = 0;
                 if (value != null) {
@@ -47,31 +48,21 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
                 return d / total;
             }
         };
-        AbstractRanking<OWLEntity, Double> ranking = new AbstractRanking<OWLEntity, Double>(
+        AbstractRanking ranking = new AbstractRanking(
                 m, entityMap.keySet()) {
+            @Override
             public boolean isAverageable() {
                 return true;
             }
 
-            @Override
-            protected Double computeAverage() {
-                List<Double> values = getValuesList();
-                final int size = values.size();
-                if (size == 0) {
-                    return 0D;
-                }
-                double total = 0;
-                for (int i = 0; i < size; i++) {
-                    total += values.get(i);
-                }
-                return total / values.size();
-            }
+
         };
         return ranking;
     }
 
     /** @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
      *      .Object) */
+    @Override
     public boolean isRelevant(final OWLEntity object) {
         return relevance.isRelevant(object);
     }

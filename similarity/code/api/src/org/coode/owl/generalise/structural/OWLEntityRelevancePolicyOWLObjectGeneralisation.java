@@ -14,12 +14,11 @@ import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.owl.generalise.AbstractOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OWLEntityProvider;
-import org.semanticweb.owlapi.model.OWLObject;
 
 public class OWLEntityRelevancePolicyOWLObjectGeneralisation extends
         AbstractOWLObjectGeneralisation {
     public OWLEntityRelevancePolicyOWLObjectGeneralisation(
-            final RelevancePolicy<OWLObject> policy,
+final RelevancePolicy policy,
             final OWLEntityProvider entityProvider,
             final ConstraintSystem constraintSystem) {
         super(new OWLEntityReplacementVariableProvider(policy, entityProvider,

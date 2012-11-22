@@ -10,33 +10,29 @@
  ******************************************************************************/
 package org.coode.metrics;
 
-import java.util.Collection;
 
-public class RankingSlot<O, R> {
-	private final R value;
-	private final Collection<? extends O> toReturn;
+public class RankingSlot<O> {
+    private final double value;
+    private final O[] toReturn;
 	private final int size;
 	   private int hashCode=0;
 
-	public RankingSlot(R value, Collection<? extends O> members) {
-		if (value == null) {
-			throw new NullPointerException("The value cannot be null");
-		}
+    public RankingSlot(double value, O... members) {
 		if (members == null) {
 			throw new NullPointerException("The members collection cannot be null");
 		}
-		if (members.isEmpty()) {
+        if (members.length == 0) {
 			throw new IllegalArgumentException("The members collection cannot be empty");
 		}
 		this.value = value;
 		toReturn=members;
-		size=toReturn.size();
+        size = toReturn.length;
 	}
 
 	/**
 	 * @return the members
 	 */
-	public Collection<? extends O> getMembers() {
+    public O[] getMembers() {
 		return toReturn;
 	}
 
@@ -53,7 +49,7 @@ public class RankingSlot<O, R> {
 	/**
 	 * @return the value
 	 */
-	public R getValue() {
+    public double getValue() {
 		return this.value;
 	}
 }

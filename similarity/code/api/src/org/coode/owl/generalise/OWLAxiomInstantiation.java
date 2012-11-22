@@ -48,33 +48,36 @@ public class OWLAxiomInstantiation {
 			throw new NullPointerException("The assignment map cannot be null");
 		}
 		this.axiom = axiom;
-		this.substitutions = new AssignmentMap(assignmentMap);
+		substitutions = new AssignmentMap(assignmentMap);
 	}
 
 	/**
 	 * @return the axiom
 	 */
 	public OWLAxiom getAxiom() {
-		return this.axiom;
+		return axiom;
 	}
 
 	/**
 	 * @return the assignmentMap
 	 */
 	public AssignmentMap getSubstitutions() {
-		return new AssignmentMap(this.substitutions);
+		return new AssignmentMap(substitutions);
 	}
 
 	public Set<InputVariable<?>> getInputVariables() {
 		final Set<InputVariable<?>> toReturn = new HashSet<InputVariable<?>>();
-		for (Variable<?> v : this.substitutions.keySet()) {
+		for (Variable<?> v : substitutions.keySet()) {
 			v.accept(new VariableVisitor() {
-				public <P extends OWLObject> void visit(
+				@Override
+                public <P extends OWLObject> void visit(
 						RegexpGeneratedVariable<P> regExpGenerated) {}
 
-				public <P extends OWLObject> void visit(GeneratedVariable<P> v) {}
+				@Override
+                public <P extends OWLObject> void visit(GeneratedVariable<P> v) {}
 
-				public <P extends OWLObject> void visit(InputVariable<P> v) {
+				@Override
+                public <P extends OWLObject> void visit(InputVariable<P> v) {
 					toReturn.add(v);
 				}
 			});
@@ -92,8 +95,8 @@ public class OWLAxiomInstantiation {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ (this.substitutions == null ? 0 : this.substitutions.hashCode());
-		result = prime * result + (this.axiom == null ? 0 : this.axiom.hashCode());
+				+ (substitutions == null ? 0 : substitutions.hashCode());
+		result = prime * result + (axiom == null ? 0 : axiom.hashCode());
 		return result;
 	}
 
@@ -114,18 +117,18 @@ public class OWLAxiomInstantiation {
 			return false;
 		}
 		OWLAxiomInstantiation other = (OWLAxiomInstantiation) obj;
-		if (this.substitutions == null) {
+		if (substitutions == null) {
 			if (other.substitutions != null) {
 				return false;
 			}
-		} else if (!this.substitutions.equals(other.substitutions)) {
+		} else if (!substitutions.equals(other.substitutions)) {
 			return false;
 		}
-		if (this.axiom == null) {
+		if (axiom == null) {
 			if (other.axiom != null) {
 				return false;
 			}
-		} else if (!this.axiom.equals(other.axiom)) {
+		} else if (!axiom.equals(other.axiom)) {
 			return false;
 		}
 		return true;
@@ -146,7 +149,7 @@ public class OWLAxiomInstantiation {
 			Variable<?> variable = iterator.next();
 			OWLObject assignmentValue = bindingNode.getAssignmentValue(variable,
 					parameters);
-			Set<OWLObject> set = this.getSubstitutions().get(variable);
+            Set<OWLObject> set = substitutions.get(variable);
 			found = set == null || set.size() > 1 || !set.contains(assignmentValue);//iterator().next().equals(assignmentValue);
 		}
 		return !found;
@@ -154,6 +157,6 @@ public class OWLAxiomInstantiation {
 
 	@Override
 	public String toString() {
-		return String.format("%s : %s", this.getAxiom(), this.substitutions);
+		return String.format("%s : %s", getAxiom(), substitutions);
 	}
 }

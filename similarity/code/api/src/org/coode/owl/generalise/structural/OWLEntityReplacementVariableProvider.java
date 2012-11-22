@@ -17,13 +17,14 @@ import org.coode.oppl.variabletypes.VariableType;
 import org.coode.oppl.variabletypes.VariableTypeFactory;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 public class OWLEntityReplacementVariableProvider extends
         SingleOWLEntityReplacementVariableProvider {
     public OWLEntityReplacementVariableProvider(
-            final RelevancePolicy<OWLObject> relevancePolicy,
+final RelevancePolicy relevancePolicy,
             final OWLEntityProvider entityProvider,
             final ConstraintSystem constraintSystem) {
         super(relevancePolicy, entityProvider);
@@ -37,7 +38,8 @@ public class OWLEntityReplacementVariableProvider extends
         }
         return owlObject.accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
             @Override
-            protected Variable<?> getDefaultReturnValue(final OWLObject object) {
+            protected Variable<?> getDefaultReturnValue(OWLObject _object) {
+                OWLEntity object = (OWLEntity) _object;
                 return object.equals(OWLEntityReplacementVariableProvider.this
                         .getOWLObject()) ? null
                 // OWLEntityReplacementVariableProvider.this
@@ -57,7 +59,8 @@ public class OWLEntityReplacementVariableProvider extends
         });
     }
 
-    private Variable<?> getVariable(final OWLObject owlObject) {
+    @Override
+    public Variable<?> getVariable(final OWLObject owlObject) {
         VariableType<?> type = owlObject
                 .accept(new OWLObjectVisitorExAdapter<VariableType<?>>(
                         VariableTypeFactory.getVariableType(owlObject)) {

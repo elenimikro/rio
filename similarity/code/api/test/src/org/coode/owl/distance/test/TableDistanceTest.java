@@ -36,18 +36,18 @@ import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 public class TableDistanceTest extends TestCase {
     public void testSimpleDistanceMatrixVSCollectionSingleton()
-            throws OWLOntologyCreationException {
+ {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -68,6 +68,7 @@ public class TableDistanceTest extends TestCase {
             newObjects.add(Collections.singletonList(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
@@ -87,12 +88,13 @@ public class TableDistanceTest extends TestCase {
     }
 
     public void testSimpleDistanceMatrixVSTableDistance()
-            throws OWLOntologyCreationException {
+ {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -122,12 +124,13 @@ public class TableDistanceTest extends TestCase {
         distance.dispose();
     }
 
-    public void testClusteringMatrixVSTableDistance() throws OWLOntologyCreationException {
+    public void testClusteringMatrixVSTableDistance() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -150,6 +153,7 @@ public class TableDistanceTest extends TestCase {
             newObjects.add(Collections.singletonList(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
@@ -177,12 +181,13 @@ public class TableDistanceTest extends TestCase {
     }
 
     public void testClusteringMatrixVSTableDistanceAfterAgglomeration()
-            throws OWLOntologyCreationException {
+ {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -205,6 +210,7 @@ public class TableDistanceTest extends TestCase {
             newObjects.add(Collections.singletonList(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());

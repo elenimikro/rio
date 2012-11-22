@@ -43,7 +43,7 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
 
             @Override
             public AbstractAxiomBasedDistance getDistance(final OWLOntology o,
-                    final RelevancePolicy<OWLEntity> rp) {
+                    final RelevancePolicy rp) {
                 return new AxiomBasedDistance(o.getImportsClosure(), o
                         .getOWLOntologyManager().getOWLDataFactory(), rp,
                         o.getOWLOntologyManager());
@@ -59,18 +59,18 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
         AtomicDecompositionRanking ranking = AtomicDecompositionRanking.buildRanking(
                 o.getImportsClosure(), map);
         // add the existing atomic decomposition policy
-        RelevancePolicy<OWLEntity> policy = AtomicDecompositionRankingRelevancePolicy
+        RelevancePolicy policy = AtomicDecompositionRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         OWLClass[] classes = getClasses(pizza_ns + "Spiciness", pizza_ns + "SauceTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
         int i = 1;
         System.out.println(String.format("Average atomic decomposition dependencies %s",
                 ranking.getAverageValue()));
-        for (RankingSlot<OWLEntity, Double> s : ranking.getSortedRanking()) {
+        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
                     s.getMembers(), s.getValue(),
-                    policy.isRelevant(s.getMembers().iterator().next())));
+ policy.isRelevant(s.getMembers()[0])));
             i++;
         }
     }
@@ -81,20 +81,20 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
                 o.getImportsClosure(), getOntologyManager());
         AtomicDecompositionRanking ranking = AtomicDecompositionRanking.buildRanking(
                 o.getImportsClosure(), map);
-        RelevancePolicy<OWLEntity> policy = AtomicDecompositionRankingRelevancePolicy
+        RelevancePolicy policy = AtomicDecompositionRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         OWLClass[] classes = getClasses(
                 "http://sweet.jpl.nasa.gov/ontology/units.owl#mole",
                 "http://sweet.jpl.nasa.gov/ontology/units.owl#percent");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
         int i = 1;
         System.out.println(String.format("Average popularity %s",
                 ranking.getAverageValue()));
-        for (RankingSlot<OWLEntity, Double> s : ranking.getSortedRanking()) {
+        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
                     s.getMembers(), s.getValue(),
-                    policy.isRelevant(s.getMembers().iterator().next())));
+ policy.isRelevant(s.getMembers()[0])));
             i++;
         }
     }
@@ -106,21 +106,21 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
                 o.getImportsClosure(), getOntologyManager());
         AtomicDecompositionRanking ranking = AtomicDecompositionRanking.buildRanking(
                 o.getImportsClosure(), map);
-        AtomicDecompositionRankingRelevancePolicy<OWLEntity> policy = AtomicDecompositionRankingRelevancePolicy
+        AtomicDecompositionRankingRelevancePolicy policy = AtomicDecompositionRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         OWLNamedIndividual[] classes = getNamedIndividuals(
                 "http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_1",
                 "http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_2");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
         int i = 1;
         System.out.println(String.format(
                 "Average atomic decomposition dependencies %s standard deviation %f",
                 ranking.getAverageValue(), policy.getStandardDeviation()));
-        for (RankingSlot<OWLEntity, Double> s : ranking.getSortedRanking()) {
+        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
                     s.getMembers(), s.getValue(),
-                    policy.isRelevant(s.getMembers().iterator().next())));
+ policy.isRelevant(s.getMembers()[0])));
             i++;
         }
     }

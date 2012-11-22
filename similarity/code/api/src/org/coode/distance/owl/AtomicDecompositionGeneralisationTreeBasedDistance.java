@@ -36,11 +36,11 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.demost.ui.adextension.ChiaraAtomicDecomposition;
@@ -77,7 +77,7 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
                 // variable replacements
                 AxiomAtomicDecompositionGeneralisationTreeNode generalisationTreeNode = new AxiomAtomicDecompositionGeneralisationTreeNode(
                         generalisedAxiom, instantionMap.get(generalisedAxiom),
-                        constraintSystem, getOntologyManger(), atomicDecomposition);
+                        constraintSystem, atomicDecomposition);
                 relevanceMap.setEntry(generalisedAxiom,
                         extractValues(generalisationTreeNode));
             }
@@ -94,13 +94,13 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
     private final AxiomRelevanceMap axiomRelevanceMap;
     private ChiaraAtomicDecomposition atomicDecomposition;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AtomicDecompositionGeneralisationTreeBasedDistance.this
                     .buildOntologySignature();
             AtomicDecompositionGeneralisationTreeBasedDistance.this
-                    .buildAxiomEntityMap(AtomicDecompositionGeneralisationTreeBasedDistance.this
-                            .getOntologies());
+                    .buildAxiomEntityMap(ontologies);
         }
     };
 
@@ -120,7 +120,7 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
 
     private void buildOntologySignature() {
         ontologySignature.clear();
-        for (OWLOntology ontology : getOntologies()) {
+        for (OWLOntology ontology : ontologies) {
             ontologySignature.addAll(ontology.getSignature());
         }
     }
@@ -151,7 +151,7 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
         ChiaraDecompositionAlgorithm chiaraDecompositionAlgorithm = new ChiaraDecompositionAlgorithm(
                 ModuleType.BOT);
         atomicDecomposition = (ChiaraAtomicDecomposition) chiaraDecompositionAlgorithm
-                .decompose(ontologyManger, null, getOntologies());
+                .decompose(ontologyManger, null, ontologies);
     }
 
     private AxiomRelevanceMap buildAxiomRelevanceMap() {
@@ -173,6 +173,7 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
 
     /** @see org.coode.distance.Distance#getDistance(java.lang.Object,
      *      java.lang.Object) */
+    @Override
     public double getDistance(final OWLEntity a, final OWLEntity b) {
         double toReturn = a.equals(b) ? 0 : 1;
         if (toReturn == 1) {
@@ -196,10 +197,12 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
         return toReturn;
     }
 
+    @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-                : new HashSet<OWLAxiom>(cached);
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
     /** @param owlEntity
@@ -210,8 +213,8 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
         OPPLFactory factory = new OPPLFactory(getOntologyManger(), ontologies.iterator()
                 .next(), null);
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
-            RelevancePolicy<OWLObject> policy = CollectionBasedRelevantPolicy
-                    .allOf(new HashSet<OWLObject>(getRelevantEntities(axiom)));
+            RelevancePolicy policy = CollectionBasedRelevantPolicy
+                    .allOf(getRelevantEntities(axiom));
             final ConstraintSystem cs = factory.createConstraintSystem();
             RelevancePolicyOWLObjectGeneralisation replacer = new RelevancePolicyOWLObjectGeneralisation(
                     policy, getEntityProvider());
@@ -224,10 +227,11 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
                 cache.put(owlEntity, replaced);
             }
         }
-        return new HashSet<OWLAxiom>(cache.get(owlEntity));
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
     }
 
-    private Set<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
+    private Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
         return axiomRelevanceMap.getRelevantEntities(axiom);
     }
 

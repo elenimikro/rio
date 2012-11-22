@@ -34,7 +34,6 @@ import org.coode.proximitymatrix.WardsProximityMeasureFactory;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class TestProximityMatrix extends TestCase {
@@ -43,7 +42,7 @@ public class TestProximityMatrix extends TestCase {
         super.setUp();
     }
 
-    public void testAgglomerate() throws OWLOntologyCreationException {
+    public void testAgglomerate() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
@@ -57,6 +56,7 @@ public class TestProximityMatrix extends TestCase {
         final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                 signature, axiomBasedDistance);
         PairFilter<Collection<? extends OWLEntity>> filter = new PairFilter<Collection<? extends OWLEntity>>() {
+            @Override
             public boolean accept(final Collection<? extends OWLEntity> first,
                     final Collection<? extends OWLEntity> second) {
                 Iterator<? extends OWLEntity> iterator = first.iterator();
@@ -79,6 +79,7 @@ public class TestProximityMatrix extends TestCase {
             newObjects.add(Collections.singleton(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return axiomBasedDistance.getDistance(a.iterator().next(), b.iterator()

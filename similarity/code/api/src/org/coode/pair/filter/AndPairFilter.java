@@ -31,7 +31,8 @@ public class AndPairFilter<O> extends BooleanExpressionFilter<O> {
 	 * @see org.coode.pair.filter.PairFilter#accept(java.lang.Object,
 	 * java.lang.Object)
 	 */
-	public boolean accept(O first, O second) {
+	@Override
+    public boolean accept(O first, O second) {
 		boolean toReturn = true;
 		for (PairFilter<O> filter : this.getFilters()) {
 			toReturn = toReturn && filter.accept(first, second);

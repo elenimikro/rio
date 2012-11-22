@@ -102,7 +102,7 @@ import org.w3c.dom.Document;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 /** @author Luigi Iannone */
-@SuppressWarnings("unused")
+
 public class ClusteringGUI extends JFrame {
     private final class Reducer
             extends
@@ -213,6 +213,7 @@ public class ClusteringGUI extends JFrame {
             super("Save Clusters");
         }
 
+        @Override
         public void actionPerformed(final ActionEvent arg0) {
             FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save",
                     FileDialog.SAVE);
@@ -269,6 +270,7 @@ public class ClusteringGUI extends JFrame {
 		 */
         private static final long serialVersionUID = -6759993806728785589L;
 
+        @Override
         public void actionPerformed(final ActionEvent arg0) {
             FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save",
                     FileDialog.SAVE);
@@ -358,6 +360,7 @@ public class ClusteringGUI extends JFrame {
     }
 
     private final class ClusteringTableCellRenderer implements TableCellRenderer {
+        @Override
         public Component getTableCellRendererComponent(final JTable table,
                 final Object value, final boolean isSelected, final boolean hasFocus,
                 final int row, final int column) {
@@ -404,8 +407,8 @@ public class ClusteringGUI extends JFrame {
             .buildOWLEntityClusterSummaryPanel(new SimpleShortFormProvider());
     private ClusterAxiomPanel<OWLEntity> clusterAxiomPanel;
     private final JTable proximityTable = new JTable();
-    private final JTable clusterStatisticsTable = new JTable();
-    private ClusteringProximityMatrix<OWLEntity> clusteringMatrix = null;
+    final JTable clusterStatisticsTable = new JTable();
+    ClusteringProximityMatrix<OWLEntity> clusteringMatrix = null;
     private final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
     private final JButton reduceButton = new JButton("Reduce");
     private final JButton agglomerateButton = new JButton("Agglomerate");
@@ -416,7 +419,7 @@ public class ClusteringGUI extends JFrame {
     private final Action saveClusteringAction = new SaveClustering();
     private final ClusteringTableCellRenderer clusteringTableCellRenderer = new ClusteringTableCellRenderer();
     private ProximityMatrix<OWLEntity> distanceMatrix;
-    private PairFilter<Collection<? extends OWLEntity>> filter;
+    PairFilter<Collection<? extends OWLEntity>> filter;
 
     public ClusteringGUI(final Collection<? extends IRI> iris) {
         if (iris == null) {
@@ -438,6 +441,7 @@ public class ClusteringGUI extends JFrame {
 
     private void reset() {
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -470,6 +474,7 @@ public class ClusteringGUI extends JFrame {
             newObjects.add(Collections.singleton(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
@@ -483,6 +488,7 @@ public class ClusteringGUI extends JFrame {
                 new SimpleHistoryItemFactory<Collection<? extends OWLEntity>>());
         updateGUI();
         reduceButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 Reducer reducer = new Reducer();
                 glassPane.setMessage("Reducing...");
@@ -491,6 +497,7 @@ public class ClusteringGUI extends JFrame {
             }
         });
         agglomerateButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
                     @Override
@@ -505,6 +512,7 @@ public class ClusteringGUI extends JFrame {
             }
         });
         agglomerateAllZerosButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
                     @Override
@@ -520,6 +528,7 @@ public class ClusteringGUI extends JFrame {
             }
         });
         agglomerateAllButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(final ActionEvent e) {
                 Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
                     @Override
@@ -607,6 +616,7 @@ public class ClusteringGUI extends JFrame {
         this.add(buttonPanel, BorderLayout.SOUTH);
         clusterStatisticsTable.getSelectionModel().addListSelectionListener(
                 new ListSelectionListener() {
+                    @Override
                     @SuppressWarnings("unchecked")
                     public void valueChanged(final ListSelectionEvent e) {
                         int selectedRow = clusterStatisticsTable.getSelectedRow();

@@ -252,7 +252,7 @@ public class Utils {
 			final Collection<? extends Collection<? extends O>> set,
 			final Collection<? extends OWLOntology> ontologies,
 			final ConstraintSystem constraintSystem) throws OPPLException {
-		int i = 0;
+        // int i = 0;
 		Set<BindingNode> bindings = new HashSet<BindingNode>(set.size());
 		// I need to preload all the constants into a variable before I start
 		Set<OWLLiteral> constants = new HashSet<OWLLiteral>();
@@ -321,7 +321,7 @@ public class Utils {
 						}
 					}
 				}
-				i++;
+                // i++;
 			}
 		}
 		return new OWLObjectGeneralisation(bindings, constraintSystem);
@@ -356,7 +356,7 @@ public class Utils {
 
 	public static <O extends OWLObject> void checkForPuns(
 			Collection<? extends O> cluster) {
-		String name = cluster.iterator().next().getClass().getName();
+        // String name = cluster.iterator().next().getClass().getName();
 		Set<String> otherNames = new HashSet<String>();
 		for (OWLObject o : cluster) {
 			otherNames.add(o.getClass().getName());
@@ -475,7 +475,7 @@ public class Utils {
 		SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 		Handler handler = new Handler(manager);
 		parser.parse(new InputSource(in), handler);
-		toReturn.addAll(handler.getClusters());
+        toReturn.addAll(handler.clusters);
 		for (Set<OWLEntity> set : toReturn) {
 			purgePuns(set);
 		}
@@ -491,7 +491,7 @@ public class Utils {
 		return handler.getHistory();
 	}
 
-	@SuppressWarnings("unused")
+
 	private static void purgePuns(
 			final Collection<? extends OWLEntity> collection) {
 		Class<?> predominantType = null;
@@ -978,7 +978,7 @@ public class Utils {
 
 	public static <P extends OWLEntity> void saveToXML(
 			final ClusterDecompositionModel<P> model,
-			final OWLOntologyManager manager, final File file)
+ final File file)
 			throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException {
 		List<Cluster<P>> clusterList = model.getClusterList();
@@ -1144,7 +1144,7 @@ public class Utils {
 			Collection<? extends OWLOntology> ontologies,
 			OWLObjectGeneralisation generalisation,
 			RuntimeExceptionHandler runtimeExceptionHandler)
-			throws ParserConfigurationException {
+ {
 		ClusterDecompositionModel<P> model = new ClusterDecompositionModel<P>(
 				_clusters, ontologies);
 		for (Cluster<P> cluster : _clusters) {
@@ -1161,7 +1161,7 @@ public class Utils {
 			Collection<? extends OWLOntology> ontologies, Set<OWLAxiom> axioms,
 			OWLObjectGeneralisation generalisation,
 			RuntimeExceptionHandler runtimeExceptionHandler)
-			throws ParserConfigurationException {
+ {
 		ClusterDecompositionModel<P> model = new ClusterDecompositionModel<P>(
 				_clusters, ontologies);
 		for (Cluster<P> cluster : _clusters) {

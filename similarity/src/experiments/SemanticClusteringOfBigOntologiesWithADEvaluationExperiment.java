@@ -108,7 +108,8 @@ public class SemanticClusteringOfBigOntologiesWithADEvaluationExperiment extends
 						.run(clustering_type, metrics, singleOut, o, distance,
 								filteredSignature, entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				// structural
 				clustering_type = "structural-relevance";
@@ -119,7 +120,8 @@ public class SemanticClusteringOfBigOntologiesWithADEvaluationExperiment extends
 						clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				// popularity distance
 				clustering_type = "popularity";
@@ -130,7 +132,8 @@ public class SemanticClusteringOfBigOntologiesWithADEvaluationExperiment extends
 						clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				printMetrics(metrics, allResultsFile);
 

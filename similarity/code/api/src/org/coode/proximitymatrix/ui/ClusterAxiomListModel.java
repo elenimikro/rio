@@ -66,7 +66,8 @@ public class ClusterAxiomListModel implements ListModel {
 				.buildGeneralisationMap(cluster, ontologies, axioms, generalisation,
 						runtimeExceptionHandler);
 		Comparator<OWLAxiom> comparator = new Comparator<OWLAxiom>() {
-			public int compare(OWLAxiom axiom, OWLAxiom anotherAxiom) {
+			@Override
+            public int compare(OWLAxiom axiom, OWLAxiom anotherAxiom) {
 				int toReturn = axiom.hashCode() - anotherAxiom.hashCode();
 				Collection<OWLAxiomInstantiation> axioms = generalisationMap.get(axiom);
 				Collection<OWLAxiomInstantiation> otherAxioms = generalisationMap
@@ -103,7 +104,8 @@ public class ClusterAxiomListModel implements ListModel {
 	 * @return
 	 * @see javax.swing.ListModel#getSize()
 	 */
-	public int getSize() {
+	@Override
+    public int getSize() {
 		return this.getDelegate().getSize();
 	}
 
@@ -112,7 +114,8 @@ public class ClusterAxiomListModel implements ListModel {
 	 * @return
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
-	public Object getElementAt(int index) {
+	@Override
+    public Object getElementAt(int index) {
 		return this.getDelegate().getElementAt(index);
 	}
 
@@ -120,7 +123,8 @@ public class ClusterAxiomListModel implements ListModel {
 	 * @param l
 	 * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
 	 */
-	public void addListDataListener(ListDataListener l) {
+	@Override
+    public void addListDataListener(ListDataListener l) {
 		this.getDelegate().addListDataListener(l);
 	}
 
@@ -128,7 +132,8 @@ public class ClusterAxiomListModel implements ListModel {
 	 * @param l
 	 * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
 	 */
-	public void removeListDataListener(ListDataListener l) {
+	@Override
+    public void removeListDataListener(ListDataListener l) {
 		this.getDelegate().removeListDataListener(l);
 	}
 

@@ -52,12 +52,14 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
         agglomerator.checkArgumentsAndRun(args);
     }
 
+    @Override
     public void run(final File outfile, final java.util.List<IRI> iris)
             throws OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         TestHelper.loadIRIMappers(iris, manager);
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -76,6 +78,7 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
                 DistanceTableObject.createDistanceTableObjectSet(distance,
                         distanceMatrix.getObjects()),
                 new Distance<DistanceTableObject<OWLEntity>>() {
+                    @Override
                     public double getDistance(final DistanceTableObject<OWLEntity> a,
                             final DistanceTableObject<OWLEntity> b) {
                         return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
@@ -86,6 +89,7 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
             newObjects.add(Collections.singletonList(object));
         }
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
+            @Override
             public double getDistance(
                     final Collection<? extends DistanceTableObject<OWLEntity>> a,
                     final Collection<? extends DistanceTableObject<OWLEntity>> b) {
@@ -113,8 +117,8 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
                 && filter.accept(clusteringMatrix.getMinimumDistancePair().getFirst(),
                         clusteringMatrix.getMinimumDistancePair().getSecond())) {
             clusteringMatrix = clusteringMatrix.agglomerate(filter);
-            System.out.println(String.format("Agglomerations: %d for %d clusters", i++,
-                    clusteringMatrix.getObjects().size()));
+            Utility.printAgglomeration(clusteringMatrix, i);
+            i++;
             if (clusteringMatrix.getMinimumDistancePair() != null) {
                 print(clusteringMatrix);
             }
@@ -137,14 +141,7 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
 
     @Override
     public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
-        System.out
-                .println(String.format(
-                        "Next Pair %s %s %f",
-                        Utils.render((Collection<DistanceTableObject<OWLEntity>>) clusteringMatrix
-                                .getMinimumDistancePair().getFirst()),
-                        Utils.render((Collection<DistanceTableObject<OWLEntity>>) (Collection<? extends OWLEntity>) clusteringMatrix
-                                .getMinimumDistancePair().getSecond()), clusteringMatrix
-                                .getMinimumDistance()));
+        Utility.print(clusteringMatrix);
     }
 
     private static <P> Set<Cluster<P>> buildClusters(

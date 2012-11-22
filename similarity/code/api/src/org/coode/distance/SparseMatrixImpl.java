@@ -37,10 +37,12 @@ public class SparseMatrixImpl implements SparseMatrix {
         return toReturn;
     }
 
+    @Override
     public int length() {
         return size;
     }
 
+    @Override
     public double get(final int _i, final int _j) {
         if (_i < size && _j < size) {
             if (_i == _j) {
@@ -66,6 +68,7 @@ public class SparseMatrixImpl implements SparseMatrix {
                 + " does not contain (" + _i + "," + _j + ")");
     }
 
+    @Override
     public double get(final Object i, final Object j) {
         Integer index = objectIndex.get(i);
         int rowIndex = index == null ? -1 : index;
@@ -82,6 +85,7 @@ public class SparseMatrixImpl implements SparseMatrix {
         return get(rowIndex, columnIndex);
     }
 
+    @Override
     public void set(final int _i, final int _j, final double d) {
         if (_i < size && _j < size) {
             if (_i == _j) {
@@ -105,6 +109,7 @@ public class SparseMatrixImpl implements SparseMatrix {
         }
     }
 
+    @Override
     public void printLine(final int i, final PrintWriter out) {
         MathContext mathContext = new MathContext(2);
         for (int j = 0; j < size; j++) {
@@ -112,6 +117,7 @@ public class SparseMatrixImpl implements SparseMatrix {
         }
     }
 
+    @Override
     public void setKeys(final Collection<?> objects) {
         for (Object o : objects) {
             objectIndex.put(o, objectIndex.size());

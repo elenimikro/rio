@@ -25,8 +25,6 @@ import java.util.Set;
 import org.coode.distance.entityrelevance.DefaultOWLEntityTypeRelevancePolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
-import org.coode.distance.entityrelevance.owl.AxiomMap;
-import org.coode.distance.entityrelevance.owl.AxiomRelevancePolicy;
 import org.coode.distance.entityrelevance.owl.Utils;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.oppl.ConstraintSystem;
@@ -57,8 +55,9 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
-    private final RelevancePolicy<OWLEntity> policy;
+    private final RelevancePolicy policy;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             KnowledgeExplorerOWLEntityRelevanceBasedDistance.this.buildSignature();
@@ -98,7 +97,7 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
         if (manager == null) {
             throw new NullPointerException("The ontolgy manager cannot be null");
         }
-        this.ke = explorer;
+        ke = explorer;
         this.ontologies.addAll(ontologies);
         ontologyManger = manager;
         buildSignature();
@@ -106,14 +105,16 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
         entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
         factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(),
                 null);
-        this.policy = DefaultOWLEntityTypeRelevancePolicy.getObjectPropertyAlwaysRelevantPolicy();
+        policy = DefaultOWLEntityTypeRelevancePolicy.getObjectPropertyAlwaysRelevantPolicy();
     }
     
 
+    @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-                : new CollectionFactory.ConditionalCopySet<OWLAxiom>(cached, false);
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
     /** @param owlEntity
@@ -137,8 +138,8 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
                 cache.put(owlEntity, replaced);
             }
         }
-        return new CollectionFactory.ConditionalCopySet<OWLAxiom>(cache.get(owlEntity),
-                false);
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
     }
 
     protected boolean isRelevant(final OWLAxiom replaced) {

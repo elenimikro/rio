@@ -15,7 +15,6 @@ package org.coode.metrics.owl;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.coode.metrics.AbstractRanking;
@@ -26,7 +25,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * @author Luigi Iannone
  *
  */
-public class OWLEntityPopularityRanking extends AbstractRanking<OWLEntity, Double> {
+public class OWLEntityPopularityRanking extends AbstractRanking {
 	/**
 	 * @param metric
 	 * @param objects
@@ -36,25 +35,11 @@ public class OWLEntityPopularityRanking extends AbstractRanking<OWLEntity, Doubl
 		super(new OWLEntityPopularity(ontologies), objects);
 	}
 
-	/**
-	 * @see org.coode.metrics.Ranking#isAverageable()
-	 */
-	public boolean isAverageable() {
+    @Override
+    public boolean isAverageable() {
 		return true;
 	}
 
-	/**
-	 * @see org.coode.metrics.AbstractRanking#computeAverage()
-	 */
-	@Override
-	protected Double computeAverage() {
-		List<Double> values = this.getValuesList();
-		double sum = 0;
-		for (Double value : values) {
-			sum += value;
-		}
-		return sum / values.size();
-	}
 
 	public static OWLEntityPopularityRanking buildRanking(
 			Collection<? extends OWLOntology> ontologies) {

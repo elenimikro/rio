@@ -79,7 +79,7 @@ public class SyntacticClusteringTasksRunner extends
 				OWLOntology o = m.loadOntologyFromOntologyDocument(new File(s));
 				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
 				metrics.add(new SimpleMetric<String>("Ontology", s));
-				metrics.addAll(SyntacticClusteringWithADEvaluationExperiment
+				metrics.addAll(ClusteringWithADEvaluationExperimentBase
 						.getBasicOntologyMetrics(m));
 
 				// popularity distance
@@ -89,7 +89,8 @@ public class SyntacticClusteringTasksRunner extends
 				ClusterDecompositionModel<OWLEntity> model = run(
 						clustering_type, metrics, singleOut, o, distance, null);
 				SyntacticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				// structural
 				distance = DistanceCreator
@@ -98,7 +99,8 @@ public class SyntacticClusteringTasksRunner extends
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						null);
 				SyntacticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 				//
 				// // property relevance
 				Set<OWLEntity> set = getSignatureWithoutProperties(o);
@@ -108,7 +110,8 @@ public class SyntacticClusteringTasksRunner extends
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						set);
 				SyntacticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				printMetrics(metrics, allResultsFile);
 

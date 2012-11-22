@@ -50,11 +50,13 @@ public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNo
 		}
 	}
 
-	public void accept(GeneralisationTreeNodeVisitor visitor) {
+	@Override
+    public void accept(GeneralisationTreeNodeVisitor visitor) {
 		visitor.visitBindingNodeGeneralisationTreeNode(this);
 	}
 
-	public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
+	@Override
+    public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
 		return visitor.visitBindingNodeGeneralisationTreeNode(this);
 	}
 
@@ -79,7 +81,8 @@ public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNo
 		return this.constraintSystem;
 	}
 
-	public String render() {
+	@Override
+    public String render() {
 		BindingNode bindingNode = this.getUserObject();
 		StringBuilder out = new StringBuilder();
 		Iterator<Assignment> iterator = bindingNode.getAssignments().iterator();

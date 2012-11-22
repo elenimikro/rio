@@ -38,29 +38,34 @@ public class ProximityMatrixTableModel implements TableModel {
         this.proximityMatrix = proximityMatrix;
     }
 
+    @Override
     public void addTableModelListener(final TableModelListener l) {
         if (l != null) {
             listeners.add(l);
         }
     }
 
-    @SuppressWarnings("unused")
+    @Override
     public Class<?> getColumnClass(final int i) {
         return Object.class;
     }
 
+    @Override
     public int getColumnCount() {
         return getProximityMatrix().getData().length() + 1;
     }
 
+    @Override
     public String getColumnName(final int i) {
         return columnNames[i];
     }
 
+    @Override
     public int getRowCount() {
         return getProximityMatrix().getData().length() + 1;
     }
 
+    @Override
     public Object getValueAt(final int row, final int column) {
         Object toReturn = null;
         if (column == 0) {
@@ -71,16 +76,17 @@ public class ProximityMatrixTableModel implements TableModel {
         return toReturn;
     }
 
-    @SuppressWarnings("unused")
+    @Override
     public boolean isCellEditable(final int arg0, final int arg1) {
         return false;
     }
 
+    @Override
     public void removeTableModelListener(final TableModelListener l) {
         listeners.remove(l);
     }
 
-    @SuppressWarnings("unused")
+    @Override
     public void setValueAt(final Object arg0, final int arg1, final int arg2) {
         // TODO Auto-generated method stub
     }

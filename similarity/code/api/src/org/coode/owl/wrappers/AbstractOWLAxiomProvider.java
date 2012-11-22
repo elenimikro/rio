@@ -16,13 +16,15 @@ import java.util.List;
 public abstract class AbstractOWLAxiomProvider implements OWLAxiomProvider {
 	private final List<OWLAxiomsChangedListener> listeners = new ArrayList<OWLAxiomsChangedListener>();
 
-	public void addOWLAxiomsChangedListener(OWLAxiomsChangedListener l) {
+	@Override
+    public void addOWLAxiomsChangedListener(OWLAxiomsChangedListener l) {
 		if (l != null) {
 			this.listeners.add(l);
 		}
 	}
 
-	public void removeOWLAxiomsChangedListener(OWLAxiomsChangedListener l) {
+	@Override
+    public void removeOWLAxiomsChangedListener(OWLAxiomsChangedListener l) {
 		this.listeners.remove(l);
 	}
 

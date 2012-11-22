@@ -38,7 +38,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -86,14 +85,14 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 	private final AxiomRelevanceMap axiomRelevanceMap;
 	private final OPPLFactory opplfactory;
 	private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-		public void ontologiesChanged(
+		@Override
+        public void ontologiesChanged(
 				final List<? extends OWLOntologyChange> changes)
 				throws OWLException {
 			StructuralAxiomRelevanceAxiomBasedDistance.this
 					.buildOntologySignature();
 			StructuralAxiomRelevanceAxiomBasedDistance.this
-					.buildAxiomEntityMap(StructuralAxiomRelevanceAxiomBasedDistance.this
-							.getOntologies());
+					.buildAxiomEntityMap(ontologies);
 		}
 	};
 
@@ -115,7 +114,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 
 	private void buildOntologySignature() {
 		ontologySignature.clear();
-		for (OWLOntology ontology : getOntologies()) {
+        for (OWLOntology ontology : ontologies) {
 			ontologySignature.addAll(ontology.getSignature());
 		}
 	}
@@ -163,10 +162,12 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 				constraintSystem);
 	}
 
-	public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+	@Override
+    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
 		Collection<OWLAxiom> cached = cache.get(owlEntity);
 		return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-				: new HashSet<OWLAxiom>(cached);
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
 	}
 
 	/**
@@ -175,8 +176,8 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 	 */
 	protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
 		for (OWLAxiom axiom : candidates.get(owlEntity)) {
-			RelevancePolicy<OWLObject> policy = CollectionBasedRelevantPolicy
-					.allOf(new HashSet<OWLObject>(getRelevantEntities(axiom)));
+            RelevancePolicy policy = CollectionBasedRelevantPolicy
+                    .allOf(getRelevantEntities(axiom));
 			RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers
 					.get(axiom);
 			if (generalReplacer == null) {
@@ -195,11 +196,11 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 				cache.put(owlEntity, replaced);
 			}
 		}
-		return new CollectionFactory.ConditionalCopySet<OWLAxiom>(
-				cache.get(owlEntity), false);
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
 	}
 
-	private Set<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
+    private Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
 		return axiomRelevanceMap.getRelevantEntities(axiom);
 	}
 

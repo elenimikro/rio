@@ -30,8 +30,9 @@ public class ClusteringProximityMatrix<O> implements
         ProximityMatrix<Collection<? extends O>> {
     private final ProximityMatrix<Collection<? extends O>> delegate;
     private final ProximityMeasureFactory proximityMeasureFactory;
-    private final History<Collection<? extends O>> history;
-    private HistoryItemFactory<Collection<? extends O>> historyItemFactory;
+
+    // private final History<Collection<? extends O>> history;
+    // private HistoryItemFactory<Collection<? extends O>> historyItemFactory;
 
     public static <P> ClusteringProximityMatrix<P> build(
             final ProximityMatrix<P> initialMatrix,
@@ -72,19 +73,20 @@ public class ClusteringProximityMatrix<O> implements
         if (delegate == null) {
             throw new NullPointerException("The delegate matrix cannot be null");
         }
-        if (history == null) {
-            throw new NullPointerException("The history cannot be null");
-        }
+        // if (history == null) {
+        // throw new NullPointerException("The history cannot be null");
+        // }
         if (proximityMeasureFactory == null) {
             throw new NullPointerException("The proximity measure factory cannot be null");
         }
-        if (historyItemFactory == null) {
-            throw new NullPointerException("The history item factory cannot be null");
-        }
+        // if (historyItemFactory == null) {
+        // throw new
+        // NullPointerException("The history item factory cannot be null");
+        // }
         this.delegate = delegate;
         this.proximityMeasureFactory = proximityMeasureFactory;
-        this.history = history;
-        this.historyItemFactory = historyItemFactory;
+        // this.history = history;
+        // this.historyItemFactory = historyItemFactory;
     }
 
     public ProximityMeasureFactory getProximityMeasureFactory() {
@@ -95,10 +97,10 @@ public class ClusteringProximityMatrix<O> implements
             final PairFilter<Collection<? extends O>> filter) {
         Collection<Collection<? extends O>> objects = this.getObjects();
         Pair<Collection<? extends O>> minimumDistancePair = this.getMinimumDistancePair();
-        List<Collection<? extends O>> elementList = minimumDistancePair.getElements();
-        Collection<? extends O> a = elementList.get(0);
-        Collection<? extends O> b = elementList.get(1);
-        objects.removeAll(elementList);
+        Collection<? extends O> a = minimumDistancePair.getFirst();
+        Collection<? extends O> b = minimumDistancePair.getSecond();
+        objects.remove(a);
+        objects.remove(b);
         List<Collection<? extends O>> newObjects = new ArrayList<Collection<? extends O>>(
                 objects);
         List<O> merger = new ArrayList<O>();
@@ -144,46 +146,57 @@ public class ClusteringProximityMatrix<O> implements
                 newObjects, newDistances, filter, PairFilterBasedComparator.build(filter,
                         newObjects, new TableDistance<Collection<? extends O>>(
                                 newObjects, newDistances)));
-        History<Collection<? extends O>> newHistory = this.getHistory();
-        HistoryItem<Collection<? extends O>> newItem = this.getHistoryItemFactory()
-                .create(minimumDistancePair, newObjects);
-        newHistory.add(newItem);
+        // History<Collection<? extends O>> newHistory = this.getHistory();
+        // HistoryItem<Collection<? extends O>> newItem =
+        // this.getHistoryItemFactory()
+        // .create(minimumDistancePair, newObjects);
+        // newHistory.add(newItem);
         ClusteringProximityMatrix<O> toReturn = new ClusteringProximityMatrix<O>(
-                simpleProximityMatrix, this.getProximityMeasureFactory(), newHistory,
-                this.getHistoryItemFactory());
+                simpleProximityMatrix, this.getProximityMeasureFactory(), null, null
+        // newHistory,
+        // this.getHistoryItemFactory()
+        );
         return toReturn;
     }
 
+    @Override
     public int[] getColumns(final Pair<Collection<? extends O>> pair) {
         return this.delegate.getRows(pair);
     }
 
+    @Override
     public int[] getRows(final Pair<Collection<? extends O>> pair) {
         return this.getColumns(pair);
     }
 
+    @Override
     public ClusteringProximityMatrix<O> reduce(
             final PairFilter<Collection<? extends O>> filter) {
         ProximityMatrix<Collection<? extends O>> reduced = this.delegate.reduce(filter);
         return new ClusteringProximityMatrix<O>(reduced,
-                this.getProximityMeasureFactory(), this.getHistory(),
-                this.getHistoryItemFactory());
+                this.getProximityMeasureFactory(), null, null)
+        // this.getHistory(),
+        // this.getHistoryItemFactory())
+        ;
     }
 
     /** @return
      * @see org.coode.proximitymatrix.ProximityMatrix#getObjects() */
+    @Override
     public Collection<Collection<? extends O>> getObjects() {
         return this.delegate.getObjects();
     }
 
     /** @return
      * @see org.coode.proximitymatrix.ProximityMatrix#getMinimumDistancePair() */
+    @Override
     public Pair<Collection<? extends O>> getMinimumDistancePair() {
         return this.delegate.getMinimumDistancePair();
     }
 
     /** @return
      * @see org.coode.proximitymatrix.ProximityMatrix#getMinimumDistance() */
+    @Override
     public double getMinimumDistance() {
         return this.delegate.getMinimumDistance();
     }
@@ -191,6 +204,7 @@ public class ClusteringProximityMatrix<O> implements
     /** @param o
      * @return
      * @see org.coode.proximitymatrix.ProximityMatrix#getRowIndex(java.lang.Object) */
+    @Override
     public int getRowIndex(final Collection<? extends O> o) {
         return this.delegate.getRowIndex(o);
     }
@@ -198,6 +212,7 @@ public class ClusteringProximityMatrix<O> implements
     /** @param o
      * @return
      * @see org.coode.proximitymatrix.ProximityMatrix#getColumnIndex(java.lang.Object) */
+    @Override
     public int getColumnIndex(final Collection<? extends O> o) {
         return this.delegate.getColumnIndex(o);
     }
@@ -207,6 +222,7 @@ public class ClusteringProximityMatrix<O> implements
      * @return
      * @see org.coode.proximitymatrix.ProximityMatrix#getDistance(java.lang.Object,
      *      java.lang.Object) */
+    @Override
     public double getDistance(final Collection<? extends O> anObject,
             final Collection<? extends O> anotherObject) {
         return this.delegate.getDistance(anObject, anotherObject);
@@ -214,6 +230,7 @@ public class ClusteringProximityMatrix<O> implements
 
     /** @return
      * @see org.apache.commons.math.linear.RealMatrix#getData() */
+    @Override
     public SparseMatrix getData() {
         return this.delegate.getData();
     }
@@ -223,6 +240,7 @@ public class ClusteringProximityMatrix<O> implements
      * @return
      * @throws MatrixIndexException
      * @see org.apache.commons.math.linear.RealMatrix#getEntry(int, int) */
+    @Override
     public double getDistance(final int row, final int column)
             throws MatrixIndexException {
         return this.delegate.getData().get(row, column);
@@ -233,24 +251,25 @@ public class ClusteringProximityMatrix<O> implements
         return this.delegate.toString();
     }
 
-    /** @return the history */
-    public History<Collection<? extends O>> getHistory() {
-        try {
-            return this.history.clone();
-        } catch (CloneNotSupportedException e) {
-            return this.history;
-        }
-    }
+    // /** @return the history */
+    // public History<Collection<? extends O>> getHistory() {
+    // try {
+    // return this.history.clone();
+    // } catch (CloneNotSupportedException e) {
+    // return this.history;
+    // }
+    // }
 
-    /** @return the historyItemFactory */
-    public HistoryItemFactory<Collection<? extends O>> getHistoryItemFactory() {
-        return this.historyItemFactory;
-    }
-
-    /** @param historyItemFactory
-     *            the historyItemFactory to set */
-    public void setHistoryItemFactory(
-            final HistoryItemFactory<Collection<? extends O>> historyItemFactory) {
-        this.historyItemFactory = historyItemFactory;
-    }
+    // /** @return the historyItemFactory */
+    // public HistoryItemFactory<Collection<? extends O>>
+    // getHistoryItemFactory() {
+    // return this.historyItemFactory;
+    // }
+    //
+    // /** @param historyItemFactory
+    // * the historyItemFactory to set */
+    // public void setHistoryItemFactory(
+    // final HistoryItemFactory<Collection<? extends O>> historyItemFactory) {
+    // this.historyItemFactory = historyItemFactory;
+    // }
 }

@@ -15,7 +15,6 @@ import java.util.Set;
 
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
-import org.coode.owl.generalise.AxiomGeneralisationTreeNode;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.structural.StructuralOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OWLEntityProvider;
@@ -53,8 +52,9 @@ public class StructuralAxiomRelevanceAxiomBasedDistancePerformanceTest {
 				instantiations.add(new OWLAxiomInstantiation(owlDisjointClassesAxiom,
 						generalisation.getSubstitutions()));
 			}
-			AxiomGeneralisationTreeNode generalisationTreeNode = new AxiomGeneralisationTreeNode(
-					generalisedAxiom, instantiations, constraintSystem);
+            // AxiomGeneralisationTreeNode generalisationTreeNode = new
+            // AxiomGeneralisationTreeNode(
+            // generalisedAxiom, instantiations, constraintSystem);
 		} catch (OWLOntologyCreationException e) {
 			e.printStackTrace();
 		}

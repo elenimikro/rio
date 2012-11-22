@@ -49,7 +49,8 @@ public class ReplacementByKindStrategy implements ReplacementStrategy {
 		}
 	}
 
-	public <O extends OWLObject> O replace(O owlObject) {
+	@Override
+    public <O extends OWLObject> O replace(O owlObject) {
 		return owlObject.accept(new OWLObjectVisitorExAdapter<O>() {
 			@SuppressWarnings("unchecked")
 			@Override

@@ -34,11 +34,11 @@ import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.util.MultiMap;
 
 public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomProvider {
-    private final OWLOntologyManager ontologyManager;
+    final OWLOntologyManager ontologyManager;
     // private final Map<OWLAxiom, Set<OWLOntology>> axiomOntologyMap = new
     // HashMap<OWLAxiom, Set<OWLOntology>>();
-    private final MultiMap<OWLEntity, OWLAxiom> entityAxiomMap = new MultiMap<OWLEntity, OWLAxiom>();
-    private final Set<OWLAxiom> axiomsDelegate = new HashSet<OWLAxiom>();
+    final MultiMap<OWLEntity, OWLAxiom> entityAxiomMap = new MultiMap<OWLEntity, OWLAxiom>();
+    final Set<OWLAxiom> axiomsDelegate = new HashSet<OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
@@ -46,13 +46,13 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
             for (OWLOntologyChange change : changes) {
                 change.accept(new OWLOntologyChangeVisitor() {
                     @Override
-                    @SuppressWarnings("unused")
+
                     public void visit(final RemoveOntologyAnnotation c) {
                         // Do Nothing
                     }
 
                     @Override
-                    @SuppressWarnings("unused")
+
                     public void visit(final AddOntologyAnnotation c) {
                         // Do Nothing
                     }
@@ -78,7 +78,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                     }
 
                     @Override
-                    @SuppressWarnings("unused")
+
                     public void visit(final SetOntologyID c) {
                         // Do Nothing
                     }
@@ -189,6 +189,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     /** @param e
      * @return
      * @see java.util.Set#add(java.lang.Object) */
+    @Override
     public boolean add(final OWLAxiom e) {
         return axiomsDelegate.add(e);
     }
@@ -196,11 +197,13 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     /** @param c
      * @return
      * @see java.util.Set#addAll(java.util.Collection) */
+    @Override
     public boolean addAll(final Collection<? extends OWLAxiom> c) {
         return axiomsDelegate.addAll(c);
     }
 
     /** @see java.util.Set#clear() */
+    @Override
     public void clear() {
         axiomsDelegate.clear();
     }
@@ -208,6 +211,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     /** @param o
      * @return
      * @see java.util.Set#contains(java.lang.Object) */
+    @Override
     public boolean contains(final Object o) {
         return axiomsDelegate.contains(o);
     }
@@ -215,6 +219,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     /** @param c
      * @return
      * @see java.util.Set#containsAll(java.util.Collection) */
+    @Override
     public boolean containsAll(final Collection<?> c) {
         return axiomsDelegate.containsAll(c);
     }
@@ -236,12 +241,14 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
 
     /** @return
      * @see java.util.Set#isEmpty() */
+    @Override
     public boolean isEmpty() {
         return axiomsDelegate.isEmpty();
     }
 
     /** @return
      * @see java.util.Set#iterator() */
+    @Override
     public Iterator<OWLAxiom> iterator() {
         return axiomsDelegate.iterator();
     }
@@ -249,6 +256,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     /** @param o
      * @return
      * @see java.util.Set#remove(java.lang.Object) */
+    @Override
     public boolean remove(final Object o) {
         return axiomsDelegate.remove(o);
     }
@@ -256,6 +264,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     /** @param c
      * @return
      * @see java.util.Set#removeAll(java.util.Collection) */
+    @Override
     public boolean removeAll(final Collection<?> c) {
         return axiomsDelegate.removeAll(c);
     }
@@ -263,18 +272,21 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     /** @param c
      * @return
      * @see java.util.Set#retainAll(java.util.Collection) */
+    @Override
     public boolean retainAll(final Collection<?> c) {
         return axiomsDelegate.retainAll(c);
     }
 
     /** @return
      * @see java.util.Set#size() */
+    @Override
     public int size() {
         return axiomsDelegate.size();
     }
 
     /** @return
      * @see java.util.Set#toArray() */
+    @Override
     public Object[] toArray() {
         return axiomsDelegate.toArray();
     }
@@ -283,6 +295,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
      * @param a
      * @return
      * @see java.util.Set#toArray(T[]) */
+    @Override
     public <T> T[] toArray(final T[] a) {
         return axiomsDelegate.toArray(a);
     }

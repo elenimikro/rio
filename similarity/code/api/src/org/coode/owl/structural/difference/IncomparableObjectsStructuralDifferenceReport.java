@@ -16,11 +16,13 @@ public class IncomparableObjectsStructuralDifferenceReport implements
 
 	private IncomparableObjectsStructuralDifferenceReport() {}
 
-	public void accept(StructuralDifferenceReportVisitor visitor) {
+	@Override
+    public void accept(StructuralDifferenceReportVisitor visitor) {
 		visitor.visitIncomparableObjectsStructuralDifferenceReport(this);
 	}
 
-	public <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor) {
+	@Override
+    public <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor) {
 		return visitor.visitIncomparableObjectsStructuralDifferenceReport(this);
 	}
 

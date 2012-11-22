@@ -30,14 +30,14 @@ import org.semanticweb.owlapi.util.MultiMap;
 import edu.arizona.bio5.onto.decomposition.Atom;
 
 /** @author Luigi Iannone */
-public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEntity> {
+public class AtomicDecompositionRelevancePolicy implements RelevancePolicy {
     private final OWLAxiom axiom;
     private final OWLDataFactory dataFactory;
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     // private final OWLEntityReplacer replacer;
     // private final AxiomMap axiomMap;
-    private final AbstractRanking<OWLEntity, Double> ranking;
-    private final RelevancePolicy<OWLEntity> relevance;
+    private final AbstractRanking ranking;
+    private final RelevancePolicy relevance;
     MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
 
     /** @param axiom */
@@ -74,41 +74,32 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
                 .getAbstractRankingRelevancePolicy(ranking);
     }
 
-    private AbstractRanking<OWLEntity, Double> buildRanking() {
+    private AbstractRanking buildRanking() {
         // final OWLAxiom replaced = (OWLAxiom) getAxiom().accept(replacer);
-        Metric<OWLEntity, Double> m = new Metric<OWLEntity, Double>() {
-            public Double getValue(final OWLEntity object) {
+        Metric<OWLEntity> m = new Metric<OWLEntity>() {
+            @Override
+            public double getValue(final OWLEntity object) {
                 double value = entityAtomDependencies.get(object).size();
                 // edit this metric and add the one for the atomic decomposition
                 // double total = entityAtomDependencies.getAllValues().size();
                 return value;
             }
         };
-        AbstractRanking<OWLEntity, Double> toReturn = new AbstractRanking<OWLEntity, Double>(
+        AbstractRanking toReturn = new AbstractRanking(
                 m, entityAtomDependencies.keySet()) {
+            @Override
             public boolean isAverageable() {
                 return true;
             }
 
-            @Override
-            protected Double computeAverage() {
-                Set<Double> values = getValues();
-                Double average = 0d;
-                if (!values.isEmpty()) {
-                    double total = 0;
-                    for (Double d : values) {
-                        total += d;
-                    }
-                    average = total / values.size();
-                }
-                return average;
-            }
+
         };
         return toReturn;
     }
 
     /** @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
      *      .Object) */
+    @Override
     public boolean isRelevant(final OWLEntity object) {
         return relevance.isRelevant(object);
     }

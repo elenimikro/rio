@@ -8,13 +8,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
-import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 import experiments.ClusterResultsExploitationUtils;
 import experiments.ExperimentHelper;
@@ -23,9 +21,9 @@ public class IOExperimentUtils {
 
 	private static String results_base = "";
 
-	public static File saveResults(String substring, OWLOntology o,
-			String clustering_type, ClusterDecompositionModel<OWLEntity> model,
-			Distance<OWLEntity> distance) throws ParserConfigurationException,
+    public static File saveResults(String substring, String clustering_type,
+            ClusterDecompositionModel<OWLEntity> model)
+            throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException,
 			FileNotFoundException {
 		String xmlname = results_base + clustering_type + "-"
@@ -39,7 +37,7 @@ public class IOExperimentUtils {
 		// ClusterResultsExploitationUtils.filterResults(clusteringMatrix,
 		// model,
 		// distance, out);
-		Utils.saveToXML(model, o.getOWLOntologyManager(), xml);
+        Utils.saveToXML(model, xml);
 		return xml;
 	}
 

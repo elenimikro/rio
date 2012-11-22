@@ -12,10 +12,9 @@ package org.coode.proximitymatrix.cluster;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 import org.coode.distance.Distance;
 import org.coode.pair.Pair;
@@ -25,7 +24,7 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
     private final PairFilter<O> filter;
     private final Set<O> objects = new LinkedHashSet<O>();
     private final Distance<O> distance;
-    private final static Map<Pair<?>, Integer> scores = new HashMap<Pair<?>, Integer>();
+    private final static WeakHashMap<Pair<?>, Integer> scores = new WeakHashMap<Pair<?>, Integer>();
 
     /** @param filter */
     private PairFilterBasedComparator(final PairFilter<O> filter,
@@ -44,6 +43,7 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
         this.distance = distance;
     }
 
+    @Override
     public int compare(final Pair<O> o1, final Pair<O> o2) {
         // System.out.println(new Exception().getStackTrace()[0] + "\t" + o1 +
         // "\t" + o2);

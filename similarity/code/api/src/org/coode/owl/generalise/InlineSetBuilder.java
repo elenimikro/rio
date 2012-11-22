@@ -60,7 +60,7 @@ import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 /** @author Luigi Iannone */
-@SuppressWarnings("unused")
+
 public abstract class InlineSetBuilder<O extends OWLObject> extends
         OWLObjectVisitorExAdapter<InlineSet<O>> implements
         OWLObjectVisitorEx<InlineSet<O>> {
@@ -99,6 +99,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                     toReturn = variable
                             .getType()
                             .accept(new VariableTypeVisitorEx<InlineSet<OWLObjectPropertyExpression>>() {
+                                @Override
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitCLASSVariableType(
@@ -109,6 +110,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 @SuppressWarnings("unchecked")
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
@@ -121,6 +123,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitDATAPROPERTYVariableType(
@@ -131,6 +134,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitINDIVIDUALVariableType(
@@ -141,6 +145,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitCONSTANTVariableType(
@@ -151,6 +156,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitANNOTATIONPROPERTYVariableType(
@@ -204,6 +210,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                 if (variable != null) {
                     toReturn = variable.getType().accept(
                             new VariableTypeVisitorEx<InlineSet<OWLIndividual>>() {
+                                @Override
                                 public InlineSet<OWLIndividual> visitCLASSVariableType(
                                         final CLASSVariableType classVariableType) {
                                     return buildSingletonInlineSet(individual,
@@ -212,6 +219,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLIndividual>
                                         visitOBJECTPROPERTYVariableType(
@@ -222,6 +230,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLIndividual>
                                         visitDATAPROPERTYVariableType(
@@ -232,6 +241,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 @SuppressWarnings("unchecked")
                                 public
                                         InlineSet<OWLIndividual>
@@ -244,6 +254,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLIndividual>
                                         visitCONSTANTVariableType(
@@ -254,6 +265,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLIndividual>
                                         visitANNOTATIONPROPERTYVariableType(
@@ -287,6 +299,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                     toReturn = variable
                             .getType()
                             .accept(new VariableTypeVisitorEx<InlineSet<OWLDataPropertyExpression>>() {
+                                @Override
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitCLASSVariableType(
@@ -297,6 +310,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitOBJECTPROPERTYVariableType(
@@ -307,6 +321,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 @SuppressWarnings("unchecked")
                                 public
                                         InlineSet<OWLDataPropertyExpression>
@@ -319,6 +334,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitINDIVIDUALVariableType(
@@ -329,6 +345,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitCONSTANTVariableType(
@@ -339,6 +356,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitANNOTATIONPROPERTYVariableType(
@@ -368,6 +386,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                 if (variable != null) {
                     toReturn = variable.getType().accept(
                             new VariableTypeVisitorEx<InlineSet<OWLClassExpression>>() {
+                                @Override
                                 @SuppressWarnings("unchecked")
                                 public
                                         InlineSet<OWLClassExpression>
@@ -380,6 +399,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitOBJECTPROPERTYVariableType(
@@ -389,6 +409,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitDATAPROPERTYVariableType(
@@ -398,6 +419,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitINDIVIDUALVariableType(
@@ -407,6 +429,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitCONSTANTVariableType(
@@ -416,6 +439,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                             getDataFactory(), getConstraintSystem());
                                 }
 
+                                @Override
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitANNOTATIONPROPERTYVariableType(
@@ -521,7 +545,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
         return this.constraintSystem;
     }
 
-    private static <O extends OWLObject> InlineSet<O> buildSingletonInlineSet(
+    static <O extends OWLObject> InlineSet<O> buildSingletonInlineSet(
             final O object, final VariableType<O> variableType,
             final OWLDataFactory dataFactory, final ConstraintSystem constraintSystem) {
         Aggregandum<Collection<? extends O>> aggregandums = Adapter

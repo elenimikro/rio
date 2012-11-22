@@ -64,7 +64,7 @@ public class TestGeneralisation extends TestCase {
     }
 
     public void testMultipleStructuralGeneralisationWholeOntology()
-            throws OWLOntologyCreationException {
+ {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         int generalisationCount = 0;
@@ -90,7 +90,7 @@ public class TestGeneralisation extends TestCase {
     }
 
     public void testMultipleStructuralGeneralisation()
-            throws OWLOntologyCreationException {
+ {
         int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
@@ -140,7 +140,7 @@ public class TestGeneralisation extends TestCase {
         }
     }
 
-    public void testStructuralGeneralisation() throws OWLOntologyCreationException {
+    public void testStructuralGeneralisation() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
@@ -173,13 +173,16 @@ public class TestGeneralisation extends TestCase {
         final Set<GeneratedVariable<?>> generatedVariables = new HashSet<GeneratedVariable<?>>();
         for (Variable<?> variable : variables) {
             variable.accept(new VariableVisitor() {
+                @Override
                 public <P extends OWLObject> void visit(
                         final RegexpGeneratedVariable<P> regExpGenerated) {}
 
+                @Override
                 public <P extends OWLObject> void visit(final GeneratedVariable<P> v) {
                     generatedVariables.add(v);
                 }
 
+                @Override
                 public <P extends OWLObject> void visit(final InputVariable<P> v) {
                     inputVariables.add(v);
                 }

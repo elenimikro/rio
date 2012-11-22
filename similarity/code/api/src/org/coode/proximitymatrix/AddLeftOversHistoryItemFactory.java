@@ -26,7 +26,8 @@ public class AddLeftOversHistoryItemFactory<O> implements HistoryItemFactory<O> 
 		this.leftOvers.addAll(leftOvers);
 	}
 
-	public HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters) {
+	@Override
+    public HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters) {
 		Set<O> newClusters = this.getLeftOvers();
 		newClusters.addAll(clusters);
 		return new HistoryItem<O>(pair, newClusters);

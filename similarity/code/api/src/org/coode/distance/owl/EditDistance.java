@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 public class EditDistance implements AbstractAxiomBasedDistance {
@@ -34,9 +35,10 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 	private final OWLOntologyManager ontologyManger;
 	private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
 	private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-		public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
+		@Override
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
 				throws OWLException {
-			EditDistance.this.buildAxiomMap(EditDistance.this.getOntologies());
+            EditDistance.this.buildAxiomMap(ontologies);
 		}
 	};
 
@@ -47,7 +49,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 			for (AxiomType<?> t : types) {
 				for (OWLAxiom ax : ontology.getAxioms(t)) {
 					for (OWLEntity e : ax.getSignature()) {
-						this.candidates.put(e, ax);
+						candidates.put(e, ax);
 					}
 				}
 			}
@@ -66,8 +68,8 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 			throw new NullPointerException("The ontolgy manager cannot be null");
 		}
 		this.ontologies.addAll(ontologies);
-		this.ontologyManger = manager;
-		this.buildAxiomMap(ontologies);
+		ontologyManger = manager;
+		buildAxiomMap(ontologies);
 		this.dataFactory = dataFactory;
 	}
 
@@ -75,11 +77,12 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 	 * @see org.coode.distance.Distance#getDistance(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public double getDistance(OWLEntity a, OWLEntity b) {
-		Set<OWLAxiom> axiomsForA = this.getAxioms(a);
-		MultiMap<OWLAxiom, OWLAxiom> partitionForA = this.buildMap(a, axiomsForA);
-		Set<OWLAxiom> axiomsForB = this.getAxioms(b);
-		MultiMap<OWLAxiom, OWLAxiom> partitionForB = this.buildMap(b, axiomsForB);
+	@Override
+    public double getDistance(OWLEntity a, OWLEntity b) {
+		Set<OWLAxiom> axiomsForA = getAxioms(a);
+		MultiMap<OWLAxiom, OWLAxiom> partitionForA = buildMap(a, axiomsForA);
+		Set<OWLAxiom> axiomsForB = getAxioms(b);
+		MultiMap<OWLAxiom, OWLAxiom> partitionForB = buildMap(b, axiomsForB);
 		double total = partitionForA.keySet().size() + partitionForB.keySet().size();
 		Set<OWLAxiom> intersection = new HashSet<OWLAxiom>(partitionForA.keySet());
 		Set<OWLAxiom> leftOut = new HashSet<OWLAxiom>(partitionForA.keySet());
@@ -90,8 +93,8 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 		for (OWLAxiom owlAxiom : intersection) {
 			Collection<OWLAxiom> instantiationsForA = partitionForA.get(owlAxiom);
 			Collection<OWLAxiom> instantiationsForB = partitionForA.get(owlAxiom);
-			Set<OWLEntity> entitiesForA = this.extractOWLEntities(instantiationsForA);
-			Set<OWLEntity> entitiesForB = this.extractOWLEntities(instantiationsForB);
+			Set<OWLEntity> entitiesForA = extractOWLEntities(instantiationsForA);
+			Set<OWLEntity> entitiesForB = extractOWLEntities(instantiationsForB);
 			if (!entitiesForA.isEmpty() || !entitiesForB.isEmpty()) {
 				int AorB = entitiesForA.size();
 				int AandB = 0;
@@ -122,9 +125,9 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 	private MultiMap<OWLAxiom, OWLAxiom> buildMap(OWLEntity owlEntity,
 			Collection<? extends OWLAxiom> axioms) {
 		MultiMap<OWLAxiom, OWLAxiom> toReturn = new MultiMap<OWLAxiom, OWLAxiom>();
-		OWLEntityReplacer replacer = new OWLEntityReplacer(this.getDataFactory(),
+		OWLEntityReplacer replacer = new OWLEntityReplacer(getDataFactory(),
 				new SingleOWLObjectReplacementByKindStrategy(owlEntity,
-						this.getDataFactory(),
+						getDataFactory(),
 						DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy()));
 		for (OWLAxiom axiom : axioms) {
 			OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
@@ -133,10 +136,12 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 		return toReturn;
 	}
 
-	public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
-		Collection<OWLAxiom> cached = this.cache.get(owlEntity);
-		return cached.isEmpty() ? this.computeAxiomsForEntity(owlEntity)
-				: new HashSet<OWLAxiom>(cached);
+	@Override
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
+		Collection<OWLAxiom> cached = cache.get(owlEntity);
+		return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
 	}
 
 	/**
@@ -145,35 +150,36 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 	 */
 	protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
 		Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
-		if (!this.cache.get(owlEntity).isEmpty()) {
-			toReturn.addAll(this.cache.get(owlEntity));
+		if (!cache.get(owlEntity).isEmpty()) {
+			toReturn.addAll(cache.get(owlEntity));
 		} else {
 			Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
 			types.remove(AxiomType.DECLARATION);
-			for (OWLAxiom owlAxiom : this.candidates.get(owlEntity)) {
+			for (OWLAxiom owlAxiom : candidates.get(owlEntity)) {
 				if (types.contains(owlAxiom.getAxiomType())) {
-					this.cache.put(owlEntity, owlAxiom);
+					cache.put(owlEntity, owlAxiom);
 				}
 			}
 		}
-		return new HashSet<OWLAxiom>(cache.get(owlEntity));
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
 	}
 
 	/**
 	 * @return the ontologies
 	 */
 	public Set<OWLOntology> getOntologies() {
-		return new HashSet<OWLOntology>(this.ontologies);
+		return new HashSet<OWLOntology>(ontologies);
 	}
 
 	/**
 	 * @return the dataFactory
 	 */
 	public OWLDataFactory getDataFactory() {
-		return this.dataFactory;
+		return dataFactory;
 	}
 
 	public void dispose() {
-		this.ontologyManger.removeOntologyChangeListener(this.listener);
+		ontologyManger.removeOntologyChangeListener(listener);
 	}
 }

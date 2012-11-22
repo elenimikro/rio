@@ -89,10 +89,12 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     public SimpleProximityMatrix(final Collection<? extends O> objects,
             final Distance<O> distance) {
         this(objects, distance, new PairFilter<O>() {
+            @Override
             public boolean accept(final O first, final O second) {
                 return true;
             }
         }, new Comparator<Pair<O>>() {
+            @Override
             public int compare(final Pair<O> arg0, final Pair<O> arg1) {
                 return arg0.hashCode() - arg1.hashCode();
             }
@@ -146,6 +148,7 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         this.delegate = SparseMatrixFactory.create(distances);
     }
 
+    @Override
     public ProximityMatrix<O> reduce(final PairFilter<O> filter) {
         Set<O> reducedObjects = new HashSet<O>();
         Iterator<O> iterator = this.getObjects().iterator();
@@ -183,21 +186,25 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
        
     }
 
+    @Override
     public final int getRowIndex(final O o) {
         Integer index = this.objectIndex.get(o);
         return index == null ? -1 : index;
     }
 
+    @Override
     public final int getColumnIndex(final O o) {
         Integer index = this.objectIndex.get(o);
         return index == null ? -1 : index;
     }
 
+    @Override
     public Pair<O> getMinimumDistancePair() {
         return this.minimumDistancePair == null ? null : new SimplePair<O>(
                 this.minimumDistancePair);
     }
 
+    @Override
     public double getDistance(final O anObject, final O anotherObject) {
         int row = this.getRowIndex(anObject);
         if (row == -1) {
@@ -212,16 +219,19 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         return this.getDistance(row, column);
     }
 
+    @Override
     public double getMinimumDistance() {
         return this.minimumDistance;
     }
 
+    @Override
     public int[] getColumns(final Pair<O> pair) {
         int[] cols = new int[] { getColumnIndex(pair.getFirst()),
                 getColumnIndex(pair.getSecond()) };
         return cols;
     }
 
+    @Override
     public int[] getRows(final Pair<O> pair) {
         int[] rows = new int[] { getRowIndex(pair.getFirst()),
                 getRowIndex(pair.getSecond()) };
@@ -229,17 +239,20 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     }
 
     /** @see org.apache.commons.math.linear.RealMatrix#getData() */
+    @Override
     public SparseMatrix getData() {
         return this.delegate;
     }
 
     /** @see org.apache.commons.math.linear.RealMatrix#getEntry(int, int) */
+    @Override
     public double getDistance(final int row, final int column)
             throws MatrixIndexException {
         return this.delegate.get(row, column);
     }
 
     /** @return the objects */
+    @Override
     public Collection<O> getObjects() {
         return this.objects;
     }

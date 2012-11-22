@@ -31,7 +31,7 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
     }
 
     @Override
-    protected Variable<?> getAbstractingVariable(final OWLObject owlObject) {
+    protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
         Variable<?> toReturn = owlObject
                 .accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
                     @Override

@@ -18,7 +18,8 @@ import org.coode.utils.Tree.Search;
 public class Utils {
 	public static Search getUserObjectSearch(final Object object) {
 		return new Search() {
-			public boolean goalReached(TreeNode<?> node) {
+			@Override
+            public boolean goalReached(TreeNode<?> node) {
 				return object == null ? object == node.getUserObject() : object
 						.equals(node.getUserObject());
 			}

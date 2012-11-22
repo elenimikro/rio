@@ -19,8 +19,8 @@ public class Runner {
         final String uri = "file://";
         String atomic1 = "atomic1";
         String atomic2 = "atomic2";
-        String wrapping = "popularity";
-        String structural = "structural";
+        // String wrapping = "popularity";
+        // String structural = "structural";
         String baseFolder = "/eclipse-workspace/similarity/eswc-ontologies/";
         String[] input = new String[] { "efo-v3.owl", "travel/c23.owl",
                 "SNOMEDclinicalFindingPresentModule.owl", "amino-acid-original.owl",

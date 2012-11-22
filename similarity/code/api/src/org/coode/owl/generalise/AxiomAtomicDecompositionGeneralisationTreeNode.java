@@ -34,7 +34,6 @@ import org.coode.utils.DefaultTreeNode;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.demost.ui.adextension.ChiaraAtomicDecomposition;
@@ -57,7 +56,7 @@ public class AxiomAtomicDecompositionGeneralisationTreeNode extends
     public AxiomAtomicDecompositionGeneralisationTreeNode(final OWLAxiom userObject,
             final Collection<? extends OWLAxiomInstantiation> instantiations,
             final ConstraintSystem constraintSystem,
-            final OWLOntologyManager ontologyManager,
+
             final ChiaraAtomicDecomposition atomicDecomposition) {
         super(userObject);
         if (instantiations == null) {
@@ -239,10 +238,12 @@ public class AxiomAtomicDecompositionGeneralisationTreeNode extends
     // }
     // return true;
     // }
+    @Override
     public void accept(final GeneralisationTreeNodeVisitor visitor) {
         visitor.visitAxiomAtomicDecompositionGeneralisationTreeNode(this);
     }
 
+    @Override
     public <P> P accept(final GeneralisationTreeNodeVisitorEx<P> visitor) {
         return visitor.visitAxiomAtomicDecompositionGeneralisationTreeNode(this);
     }

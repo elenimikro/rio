@@ -17,7 +17,6 @@ import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
@@ -35,9 +34,9 @@ public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
             }
 
             @Override
-            @SuppressWarnings("unused")
+
             public AbstractAxiomBasedDistance getDistance(final OWLOntology o,
-                    final RelevancePolicy<OWLEntity> rp) {
+                    final RelevancePolicy rp) {
                 return null;
             }
         };
@@ -47,20 +46,20 @@ public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "MozzarellaTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testGetAxiomsPepperTopping() {
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "PepperTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testDistanceGarlicToppingPizza() {
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "GarlicTopping", pizza_ns + "Pizza");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 }

@@ -31,7 +31,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
@@ -39,12 +38,13 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 public class EquivalenceClassTest extends TestCase {
-    public void testGetEquivalenceClassesPizza() throws OWLOntologyCreationException {
+    public void testGetEquivalenceClassesPizza() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -94,12 +94,13 @@ public class EquivalenceClassTest extends TestCase {
     }
 
     public void testGetEquivalenceClassesSameDistancePizza()
-            throws OWLOntologyCreationException {
+ {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -145,6 +146,7 @@ public class EquivalenceClassTest extends TestCase {
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));

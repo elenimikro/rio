@@ -42,6 +42,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * @author Luigi Iannone
  * 
  */
+
 public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
 	/**
 	 * 
@@ -66,7 +67,8 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
 			String string = String.format("Axiom count: %d", model.getAxiomCount());
 			if (this.getGeneralisation() != null) {
 				Comparator<Variable<?>> comparator = new Comparator<Variable<?>>() {
-					public int compare(Variable<?> o1, Variable<?> o2) {
+					@Override
+                    public int compare(Variable<?> o1, Variable<?> o2) {
 						return o1.getName().compareTo(o2.getName());
 					}
 				};
@@ -93,12 +95,13 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
 	}
 
 	private void initGUI() {
-		this.setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 		this.add(this.summaryLabel, BorderLayout.NORTH);
 		this.add(new JScrollPane(this.variableList), BorderLayout.WEST);
 		this.add(new JScrollPane(this.axiomList), BorderLayout.CENTER);
 		this.axiomList.setCellRenderer(new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value,
+			@Override
+            public Component getListCellRendererComponent(JList list, Object value,
 					int index, boolean isSelected, boolean cellHasFocus) {
 				DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
 				OWLAxiomListItem owlAxiomListItem = (OWLAxiomListItem) value;
@@ -113,7 +116,8 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
 			}
 		});
 		this.variableList.setCellRenderer(new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value,
+			@Override
+            public Component getListCellRendererComponent(JList list, Object value,
 					int index, boolean isSelected, boolean cellHasFocus) {
 				DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
 				Object toRender = value instanceof Variable<?>

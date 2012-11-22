@@ -40,6 +40,7 @@ public class ComputeAllDistances {
         TestHelper.loadIRIMappers(iris, manager);
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));

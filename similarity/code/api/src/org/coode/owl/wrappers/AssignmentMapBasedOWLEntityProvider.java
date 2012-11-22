@@ -80,6 +80,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     /** @param e
      * @return
      * @see java.util.Set#add(java.lang.Object) */
+    @Override
     public boolean add(final OWLEntity e) {
         return delegate.add(e);
     }
@@ -87,11 +88,13 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     /** @param c
      * @return
      * @see java.util.Set#addAll(java.util.Collection) */
+    @Override
     public boolean addAll(final Collection<? extends OWLEntity> c) {
         return delegate.addAll(c);
     }
 
     /** @see java.util.Set#clear() */
+    @Override
     public void clear() {
         delegate.clear();
     }
@@ -99,6 +102,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     /** @param o
      * @return
      * @see java.util.Set#contains(java.lang.Object) */
+    @Override
     public boolean contains(final Object o) {
         return delegate.contains(o);
     }
@@ -106,6 +110,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     /** @param c
      * @return
      * @see java.util.Set#containsAll(java.util.Collection) */
+    @Override
     public boolean containsAll(final Collection<?> c) {
         return delegate.containsAll(c);
     }
@@ -127,12 +132,14 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
 
     /** @return
      * @see java.util.Set#isEmpty() */
+    @Override
     public boolean isEmpty() {
         return delegate.isEmpty();
     }
 
     /** @return
      * @see java.util.Set#iterator() */
+    @Override
     public Iterator<OWLEntity> iterator() {
         return delegate.iterator();
     }
@@ -140,6 +147,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     /** @param o
      * @return
      * @see java.util.Set#remove(java.lang.Object) */
+    @Override
     public boolean remove(final Object o) {
         return delegate.remove(o);
     }
@@ -147,6 +155,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     /** @param c
      * @return
      * @see java.util.Set#removeAll(java.util.Collection) */
+    @Override
     public boolean removeAll(final Collection<?> c) {
         return delegate.removeAll(c);
     }
@@ -154,18 +163,21 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     /** @param c
      * @return
      * @see java.util.Set#retainAll(java.util.Collection) */
+    @Override
     public boolean retainAll(final Collection<?> c) {
         return delegate.retainAll(c);
     }
 
     /** @return
      * @see java.util.Set#size() */
+    @Override
     public int size() {
         return delegate.size();
     }
 
     /** @return
      * @see java.util.Set#toArray() */
+    @Override
     public Object[] toArray() {
         return delegate.toArray();
     }
@@ -174,6 +186,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
      * @param a
      * @return
      * @see java.util.Set#toArray(T[]) */
+    @Override
     public <T> T[] toArray(final T[] a) {
         return delegate.toArray(a);
     }

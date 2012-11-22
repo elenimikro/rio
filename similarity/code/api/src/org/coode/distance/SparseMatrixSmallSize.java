@@ -27,10 +27,12 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         System.arraycopy(m.matrix, 0, matrix, 0, m.matrix.length);
     }
 
+    @Override
     public int length() {
         return size;
     }
 
+    @Override
     public double get(final int _i, final int _j) {
         if (_i < size && _j < size) {
             // int i = _i < _j ? _i : _j;
@@ -41,6 +43,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
                 + " does not contain (" + _i + "," + _j + ")");
     }
 
+    @Override
     public double get(final Object i, final Object j) {
         return get(getPosition(i), getPosition(j));
     }
@@ -54,6 +57,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         return index.intValue();
     }
 
+    @Override
     public void set(final int _i, final int _j, final double d) {
         // System.out.println("SparseMatrixSmallSize.set() " + _i + "\t" + _j +
         // "\t" + d);
@@ -67,6 +71,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         }
     }
 
+    @Override
     public void printLine(final int i, final PrintWriter out) {
         MathContext mathContext = new MathContext(2);
         for (int j = 0; j < size; j++) {
@@ -82,6 +87,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         return row;
     }
 
+    @Override
     public void setKeys(final Collection<?> objects) {
         for (Object o : objects) {
             objectIndex.put(o, objectIndex.size());

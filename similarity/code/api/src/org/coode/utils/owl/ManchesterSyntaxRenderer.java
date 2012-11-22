@@ -30,13 +30,15 @@ public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
 		this.ren.setUseWrapping(false);
 	}
 
-	public synchronized String render(OWLObject object) {
+	@Override
+    public synchronized String render(OWLObject object) {
 		this.writerDelegate.reset();
 		object.accept(this.ren);
 		return this.writerDelegate.toString();
 	}
 
-	public synchronized void setShortFormProvider(ShortFormProvider shortFormProvider) {
+	@Override
+    public synchronized void setShortFormProvider(ShortFormProvider shortFormProvider) {
 		this.ren = new ManchesterOWLSyntaxObjectRenderer(this.writerDelegate,
 				shortFormProvider);
 	}

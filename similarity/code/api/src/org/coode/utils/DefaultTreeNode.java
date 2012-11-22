@@ -38,25 +38,28 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
 	/**
 	 * @return the userObject
 	 */
-	public final O getUserObject() {
+	@Override
+    public final O getUserObject() {
 		return this.userObject;
 	}
 
 	/**
 	 * @return the children
 	 */
-	public final List<TreeNode<?>> getChildren() {
+	@Override
+    public final List<TreeNode<?>> getChildren() {
 		return new ArrayList<TreeNode<?>>(this.children);
 	}
 
-	public boolean isLeaf() {
-		return this.getChildren().isEmpty();
+	@Override
+    public boolean isLeaf() {
+        return this.children.isEmpty();
 	}
 
-	public int getChildIndex(Object object) {
+	@Override
+    public int getChildIndex(Object object) {
 		int i = -1;
 		boolean found = false;
-		List<TreeNode<?>> children = this.getChildren();
 		for (int index = 0; !found && i < children.size(); index++) {
 			found = children.get(index).getUserObject().equals(object);
 			if (found) {
@@ -121,7 +124,8 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
 		return this.children.remove(child);
 	}
 
-	public String render() {
-		return this.toString();
+	@Override
+    public String render() {
+		return toString();
 	}
 }

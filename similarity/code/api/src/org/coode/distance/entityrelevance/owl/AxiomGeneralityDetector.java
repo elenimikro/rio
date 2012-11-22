@@ -70,7 +70,7 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
  * generalised by a simplification of its structure.
  * 
  * @author Luigi Iannone */
-@SuppressWarnings("unused")
+@SuppressWarnings("boxing")
 public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> implements
         OWLAxiomVisitorEx<Boolean> {
     private final static AxiomGeneralityDetector instance = new AxiomGeneralityDetector();

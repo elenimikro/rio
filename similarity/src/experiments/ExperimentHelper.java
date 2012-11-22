@@ -34,7 +34,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
@@ -47,7 +46,7 @@ public class ExperimentHelper {
 	public static ClusterDecompositionModel<OWLEntity> startSyntacticClustering(
 			OWLOntology o, Distance<OWLEntity> distance,
 			Set<OWLEntity> clusteringSignature) throws OPPLException,
-			ParserConfigurationException, OWLOntologyCreationException {
+            ParserConfigurationException {
 
 		OWLOntologyManager m = o.getOWLOntologyManager();
 		// remove annotations
@@ -67,7 +66,7 @@ public class ExperimentHelper {
 			throws OPPLException, ParserConfigurationException {
 
 		OWLOntologyManager m = o.getOWLOntologyManager();
-		ClusterCreator clusterer = new ClusterCreator();
+        clusterer = new ClusterCreator();
 		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
 				clusteringSignature, m, clusterer);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
@@ -85,7 +84,7 @@ public class ExperimentHelper {
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
 					@Override
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
+                    public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}
@@ -252,8 +251,8 @@ public class ExperimentHelper {
 						.getMaxExternalDistance();
 				totalAverageMinExternalDistance += stats
 						.getMinExternalDistance();
-				totalAverageHomogeneity += (1 - stats
-						.getAverageInternalDistance());
+				totalAverageHomogeneity += 1 - stats
+						.getAverageInternalDistance();
 			}
 			out.println(totalAverageInternalDistance / clNo + ","
 					+ (double) totalAverageExternalDistance / clNo + ","

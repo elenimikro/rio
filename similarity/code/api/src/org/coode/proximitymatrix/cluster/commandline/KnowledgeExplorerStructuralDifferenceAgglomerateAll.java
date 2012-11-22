@@ -10,13 +10,8 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster.commandline;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,21 +23,14 @@ import org.coode.basetest.ClusterCreator;
 import org.coode.basetest.DistanceCreator;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
-import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
-import org.coode.distance.owl.OWLEntityReplacer;
-import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
-import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
 import org.coode.oppl.exceptions.OPPLException;
-import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -115,7 +103,7 @@ public class KnowledgeExplorerStructuralDifferenceAgglomerateAll{
 		ClusterDecompositionModel<OWLEntity> model = clusterer
 				.buildKnowledgeExplorerClusterDecompositionModel(ontology,
 						ke.getAxioms(), manager, clusters);
-		Utils.saveToXML(model, manager, outfile);
+        Utils.saveToXML(model, outfile);
 		return model;
 	}
 
@@ -124,7 +112,8 @@ public class KnowledgeExplorerStructuralDifferenceAgglomerateAll{
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
+					@Override
+                    public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}

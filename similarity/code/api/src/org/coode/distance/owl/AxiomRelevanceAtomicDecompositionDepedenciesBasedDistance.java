@@ -38,6 +38,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Eleni Mikroyannidi */
@@ -52,15 +53,15 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
     private final OWLEntityProvider entityProvider;
     private OWLAtomicDecompositionMap atomicMap;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @SuppressWarnings("unused")
+
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance.this
                     .buildOntologySignature();
             AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance.this
-                    .buildAxiomEntityMap(AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance.this
-                            .getOntologies());
-            atomicMap = new OWLAtomicDecompositionMap(getOntologies(),
+                    .buildAxiomEntityMap(ontologies);
+            atomicMap = new OWLAtomicDecompositionMap(ontologies,
                     getOntologyManger());
         }
     };
@@ -81,7 +82,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
 
     private void buildOntologySignature() {
         ontologySignature.clear();
-        for (OWLOntology ontology : getOntologies()) {
+        for (OWLOntology ontology : ontologies) {
             ontologySignature.addAll(ontology.getSignature());
         }
     }
@@ -104,11 +105,12 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
         buildAxiomEntityMap(ontologies);
         this.dataFactory = dataFactory;
         entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
-        atomicMap = new OWLAtomicDecompositionMap(getOntologies(), getOntologyManger());
+        atomicMap = new OWLAtomicDecompositionMap(ontologies, getOntologyManger());
     }
 
     /** @see org.coode.distance.Distance#getDistance(java.lang.Object,
      *      java.lang.Object) */
+    @Override
     public double getDistance(final OWLEntity a, final OWLEntity b) {
         double toReturn = a.equals(b) ? 0 : 1;
         if (toReturn == 1) {
@@ -132,10 +134,12 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
         return toReturn;
     }
 
+    @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-                : new HashSet<OWLAxiom>(cached);
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
     /** @param owlEntity
@@ -147,7 +151,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
                 .next(), null);
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             AtomicDecompositionRelevancePolicyNEW policy = new AtomicDecompositionRelevancePolicyNEW(
-                    axiom, getDataFactory(), getOntologies(), atomicMap);
+                    axiom, getDataFactory(), ontologies, atomicMap);
             RelevancePolicyOWLObjectGeneralisation replacer = new RelevancePolicyOWLObjectGeneralisation(
                     Utils.toOWLObjectRelevancePolicy(policy), getEntityProvider());
             final ConstraintSystem cs = factory.createConstraintSystem();
@@ -160,7 +164,8 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
                 cache.put(owlEntity, replaced);
             }
         }
-        return new HashSet<OWLAxiom>(cache.get(owlEntity));
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
     }
 
     protected boolean isRelevant(final OWLAxiom replaced) {

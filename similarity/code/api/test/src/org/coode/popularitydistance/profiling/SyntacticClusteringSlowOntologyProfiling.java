@@ -1,7 +1,6 @@
 package org.coode.popularitydistance.profiling;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -45,12 +44,12 @@ public class SyntacticClusteringSlowOntologyProfiling {
 		System.out.println("SyntacticClusteringTest.testSyntacticClustering() Distance was created");
 		ClusterDecompositionModel<OWLEntity> model = ExperimentHelper
 				.startSyntacticClustering(o, distance, null);
-		Utils.saveToXML(model, m, new File(xml));
+        Utils.saveToXML(model, new File(xml));
 	}
 
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException,
-            TransformerFactoryConfigurationError, TransformerException, IOException {
+            TransformerFactoryConfigurationError, TransformerException {
         testSyntacticClustering();
 	}
 

@@ -25,17 +25,20 @@ public class StructuralDifferenceReportVisitorExAdapter<O> implements
 		this.defaultValue = defaultValue;
 	}
 
-	public O visitNoDifferenceStructuralDifferenceReport(
+	@Override
+    public O visitNoDifferenceStructuralDifferenceReport(
 			NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
 		return this.getDefaultValue(noDifferenceStructuralDifferenceReport);
 	}
 
-	public O visitIncomparableObjectsStructuralDifferenceReport(
+	@Override
+    public O visitIncomparableObjectsStructuralDifferenceReport(
 			IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
 		return this.getDefaultValue(incomparableObjectsStructuralDifferenceReport);
 	}
 
-	public O visitSomeDifferenceStructuralDifferenceReport(
+	@Override
+    public O visitSomeDifferenceStructuralDifferenceReport(
 			SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
 		return this.getDefaultValue(someDifferenceStructuralDifferenceReport);
 	}

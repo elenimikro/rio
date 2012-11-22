@@ -62,8 +62,8 @@ public class ChainsawKnowledgeExplorerMaxFillersImpl implements
 
 		for (OWLClass c : satisfiable) {
 			RootNode root = r.getRoot(c);
-			System.out.println(r.getClass().getSimpleName() + " ROOT CLASS "
-					+ c);
+            // System.out.println(r.getClass().getSimpleName() + " ROOT CLASS "
+            // + c);
 			Set<OWLAxiom> computeAxioms = computeAxioms(root, c);
 
 			computeAxioms.addAll(getNamedSubClassAxioms(root, c));
@@ -105,26 +105,27 @@ public class ChainsawKnowledgeExplorerMaxFillersImpl implements
 		return axioms;
 	}
 
-	private Set<OWLClassExpression> getFillers(RootNode node) {
-		Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
-		// Fillers.add(Thing); // we never get Thing from KE
-		for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities()) {
-			// all in the label is a filler
-			fillers.add(c);
-		}
-		for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
-				false).getEntities()) {
-			for (RootNode n : r.getObjectNeighbours(node,
-					prop.asOWLObjectProperty())) {
-				// for every neighbour of a Node...
-				for (OWLClassExpression f : getFillers(n)) {
-					// and every its filler
-					fillers.add(dataFactory.getOWLObjectSomeValuesFrom(prop, f));
-				}
-			}
-		}
-		return fillers;
-	}
+    // private Set<OWLClassExpression> getFillers(RootNode node) {
+    // Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
+    // // Fillers.add(Thing); // we never get Thing from KE
+    // for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities())
+    // {
+    // // all in the label is a filler
+    // fillers.add(c);
+    // }
+    // for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
+    // false).getEntities()) {
+    // for (RootNode n : r.getObjectNeighbours(node,
+    // prop.asOWLObjectProperty())) {
+    // // for every neighbour of a Node...
+    // for (OWLClassExpression f : getFillers(n)) {
+    // // and every its filler
+    // fillers.add(dataFactory.getOWLObjectSomeValuesFrom(prop, f));
+    // }
+    // }
+    // }
+    // return fillers;
+    // }
 
 	private Set<OWLClassExpression> getMaxFillers(RootNode node,
 			Set<RootNode> visited, OWLClass rootClass) {

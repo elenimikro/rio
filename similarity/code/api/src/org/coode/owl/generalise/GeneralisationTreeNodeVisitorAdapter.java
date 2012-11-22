@@ -10,18 +10,22 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-@SuppressWarnings("unused")
+
 public abstract class GeneralisationTreeNodeVisitorAdapter implements
         GeneralisationTreeNodeVisitor {
+    @Override
     public void visitAxiomGeneralisationTreeNode(
             final AxiomGeneralisationTreeNode axiomGeneralisationTreeNode) {}
 
+    @Override
     public void visitVariableGeneralisationTreeNode(
             final VariableGeneralisationTreeNode variableGeneralisationTreeNode) {}
 
+    @Override
     public void visitBindingNodeGeneralisationTreeNode(
             final BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {}
 
+    @Override
     public
             void
             visitAxiomAtomicDecompositionGeneralisationTreeNode(

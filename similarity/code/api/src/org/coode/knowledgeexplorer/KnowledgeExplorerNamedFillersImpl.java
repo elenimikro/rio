@@ -61,8 +61,8 @@ public class KnowledgeExplorerNamedFillersImpl implements KnowledgeExplorer {
 
 		for (OWLClass c : satisfiable) {
 			RootNode root = r.getRoot(c);
-			System.out.println(r.getClass().getSimpleName() + " ROOT CLASS "
-					+ c);
+            // System.out.println(r.getClass().getSimpleName() + " ROOT CLASS "
+            // + c);
 			Set<OWLAxiom> computeAxioms = computeAxioms(root, c);
 
 			computeAxioms.addAll(getNamedSubClassAxioms(root, c));
@@ -123,49 +123,50 @@ public class KnowledgeExplorerNamedFillersImpl implements KnowledgeExplorer {
 		return fillers;
 	}
 
-	private Set<OWLClassExpression> getMaxFillers(RootNode node,
-			Set<RootNode> visited) {
-		Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
-		Set<OWLClassExpression> label = new HashSet<OWLClassExpression>();
-		for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities()) {
-			// all in the label is a filler
-			label.add(c);
-		}
-		OWLClassExpression LabC;
-		if (label.size() == 0) {
-			LabC = null;
-		} else if (label.size() == 1) {
-			LabC = label.iterator().next();
-		} else {
-			LabC = dataFactory.getOWLObjectIntersectionOf(label);
-		}
-
-		visited.add(node);
-		for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
-				false).getEntities()) {
-			for (RootNode n : r.getObjectNeighbours(node,
-					prop.asOWLObjectProperty())) {
-				if (!visited.contains(n)) {
-					for (OWLClassExpression f : getMaxFillers(n, visited)) {
-						OWLClassExpression exists = dataFactory
-								.getOWLObjectSomeValuesFrom(prop, f);
-						if (LabC != null) {
-							exists = dataFactory.getOWLObjectIntersectionOf(
-									LabC, exists);
-						}
-						fillers.add(exists);
-					}
-				}
-			}
-		}
-		if (fillers.isEmpty()) {
-			if (LabC == null) {
-				LabC = dataFactory.getOWLThing();
-			}
-			fillers.add(LabC);
-		}
-		return fillers;
-	}
+    // private Set<OWLClassExpression> getMaxFillers(RootNode node,
+    // Set<RootNode> visited) {
+    // Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
+    // Set<OWLClassExpression> label = new HashSet<OWLClassExpression>();
+    // for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities())
+    // {
+    // // all in the label is a filler
+    // label.add(c);
+    // }
+    // OWLClassExpression LabC;
+    // if (label.size() == 0) {
+    // LabC = null;
+    // } else if (label.size() == 1) {
+    // LabC = label.iterator().next();
+    // } else {
+    // LabC = dataFactory.getOWLObjectIntersectionOf(label);
+    // }
+    //
+    // visited.add(node);
+    // for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
+    // false).getEntities()) {
+    // for (RootNode n : r.getObjectNeighbours(node,
+    // prop.asOWLObjectProperty())) {
+    // if (!visited.contains(n)) {
+    // for (OWLClassExpression f : getMaxFillers(n, visited)) {
+    // OWLClassExpression exists = dataFactory
+    // .getOWLObjectSomeValuesFrom(prop, f);
+    // if (LabC != null) {
+    // exists = dataFactory.getOWLObjectIntersectionOf(
+    // LabC, exists);
+    // }
+    // fillers.add(exists);
+    // }
+    // }
+    // }
+    // }
+    // if (fillers.isEmpty()) {
+    // if (LabC == null) {
+    // LabC = dataFactory.getOWLThing();
+    // }
+    // fillers.add(LabC);
+    // }
+    // return fillers;
+    // }
 
 	private Set<OWLAxiom> check(OWLClass c, OWLObjectPropertyExpression prop,
 			Set<OWLClassExpression> fillers) {

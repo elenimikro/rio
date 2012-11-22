@@ -1,7 +1,6 @@
 package org.coode.proximitymatrix.cluster.test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.*;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -9,12 +8,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.coode.basetest.ClusterCreator;
 import org.coode.basetest.DistanceCreator;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
-import org.coode.oppl.exceptions.OPPLException;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
@@ -29,26 +25,23 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
-import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposer;
-import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
 
 public class GeneralisedAtomicDecompositionTest {
 
 	private ClusterDecompositionModel<OWLEntity> model;
-	private AtomicDecomposer ad;
+    // private AtomicDecomposer ad;
 	private OWLOntology o;
 
 	@Before
 	public ClusterDecompositionModel<OWLEntity> setUp() throws Exception {
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-		this.o = m.createOntology();
+		o = m.createOntology();
 		OWLDataFactory factory = m.getOWLDataFactory();
 		OWLClass a = factory.getOWLClass(IRI.create("urn:test#A"));
 		OWLClass b = factory.getOWLClass(IRI.create("urn:test#B"));
@@ -81,7 +74,7 @@ public class GeneralisedAtomicDecompositionTest {
 		m.addAxiom(o, jg);
 		m.addAxiom(o, ki);
 
-		this.ad = new AtomicDecomposerOWLAPITOOLS(o);
+        // ad = new AtomicDecomposerOWLAPITOOLS(o);
 
 		assertEquals(10, o.getSignature().size());
 
@@ -128,8 +121,7 @@ public class GeneralisedAtomicDecompositionTest {
 
 	@Test
 	public void testGeneralisationAtomicDecomposition()
-			throws OWLOntologyCreationException, OPPLException,
-			ParserConfigurationException {
+ {
 		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
 				model, o);
 

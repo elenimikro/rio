@@ -11,7 +11,7 @@
 package org.coode.owl.distance.test;
 
 import java.io.File;
-import java.util.Set;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -48,7 +48,7 @@ public abstract class DistanceTestCase extends TestCase {
     }
 
     protected void properTest(final AbstractAxiomBasedDistance distance,
-            final OWLOntology o, final OWLEntity... entities) {
+            final OWLEntity... entities) {
         for (OWLEntity c : entities) {
             System.out.println(c.toString());
             System.out.println(distance.getAxioms(c));
@@ -61,8 +61,8 @@ public abstract class DistanceTestCase extends TestCase {
                     assertTrue(Double.compare(
                             distance.getDistance(entities[j], entities[i]), 0D) == 0);
                 } else {
-                    Set<OWLAxiom> axioms_i = distance.getAxioms(entities[i]);
-                    Set<OWLAxiom> axioms_j = distance.getAxioms(entities[j]);
+                    Collection<OWLAxiom> axioms_i = distance.getAxioms(entities[i]);
+                    Collection<OWLAxiom> axioms_j = distance.getAxioms(entities[j]);
                     axioms_i.retainAll(axioms_j);
                     if (axioms_i.isEmpty()) {
                         assertTrue(entities[i] + "\t" + entities[j]

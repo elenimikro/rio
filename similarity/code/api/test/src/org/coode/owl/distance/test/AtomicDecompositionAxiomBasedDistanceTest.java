@@ -15,7 +15,6 @@ import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.distance.owl.AtomicDecompositionGeneralisationTreeBasedDistance;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 
@@ -32,7 +31,7 @@ public class AtomicDecompositionAxiomBasedDistanceTest extends DistanceTestCase 
 
             @Override
             public AbstractAxiomBasedDistance getDistance(final OWLOntology o,
-                    final RelevancePolicy<OWLEntity> rp) {
+                    final RelevancePolicy rp) {
                 return null;
             }
         };
@@ -42,21 +41,21 @@ public class AtomicDecompositionAxiomBasedDistanceTest extends DistanceTestCase 
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "SpicyTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testGetAxiomsPepperTopping() {
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "PepperTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testDistanceGarlicToppingPizza() {
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "GarlicTopping", pizza_ns + "Pizza");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testDistancehasSpicinesshasTopping() {
@@ -64,7 +63,7 @@ public class AtomicDecompositionAxiomBasedDistanceTest extends DistanceTestCase 
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLObjectProperty[] objectProperties = getObjectProperties(pizza_ns
                 + "hasSpiciness", pizza_ns + "hasTopping");
-        properTest(distance, o, objectProperties);
+        properTest(distance, objectProperties);
     }
 
     public void testDistanceSpicyPizza() {
@@ -72,7 +71,7 @@ public class AtomicDecompositionAxiomBasedDistanceTest extends DistanceTestCase 
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "SpicyPizza", pizza_ns
                 + "CheeseyPizza");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testDistanceCheesyMeatyPizza() {
@@ -80,7 +79,7 @@ public class AtomicDecompositionAxiomBasedDistanceTest extends DistanceTestCase 
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "CheeseyPizza", pizza_ns
                 + "MeatyPizza");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testDistancePeperoniSausageTopping() {
@@ -88,6 +87,6 @@ public class AtomicDecompositionAxiomBasedDistanceTest extends DistanceTestCase 
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses(pizza_ns + "PeperoniSausageTopping", pizza_ns
                 + "HotSpicedBeefTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 }

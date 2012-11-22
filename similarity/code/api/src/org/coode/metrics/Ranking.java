@@ -11,23 +11,25 @@
 package org.coode.metrics;
 
 import java.util.List;
-import java.util.Set;
 
-public interface Ranking<O, R extends Comparable<?>> {
-	R getTopValue();
+import org.semanticweb.owlapi.model.OWLEntity;
 
-	R getBottomValue();
+public interface Ranking {
+    double getTopValue();
 
-	Set<O> getTop();
+    double getBottomValue();
 
-	Set<O> getBottom();
+    OWLEntity[] getTop();
 
-	Set<R> getValues();
+    OWLEntity[] getBottom();
+
+    double[] getValues();
 
 	boolean isAverageable();
 
-	R getAverageValue();
+    double getAverageValue();
 
-    List<RankingSlot<O, R>> getSortedRanking();
-    List<RankingSlot<O, R>> getUnorderedRanking();
+    List<RankingSlot<OWLEntity>> getSortedRanking();
+
+    List<RankingSlot<OWLEntity>> getUnorderedRanking();
 }

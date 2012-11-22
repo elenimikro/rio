@@ -35,7 +35,6 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 
@@ -44,7 +43,6 @@ import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLOb
 public class TestStructuralDifference extends TestCase {
     private static class DiffAdapter extends StructuralDifferenceReportVisitorAdapter {
         @Override
-        @SuppressWarnings("unused")
         public
                 void
                 visitNoDifferenceStructuralDifferenceReport(
@@ -53,7 +51,6 @@ public class TestStructuralDifference extends TestCase {
         }
 
         @Override
-        @SuppressWarnings("unused")
         public
                 void
                 visitIncomparableObjectsStructuralDifferenceReport(
@@ -104,9 +101,10 @@ public class TestStructuralDifference extends TestCase {
         }
     }
 
-    public void testGetTopDifference() throws OWLOntologyCreationException {
+    public void testGetTopDifference() {
         OWLOntology ontology = TestHelper.getPizza();
-        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
+        // OWLOntologyManager ontologyManager =
+        // ontology.getOWLOntologyManager();
         StructuralDifference difference = new StructuralDifference();
         for (OWLAxiom axiom : ontology.getAxioms()) {
             StructuralDifferenceReport topDifference = difference.getTopDifference(axiom,
@@ -117,9 +115,10 @@ public class TestStructuralDifference extends TestCase {
         }
     }
 
-    public void testAreComparable() throws OWLOntologyCreationException {
+    public void testAreComparable() {
         OWLOntology ontology = TestHelper.getPizza();
-        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
+        // OWLOntologyManager ontologyManager =
+        // ontology.getOWLOntologyManager();
         StructuralDifference difference = new StructuralDifference();
         for (OWLAxiom axiom : ontology.getAxioms()) {
             boolean areComparable = difference.areComparable(axiom, axiom);

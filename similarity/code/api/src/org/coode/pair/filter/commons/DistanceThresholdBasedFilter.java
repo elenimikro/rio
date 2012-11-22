@@ -33,7 +33,8 @@ public class DistanceThresholdBasedFilter<O> implements
 	 * @see org.coode.pair.filter.PairFilter#accept(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public boolean accept(Collection<? extends O> first, Collection<? extends O> second) {
+	@Override
+    public boolean accept(Collection<? extends O> first, Collection<? extends O> second) {
 		Iterator<? extends O> iterator = first.iterator();
 		boolean found = false;
 		while (!found && iterator.hasNext()) {

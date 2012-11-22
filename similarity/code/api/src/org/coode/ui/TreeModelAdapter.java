@@ -45,7 +45,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @param l
 	 * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
 	 */
-	public void addTreeModelListener(TreeModelListener l) {
+	@Override
+    public void addTreeModelListener(TreeModelListener l) {
 		this.delegate.addTreeModelListener(l);
 	}
 
@@ -55,7 +56,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @return
 	 * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
 	 */
-	public Object getChild(Object parent, int index) {
+	@Override
+    public Object getChild(Object parent, int index) {
 		return this.delegate.getChild(parent, index);
 	}
 
@@ -64,7 +66,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @return
 	 * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
 	 */
-	public int getChildCount(Object parent) {
+	@Override
+    public int getChildCount(Object parent) {
 		return this.delegate.getChildCount(parent);
 	}
 
@@ -75,7 +78,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public int getIndexOfChild(Object parent, Object child) {
+	@Override
+    public int getIndexOfChild(Object parent, Object child) {
 		return this.delegate.getIndexOfChild(parent, child);
 	}
 
@@ -83,7 +87,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @return
 	 * @see javax.swing.tree.TreeModel#getRoot()
 	 */
-	public Object getRoot() {
+	@Override
+    public Object getRoot() {
 		return this.delegate.getRoot();
 	}
 
@@ -92,7 +97,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @return
 	 * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
 	 */
-	public boolean isLeaf(Object node) {
+	@Override
+    public boolean isLeaf(Object node) {
 		return this.delegate.isLeaf(node);
 	}
 
@@ -100,7 +106,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @param l
 	 * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
 	 */
-	public void removeTreeModelListener(TreeModelListener l) {
+	@Override
+    public void removeTreeModelListener(TreeModelListener l) {
 		this.delegate.removeTreeModelListener(l);
 	}
 
@@ -110,7 +117,8 @@ public class TreeModelAdapter implements TreeModel {
 	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath,
 	 *      java.lang.Object)
 	 */
-	public void valueForPathChanged(TreePath path, Object newValue) {
+	@Override
+    public void valueForPathChanged(TreePath path, Object newValue) {
 		this.delegate.valueForPathChanged(path, newValue);
 	}
 }

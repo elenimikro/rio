@@ -33,7 +33,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import uk.ac.manchester.cs.demost.ui.adextension.ChiaraAtomicDecomposition;
@@ -48,7 +47,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
         ToStringRenderer.getInstance().setRenderer(new ManchesterSyntaxRenderer());
     }
 
-    public void testAxiomAtomicDecompositionDependencies() throws Exception {
+    public void testAxiomAtomicDecompositionDependencies() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         ChiaraDecompositionAlgorithm chiaraDecompositionAlgorithm = new ChiaraDecompositionAlgorithm(
@@ -99,7 +98,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
         }
     }
 
-    public void testSubClassAxiomAtomicDecompositionGeneralisationTree() throws Exception {
+    public void testSubClassAxiomAtomicDecompositionGeneralisationTree() {
         int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
@@ -141,7 +140,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
                 .decompose(ontologyManager, ontology);
         AxiomAtomicDecompositionGeneralisationTreeNode root = new AxiomAtomicDecompositionGeneralisationTreeNode(
                 generalisation, generalisationMap.get(generalisation), constraintSystem,
-                ontologyManager, atomicDecomposition);
+                atomicDecomposition);
         assertFalse(root.getChildren().isEmpty());
         Utils.printNode(root, System.out);
         System.out.println(">>Instantiations:");
@@ -155,7 +154,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
     }
 
     public void testEquivalentAxiomAtomicDecompositionGeneralisationTree()
-            throws OWLOntologyCreationException {
+ {
         int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
@@ -206,7 +205,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
                 .decompose(ontologyManager, ontology);
         AxiomAtomicDecompositionGeneralisationTreeNode root = new AxiomAtomicDecompositionGeneralisationTreeNode(
                 generalisation, generalisationMap.get(generalisation), constraintSystem,
-                ontologyManager, atomicDecomposition);
+                atomicDecomposition);
         // assertFalse(root.getChildren().isEmpty());
         Utils.printNode(root, System.out);
         System.out.println(">>Instantiations:");
@@ -220,7 +219,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
     }
 
     public void testUniversalAxiomAtomicDecompositionGeneralisationTree()
-            throws Exception {
+ {
         int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
@@ -271,7 +270,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
                 .decompose(ontologyManager, ontology);
         AxiomAtomicDecompositionGeneralisationTreeNode root = new AxiomAtomicDecompositionGeneralisationTreeNode(
                 generalisation, generalisationMap.get(generalisation), constraintSystem,
-                ontologyManager, atomicDecomposition);
+                atomicDecomposition);
         assertFalse(root.getChildren().isEmpty());
         Utils.printNode(root, System.out);
         System.out.println(">>Instantiations:");
@@ -285,7 +284,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
     }
 
     public void testAllNodesOfAxiomAtomicDecompositionGeneralisationTree()
-            throws OWLOntologyCreationException {
+ {
         int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
@@ -323,7 +322,7 @@ public class TestAxiomAtomicDecompositionGeneralisationTree extends TestCase {
         for (OWLAxiom generalisation : generalisations) {
             AxiomAtomicDecompositionGeneralisationTreeNode root = new AxiomAtomicDecompositionGeneralisationTreeNode(
                     generalisation, generalisationMap.get(generalisation),
-                    constraintSystem, ontologyManager, atomicDecomposition);
+                    constraintSystem, atomicDecomposition);
             // assertTrue(root.getChildren().isEmpty());
             Utils.printNode(root, System.out);
         }

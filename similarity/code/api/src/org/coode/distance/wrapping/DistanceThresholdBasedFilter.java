@@ -36,6 +36,7 @@ public class DistanceThresholdBasedFilter<O> implements
     boolean lastResult;
 
     /** @see org.coode.pair.filter.PairFilter#accept(java.lang.Objefilteredjava.lang.Object) */
+    @Override
     public boolean accept(final Collection<? extends DistanceTableObject<O>> first,
             final Collection<? extends DistanceTableObject<O>> second) {
         if (lastfirst == first && lastsecond == second) {

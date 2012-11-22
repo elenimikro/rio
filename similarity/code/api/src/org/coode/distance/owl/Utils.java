@@ -20,7 +20,7 @@ import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 public class Utils {
-    @SuppressWarnings("unused")
+
     private final static OWLObjectVisitorEx<Boolean> ENTITY_RECOGNISER = new OWLObjectVisitorExAdapter<Boolean>(
             false) {
         @Override

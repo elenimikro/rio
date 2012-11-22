@@ -30,7 +30,7 @@ import org.semanticweb.owlapi.util.MultiMap;
  * @author Luigi Iannone
  *
  */
-public class OWLEntityPopularity implements Metric<OWLEntity, Double> {
+public class OWLEntityPopularity implements Metric<OWLEntity> {
 	private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
 	private final Map<OWLEntity, Double> cache = new HashMap<OWLEntity, Double>();
     MultiMap<OWLEntity, OWLAxiom> multimapFromOntologies = new MultiMap<OWLEntity, OWLAxiom>();
@@ -55,20 +55,20 @@ public class OWLEntityPopularity implements Metric<OWLEntity, Double> {
 		// compute the number of axioms, duplicates removed
 		// XXX needs to be done incrementally if changes to the ontologies are made
 		int size = getAxiomSet(ontologies).size();
-		MultiMap<OWLEntity, OWLAxiom> axioms = getAxiomMap(ontologies);
+        MultiMap<OWLEntity, OWLAxiom> axioms = getAxiomMap();
 		Set<OWLEntity> entities = new HashSet<OWLEntity>();
 		for (OWLOntology ontology : ontologies) {
 			entities.addAll(ontology.getSignature());
 		}
 		for (OWLEntity owlEntity : entities) {
-			this.cache.put(owlEntity, this.computeValue(owlEntity, axioms, size));
+			cache.put(owlEntity, computeValue(owlEntity, axioms, size));
 		}
 
 	}
 
 	/** reverse indexing entity to set of mentioning axioms */
 	public MultiMap<OWLEntity, OWLAxiom> getAxiomMap(
-			Collection<? extends OWLOntology> ontos) {
+) {
 		return multimapFromOntologies;
 	}
 
@@ -85,18 +85,19 @@ public class OWLEntityPopularity implements Metric<OWLEntity, Double> {
 	/**
 	 * @see org.coode.owl.metrics.DoubleMetric#getValue(java.lang.Object)
 	 */
-	public Double getValue(OWLEntity object) {
-		Double toReturn = this.cache.get(object);
-		return toReturn == null ? this.computeValue(object, getAxiomMap(ontologies),
+    @Override
+    public double getValue(OWLEntity object) {
+		Double toReturn = cache.get(object);
+        return toReturn == null ? computeValue(object, getAxiomMap(),
 				getAxiomSet(ontologies).size()) : toReturn;
 	}
 
-	private Double computeValue(OWLEntity object, MultiMap<OWLEntity, OWLAxiom> axioms,
+    private double computeValue(OWLEntity object, MultiMap<OWLEntity, OWLAxiom> axioms,
 			int size) {
 		double toReturn = axioms.get(object).size();
 		// Eliminated the duplicates by putting everything in the same set
 		double value = toReturn / size;
-		this.cache.put(object, value);
+		cache.put(object, value);
 		return value;
 	}
 
@@ -104,6 +105,6 @@ public class OWLEntityPopularity implements Metric<OWLEntity, Double> {
 	 * @return the ontologies
 	 */
 	public Set<OWLOntology> getOntologies() {
-		return new HashSet<OWLOntology>(this.ontologies);
+		return new HashSet<OWLOntology>(ontologies);
 	}
 }

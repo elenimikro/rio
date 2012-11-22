@@ -31,17 +31,20 @@ class ShowMessageRuntimeExceptionHandler implements RuntimeExceptionHandler {
 		this.parentComponent = parentComponent;
 	}
 
-	public void handleOWLRuntimeException(OWLRuntimeException e) {
+	@Override
+    public void handleOWLRuntimeException(OWLRuntimeException e) {
 		JOptionPane.showMessageDialog(this.getParentComponent(), e.getMessage(),
 				"OPPL Runtime error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	public void handlePatternSyntaxExcpetion(PatternSyntaxException e) {
+	@Override
+    public void handlePatternSyntaxExcpetion(PatternSyntaxException e) {
 		JOptionPane.showMessageDialog(this.getParentComponent(), e.getMessage(),
 				"OPPL Runtime error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	public void handleException(RuntimeException e) {
+	@Override
+    public void handleException(RuntimeException e) {
 		JOptionPane.showMessageDialog(this.getParentComponent(), e.getMessage(),
 				"OPPL Runtime error", JOptionPane.ERROR_MESSAGE);
 	}

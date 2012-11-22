@@ -33,6 +33,9 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 public abstract class VariableProvider {
     private ConstraintSystem constraintSystem;
     private final OWLEntityProvider entityProvider;
+    private final Map<OWLObject, Variable<?>> cache = new HashMap<OWLObject, Variable<?>>();
+    private final Map<VariableType<?>, Variable<?>> variables = new HashMap<VariableType<?>, Variable<?>>();
+    private final Map<VariableType<?>, Integer> variableIndex = new HashMap<VariableType<?>, Integer>();
 
     /** @param structuralOWLObjectGeneralisation */
     public VariableProvider(final OWLEntityProvider entityProvider) {
@@ -42,9 +45,6 @@ public abstract class VariableProvider {
         this.entityProvider = entityProvider;
     }
 
-    private final Map<OWLObject, Variable<?>> cache = new HashMap<OWLObject, Variable<?>>();
-    private final Map<VariableType<?>, Variable<?>> variables = new HashMap<VariableType<?>, Variable<?>>();
-    private final Map<VariableType<?>, Integer> variableIndex = new HashMap<VariableType<?>, Integer>();
 
     public Variable<?> get(final OWLObject owlObject) {
         Variable<?> toReturn = cache.get(owlObject);
@@ -94,7 +94,7 @@ public abstract class VariableProvider {
         constraintSystem = cs;
     }
 
-    protected OWLObject getOWLEntity(final IRI iri) {
+    public OWLObject getOWLEntity(final IRI iri) {
         boolean found = false;
         OWLObject toReturn = null;
         OWLObject owlObject = null;

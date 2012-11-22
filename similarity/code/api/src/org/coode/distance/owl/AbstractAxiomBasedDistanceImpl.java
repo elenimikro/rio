@@ -1,5 +1,7 @@
 package org.coode.distance.owl;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -8,17 +10,22 @@ import org.semanticweb.owlapi.model.OWLEntity;
 public abstract class AbstractAxiomBasedDistanceImpl implements
 		AbstractAxiomBasedDistance {
 
+    OWLEntity last;
+    Set<OWLAxiom> lastset;
+
 	@Override
 	public double getDistance(OWLEntity a, OWLEntity b) {
 		double toReturn = a.equals(b) ? 0 : 1;
         if (toReturn == 1) {
-            Set<OWLAxiom> axiomsForA = getAxioms(a);
-            Set<OWLAxiom> axiomsForB = getAxioms(b);
-            if (!axiomsForA.isEmpty() || !axiomsForB.isEmpty()) {
-                int AorB = axiomsForA.size();
+            if (a != last) {
+                lastset = new HashSet<OWLAxiom>(getAxioms(a));
+            }
+            Collection<OWLAxiom> axiomsForB = getAxioms(b);
+            if (!lastset.isEmpty() || !axiomsForB.isEmpty()) {
+                int AorB = lastset.size();
                 int AandB = 0;
                 for (OWLAxiom e1 : axiomsForB) {
-                    if (!axiomsForA.contains(e1)) {
+                    if (!lastset.contains(e1)) {
                         // union increases for every non duplicate
                         AorB++;
                     } else {

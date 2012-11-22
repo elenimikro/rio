@@ -30,7 +30,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 import edu.arizona.bio5.onto.decomposition.Atom;
 
 /** @author Eleni Mikroyannidi */
-public class AtomicDecompositionMetric implements Metric<OWLEntity, Double> {
+public class AtomicDecompositionMetric implements Metric<OWLEntity> {
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final Map<OWLEntity, Double> cache = new HashMap<OWLEntity, Double>();
     private final OWLAtomicDecompositionMap atomsMap;
@@ -83,13 +83,14 @@ public class AtomicDecompositionMetric implements Metric<OWLEntity, Double> {
     }
 
     /** @see org.coode.owl.metrics.DoubleMetric#getValue(java.lang.Object) */
-    public Double getValue(final OWLEntity object) {
+    @Override
+    public double getValue(final OWLEntity object) {
         Double toReturn = cache.get(object);
         return toReturn == null ? computeValue(object,
                 atomsMap.getEntityAtomDependencies()) : toReturn;
     }
 
-    private Double computeValue(final OWLEntity object,
+    private double computeValue(final OWLEntity object,
             final MultiMap<OWLEntity, Atom> entityAtomDependencies) {
         double toReturn = entityAtomDependencies.get(object).size();
         double value = toReturn;

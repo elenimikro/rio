@@ -44,6 +44,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 public abstract class AgglomeratorBase implements Agglomerator {
+    @Override
     public void checkArgumentsAndRun(final String[] args)
             throws OWLOntologyCreationException {
         if (args.length >= 2) {
@@ -63,6 +64,7 @@ public abstract class AgglomeratorBase implements Agglomerator {
 
     /** @param args
      * @throws OWLOntologyCreationException */
+    @Override
     public void run(final File outfile, final List<IRI> iris)
             throws OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -71,6 +73,7 @@ public abstract class AgglomeratorBase implements Agglomerator {
         // Set the policy and the distance
         final Distance<OWLEntity> distance = getDistance(manager);
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -93,6 +96,7 @@ public abstract class AgglomeratorBase implements Agglomerator {
                 DistanceTableObject.createDistanceTableObjectSet(distance,
                         distanceMatrix.getObjects()),
                 new Distance<DistanceTableObject<OWLEntity>>() {
+                    @Override
                     public double getDistance(final DistanceTableObject<OWLEntity> a,
                             final DistanceTableObject<OWLEntity> b) {
                         return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
@@ -103,6 +107,7 @@ public abstract class AgglomeratorBase implements Agglomerator {
             newObjects.add(Collections.singletonList(object));
         }
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
+            @Override
             public double getDistance(
                     final Collection<? extends DistanceTableObject<OWLEntity>> a,
                     final Collection<? extends DistanceTableObject<OWLEntity>> b) {
@@ -147,8 +152,8 @@ public abstract class AgglomeratorBase implements Agglomerator {
                 && filter.accept(clusteringMatrix.getMinimumDistancePair().getFirst(),
                         clusteringMatrix.getMinimumDistancePair().getSecond())) {
             clusteringMatrix = clusteringMatrix.agglomerate(filter);
-            System.out.println(String.format("Agglomerations: %d for %d clusters", i++,
-                    clusteringMatrix.getObjects().size()));
+            Utility.printAgglomeration(clusteringMatrix, i);
+            i++;
             if (clusteringMatrix.getMinimumDistancePair() != null) {
                 print(clusteringMatrix);
             }

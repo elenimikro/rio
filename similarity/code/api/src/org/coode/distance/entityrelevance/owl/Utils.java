@@ -16,15 +16,15 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 public class Utils {
-    public static RelevancePolicy<OWLObject> toOWLObjectRelevancePolicy(
-            final RelevancePolicy<OWLEntity> policy) {
-        return new RelevancePolicy<OWLObject>() {
-            public boolean isRelevant(final OWLObject object) {
+    public static RelevancePolicy
+            toOWLObjectRelevancePolicy(final RelevancePolicy policy) {
+        return new RelevancePolicy() {
+            @Override
+            public boolean isRelevant(final OWLEntity object) {
                 return object.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
                     @Override
                     public Boolean visit(final OWLClass desc) {

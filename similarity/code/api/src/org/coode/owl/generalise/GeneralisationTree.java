@@ -27,7 +27,7 @@ public class GeneralisationTree extends DefaultTree implements Tree {
 	public static TreeNode<OWLAxiom> buildNode(OWLAxiom axiom,
 			Collection<? extends OWLAxiomInstantiation> instantiations) {
 		TreeNode<OWLAxiom> toReturn = new DefaultTreeNode<OWLAxiom>(axiom);
-		for (OWLAxiomInstantiation axiomInstantiation : instantiations) {}
+        // for (OWLAxiomInstantiation axiomInstantiation : instantiations) {}
 		return toReturn;
 	}
 }

@@ -48,8 +48,8 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
             }
 
             @Override
-            public AbstractAxiomBasedDistance getDistance(final OWLOntology o,
-                    final RelevancePolicy<OWLEntity> rp) {
+            public AbstractAxiomBasedDistance getDistance(OWLOntology o,
+                    RelevancePolicy rp) {
                 return new AxiomBasedDistance(o.getImportsClosure(), o
                         .getOWLOntologyManager().getOWLDataFactory(), rp,
                         o.getOWLOntologyManager());
@@ -62,7 +62,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy());
         final Set<OWLEntity> signature = o.getSignature(true);
-        properTest(distance, o, signature.toArray(new OWLEntity[signature.size()]));
+        properTest(distance, signature.toArray(new OWLEntity[signature.size()]));
     }
 
     public void testMargheritaSundriedTomatoTopping() {
@@ -71,7 +71,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
                 DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy());
         OWLClass[] classes = getClasses(pizza_ns + "Margherita", pizza_ns
                 + "SundriedTomatoTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testMargheritaSiciliana() {
@@ -79,7 +79,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
                 DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy());
         OWLClass[] classes = getClasses(pizza_ns + "Margherita", pizza_ns + "Siciliana");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testNapoletanaParmaHamTopping() {
@@ -88,7 +88,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
                 DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy());
         OWLClass[] classes = getClasses(pizza_ns + "Napoletana", pizza_ns
                 + "ParmaHamTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testUnclosedPizzaIceCream() {
@@ -100,25 +100,25 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
                                 .getAbstractRankingRelevancePolicy(new OWLEntityPopularityRanking(
                                         o.getSignature(), o.getImportsClosure())));
         OWLClass[] classes = getClasses(pizza_ns + "UnclosedPizza", pizza_ns + "IceCream");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 
     public void testMargheritaSicilianaPopularityRelevance() {
         OWLOntology o = TestHelper.getPizza();
         OWLEntityPopularityRanking ranking = OWLEntityPopularityRanking.buildRanking(o
                 .getImportsClosure());
-        RelevancePolicy<OWLEntity> policy = AbstractRankingRelevancePolicy
+        RelevancePolicy policy = AbstractRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         OWLClass[] classes = getClasses(pizza_ns + "Margherita", pizza_ns + "Siciliana");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
         int i = 1;
         System.out.println(String.format("Average popularity %s",
                 ranking.getAverageValue()));
-        for (RankingSlot<OWLEntity, Double> s : ranking.getSortedRanking()) {
+        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
                     s.getMembers(), s.getValue(),
-                    policy.isRelevant(s.getMembers().iterator().next())));
+ policy.isRelevant(s.getMembers()[0])));
             i++;
         }
     }
@@ -127,18 +127,18 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         OWLOntology o = TestHelper.getPizza();
         OWLEntityPopularityRanking ranking = OWLEntityPopularityRanking.buildRanking(o
                 .getImportsClosure());
-        RelevancePolicy<OWLEntity> policy = AbstractRankingRelevancePolicy
+        RelevancePolicy policy = AbstractRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         OWLClass[] classes = getClasses(pizza_ns + "Spiciness", pizza_ns + "SauceTopping");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
         int i = 1;
         System.out.println(String.format("Average popularity %s",
                 ranking.getAverageValue()));
-        for (RankingSlot<OWLEntity, Double> s : ranking.getSortedRanking()) {
+        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
                     s.getMembers(), s.getValue(),
-                    policy.isRelevant(s.getMembers().iterator().next())));
+ policy.isRelevant(s.getMembers()[0])));
             i++;
         }
     }
@@ -147,20 +147,20 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         OWLOntology o = getOntology("http://owl.cs.manchester.ac.uk/repository/download?ontology=http://sweet.jpl.nasa.gov/ontology/units.owl&format=RDF/XML");
         OWLEntityPopularityRanking ranking = OWLEntityPopularityRanking.buildRanking(o
                 .getImportsClosure());
-        RelevancePolicy<OWLEntity> policy = AbstractRankingRelevancePolicy
+        RelevancePolicy policy = AbstractRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         OWLClass[] classes = getClasses(
                 "http://sweet.jpl.nasa.gov/ontology/units.owl#mole",
                 "http://sweet.jpl.nasa.gov/ontology/units.owl#percent");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
         int i = 1;
         System.out.println(String.format("Average popularity %s",
                 ranking.getAverageValue()));
-        for (RankingSlot<OWLEntity, Double> s : ranking.getSortedRanking()) {
+        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
                     s.getMembers(), s.getValue(),
-                    policy.isRelevant(s.getMembers().iterator().next())));
+ policy.isRelevant(s.getMembers()[0])));
             i++;
         }
     }
@@ -170,20 +170,20 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
                 "code/api/test/resources/RegularToyOntology.owl"));
         OWLEntityPopularityRanking ranking = OWLEntityPopularityRanking.buildRanking(o
                 .getImportsClosure());
-        AbstractRankingRelevancePolicy<OWLEntity> policy = AbstractRankingRelevancePolicy
+        AbstractRankingRelevancePolicy policy = AbstractRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         OWLNamedIndividual[] classes = getNamedIndividuals(
                 "http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_1",
                 "http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_2");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
         int i = 1;
         System.out.println(String.format("Average popularity %s standard deviation %f",
                 ranking.getAverageValue(), policy.getStandardDeviation()));
-        for (RankingSlot<OWLEntity, Double> s : ranking.getSortedRanking()) {
+        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
                     s.getMembers(), s.getValue(),
-                    policy.isRelevant(s.getMembers().iterator().next())));
+ policy.isRelevant(s.getMembers()[0])));
             i++;
         }
     }
@@ -196,6 +196,6 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
         OWLClass[] classes = getClasses("http://www.ihtsdo.org/SCT_122860000",
                 "http://www.ihtsdo.org/SCT_95605009");
-        properTest(distance, o, classes);
+        properTest(distance, classes);
     }
 }

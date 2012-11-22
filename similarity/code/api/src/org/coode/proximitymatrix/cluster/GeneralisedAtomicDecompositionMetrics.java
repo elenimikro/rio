@@ -21,16 +21,16 @@ public class GeneralisedAtomicDecompositionMetrics {
 	
 	public double getAtomicDecompositionCompression(){
 		double toReturn = 0.0;
-		int initialSize = this.gad.getAtomicDecomposer().getAtoms().size();
-		int compressedSize = this.gad.getAtoms().size();
-		toReturn = (double) (1.0 - ((double) compressedSize/initialSize));
+		int initialSize = gad.getAtomicDecomposer().getAtoms().size();
+		int compressedSize = gad.getAtoms().size();
+        toReturn = 1.0 - (double) compressedSize / initialSize;
 		return toReturn;
 	}
 	
 	public double getRatioOfMergedGeneralisations(){
 		int mergedGeneralisationsNo=0;
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> logicalRegularities = getLogicalRegularities();
-		MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = this.gad.getMergedAtoms();
+		MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad.getMergedAtoms();
 		Set<Collection<OWLAxiom>> patterns = mergedAtoms.keySet();
 		for(Collection<OWLAxiom> pattern : patterns){
 			for(OWLAxiom ax : pattern){
@@ -44,7 +44,7 @@ public class GeneralisedAtomicDecompositionMetrics {
 
 	private MultiMap<OWLAxiom, OWLAxiomInstantiation> getLogicalRegularities() {
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> logicalRegularities = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-		MultiMap<OWLAxiom, OWLAxiomInstantiation> syntacticRegularitiesMap = this.gad.getSyntacticRegularities();
+		MultiMap<OWLAxiom, OWLAxiomInstantiation> syntacticRegularitiesMap = gad.getSyntacticRegularities();
 		for(OWLAxiom ax : syntacticRegularitiesMap.keySet()){
 			if(ax.isLogicalAxiom()){
 				logicalRegularities.putAll(ax, syntacticRegularitiesMap.get(ax));
@@ -61,14 +61,14 @@ public class GeneralisedAtomicDecompositionMetrics {
 	 */
 	public double getMeanMergedAxiomsPerGeneralisation(){
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> logicalRegularities = getLogicalRegularities();
-		MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = this.gad.getMergedAtoms();
+		MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad.getMergedAtoms();
 		Set<Atom> atoms = mergedAtoms.getAllValues();
 		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
 		for(Atom a : atoms){
 			axioms.addAll(a.getAxioms());
 		}
 		Set<OWLAxiomInstantiation> instantiations = logicalRegularities.getAllValues();
-		Set<OWLAxiom> instSet = new HashSet<OWLAxiom>();
+        // Set<OWLAxiom> instSet = new HashSet<OWLAxiom>();
 		int mergedAxiomsNo=0;
 		for(OWLAxiomInstantiation i : instantiations){
 			if(axioms.contains(i.getAxiom())){

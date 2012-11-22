@@ -134,7 +134,7 @@ public class StructuralDifference {
                 : StructuralDifferenceReport.INCOMPARABLE;
         if (toReturn == StructuralDifferenceReport.NO_DIFFERENCE) {
             StructuralComparison comparison = new StructuralComparison(anOWLObject,
-                    getPosition());
+                    position);
             toReturn = anotherOWLObject.accept(comparison);
         }
         return toReturn;
@@ -149,7 +149,7 @@ public class StructuralDifference {
                         Collections.singleton(StructuralDifferenceReport.INCOMPARABLE));
         if (areComparable) {
             CompleteStructuralComparison comparison = new CompleteStructuralComparison(
-                    anOWLObject, getPosition());
+                    anOWLObject, position);
             toReturn = anotherOWLObject.accept(comparison);
         }
         toReturn.remove(StructuralDifferenceReport.NO_DIFFERENCE);
@@ -181,6 +181,7 @@ public class StructuralDifference {
      * @param anotherOWLObject
      *            Another input object
      * @return <code>true</code> if the input objects are of the same kind. */
+    @SuppressWarnings("boxing")
     public boolean areComparable(final OWLObject anOWLObject,
             final OWLObject anotherOWLObject) {
         boolean toReturn = false;
@@ -188,7 +189,7 @@ public class StructuralDifference {
             toReturn = anotherOWLObject == null;
         } else if (anotherOWLObject != null) {
             toReturn = anOWLObject.accept(new OWLObjectVisitorEx<Boolean>() {
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLSubClassOfAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -199,7 +200,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLNegativeObjectPropertyAssertionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -211,7 +212,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLAsymmetricObjectPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -223,7 +224,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLReflexiveObjectPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -235,7 +236,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDisjointClassesAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -246,7 +247,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataPropertyDomainAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -257,7 +258,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectPropertyDomainAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -269,7 +270,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLEquivalentObjectPropertiesAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -281,7 +282,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLNegativeDataPropertyAssertionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -293,7 +294,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDifferentIndividualsAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -305,7 +306,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDisjointDataPropertiesAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -317,7 +318,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDisjointObjectPropertiesAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -329,7 +330,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectPropertyRangeAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -340,7 +341,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectPropertyAssertionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -352,7 +353,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLFunctionalObjectPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -364,7 +365,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLSubObjectPropertyOfAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -375,7 +376,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDisjointUnionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -386,7 +387,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDeclarationAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -397,7 +398,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLAnnotationAssertionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -408,7 +409,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLSymmetricObjectPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -420,7 +421,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataPropertyRangeAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -431,7 +432,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLFunctionalDataPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -443,7 +444,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLEquivalentDataPropertiesAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -455,7 +456,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLClassAssertionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -466,7 +467,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLEquivalentClassesAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -477,7 +478,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataPropertyAssertionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -489,7 +490,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLTransitiveObjectPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -501,7 +502,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLIrreflexiveObjectPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -513,7 +514,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLSubDataPropertyOfAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -524,7 +525,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLInverseFunctionalObjectPropertyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -536,7 +537,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLSameIndividualAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -547,7 +548,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLSubPropertyChainOfAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -558,7 +559,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLInverseObjectPropertiesAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -570,7 +571,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLHasKeyAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -581,7 +582,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDatatypeDefinitionAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -592,7 +593,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLRule rule) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -603,7 +604,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLSubAnnotationPropertyOfAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -615,7 +616,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLAnnotationPropertyDomainAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -627,7 +628,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLAnnotationPropertyRangeAxiom axiom) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -639,7 +640,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLClass ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -650,7 +651,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectIntersectionOf ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -661,7 +662,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectUnionOf ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -672,7 +673,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectComplementOf ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -683,7 +684,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectSomeValuesFrom ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -694,7 +695,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectAllValuesFrom ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -705,7 +706,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectHasValue ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -716,7 +717,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectMinCardinality ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -727,7 +728,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectExactCardinality ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -738,7 +739,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectMaxCardinality ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -749,7 +750,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectHasSelf ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -760,7 +761,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectOneOf ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -771,7 +772,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataSomeValuesFrom ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -782,7 +783,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataAllValuesFrom ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -793,7 +794,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataHasValue ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -804,7 +805,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataMinCardinality ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -815,7 +816,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataExactCardinality ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -826,7 +827,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataMaxCardinality ce) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -837,7 +838,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDatatype node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -848,7 +849,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataComplementOf node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -859,7 +860,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataOneOf node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -870,7 +871,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataIntersectionOf node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -881,7 +882,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataUnionOf node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -892,7 +893,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDatatypeRestriction node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -903,7 +904,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLLiteral node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -914,7 +915,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLFacetRestriction node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -925,7 +926,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectProperty property) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -936,7 +937,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLObjectInverseOf property) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -947,7 +948,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLDataProperty property) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -958,7 +959,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLNamedIndividual individual) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -969,7 +970,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLAnnotationProperty property) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -980,7 +981,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLAnnotation node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -991,7 +992,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final IRI iri) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1002,7 +1003,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLAnonymousIndividual individual) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1013,7 +1014,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLClassAtom node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1024,7 +1025,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLDataRangeAtom node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1035,7 +1036,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLObjectPropertyAtom node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1046,7 +1047,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLDataPropertyAtom node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1057,7 +1058,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLBuiltInAtom node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1068,7 +1069,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLVariable node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1079,7 +1080,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLIndividualArgument node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1090,7 +1091,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLLiteralArgument node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1101,7 +1102,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLSameIndividualAtom node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1112,7 +1113,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final SWRLDifferentIndividualsAtom node) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
@@ -1124,7 +1125,7 @@ public class StructuralDifference {
                             });
                 }
 
-                @SuppressWarnings("unused")
+                @Override
                 public Boolean visit(final OWLOntology ontology) {
                     return anotherOWLObject
                             .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {

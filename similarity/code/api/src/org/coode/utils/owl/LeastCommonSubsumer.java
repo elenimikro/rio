@@ -178,35 +178,35 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         T t = set.iterator().next();
         return t.accept(new OWLObjectVisitorExAdapter<LeastCommonSubsumer<T, ?>>(null) {
             @Override
-            @SuppressWarnings("unused")
+
             public LeastCommonSubsumer<T, ?> visit(final OWLClass cls) {
                 return (LeastCommonSubsumer<T, ?>) new OWLClassLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            @SuppressWarnings("unused")
+
             public LeastCommonSubsumer<T, ?> visit(final OWLObjectProperty property) {
                 return (LeastCommonSubsumer<T, ?>) new OWLObjectPropertyLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            @SuppressWarnings("unused")
+
             public LeastCommonSubsumer<T, ?> visit(final OWLDataProperty property) {
                 return (LeastCommonSubsumer<T, ?>) new OWLDataPropertyLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            @SuppressWarnings("unused")
+
             public LeastCommonSubsumer<T, ?> visit(final OWLNamedIndividual individual) {
                 return (LeastCommonSubsumer<T, ?>) new OWLNamedIndividualLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            @SuppressWarnings("unused")
+
             public LeastCommonSubsumer<T, ?> visit(final OWLAnnotationProperty property) {
                 return (LeastCommonSubsumer<T, ?>) new OWLAnnotationPropertyLeastCommonSubsumer(
                         axiomProvider, dataFactory);

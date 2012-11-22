@@ -46,13 +46,13 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
 			throw new NullPointerException(
 					"OWLKnowledgeExplorerReasoner cannot be null");
 		}
-		this.o = reasoner.getRootOntology();
+		o = reasoner.getRootOntology();
 		this.reasoner = reasoner;
-		this.r = (OWLKnowledgeExplorerReasoner) new JFactChainsawReasoner(
+		r = new JFactChainsawReasoner(
 				new JFactFactory(), o, new SimpleConfiguration());
-		this.manager = o.getOWLOntologyManager();
-		dataFactory = this.manager.getOWLDataFactory();
-		this.buildAxiomMap();
+		manager = o.getOWLOntologyManager();
+		dataFactory = manager.getOWLDataFactory();
+		buildAxiomMap();
 	}
 
 	private void buildAxiomMap() {
@@ -74,8 +74,9 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
 				Set<OWLEntity> sig = ax.getSignature();
 				for (OWLEntity e : sig) {
 					axiomMap.put(e, ax);
-					if (!e.isOWLObjectProperty())
-						signature.add(e);
+					if (!e.isOWLObjectProperty()) {
+                        signature.add(e);
+                    }
 				}
 			}
 			// signature.add(c);
@@ -85,7 +86,7 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
 	private Set<OWLAxiom> computeAxioms(RootNode root) {
 		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
 
-		Node<? extends OWLObjectPropertyExpression> objectNeighbours = this.r
+		Node<? extends OWLObjectPropertyExpression> objectNeighbours = r
 				.getObjectNeighbours(root, false);
 		Set<? extends OWLObjectPropertyExpression> entities = objectNeighbours
 				.getEntities();
@@ -108,26 +109,27 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
 		return axioms;
 	}
 
-	private Set<OWLClassExpression> getFillers(RootNode node) {
-		Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
-		// Fillers.add(Thing); // we never get Thing from KE
-		for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities()) {
-			// all in the label is a filler
-			fillers.add(c);
-		}
-		for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
-				false).getEntities()) {
-			for (RootNode n : r.getObjectNeighbours(node,
-					prop.asOWLObjectProperty())) { // for every neighbour of a
-													// Node...
-				for (OWLClassExpression f : getFillers(n)) { // and every its
-																// filler
-					fillers.add(dataFactory.getOWLObjectSomeValuesFrom(prop, f));
-				}
-			}
-		}
-		return fillers;
-	}
+    // private Set<OWLClassExpression> getFillers(RootNode node) {
+    // Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
+    // // Fillers.add(Thing); // we never get Thing from KE
+    // for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities())
+    // {
+    // // all in the label is a filler
+    // fillers.add(c);
+    // }
+    // for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
+    // false).getEntities()) {
+    // for (RootNode n : r.getObjectNeighbours(node,
+    // prop.asOWLObjectProperty())) { // for every neighbour of a
+    // // Node...
+    // for (OWLClassExpression f : getFillers(n)) { // and every its
+    // // filler
+    // fillers.add(dataFactory.getOWLObjectSomeValuesFrom(prop, f));
+    // }
+    // }
+    // }
+    // return fillers;
+    // }
 
 	private Set<OWLClassExpression> getMaxFillers(RootNode node,
 			Set<RootNode> visited) {
@@ -237,12 +239,12 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
 				false);
 		for (OWLClassExpression ex : classes) {
 			if (ex instanceof OWLClass && !ex.asOWLClass().equals(c)) {
-				OWLSubClassOfAxiom ax = this.dataFactory.getOWLSubClassOfAxiom(
+				OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(
 						c, ex);
 				if (reasoner.isEntailed(ax)) {
 					toReturn.add(ax);
 				}
-				OWLEquivalentClassesAxiom ax2 = this.dataFactory
+				OWLEquivalentClassesAxiom ax2 = dataFactory
 						.getOWLEquivalentClassesAxiom(c, ex);
 				if (reasoner.isEntailed(ax2)) {
 					toReturn.add(ax2);
@@ -264,7 +266,7 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
 
 	@Override
 	public OWLKnowledgeExplorerReasoner getKnowledgeExplorerReasoner() {
-		return (OWLKnowledgeExplorerReasoner) r;
+		return r;
 	}
 
 	@Override
@@ -274,9 +276,11 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
 
 	public Set<OWLClass> getOWLClasses() {
 		Set<OWLClass> toReturn = new HashSet<OWLClass>();
-		for (OWLEntity e : signature)
-			if (e.isOWLClass())
-				toReturn.add(e.asOWLClass());
+		for (OWLEntity e : signature) {
+            if (e.isOWLClass()) {
+                toReturn.add(e.asOWLClass());
+            }
+        }
 		return toReturn;
 	}
 }

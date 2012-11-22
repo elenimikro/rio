@@ -10,6 +10,6 @@
  ******************************************************************************/
 package org.coode.metrics;
 
-public interface Metric<O, R> {
-	R getValue(O object);
+public interface Metric<O> {
+    double getValue(O object);
 }

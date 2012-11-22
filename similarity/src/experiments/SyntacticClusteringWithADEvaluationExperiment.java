@@ -85,7 +85,7 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 				String clustering_type = "popularity";
 				ClusterDecompositionModel<OWLEntity> model = run(
 						clustering_type, metrics, singleOut, o, distance, null);
-				saveResults(substring, o, clustering_type, model, distance);
+                saveResults(substring, clustering_type, model);
 
 				// structural
 				distance = DistanceCreator
@@ -93,7 +93,7 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 				clustering_type = "structural";
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						null);
-				saveResults(substring, o, clustering_type, model, distance);
+                saveResults(substring, clustering_type, model);
 				//
 				// // property relevance
 				Set<OWLEntity> set = getSignatureWithoutProperties(o);
@@ -102,7 +102,7 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 				clustering_type = "object-property-relevance";
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						set);
-				saveResults(substring, o, clustering_type, model, distance);
+                saveResults(substring, clustering_type, model);
 
 				printMetrics(metrics, allResultsFile);
 				firstTime = false;
@@ -110,9 +110,10 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 		}
 	}
 
-	protected static File saveResults(String substring, OWLOntology o,
-			String clustering_type, ClusterDecompositionModel<OWLEntity> model,
-			Distance<OWLEntity> distance) throws ParserConfigurationException,
+    protected static File saveResults(String substring,
+ String clustering_type,
+            ClusterDecompositionModel<OWLEntity> model)
+            throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException,
 			FileNotFoundException {
 		String xmlname = RESULTS_BASE + clustering_type + "-"
@@ -126,7 +127,8 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 		// ClusterResultsExploitationUtils.filterResults(clusteringMatrix,
 		// model,
 		// distance, out);
-		Utils.saveToXML(model, o.getOWLOntologyManager(), xml);
+        Utils.saveToXML(model, xml);
+        out.close();
 		return xml;
 	}
 
@@ -134,7 +136,7 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 			String distanceType, ArrayList<SimpleMetric<?>> metrics,
 			PrintStream singleOut, OWLOntology o, Distance<OWLEntity> distance,
 			Set<OWLEntity> clusteringSignature) throws OPPLException,
-			ParserConfigurationException, OWLOntologyCreationException {
+ ParserConfigurationException {
 		System.out.println("ClusteringWithADEvaluationExperiment.main() \t "
 				+ distanceType);
 		metrics.add(new SimpleMetric<String>("Clustering-type", distanceType));

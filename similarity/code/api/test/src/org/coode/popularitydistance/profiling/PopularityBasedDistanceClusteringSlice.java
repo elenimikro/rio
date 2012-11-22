@@ -9,9 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -24,7 +22,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.coode.aiontologygeneration.ClusteringUtils;
-import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
@@ -38,7 +35,6 @@ import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.pair.filter.PairFilter;
 import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
-import org.coode.proximitymatrix.History;
 import org.coode.proximitymatrix.ProximityMatrix;
 import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
@@ -67,8 +63,9 @@ public class PopularityBasedDistanceClusteringSlice {
      * 
      * @param args */
     // XXX: Change path!
-    private final static String nci_iri = "profiling_ontologies/nci-2012.owl.xml";
-    private final static String obi_iri = "profiling_ontologies/obi.owl";
+    // private final static String nci_iri =
+    // "profiling_ontologies/nci-2012.owl.xml";
+    // private final static String obi_iri = "profiling_ontologies/obi.owl";
 
     public static void main(final String[] args) throws Exception {
         File ontologyList = new File(args[0]);
@@ -103,6 +100,7 @@ public class PopularityBasedDistanceClusteringSlice {
                 // .println("PopularityDistanceSlice.main() Distance measure was built");
                 Set<OWLEntity> entities = new TreeSet<OWLEntity>(
                         new Comparator<OWLEntity>() {
+                            @Override
                             public int compare(final OWLEntity o1, final OWLEntity o2) {
                                 return shortFormProvider.getShortForm(o1).compareTo(
                                         shortFormProvider.getShortForm(o2));
@@ -142,6 +140,7 @@ public class PopularityBasedDistanceClusteringSlice {
                         DistanceTableObject.createDistanceTableObjectSet(distance,
                                 distanceMatrix.getObjects()),
                         new Distance<DistanceTableObject<OWLEntity>>() {
+                            @Override
                             public double getDistance(
                                     final DistanceTableObject<OWLEntity> a,
                                     final DistanceTableObject<OWLEntity> b) {
@@ -154,6 +153,7 @@ public class PopularityBasedDistanceClusteringSlice {
                     newObjects.add(Collections.singletonList(object));
                 }
                 Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
+                    @Override
                     public double getDistance(
                             final Collection<? extends DistanceTableObject<OWLEntity>> a,
                             final Collection<? extends DistanceTableObject<OWLEntity>> b) {
@@ -191,8 +191,8 @@ public class PopularityBasedDistanceClusteringSlice {
                 final Set<Cluster<OWLEntity>> buildClusters = buildClusters(
                         clusteringMatrix, distanceMatrix);
                 System.out.println(line + " " + new Date());
-                save(buildClusters, manager, outfile,
-                        Utility.unwrapHistory(clusteringMatrix.getHistory()));
+                save(buildClusters, manager, outfile);
+                // , Utility.unwrapHistory(clusteringMatrix.getHistory())
                 correct &= ClusteringUtils.check(onto, saveTo, compareTo);
             } catch (Throwable e) {
                 System.out
@@ -204,17 +204,20 @@ public class PopularityBasedDistanceClusteringSlice {
         System.out.println("correct? " + correct);
     }
 
-    private static String render(
-            final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
-        Formatter out = new Formatter();
-        Iterator<? extends DistanceTableObject<OWLEntity>> iterator = cluster.iterator();
-        while (iterator.hasNext()) {
-            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-            OWLEntity owlEntity = iterator.next().getObject();
-            out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
-        }
-        return out.toString();
-    }
+    // private static String render(
+    // final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
+    // Formatter out = new Formatter();
+    // Iterator<? extends DistanceTableObject<OWLEntity>> iterator =
+    // cluster.iterator();
+    // while (iterator.hasNext()) {
+    // ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new
+    // ManchesterOWLSyntaxOWLObjectRendererImpl();
+    // OWLEntity owlEntity = iterator.next().getObject();
+    // out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", "
+    // : "");
+    // }
+    // return out.toString();
+    // }
 
     private static <P> Set<Cluster<P>> buildClusters(
             final ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
@@ -231,8 +234,7 @@ public class PopularityBasedDistanceClusteringSlice {
 
     private static <P extends OWLEntity> void save(
             final Collection<? extends Cluster<P>> clusters,
-            final OWLOntologyManager manager, final File file,
-            final History<Collection<? extends P>> history) {
+            final OWLOntologyManager manager, final File file) {
         try {
             OWLOntology ontology = manager.getOntologies().iterator().next();
             OPPLFactory factory = new OPPLFactory(manager, ontology, null);

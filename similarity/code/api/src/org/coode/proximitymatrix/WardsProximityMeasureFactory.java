@@ -11,7 +11,8 @@
 package org.coode.proximitymatrix;
 
 public class WardsProximityMeasureFactory implements ProximityMeasureFactory {
-	public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
+	@Override
+    public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
 		return new LanceWilliamsFormula((double) (mA + mQ) / (double) (mA + mB + mQ),
 				(double) (mB + mQ) / (double) (mA + mB + mQ), (double) -mQ
 						/ (double) (mA + mB + mQ), 0);

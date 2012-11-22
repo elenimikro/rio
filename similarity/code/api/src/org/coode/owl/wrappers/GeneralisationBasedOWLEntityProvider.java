@@ -24,6 +24,7 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase 
         OWLEntityProvider {
     private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             delegate.clear();

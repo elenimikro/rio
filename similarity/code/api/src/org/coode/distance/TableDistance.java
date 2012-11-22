@@ -47,6 +47,7 @@ public final class TableDistance<O> implements Distance<O> {
         // }
     }
 
+    @Override
     public double getDistance(final O a, final O b) {
         // Integer index = this.objectIndex.get(a);
         // int rowIndex = index == null ? -1 : index;

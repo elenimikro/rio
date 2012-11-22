@@ -59,8 +59,8 @@ public class SemanticClustering extends
 		PrintStream out = new PrintStream(filename);
 		ClusterDecompositionModel<OWLEntity> model = run(clustering_type, out,
 				o, distance, ke.getEntities(), entailments);
-		IOExperimentUtils.saveResults(filename, o, clustering_type, model,
-				distance);
+        IOExperimentUtils.saveResults(filename, clustering_type, model);
+        out.close();
 	}
 
 	public ClusterDecompositionModel<OWLEntity> run(String distanceType,

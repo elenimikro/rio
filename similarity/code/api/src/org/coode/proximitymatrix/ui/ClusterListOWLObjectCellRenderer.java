@@ -41,7 +41,8 @@ public class ClusterListOWLObjectCellRenderer implements ListCellRenderer {
 		this.shortFormProvider = shortFormProvider;
 	}
 
-	public Component getListCellRendererComponent(JList list, Object value, int index,
+	@Override
+    public Component getListCellRendererComponent(JList list, Object value, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
 		Component toReturn = defaultListCellRenderer.getListCellRendererComponent(list,

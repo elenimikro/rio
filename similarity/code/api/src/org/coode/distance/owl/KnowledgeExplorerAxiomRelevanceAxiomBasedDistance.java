@@ -15,11 +15,9 @@ package org.coode.distance.owl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
@@ -41,22 +39,31 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
+import org.semanticweb.owlapi.util.WeakIndexCache;
 
 /** @author Eleni Mikroyannidi */
 public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
+    static class EntityMap extends MultiMap<OWLEntity, OWLAxiom> {
+        public EntityMap() {
+            super(false, false);
+        }
+
+    }
+
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final KnowledgeExplorer ke;
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+    private final EntityMap cache = new EntityMap();
     private final OWLOntologyManager ontologyManger;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
+    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>(
+            false, false);
     private final AxiomMap axiomMap;
     private final Set<OWLEntity> keSignature = new HashSet<OWLEntity>();
     private final OWLEntityProvider entityProvider;
     private final OWLEntityReplacer replacer;
     private final OPPLFactory factory;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             KnowledgeExplorerAxiomRelevanceAxiomBasedDistance.this.buildSignature();
@@ -80,13 +87,12 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
     	}
     }
 
-    private void buildSignature() {
+    void buildSignature() {
         keSignature.clear();
         keSignature.addAll(ke.getEntities());
     }
 
-    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
-
+    private final WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
     public KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
             final Collection<? extends OWLOntology> ontologies,
             final OWLEntityReplacer replacer, final OWLOntologyManager manager,
@@ -100,7 +106,7 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
         if (replacer == null) {
             throw new NullPointerException("The replacer cannot be null");
         }
-        this.ke = explorer;
+        ke = explorer;
         this.replacer = replacer;
         axiomMap = new AxiomMap(explorer.getAxioms(), manager, replacer);
         this.ontologies.addAll(ontologies);
@@ -113,15 +119,18 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
     }
     
 
-    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+    @Override
+    public Collection<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-                : new CollectionFactory.ConditionalCopySet<OWLAxiom>(cached, false);
+        if (cached.isEmpty()) {
+            cached = computeAxiomsForEntity(owlEntity);
+        }
+        return cached;
     }
 
     /** @param owlEntity
      * @return */
-    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+    protected Collection<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             // RelevancePolicyOWLObjectGeneralisation generalReplacer = new
             // RelevancePolicyOWLObjectGeneralisation(
@@ -130,11 +139,12 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
             // getEntityProvider(), factory.createConstraintSystem());
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
             if (generalReplacer == null) {
-                generalReplacer = new RelevancePolicyOWLObjectGeneralisation(
+                generalReplacer = replacers.cache(
+                        axiom,
+                        new RelevancePolicyOWLObjectGeneralisation(
                         Utils.toOWLObjectRelevancePolicy(new AxiomRelevancePolicy(
                                 (OWLAxiom) axiom.accept(replacer), axiomMap)),
-                        getEntityProvider());
-                replacers.put(axiom, generalReplacer);
+                                getEntityProvider()));
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer
                     .getVariableProvider()).setOWLObject(owlEntity);
@@ -146,8 +156,9 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
                 cache.put(owlEntity, replaced);
             }
         }
-        return new CollectionFactory.ConditionalCopySet<OWLAxiom>(cache.get(owlEntity),
-                false);
+        Collection<OWLAxiom> collection = new ArrayList<OWLAxiom>(cache.get(owlEntity));
+        cache.putAll(owlEntity, collection);
+        return collection;
     }
 
     protected boolean isRelevant(final OWLAxiom replaced) {

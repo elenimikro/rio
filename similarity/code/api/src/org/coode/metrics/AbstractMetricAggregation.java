@@ -21,13 +21,13 @@ import java.util.List;
  * @author Luigi Iannone
  * 
  */
-public abstract class AbstractMetricAggregation<O, R, Q> implements Metric<O, R> {
-	private final List<Metric<O, ? extends Q>> metrics = new ArrayList<Metric<O, ? extends Q>>();
+public abstract class AbstractMetricAggregation<O> implements Metric<O> {
+    private final List<Metric<O>> metrics = new ArrayList<Metric<O>>();
 
 	/**
 	 * @param metrics
 	 */
-	public AbstractMetricAggregation(List<Metric<O, ? extends Q>> metrics) {
+    public AbstractMetricAggregation(List<Metric<O>> metrics) {
 		if (metrics == null) {
 			throw new NullPointerException("The metrics cannot be null");
 		}
@@ -37,51 +37,47 @@ public abstract class AbstractMetricAggregation<O, R, Q> implements Metric<O, R>
 	/**
 	 * @see org.coode.metrics.Metric#getValue(java.lang.Object)
 	 */
-	public R getValue(O object) {
-		List<Q> values = new ArrayList<Q>();
-		for (Metric<O, ? extends Q> m : this.getMetrics()) {
-			values.add(m.getValue(object));
+    @Override
+    public double getValue(O object) {
+        double[] doubles = new double[metrics.size()];
+        int i = 0;
+        for (Metric<O> m : this.metrics) {
+            doubles[i++] = m.getValue(object);
 		}
-		return this.aggregate(values);
+        return this.aggregate(doubles);
 	}
 
-	protected abstract R aggregate(Collection<? extends Q> values);
+    protected abstract double aggregate(double... values);
 
 	/**
 	 * @return the metrics
 	 */
-	public List<Metric<O, ? extends Q>> getMetrics() {
-		return new ArrayList<Metric<O, ? extends Q>>(this.metrics);
+    public List<Metric<O>> getMetrics() {
+        return new ArrayList<Metric<O>>(this.metrics);
 	}
 
-	public static <S, T extends Number> Metric<S, Double> getSum(
-			Collection<? extends Metric<S, T>> metrics) {
-		return new AbstractMetricAggregation<S, Double, T>(
-				new ArrayList<Metric<S, ? extends T>>(metrics)) {
+    public static <S, T extends Number> Metric<S> getSum(
+            Collection<? extends Metric<S>> metrics) {
+        return new AbstractMetricAggregation<S>(new ArrayList<Metric<S>>(metrics)) {
 			@Override
-			protected Double aggregate(Collection<? extends T> values) {
+            protected double aggregate(double... values) {
 				double toReturn = 0d;
-				for (T value : values) {
-					if (value != null) {
-						toReturn += value.doubleValue();
-					}
+                for (double value : values) {
+                    toReturn += value;
 				}
 				return toReturn;
 			}
 		};
 	}
 
-	public static <S, T extends Number> Metric<S, Double> getProduct(
-			Collection<? extends Metric<S, ? extends T>> metrics) {
-		return new AbstractMetricAggregation<S, Double, T>(
-				new ArrayList<Metric<S, ? extends T>>(metrics)) {
+    public static <S, T extends Number> Metric<S> getProduct(
+            Collection<? extends Metric<S>> metrics) {
+        return new AbstractMetricAggregation<S>(new ArrayList<Metric<S>>(metrics)) {
 			@Override
-			protected Double aggregate(Collection<? extends T> values) {
+            protected double aggregate(double... values) {
 				double toReturn = 1d;
-				for (T value : values) {
-					if (value != null) {
-						toReturn *= value.doubleValue();
-					}
+                for (double value : values) {
+                    toReturn *= value;
 				}
 				return toReturn;
 			}

@@ -58,11 +58,13 @@ public class VariableGeneralisationTreeNode extends DefaultTreeNode<Variable<?>>
 		}
 	}
 
-	public void accept(GeneralisationTreeNodeVisitor visitor) {
+	@Override
+    public void accept(GeneralisationTreeNodeVisitor visitor) {
 		visitor.visitVariableGeneralisationTreeNode(this);
 	}
 
-	public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
+	@Override
+    public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
 		return visitor.visitVariableGeneralisationTreeNode(this);
 	}
 

@@ -10,13 +10,9 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster.commandline;
 
-import java.util.Collection;
-
 import org.coode.distance.Distance;
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
-import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
-import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -30,20 +26,15 @@ public class StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll extend
         agglomerator.checkArgumentsAndRun(args);
     }
 
+    @Override
     public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
         final Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
                 manager.getOntologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
 
+    @Override
     public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
-        System.out
-                .println(String.format(
-                        "Next Pair %s %s %f",
-                        Utils.renderManchester((Collection<DistanceTableObject<OWLEntity>>) clusteringMatrix
-                                .getMinimumDistancePair().getFirst()),
-                        Utils.renderManchester((Collection<DistanceTableObject<OWLEntity>>) clusteringMatrix
-                                .getMinimumDistancePair().getSecond()), clusteringMatrix
-                                .getMinimumDistance()));
+        Utility.print1(clusteringMatrix);
     }
 }

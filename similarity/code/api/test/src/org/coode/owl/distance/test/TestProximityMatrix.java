@@ -30,11 +30,10 @@ import org.coode.proximitymatrix.WardsProximityMeasureFactory;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class TestProximityMatrix extends TestCase {
-    public void testAllDistances() throws OWLOntologyCreationException {
+    public void testAllDistances() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
@@ -54,7 +53,7 @@ public class TestProximityMatrix extends TestCase {
         axiomBasedDistance.dispose();
     }
 
-    public void testAllDistancesClustering() throws OWLOntologyCreationException {
+    public void testAllDistancesClustering() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
@@ -65,6 +64,7 @@ public class TestProximityMatrix extends TestCase {
         ProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                 ontology.getSignature(), axiomBasedDistance);
         PairFilter<Collection<? extends OWLEntity>> pairFilter = new PairFilter<Collection<? extends OWLEntity>>() {
+            @Override
             public boolean accept(final Collection<? extends OWLEntity> first,
                     final Collection<? extends OWLEntity> second) {
                 return true;
@@ -75,6 +75,7 @@ public class TestProximityMatrix extends TestCase {
             newObjects.add(Collections.singleton(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return axiomBasedDistance.getDistance(a.iterator().next(), b.iterator()
@@ -97,7 +98,7 @@ public class TestProximityMatrix extends TestCase {
         axiomBasedDistance.dispose();
     }
 
-    public void testAllDistancesReduced() throws OWLOntologyCreationException {
+    public void testAllDistancesReduced() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
@@ -109,6 +110,7 @@ public class TestProximityMatrix extends TestCase {
                 ontology.getSignature(), axiomBasedDistance);
         ProximityMatrix<OWLEntity> reduced = distanceMatrix
                 .reduce(new PairFilter<OWLEntity>() {
+                    @Override
                     public boolean accept(final OWLEntity first, final OWLEntity second) {
                         return true;
                     }

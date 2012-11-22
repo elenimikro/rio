@@ -23,6 +23,7 @@ import javax.swing.event.ListDataListener;
  * @author Luigi Iannone
  * 
  */
+@SuppressWarnings("rawtypes")
 public class ClusterListModel<O> implements ListModel {
 	private final ListModel delegate;
 
@@ -41,7 +42,8 @@ public class ClusterListModel<O> implements ListModel {
 	 * @param l
 	 * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
 	 */
-	public void addListDataListener(ListDataListener l) {
+    @Override
+    public void addListDataListener(ListDataListener l) {
 		this.delegate.addListDataListener(l);
 	}
 
@@ -50,7 +52,8 @@ public class ClusterListModel<O> implements ListModel {
 	 * @return
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
-	public Object getElementAt(int index) {
+    @Override
+    public Object getElementAt(int index) {
 		return this.delegate.getElementAt(index);
 	}
 
@@ -58,7 +61,8 @@ public class ClusterListModel<O> implements ListModel {
 	 * @return
 	 * @see javax.swing.ListModel#getSize()
 	 */
-	public int getSize() {
+    @Override
+    public int getSize() {
 		return this.delegate.getSize();
 	}
 
@@ -66,7 +70,8 @@ public class ClusterListModel<O> implements ListModel {
 	 * @param l
 	 * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
 	 */
-	public void removeListDataListener(ListDataListener l) {
+    @Override
+    public void removeListDataListener(ListDataListener l) {
 		this.delegate.removeListDataListener(l);
 	}
 

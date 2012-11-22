@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.coode.distance.owl;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.coode.distance.Distance;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 public interface AbstractAxiomBasedDistance extends Distance<OWLEntity> {
-	public Set<OWLAxiom> getAxioms(OWLEntity owlEntity);
+    public Collection<OWLAxiom> getAxioms(OWLEntity owlEntity);
 }

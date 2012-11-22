@@ -27,17 +27,17 @@ public class SnomedSemanticClusteringWithADEvaluationExperiment extends
 
 	private final static String RESULTS_BASE = "similarity/experiment-results/semantic/";
 
-	public static void main(String[] args) throws OWLOntologyCreationException,
-			OPPLException, ParserConfigurationException, FileNotFoundException,
-			TransformerFactoryConfigurationError, TransformerException {
+    public static void main(String[] args) throws Exception {
 		String base = "snomed/";
 		String[] input = new String[] { "chronic_module.owl",
 				"acute_module.owl", "present_clinical_finding_module.owl" };
 
 		new File(RESULTS_BASE).mkdirs();
 		File file = new File(RESULTS_BASE + "semantic-allstats.csv");
-		SemanticClusteringWithADEvaluationExperiment.setupClusteringExperiment(
-				base, input, file);
+        System.out
+                .println("SnomedSemanticClusteringWithADEvaluationExperiment.main() press enter to start");
+        System.in.read();
+        setupClusteringExperiment(base, input, file);
 	}
 
 	public static void setupClusteringExperiment(String baseDir,
@@ -87,7 +87,8 @@ public class SnomedSemanticClusteringWithADEvaluationExperiment extends
 						.run(clustering_type, metrics, singleOut, o, distance,
 								ke.getEntities(), entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				// structural
 				clustering_type = "structural-relevance";
@@ -98,7 +99,8 @@ public class SnomedSemanticClusteringWithADEvaluationExperiment extends
 						clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				// property relevance
 				Set<OWLEntity> filteredSignature = SemanticClusteringWithADEvaluationExperiment
@@ -111,7 +113,8 @@ public class SnomedSemanticClusteringWithADEvaluationExperiment extends
 						clustering_type, metrics, singleOut, o, distance,
 						filteredSignature, entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-						substring, o, clustering_type, model, distance);
+substring,
+                        clustering_type, model);
 
 				printMetrics(metrics, allResultsFile);
 

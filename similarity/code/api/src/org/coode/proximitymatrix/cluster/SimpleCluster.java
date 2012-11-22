@@ -42,7 +42,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#add(java.lang.Object)
 	 */
-	public boolean add(O e) {
+	@Override
+    public boolean add(O e) {
 		return this.delegate.add(e);
 	}
 
@@ -51,7 +52,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#addAll(java.util.Collection)
 	 */
-	public boolean addAll(Collection<? extends O> c) {
+	@Override
+    public boolean addAll(Collection<? extends O> c) {
 		return this.delegate.addAll(c);
 	}
 
@@ -59,7 +61,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * 
 	 * @see java.util.Set#clear()
 	 */
-	public void clear() {
+	@Override
+    public void clear() {
 		this.delegate.clear();
 	}
 
@@ -68,7 +71,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#contains(java.lang.Object)
 	 */
-	public boolean contains(Object o) {
+	@Override
+    public boolean contains(Object o) {
 		return this.delegate.contains(o);
 	}
 
@@ -77,7 +81,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#containsAll(java.util.Collection)
 	 */
-	public boolean containsAll(Collection<?> c) {
+	@Override
+    public boolean containsAll(Collection<?> c) {
 		return this.delegate.containsAll(c);
 	}
 
@@ -104,7 +109,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#isEmpty()
 	 */
-	public boolean isEmpty() {
+	@Override
+    public boolean isEmpty() {
 		return this.delegate.isEmpty();
 	}
 
@@ -112,7 +118,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#iterator()
 	 */
-	public Iterator<O> iterator() {
+	@Override
+    public Iterator<O> iterator() {
 		return this.delegate.iterator();
 	}
 
@@ -121,7 +128,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#remove(java.lang.Object)
 	 */
-	public boolean remove(Object o) {
+	@Override
+    public boolean remove(Object o) {
 		return this.delegate.remove(o);
 	}
 
@@ -130,7 +138,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#removeAll(java.util.Collection)
 	 */
-	public boolean removeAll(Collection<?> c) {
+	@Override
+    public boolean removeAll(Collection<?> c) {
 		return this.delegate.removeAll(c);
 	}
 
@@ -139,7 +148,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#retainAll(java.util.Collection)
 	 */
-	public boolean retainAll(Collection<?> c) {
+	@Override
+    public boolean retainAll(Collection<?> c) {
 		return this.delegate.retainAll(c);
 	}
 
@@ -147,7 +157,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#size()
 	 */
-	public int size() {
+	@Override
+    public int size() {
 		return this.delegate.size();
 	}
 
@@ -155,7 +166,8 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#toArray()
 	 */
-	public Object[] toArray() {
+	@Override
+    public Object[] toArray() {
 		return this.delegate.toArray();
 	}
 
@@ -165,14 +177,16 @@ public class SimpleCluster<O> implements Cluster<O> {
 	 * @return
 	 * @see java.util.Set#toArray(T[])
 	 */
-	public <T> T[] toArray(T[] a) {
+	@Override
+    public <T> T[] toArray(T[] a) {
 		return this.delegate.toArray(a);
 	}
 
 	/**
 	 * @return the proximityMatrix
 	 */
-	public ProximityMatrix<O> getProximityMatrix() {
+	@Override
+    public ProximityMatrix<O> getProximityMatrix() {
 		return this.proximityMatrix;
 	}
 

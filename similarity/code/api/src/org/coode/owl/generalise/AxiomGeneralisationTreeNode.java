@@ -129,11 +129,13 @@ public class AxiomGeneralisationTreeNode extends DefaultTreeNode<OWLAxiom> imple
 		}
 	}
 
-	public void accept(GeneralisationTreeNodeVisitor visitor) {
+	@Override
+    public void accept(GeneralisationTreeNodeVisitor visitor) {
 		visitor.visitAxiomGeneralisationTreeNode(this);
 	}
 
-	public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
+	@Override
+    public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
 		return visitor.visitAxiomGeneralisationTreeNode(this);
 	}
 

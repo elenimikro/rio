@@ -48,25 +48,25 @@ public class OWLAxiomListItem {
 	 * @return the axiom
 	 */
 	public OWLAxiom getAxiom() {
-		return this.axiom;
+		return axiom;
 	}
 
 	/**
 	 * @return the count
 	 */
 	public int getCount() {
-		return this.getInstantiations().size();
+        return instantiations.size();
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s[%d]", this.getAxiom(), this.getCount());
+		return String.format("%s[%d]", getAxiom(), getCount());
 	}
 
 	/**
 	 * @return the instantiations
 	 */
 	public Set<OWLAxiomInstantiation> getInstantiations() {
-		return new HashSet<OWLAxiomInstantiation>(this.instantiations);
+		return new HashSet<OWLAxiomInstantiation>(instantiations);
 	}
 }

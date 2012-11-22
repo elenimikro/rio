@@ -2,14 +2,10 @@ package experiments;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -19,9 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicReference;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.coode.basetest.DistanceCreator;
@@ -30,7 +24,6 @@ import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
 import org.coode.oppl.exceptions.OPPLException;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -70,9 +63,7 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends Synta
 	
 	
 	public static void setupClusteringExperiment(ArrayList<String> input,
-			File allResultsFile) throws FileNotFoundException,
-			OWLOntologyCreationException, OPPLException,
-			ParserConfigurationException {
+            File allResultsFile) throws FileNotFoundException {
 		for(final String s : input){
 			final ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
 			System.out
@@ -81,7 +72,7 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends Synta
 			String filename = RESULTS_BASE + substring.replaceAll(".owl", ".csv");
 			System.out
 					.println("BioPortalSyntacticClusteringWIthADEvaluationExperiment.setupClusteringExperiment() " + substring);
-			String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
+            // String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
 			File f = new File(filename);
 			if (!f.exists()) {
 				final PrintStream singleOut = new PrintStream(f);
@@ -93,7 +84,8 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends Synta
 //				final AtomicReference<JFactReasoner>   reasoner = new AtomicReference<JFactReasoner>(); 
 //				final AtomicReference<KnowledgeExplorer> ke = new AtomicReference<KnowledgeExplorer>();
 				Callable<Object> task1 = new Callable<Object>() {
-					public Object call() throws OWLOntologyCreationException, OPPLException, ParserConfigurationException {
+					@Override
+                    public Object call() throws OWLOntologyCreationException, OPPLException, ParserConfigurationException {
 						//load ontology and get general ontology metrics
 						OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 						OWLOntology o = m.loadOntologyFromOntologyDocument(new File(s));
@@ -138,7 +130,7 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends Synta
 		ExecutorService executor = Executors.newCachedThreadPool();
 		Future<Object> future = executor.submit(task);
 		try {
-			Object result = future.get(timeout, timeUnit);
+            future.get(timeout, timeUnit);
 		} catch (TimeoutException ex) {
 			System.out.println("Took too long!");
 		} catch (InterruptedException e) {

@@ -3,12 +3,11 @@ package org.coode.knowledgeexplorer.distance.test;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.Set;
 
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
+import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -23,14 +22,13 @@ import uk.ac.manchester.cs.jfact.JFactReasoner;
 
 public class KnowledgeExplorerTest {
 
-	public static void main(String[] args) throws OWLOntologyCreationException,
-			URISyntaxException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
 		knowledgeExplorerTest();
 	}
 
 	@Test
 	public static void knowledgeExplorerTest()
-			throws OWLOntologyCreationException, URISyntaxException {
+ throws OWLOntologyCreationException {
 		File f = new File("similarity/ontologies/amino-acid-original.owl");
 		OWLOntology o = OWLManager.createOWLOntologyManager()
 				.loadOntologyFromOntologyDocument(f);

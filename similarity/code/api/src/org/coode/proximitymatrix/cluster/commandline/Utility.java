@@ -18,12 +18,54 @@ import java.util.Set;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.pair.Pair;
 import org.coode.pair.SimplePair;
+import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.History;
 import org.coode.proximitymatrix.HistoryItem;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.MultiMap;
 
 public class Utility {
+    public static void printAgglomeration(ClusteringProximityMatrix<?> m, int i) {
+        if (i % 50 == 0) {
+            System.out.println(String.format("Agglomerations: %d for %d clusters", i, m
+                    .getObjects().size()));
+        }
+    }
+    public static void print(ClusteringProximityMatrix<?> clusteringMatrix) {
+        // System.out.println(String.format("Next Pair %s %s %f", Utils
+        // .render((Collection<DistanceTableObject<OWLEntity>>) clusteringMatrix
+        // .getMinimumDistancePair().getFirst()), Utils
+        // .render((Collection<DistanceTableObject<OWLEntity>>) clusteringMatrix
+        // .getMinimumDistancePair().getSecond()), clusteringMatrix
+        // .getMinimumDistance()));
+    }
+
+    public static void print2(final ClusteringProximityMatrix<?> clusteringMatrix) {
+        // System.out
+        // .println(String.format(
+        // "Next Pair %s %s %f",
+        // Utils.render((Collection<DistanceTableObject<OWLEntity>>)
+        // clusteringMatrix
+        // .getMinimumDistancePair().getFirst()),
+        // Utils.render((Collection<DistanceTableObject<OWLEntity>>)
+        // (Collection<? extends OWLEntity>) clusteringMatrix
+        // .getMinimumDistancePair().getSecond()), clusteringMatrix
+        // .getMinimumDistance()));
+    }
+
+    public static void print1(final ClusteringProximityMatrix<?> clusteringMatrix) {
+        // System.out
+        // .println(String.format(
+        // "Next Pair %s %s %f",
+        // Utils.renderManchester((Collection<DistanceTableObject<OWLEntity>>)
+        // clusteringMatrix
+        // .getMinimumDistancePair().getFirst()),
+        // Utils.renderManchester((Collection<DistanceTableObject<OWLEntity>>)
+        // clusteringMatrix
+        // .getMinimumDistancePair().getSecond()), clusteringMatrix
+        // .getMinimumDistance()));
+    }
+
 	public static History<Collection<? extends OWLEntity>> unwrapHistory(
 			History<Collection<? extends DistanceTableObject<OWLEntity>>> history) {
 		return unwrapHistory(history, new MultiMap<OWLEntity, OWLEntity>());

@@ -3,12 +3,10 @@ package org.coode.proximitymatrix.cluster;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
@@ -23,10 +21,15 @@ public class GeneralisationStatistics<P> {
 	private final ClusterDecompositionModel<P> model;
 	private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
 	private final MultiMap<OWLAxiom, OWLAxiomInstantiation> genMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-	private final Map<Variable<?>, MultiMap<OWLObject, OWLAxiom>> breakdownsMap = new HashMap<Variable<?>, MultiMap<OWLObject, OWLAxiom>>();
-	private final MultiMap<OWLObject, OWLAxiom> clusterAppearanceBreakDown = new MultiMap<OWLObject, OWLAxiom>();
 
-	private final Map<OWLAxiom, Double> generalisationCoverageStats = new HashMap<OWLAxiom, Double>();
+    // private final Map<Variable<?>, MultiMap<OWLObject, OWLAxiom>>
+    // breakdownsMap = new HashMap<Variable<?>, MultiMap<OWLObject,
+    // OWLAxiom>>();
+    // private final MultiMap<OWLObject, OWLAxiom> clusterAppearanceBreakDown =
+    // new MultiMap<OWLObject, OWLAxiom>();
+
+    // private final Map<OWLAxiom, Double> generalisationCoverageStats = new
+    // HashMap<OWLAxiom, Double>();
 
 	private GeneralisationStatistics(ClusterDecompositionModel<P> model) {
 		this.model = model;
@@ -85,7 +88,7 @@ public class GeneralisationStatistics<P> {
 					SimpleCluster<P> cluster = (SimpleCluster<P>) variableMap
 							.get(v);
 					if (cluster != null) {
-						count = ((double) map.get(v).size()) / cluster.size();
+						count = (double) map.get(v).size() / cluster.size();
 					}
 				}
 				genCoverage += count / map.keySet().size();
@@ -95,25 +98,26 @@ public class GeneralisationStatistics<P> {
 		return genCoverage / genMap.keySet().size();
 	}
 
-	private void buildBreakdownMap() {
-		List<Cluster<P>> clusterList = this.model.getClusterList();
-		for (int i = 0; i < clusterList.size(); i++) {
-			SimpleCluster<OWLEntity> simplecluster = (SimpleCluster<OWLEntity>) clusterList
-					.get(i);
-			Iterator<OWLEntity> it = simplecluster.iterator();
-			Set<OWLEntity> cluster = new HashSet<OWLEntity>();
-			while (it.hasNext()) {
-				cluster.add(it.next());
-			}
-			Variable<?> clusterVariable = Utils.getVariable(cluster, genMap);
-			if (clusterVariable != null) {
-				MultiMap<OWLObject, OWLAxiom> clusterAppearanceBreakdown = Utils
-						.buildClusterAppearanceBreakdown(cluster, genMap);
-				this.breakdownsMap.put(clusterVariable,
-						clusterAppearanceBreakdown);
-			}
-		}
-	}
+    // private void buildBreakdownMap() {
+    // List<Cluster<P>> clusterList = this.model.getClusterList();
+    // for (int i = 0; i < clusterList.size(); i++) {
+    // SimpleCluster<OWLEntity> simplecluster = (SimpleCluster<OWLEntity>)
+    // clusterList
+    // .get(i);
+    // Iterator<OWLEntity> it = simplecluster.iterator();
+    // Set<OWLEntity> cluster = new HashSet<OWLEntity>();
+    // while (it.hasNext()) {
+    // cluster.add(it.next());
+    // }
+    // Variable<?> clusterVariable = Utils.getVariable(cluster, genMap);
+    // if (clusterVariable != null) {
+    // MultiMap<OWLObject, OWLAxiom> clusterAppearanceBreakdown = Utils
+    // .buildClusterAppearanceBreakdown(cluster, genMap);
+    // this.breakdownsMap.put(clusterVariable,
+    // clusterAppearanceBreakdown);
+    // }
+    // }
+    // }
 
 	public double getRatioOfGeneralisedAxiomsToTotalAxioms() {
 		int osize = 0;
@@ -138,7 +142,7 @@ public class GeneralisationStatistics<P> {
 	}
 
 	public void buildDescriptiveStatistics() {
-		DescriptiveStatistics stats = new DescriptiveStatistics();
+        // DescriptiveStatistics stats = new DescriptiveStatistics();
 		// stats.a
 	}
 

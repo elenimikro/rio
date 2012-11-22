@@ -23,7 +23,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /** @author Eleni Mikroyannidi */
-public class AtomicDecompositionRanking extends AbstractRanking<OWLEntity, Double> {
+public class AtomicDecompositionRanking extends AbstractRanking {
     /** @param metric
      * @param objects */
     public AtomicDecompositionRanking(final Set<? extends OWLEntity> objects,
@@ -33,20 +33,11 @@ public class AtomicDecompositionRanking extends AbstractRanking<OWLEntity, Doubl
     }
 
     /** @see org.coode.metrics.Ranking#isAverageable() */
+    @Override
     public boolean isAverageable() {
         return true;
     }
 
-    /** @see org.coode.metrics.AbstractRanking#computeAverage() */
-    @Override
-    protected Double computeAverage() {
-        Set<Double> values = getValues();
-        double sum = 0;
-        for (Double value : values) {
-            sum += value;
-        }
-        return sum / values.size();
-    }
 
     public static AtomicDecompositionRanking buildRanking(
             final Collection<? extends OWLOntology> ontologies,

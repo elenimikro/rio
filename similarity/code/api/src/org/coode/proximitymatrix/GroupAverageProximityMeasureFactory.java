@@ -11,7 +11,8 @@
 package org.coode.proximitymatrix;
 
 public class GroupAverageProximityMeasureFactory implements ProximityMeasureFactory {
-	public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
+	@Override
+    public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
 		return new LanceWilliamsFormula((double) mA / (double) (mA + mB), (double) mB
 				/ (double) (mA + mB), 0, 0);
 	}

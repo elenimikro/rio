@@ -1,5 +1,6 @@
 package org.coode.distance.owl;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,10 +31,10 @@ public class AxiomRelevanceMapBase {
     protected final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantionMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     protected final MultiMap<OWLAxiom, OWLEntity> relevanceMap = new MultiMap<OWLAxiom, OWLEntity>();
 
-    public Set<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
+    public Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
         OWLAxiom generalisedOWLAxiom = generalisationMap.get(axiom);
         if (generalisedOWLAxiom != null) {
-            return new HashSet<OWLEntity>(relevanceMap.get(generalisedOWLAxiom));
+            return relevanceMap.get(generalisedOWLAxiom);
         } else {
             return Collections.emptySet();
         }
@@ -50,7 +51,7 @@ public class AxiomRelevanceMapBase {
                             final BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {
                 BindingNode bindingNode = bindingNodeGeneralisationTreeNode
                         .getUserObject();
-                Set<Assignment> assignments = bindingNode.getAssignments();
+                Collection<Assignment> assignments = bindingNode.getAssignments();
                 for (Assignment assignment : assignments) {
                     OWLObject assignmentValue = assignment.getAssignment();
                     assignmentValue.accept(new OWLObjectVisitorAdapter() {

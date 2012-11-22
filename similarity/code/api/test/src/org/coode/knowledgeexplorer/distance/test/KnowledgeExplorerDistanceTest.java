@@ -1,7 +1,6 @@
 package org.coode.knowledgeexplorer.distance.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -107,7 +106,7 @@ public class KnowledgeExplorerDistanceTest {
 
 	@Test
 	public void knowledgeExplorerDistanceTest()
-			throws OWLOntologyCreationException, OPPLException,
+ throws OPPLException,
 			ParserConfigurationException {
 		// assertEquals(7, o.getAxiomCount());
 		JFactReasoner reasoner = new JFactReasoner(o,
@@ -122,7 +121,8 @@ public class KnowledgeExplorerDistanceTest {
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
+					@Override
+                    public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}

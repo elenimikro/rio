@@ -25,8 +25,6 @@ import java.util.Set;
 import org.coode.distance.entityrelevance.DefaultOWLEntityTypeRelevancePolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
-import org.coode.distance.entityrelevance.owl.AxiomMap;
-import org.coode.distance.entityrelevance.owl.AxiomRelevancePolicy;
 import org.coode.distance.entityrelevance.owl.Utils;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
@@ -56,6 +54,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             OWLEntityRelevanceAxiomBasedDistance.this.buildOntologySignature();
@@ -88,7 +87,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     }
 
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
-	private RelevancePolicy<OWLEntity> policy;
+    private RelevancePolicy policy;
 
     public OWLEntityRelevanceAxiomBasedDistance(
             final Collection<? extends OWLOntology> ontologies,
@@ -110,10 +109,12 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
         policy = DefaultOWLEntityTypeRelevancePolicy.getPropertiesAlwaysRelevantPolicy();
     }
 
+    @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-                : new CollectionFactory.ConditionalCopySet<OWLAxiom>(cached, false);
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
     /** @param owlEntity
@@ -137,8 +138,8 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
                 cache.put(owlEntity, replaced);
             }
         }
-        return new CollectionFactory.ConditionalCopySet<OWLAxiom>(cache.get(owlEntity),
-                false);
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
     }
 
     protected boolean isRelevant(final OWLAxiom replaced) {

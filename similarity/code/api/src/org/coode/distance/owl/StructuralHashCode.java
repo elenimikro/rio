@@ -55,7 +55,8 @@ public class StructuralHashCode implements HashCode {
 	 * @see org.coode.distance.owl.HashCode#hashCode(org.semanticweb.owlapi.model
 	 *      .OWLObject)
 	 */
-	public int hashCode(OWLObject owlObject) {
+	@Override
+    public int hashCode(OWLObject owlObject) {
 		OWLObject replacedOWLObject = owlObject.accept(this.replacer);
 		return replacedOWLObject.hashCode();
 	}

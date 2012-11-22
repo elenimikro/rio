@@ -11,7 +11,8 @@
 package org.coode.proximitymatrix;
 
 public class CentroidProximityMeasureFactory implements ProximityMeasureFactory {
-	public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
+	@Override
+    public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
 		return new LanceWilliamsFormula((double) mA / (double) (mA + mB), (double) mB
 				/ (double) (mA + mB), (double) -mA * (double) mB
 				/ (((double) mA + (double) mB) * ((double) mA + (double) mB)), 0);

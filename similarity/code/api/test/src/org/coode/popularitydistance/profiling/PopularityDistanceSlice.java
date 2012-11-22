@@ -38,7 +38,8 @@ public class PopularityDistanceSlice {
      * 
      * @param args */
     // XXX: Change path!
-    private final static String nci_iri = "file:/eclipse-workspace/similarity/profiling_ontologies/nci-2012.owl.xml";
+    // private final static String nci_iri =
+    // "file:/eclipse-workspace/similarity/profiling_ontologies/nci-2012.owl.xml";
     private final static String obi_iri = "file:/eclipse-workspace/similarity/profiling_ontologies/obi.owl";
 
     public static void main(final String[] args) {
@@ -59,6 +60,7 @@ public class PopularityDistanceSlice {
             System.out
                     .println("PopularityDistanceSlice.main() Distance measure was built");
             Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+                @Override
                 public int compare(final OWLEntity o1, final OWLEntity o2) {
                     return shortFormProvider.getShortForm(o1).compareTo(
                             shortFormProvider.getShortForm(o2));
@@ -75,10 +77,11 @@ public class PopularityDistanceSlice {
             System.out
                     .println("PopularityDistanceSlice.main() Creating baseDistanceMatrix...");
             // the baseDistanceMatrix is needed for clustering
-            SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                    entities, distance);
-            System.out
-                    .println("PopularityDistanceSlice.main() baseDistanceMatrix was created");
+            // SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new
+            // SimpleProximityMatrix<OWLEntity>(
+            // entities, distance);
+            // System.out
+            // .println("PopularityDistanceSlice.main() baseDistanceMatrix was created");
             // reduce entities wherever distance = 0 -> equivalent classes
             System.out
                     .println("PopularityDistanceSlice.main() building equivalent classes...");
@@ -96,6 +99,7 @@ public class PopularityDistanceSlice {
                     DistanceTableObject.createDistanceTableObjectSet(distance,
                             distanceMatrix.getObjects()),
                     new Distance<DistanceTableObject<OWLEntity>>() {
+                        @Override
                         public double getDistance(final DistanceTableObject<OWLEntity> a,
                                 final DistanceTableObject<OWLEntity> b) {
                             return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
@@ -106,6 +110,7 @@ public class PopularityDistanceSlice {
                 newObjects.add(Collections.singletonList(object));
             }
             Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
+                @Override
                 public double getDistance(
                         final Collection<? extends DistanceTableObject<OWLEntity>> a,
                         final Collection<? extends DistanceTableObject<OWLEntity>> b) {

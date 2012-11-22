@@ -20,7 +20,6 @@ import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import uk.ac.manchester.cs.demost.ui.adextension.ChiaraAtomicDecomposition;
@@ -36,7 +35,7 @@ public class TestAtomicDecompositionDependencies extends TestCase {
     }
 
     public void testAtomicDecompositionDependenciesBetweenToppings()
-            throws OWLOntologyCreationException {
+ {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         ChiaraDecompositionAlgorithm chiaraDecompositionAlgorithm = new ChiaraDecompositionAlgorithm(

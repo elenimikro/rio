@@ -13,14 +13,12 @@
  */
 package org.coode.pair;
 
-import java.util.List;
 
 /**
  * @author Luigi Iannone
  *
  */
 public interface Pair<O> {
-	List<O> getElements();
 
 	boolean contains(Object o);
 

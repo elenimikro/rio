@@ -64,6 +64,7 @@ public class AgglomerateAll extends AgglomeratorBase {
         TestHelper.loadIRIMappers(iris, manager);
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -87,6 +88,7 @@ public class AgglomerateAll extends AgglomeratorBase {
             newObjects.add(Collections.singletonList(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
@@ -108,8 +110,8 @@ public class AgglomerateAll extends AgglomeratorBase {
                 && filter.accept(clusteringMatrix.getMinimumDistancePair().getFirst(),
                         clusteringMatrix.getMinimumDistancePair().getSecond())) {
             clusteringMatrix = clusteringMatrix.agglomerate(filter);
-            System.out.println(String.format("Agglomerations: %d for %d clusters", i++,
-                    clusteringMatrix.getObjects().size()));
+            Utility.printAgglomeration(clusteringMatrix, i);
+            i++;
             if (clusteringMatrix.getMinimumDistancePair() != null) {
                 print(clusteringMatrix);
             }

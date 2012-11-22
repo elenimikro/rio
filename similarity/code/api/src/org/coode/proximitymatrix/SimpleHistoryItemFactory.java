@@ -15,7 +15,8 @@ import java.util.Collection;
 import org.coode.pair.Pair;
 
 public class SimpleHistoryItemFactory<O> implements HistoryItemFactory<O> {
-	public HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters) {
+	@Override
+    public HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters) {
 		return new HistoryItem<O>(pair, clusters);
 	}
 }

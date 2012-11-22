@@ -46,11 +46,13 @@ public class SomeDifferenceStructuralDifferenceReport implements
 		this.position.addAll(position);
 	}
 
-	public void accept(StructuralDifferenceReportVisitor visitor) {
+	@Override
+    public void accept(StructuralDifferenceReportVisitor visitor) {
 		visitor.visitSomeDifferenceStructuralDifferenceReport(this);
 	}
 
-	public <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor) {
+	@Override
+    public <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor) {
 		return visitor.visitSomeDifferenceStructuralDifferenceReport(this);
 	}
 
@@ -58,13 +60,13 @@ public class SomeDifferenceStructuralDifferenceReport implements
 	 * @return the position
 	 */
 	public List<Integer> getPosition() {
-		return new ArrayList<Integer>(this.position);
+		return new ArrayList<Integer>(position);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder("Difference at position ");
-		Iterator<Integer> iterator = this.getPosition().iterator();
+        Iterator<Integer> iterator = position.iterator();
 		while (iterator.hasNext()) {
 			int i = iterator.next();
 			out.append(i);
@@ -84,7 +86,7 @@ public class SomeDifferenceStructuralDifferenceReport implements
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (this.position == null ? 0 : this.position.hashCode());
+		result = prime * result + (position == null ? 0 : position.hashCode());
 		return result;
 	}
 
@@ -105,11 +107,11 @@ public class SomeDifferenceStructuralDifferenceReport implements
 			return false;
 		}
 		SomeDifferenceStructuralDifferenceReport other = (SomeDifferenceStructuralDifferenceReport) obj;
-		if (this.position == null) {
+		if (position == null) {
 			if (other.position != null) {
 				return false;
 			}
-		} else if (!this.position.equals(other.position)) {
+		} else if (!position.equals(other.position)) {
 			return false;
 		}
 		return true;

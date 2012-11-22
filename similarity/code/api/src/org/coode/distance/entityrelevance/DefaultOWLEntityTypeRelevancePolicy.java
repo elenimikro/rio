@@ -24,17 +24,17 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * @author Luigi Iannone
  * 
  */
-public final class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolicy<OWLEntity> {
+public final class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolicy {
 	//private EntityType<?> type;
 	private final Set<EntityType<?>> types = new HashSet<EntityType<?>>();
 	private final boolean relevant;
-	private final static RelevancePolicy<OWLEntity> OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
+    private final static RelevancePolicy OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
 			true, EntityType.OBJECT_PROPERTY);
-	private final static RelevancePolicy<OWLEntity> ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
+    private final static RelevancePolicy ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
 			false);
-	private final static RelevancePolicy<OWLEntity> ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
+    private final static RelevancePolicy ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
 			true);
-	private static final RelevancePolicy<OWLEntity> PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
+    private static final RelevancePolicy PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
 			true, EntityType.OBJECT_PROPERTY, EntityType.DATA_PROPERTY,
 			EntityType.DATATYPE, EntityType.ANNOTATION_PROPERTY);
 
@@ -47,28 +47,29 @@ public final class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolic
 		this.relevant = relevant;
 	}
 	
-	public boolean isRelevant(OWLEntity object) {
+	@Override
+    public boolean isRelevant(OWLEntity object) {
 		if (types == null
 				|| types.contains(object.getEntityType()) || types.isEmpty()) {
-			return this.relevant;
+			return relevant;
 		} else {
-			return !this.relevant;
+			return !relevant;
 		}
 	}
 
-	public static RelevancePolicy<OWLEntity> getPropertiesAlwaysRelevantPolicy() {
+    public static RelevancePolicy getPropertiesAlwaysRelevantPolicy() {
 		return PROPERTIES_ALWAYS_RELEVANT_POLICY;
 	}
 	
-	public static RelevancePolicy<OWLEntity> getObjectPropertyAlwaysRelevantPolicy() {
+    public static RelevancePolicy getObjectPropertyAlwaysRelevantPolicy() {
 		return OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY;
 	}
 
-	public static RelevancePolicy<OWLEntity> getAlwaysIrrelevantPolicy() {
+    public static RelevancePolicy getAlwaysIrrelevantPolicy() {
 		return ALWAYS_IRRELEVANT_POLICY;
 	}
 	
-	public static RelevancePolicy<OWLEntity> getAlwaysRelevantPolicy() {
+    public static RelevancePolicy getAlwaysRelevantPolicy() {
 		return ALWAYS_RELEVANT_POLICY;
 	}
 }

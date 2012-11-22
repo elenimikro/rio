@@ -25,53 +25,66 @@ import org.coode.oppl.variabletypes.VariableTypeVisitorEx;
 import org.coode.owl.generalise.VariableProvider;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 public class SingleOWLEntityReplacementVariableProvider extends VariableProvider {
+    private static final class AbstractingVisitor extends
+            OWLObjectVisitorExAdapter<Variable<?>> {
+        private SingleOWLEntityReplacementVariableProvider _this;
+
+        public AbstractingVisitor(SingleOWLEntityReplacementVariableProvider _object) {
+            _this = _object;
+        }
+        @Override
+        protected Variable<?> getDefaultReturnValue(OWLObject _object) {
+            if (_object.equals(_this.getOWLObject())) {
+                return _this.getStar(_object);
+            }
+            if (_object instanceof OWLEntity
+                    && _this.getRelevancePolicy().isRelevant((OWLEntity) _object)) {
+                return null;
+            } else {
+                return _this.getVariable(_object);
+            }
+        }
+
+        @Override
+        public Variable<?> visit(final IRI iri) {
+            OWLObject owlEntity = _this
+                    .getOWLEntity(iri);
+            return owlEntity != null ? owlEntity.accept(this) : null;
+        }
+    }
+
     private OWLObject owlObject;
-    private final RelevancePolicy<OWLObject> relevancePolicy;
+    private final RelevancePolicy relevancePolicy;
+    private final AbstractingVisitor abstracter;
 
     /** @param entityProvider
      * @param constraintSystem
      * @param owlObject */
     public SingleOWLEntityReplacementVariableProvider(
-            final RelevancePolicy<OWLObject> relevancePolicy,
+            final RelevancePolicy relevancePolicy,
             final OWLEntityProvider entityProvider) {
         super(entityProvider);
         if (relevancePolicy == null) {
             throw new NullPointerException("The relevance policy cannot be null");
         }
         this.relevancePolicy = relevancePolicy;
+        abstracter = new AbstractingVisitor(this);
     }
 
     @Override
-    protected Variable<?> getAbstractingVariable(final OWLObject owlObject) {
+    protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
         if (owlObject == null) {
             throw new NullPointerException("The owlObject cannot be null");
         }
-        return owlObject.accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
-            @Override
-            protected Variable<?> getDefaultReturnValue(final OWLObject object) {
-                return object.equals(SingleOWLEntityReplacementVariableProvider.this
-                        .getOWLObject()) ? SingleOWLEntityReplacementVariableProvider.this
-                        .getStar(object)
-                        : SingleOWLEntityReplacementVariableProvider.this
-                                .getRelevancePolicy().isRelevant(object) ? null
-                                : SingleOWLEntityReplacementVariableProvider.this
-                                        .getVariable(object);
-            }
-
-            @Override
-            public Variable<?> visit(final IRI iri) {
-                OWLObject owlEntity = SingleOWLEntityReplacementVariableProvider.this
-                        .getOWLEntity(iri);
-                return owlEntity != null ? owlEntity.accept(this) : null;
-            }
-        });
+        return owlObject.accept(abstracter);
     }
 
-    private Variable<?> getVariable(final OWLObject owlObject) {
+    Variable<?> getVariable(final OWLObject owlObject) {
         Variable<?> toReturn = null;
         VariableType<?> variableType = VariableTypeFactory.getVariableType(owlObject);
         if (variableType != null) {
@@ -89,7 +102,8 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
                         final VariableType<?> type) {
                     try {
                         return SingleOWLEntityReplacementVariableProvider.this
-                                .getConstraintSystem().createVariable(name, type, null);
+                                .getConstraintSystem().createVariableWithVerifiedName(
+                                        name, type, null);
                     } catch (OPPLException e) {
                         e.printStackTrace();
                         return null;
@@ -135,9 +149,9 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         return toReturn;
     }
 
-    private Variable<?> getStar(final OWLObject owlObject) {
+    Variable<?> getStar(final OWLObject owlObject) {
         try {
-            return getConstraintSystem().createVariable("?star",
+            return getConstraintSystem().createVariableWithVerifiedName("?star",
                     VariableTypeFactory.getVariableType(owlObject), null);
         } catch (OPPLException e) {
             e.printStackTrace();
@@ -158,7 +172,7 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
     }
 
     /** @return the relevancePolicy */
-    public RelevancePolicy<OWLObject> getRelevancePolicy() {
+    public RelevancePolicy getRelevancePolicy() {
         return relevancePolicy;
     }
 }

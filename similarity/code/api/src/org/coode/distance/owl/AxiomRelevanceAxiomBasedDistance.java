@@ -55,6 +55,7 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
     private final OWLEntityReplacer replacer;
     private final OPPLFactory factory;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomRelevanceAxiomBasedDistance.this.buildOntologySignature();
@@ -111,10 +112,12 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
                 null);
     }
 
+    @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-                : new CollectionFactory.ConditionalCopySet<OWLAxiom>(cached, false);
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
     /** @param owlEntity
@@ -144,8 +147,8 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
                 cache.put(owlEntity, replaced);
             }
         }
-        return new CollectionFactory.ConditionalCopySet<OWLAxiom>(cache.get(owlEntity),
-                false);
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
     }
 
     protected boolean isRelevant(final OWLAxiom replaced) {

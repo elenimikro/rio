@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,13 +35,8 @@ import org.coode.owl.wrappers.OWLEntityProvider;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLException;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
@@ -113,8 +107,8 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends Abst
 		if (knowledgeExplorer == null) {
 			throw new NullPointerException("The knowledge explorer cannot be null");
 		}
-		this.ke = knowledgeExplorer;
-		this.ontologyManger = ontology.getOWLOntologyManager();
+		ke = knowledgeExplorer;
+		ontologyManger = ontology.getOWLOntologyManager();
 		buildSignature();
 		buildAxiomEntityMap(ke.getAxioms());
 		axiomRelevanceMap = buildAxiomRelevanceMap();
@@ -138,10 +132,12 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends Abst
 				constraintSystem);
 	}
 
-	public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+	@Override
+    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
 		Collection<OWLAxiom> cached = cache.get(owlEntity);
 		return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-				: new HashSet<OWLAxiom>(cached);
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
 	}
 
 	/**
@@ -150,8 +146,8 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends Abst
 	 */
 	protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
 		for (OWLAxiom axiom : candidates.get(owlEntity)) {
-			RelevancePolicy<OWLObject> policy = CollectionBasedRelevantPolicy
-					.allOf(new HashSet<OWLObject>(getRelevantEntities(axiom)));
+            RelevancePolicy policy = CollectionBasedRelevantPolicy
+                    .allOf(getRelevantEntities(axiom));
 			RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers
 					.get(axiom);
 			if (generalReplacer == null) {
@@ -170,11 +166,11 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends Abst
 				cache.put(owlEntity, replaced);
 			}
 		}
-		return new CollectionFactory.ConditionalCopySet<OWLAxiom>(
-				cache.get(owlEntity), false);
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
 	}
 
-	private Set<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
+    private Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
 		return axiomRelevanceMap.getRelevantEntities(axiom);
 	}
 

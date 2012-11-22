@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.coode.distance.entityrelevance;
 
-public interface Interval<O extends Comparable<O>> {
-	O getLowerBound();
+public interface Interval {
+    double getLowerBound();
 
-	O getUpperBound();
+    double getUpperBound();
 }

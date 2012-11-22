@@ -39,6 +39,7 @@ public class ClusterStatisticsTableModel implements TableModel {
     private final ClusterStatistics<?>[] statistics;
     public final static Comparator<Cluster<?>> SIZE_COMPARATOR = Collections
             .reverseOrder(new Comparator<Cluster<?>>() {
+                @Override
                 public int compare(final Cluster<?> o1, final Cluster<?> o2) {
                     int sizeDifference = o1.size() - o2.size();
                     return sizeDifference == 0 ? o1.hashCode() - o2.hashCode()
@@ -126,25 +127,30 @@ public class ClusterStatisticsTableModel implements TableModel {
     // i,
     // 3);
     // }
+    @Override
     public void addTableModelListener(final TableModelListener l) {
         if (l != null) {
             listeners.add(l);
         }
     }
 
-    @SuppressWarnings("unused")
+
+    @Override
     public Class<?> getColumnClass(final int columnIndex) {
         return Object.class;
     }
 
+    @Override
     public int getColumnCount() {
         return 4;
     }
 
+    @Override
     public Object getValueAt(final int rowIndex, final int columnIndex) {
         Object toReturn = null;
         if (columnIndex == 0) {
             double avgSize = avg(new Selector() {
+                @Override
                 public double select(final ClusterStatistics<?> s) {
                     return s.getCluster().size();
                 }
@@ -161,6 +167,7 @@ public class ClusterStatisticsTableModel implements TableModel {
             switch (columnIndex) {
                 case 1:
                     toReturn = rowIndex >= statistics.length ? avg(new Selector() {
+                        @Override
                         public double select(final ClusterStatistics<?> s) {
                             return s.getAverageInternalDistance();
                         }
@@ -168,6 +175,7 @@ public class ClusterStatisticsTableModel implements TableModel {
                     break;
                 case 2:
                     toReturn = rowIndex >= statistics.length ? avg(new Selector() {
+                        @Override
                         public double select(final ClusterStatistics<?> s) {
                             return s.getMinInternalDistance();
                         }
@@ -175,6 +183,7 @@ public class ClusterStatisticsTableModel implements TableModel {
                     break;
                 case 3:
                     toReturn = rowIndex >= statistics.length ? avg(new Selector() {
+                        @Override
                         public double select(final ClusterStatistics<?> s) {
                             return s.getMaxInternalDistance();
                         }
@@ -187,24 +196,29 @@ public class ClusterStatisticsTableModel implements TableModel {
         return toReturn;
     }
 
+    @Override
     public String getColumnName(final int columnIndex) {
         return COLUMN_NAMES[columnIndex];
     }
 
+    @Override
     public int getRowCount() {
         return clusters.length + 1;
     }
 
-    @SuppressWarnings("unused")
+
+    @Override
     public boolean isCellEditable(final int rowIndex, final int columnIndex) {
         return false;
     }
 
+    @Override
     public void removeTableModelListener(final TableModelListener l) {
         listeners.remove(l);
     }
 
-    @SuppressWarnings("unused")
+
+    @Override
     public void
             setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {}
 

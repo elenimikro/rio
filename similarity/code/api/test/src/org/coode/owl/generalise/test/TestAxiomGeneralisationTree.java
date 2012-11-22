@@ -28,7 +28,6 @@ import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 
@@ -39,7 +38,7 @@ public class TestAxiomGeneralisationTree extends TestCase {
         ToStringRenderer.getInstance().setRenderer(new ManchesterSyntaxRenderer());
     }
 
-    public void testAxiomGeneralisationTree() throws OWLOntologyCreationException {
+    public void testAxiomGeneralisationTree() {
         int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();

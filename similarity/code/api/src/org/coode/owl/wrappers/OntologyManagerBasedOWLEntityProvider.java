@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
         implements OWLEntityProvider {
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             delegate.clear();

@@ -36,7 +36,7 @@ public class AxiomMap {
     private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
     private final OWLOntologyManager ontologyManager;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @SuppressWarnings("unused")
+        @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomMap.this.buildMaps(axioms);
@@ -55,7 +55,7 @@ public class AxiomMap {
         this.replacer = replacer;
         ontologyManager.addOntologyChangeListener(listener);
         for(OWLOntology o : ontologies){
-        	this.axioms.addAll(o.getAxioms());
+        	axioms.addAll(o.getAxioms());
         }
         buildMaps(axioms);
     }
@@ -76,7 +76,7 @@ public class AxiomMap {
         buildMaps(axioms);
     }
 
-    private void buildMaps(final Set<OWLAxiom> axioms) {
+    void buildMaps(final Set<OWLAxiom> axioms) {
         delegate.clear();
         axiomCountMap.clear();
 		for (OWLAxiom axiom : axioms) {

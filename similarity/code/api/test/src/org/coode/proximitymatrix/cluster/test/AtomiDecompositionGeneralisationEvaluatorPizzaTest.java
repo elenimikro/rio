@@ -1,8 +1,6 @@
 package org.coode.proximitymatrix.cluster.test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,13 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.coode.basetest.ClusterCreator;
 import org.coode.basetest.DistanceCreator;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
-import org.coode.oppl.exceptions.OPPLException;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
@@ -61,7 +56,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
 					@Override
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
+                    public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}
@@ -76,8 +71,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 	}
 
 	@Test
-	public void testPizzaAtomiDecompositionGeneralisationEvaluator()
-			throws OPPLException, ParserConfigurationException {
+    public void testPizzaAtomiDecompositionGeneralisationEvaluator() {
 		assertNotNull(model);
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> genmap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
@@ -121,8 +115,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 	}
 
 	@Test
-	public void pizzaGeneralisedADTest() throws OPPLException,
-			ParserConfigurationException {
+    public void pizzaGeneralisedADTest() {
 		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
 				model, pizza);
 		assertTrue(ad.getAtoms().size() > gad.getAtoms().size());

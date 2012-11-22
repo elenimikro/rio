@@ -125,13 +125,18 @@ public abstract class AbstractOWLObjectGeneralisation extends
         OWLObjectVisitorExAdapter<OWLObject> implements OWLObjectVisitorEx<OWLObject> {
     private abstract class FunctionGeneralisation implements
             OWLClassExpressionVisitorEx<OWLClassExpression> {
+        public FunctionGeneralisation() {
+            // TODO Auto-generated constructor stub
+        }
+
+        @Override
         public OWLClassExpression visit(final OWLClass ce) {
             OWLClassExpression toReturn = ce;
             final Variable<?> variable = getConstraintSystem().getVariable(ce.getIRI());
             if (variable != null) {
                 toReturn = variable.getType().accept(
                         new VariableTypeVisitorEx<OWLClassExpression>() {
-                            @SuppressWarnings("unused")
+                            @Override
                             public OWLClassExpression visitCLASSVariableType(
                                     final CLASSVariableType classVariableType) {
                                 @SuppressWarnings("unchecked")
@@ -141,6 +146,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                 Set<Aggregandum<Collection<? extends OWLClassExpression>>> aggregandums = new HashSet<Aggregandum<Collection<? extends OWLClassExpression>>>();
                                 aggregandums
                                         .add(new Aggregandum<Collection<? extends OWLClassExpression>>() {
+                                            @Override
                                             public
                                                     Set<OPPLFunction<Collection<? extends OWLClassExpression>>>
                                                     getOPPLFunctions() {
@@ -148,16 +154,19 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                                         .<OPPLFunction<Collection<? extends OWLClassExpression>>> singleton(values);
                                             }
 
+                                            @Override
                                             public boolean isCompatible(
                                                     final VariableType<?> variableType) {
                                                 return values.getVariable().getType() == variableType;
                                             }
 
+                                            @Override
                                             public String
                                                     render(final ConstraintSystem c) {
                                                 return values.render(c);
                                             }
 
+                                            @Override
                                             public
                                                     String
                                                     render(final ShortFormProvider shortFormProvider) {
@@ -170,7 +179,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                 return factory.getOWLClass(generatedVariable.getIRI());
                             }
 
-                            @SuppressWarnings("unused")
+                            @Override
                             public
                                     OWLClassExpression
                                     visitOBJECTPROPERTYVariableType(
@@ -178,7 +187,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                 return ce;
                             }
 
-                            @SuppressWarnings("unused")
+                            @Override
                             public
                                     OWLClassExpression
                                     visitDATAPROPERTYVariableType(
@@ -186,19 +195,19 @@ public abstract class AbstractOWLObjectGeneralisation extends
                                 return ce;
                             }
 
-                            @SuppressWarnings("unused")
+                            @Override
                             public OWLClassExpression visitINDIVIDUALVariableType(
                                     final INDIVIDUALVariableType individualVariableType) {
                                 return ce;
                             }
 
-                            @SuppressWarnings("unused")
+                            @Override
                             public OWLClassExpression visitCONSTANTVariableType(
                                     final CONSTANTVariableType constantVariableType) {
                                 return ce;
                             }
 
-                            @SuppressWarnings("unused")
+                            @Override
                             public
                                     OWLClassExpression
                                     visitANNOTATIONPROPERTYVariableType(
@@ -210,54 +219,67 @@ public abstract class AbstractOWLObjectGeneralisation extends
             return toReturn;
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectIntersectionOf ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectUnionOf ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectComplementOf ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectSomeValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectAllValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectHasValue ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectMinCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectExactCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectMaxCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectHasSelf ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLObjectOneOf ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLDataSomeValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLDataAllValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
@@ -284,26 +306,32 @@ public abstract class AbstractOWLObjectGeneralisation extends
             final ValuesVariableAtttribute<? extends OWLClassExpression> values = ValuesVariableAtttribute
                     .getValuesVariableAtttribute(expressionGeneratedVariable);
             Aggregandum<Collection<? extends OWLClassExpression>> a = new Aggregandum<Collection<? extends OWLClassExpression>>() {
+                @Override
                 public Set<OPPLFunction<Collection<? extends OWLClassExpression>>>
                         getOPPLFunctions() {
                     OPPLFunction<Collection<? extends OWLClassExpression>> opplFunction = new OPPLFunction<Collection<? extends OWLClassExpression>>() {
+                        @Override
                         public Collection<? extends OWLClassExpression> compute(
                                 final ValueComputationParameters params) {
                             return values.compute(params);
                         }
 
+                        @Override
                         public <P> P accept(final OPPLFunctionVisitorEx<P> visitor) {
                             return visitor.visitValuesVariableAtttribute(values);
                         }
 
+                        @Override
                         public void accept(final OPPLFunctionVisitor visitor) {
                             visitor.visitValuesVariableAtttribute(values);
                         }
 
+                        @Override
                         public String render(final ConstraintSystem c) {
                             return values.render(c);
                         }
 
+                        @Override
                         public String render(final ShortFormProvider shortFormProvider) {
                             return values.render(shortFormProvider);
                         }
@@ -311,14 +339,17 @@ public abstract class AbstractOWLObjectGeneralisation extends
                     return Collections.singleton(opplFunction);
                 }
 
+                @Override
                 public boolean isCompatible(final VariableType<?> variableType) {
                     return values.getVariable().getType() == variableType;
                 }
 
+                @Override
                 public String render(final ConstraintSystem c) {
                     return values.render(c);
                 }
 
+                @Override
                 public String render(final ShortFormProvider shortFormProvider) {
                     return values.render(shortFormProvider);
                 }
@@ -337,18 +368,22 @@ public abstract class AbstractOWLObjectGeneralisation extends
                         Variable<?> expressionGeneratedVariable,
                         Collection<? extends Aggregandum<Collection<? extends OWLClassExpression>>> a);
 
+        @Override
         public OWLClassExpression visit(final OWLDataHasValue ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLDataMinCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLDataExactCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
+        @Override
         public OWLClassExpression visit(final OWLDataMaxCardinality ce) {
             return generaliseClassExpression(ce);
         }
@@ -356,8 +391,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
 
     private ConstraintSystem constraintSystem;
     private final VariableProvider variableProvider;
-    private final Map<OWLClassExpression, GeneratedVariable<? extends OWLClassExpression>> generalisedClassExpressionsVariables = new HashMap<OWLClassExpression, GeneratedVariable<? extends OWLClassExpression>>();
-    private final Map<Collection<? extends Aggregandum<?>>, GeneratedVariable<?>> generatedVariableAggregations = new HashMap<Collection<? extends Aggregandum<?>>, GeneratedVariable<?>>();
+    final Map<OWLClassExpression, GeneratedVariable<? extends OWLClassExpression>> generalisedClassExpressionsVariables = new HashMap<OWLClassExpression, GeneratedVariable<? extends OWLClassExpression>>();
+    final Map<Collection<? extends Aggregandum<?>>, GeneratedVariable<?>> generatedVariableAggregations = new HashMap<Collection<? extends Aggregandum<?>>, GeneratedVariable<?>>();
     private final AssignmentMap substitutions = new AssignmentMap(
             Collections.<BindingNode> emptySet());
     private final OWLDataFactory factory;
@@ -1157,7 +1192,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
 
     /** @return the substitutions */
     public AssignmentMap getSubstitutions() {
-        return new AssignmentMap(substitutions);
+        return substitutions;
     }
 
     @Override

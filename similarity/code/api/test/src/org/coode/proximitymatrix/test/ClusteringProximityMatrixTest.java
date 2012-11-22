@@ -54,6 +54,7 @@ public class ClusteringProximityMatrixTest extends TestCase {
         TestHelper.loadIRIMappers(iris, manager);
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
             public int compare(final OWLEntity o1, final OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
@@ -75,6 +76,7 @@ public class ClusteringProximityMatrixTest extends TestCase {
             newObjects.add(Collections.singleton(object));
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
             public double getDistance(final Collection<? extends OWLEntity> a,
                     final Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
@@ -94,7 +96,8 @@ public class ClusteringProximityMatrixTest extends TestCase {
         ClusteringProximityMatrix<OWLEntity> reducedMultipleFilter = clusteringMatrix
                 .reduce(OrPairFilter.build(
                         new PairFilter<Collection<? extends OWLEntity>>() {
-                            @SuppressWarnings("unused")
+
+                            @Override
                             public boolean accept(
                                     final Collection<? extends OWLEntity> first,
                                     final Collection<? extends OWLEntity> second) {

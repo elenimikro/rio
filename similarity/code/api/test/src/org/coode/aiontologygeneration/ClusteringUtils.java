@@ -19,8 +19,6 @@ import org.coode.oppl.exceptions.RuntimeExceptionHandler;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.proximitymatrix.cluster.Utils;
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -87,8 +85,9 @@ public class ClusteringUtils {
 
     public static boolean check(final String onto, final String input1,
             final String input2) throws Exception {
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        OWLOntology ontology = manager.loadOntology(IRI.create(new File(onto)));
+        // OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        // OWLOntology ontology = manager.loadOntology(IRI.create(new
+        // File(onto)));
         return check(onto, input1, input2);
     }
 
@@ -98,12 +97,14 @@ public class ClusteringUtils {
         boolean toReturn = true;
         Set<Set<OWLEntity>> loadClustersFromFile1 = ClusteringUtils.loadClustersFromFile(
                 input1, onto.getOWLOntologyManager());
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap1 = ClusteringUtils
-                .getGeneralisationMap(onto, loadClustersFromFile1);
+        // MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap1 =
+        // ClusteringUtils
+        // .getGeneralisationMap(onto, loadClustersFromFile1);
         Set<Set<OWLEntity>> loadClustersFromFile2 = ClusteringUtils.loadClustersFromFile(
                 input2, onto.getOWLOntologyManager());
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap2 = ClusteringUtils
-                .getGeneralisationMap(onto, loadClustersFromFile2);
+        // MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap2 =
+        // ClusteringUtils
+        // .getGeneralisationMap(onto, loadClustersFromFile2);
         Set<Set<OWLEntity>> common = new HashSet<Set<OWLEntity>>();
         if (!loadClustersFromFile1.equals(loadClustersFromFile2)) {
             int diffs = 0;
