@@ -110,7 +110,7 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 		}
 	}
 
-	private static File saveResults(String substring, OWLOntology o,
+	protected static File saveResults(String substring, OWLOntology o,
 			String clustering_type, ClusterDecompositionModel<OWLEntity> model,
 			Distance<OWLEntity> distance) throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException,
@@ -123,8 +123,9 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
 				xmlname);
 		ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix = ExperimentHelper
 				.getClusteringMatrix();
-		ClusterResultsExploitationUtils.filterResults(clusteringMatrix, model,
-				distance, out);
+		// ClusterResultsExploitationUtils.filterResults(clusteringMatrix,
+		// model,
+		// distance, out);
 		Utils.saveToXML(model, o.getOWLOntologyManager(), xml);
 		return xml;
 	}

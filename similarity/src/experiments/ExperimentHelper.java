@@ -84,6 +84,7 @@ public class ExperimentHelper {
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
+					@Override
 					public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
@@ -254,13 +255,13 @@ public class ExperimentHelper {
 				totalAverageHomogeneity += (1 - stats
 						.getAverageInternalDistance());
 			}
-			out.println((double) totalAverageInternalDistance / clNo + ","
+			out.println(totalAverageInternalDistance / clNo + ","
 					+ (double) totalAverageExternalDistance / clNo + ","
 					+ (double) totalAverageMaxInternalDistance / clNo + ","
 					+ (double) totalAverageMinInternalDistance / clNo + ","
 					+ (double) totalAverageMaxExternalDistance / clNo + ","
 					+ (double) totalAverageMinExternalDistance / clNo + ","
-					+ (double) totalAverageHomogeneity / clNo);
+					+ totalAverageHomogeneity / clNo);
 			indiout.close();
 		} catch (IOException e) {
 			System.out

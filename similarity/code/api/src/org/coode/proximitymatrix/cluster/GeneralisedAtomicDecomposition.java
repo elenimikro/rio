@@ -1,5 +1,6 @@
 package org.coode.proximitymatrix.cluster;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,16 +24,17 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 	private final AtomicDecomposer ad;
 	private final OWLOntology o;
 
-	private Map<OWLAxiom, Atom> genAtomMap = new HashMap<OWLAxiom, Atom>();
+	private final Map<OWLAxiom, Atom> genAtomMap = new HashMap<OWLAxiom, Atom>();
 	private final Map<Collection<OWLAxiom>, Atom> delegate = new HashMap<Collection<OWLAxiom>, Atom>();
 	private final MultiMap<Atom, OWLAxiom> atomMap = new MultiMap<Atom, OWLAxiom>();
+	private final MultiMap<Atom, Atom> wrappedMap = new MultiMap<Atom, Atom>();
 
 	private final MultiMap<Atom, OWLEntity> atomEntityMap = new MultiMap<Atom, OWLEntity>();
 	private final MultiMap<OWLEntity, Atom> entityAtomMap = new MultiMap<OWLEntity, Atom>();
 	private final Map<OWLAxiom, OWLAxiom> instToGenMap = new HashMap<OWLAxiom, OWLAxiom>();
-	private MultiMap<OWLAxiom, OWLAxiomInstantiation> regularitiesMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+	private final MultiMap<OWLAxiom, OWLAxiomInstantiation> regularitiesMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 
-	private MultiMap<Collection<OWLAxiom>, Atom> duplicateAtomMap = new MultiMap<Collection<OWLAxiom>, Atom>();
+	private final MultiMap<Collection<OWLAxiom>, Atom> duplicateAtomMap = new MultiMap<Collection<OWLAxiom>, Atom>();
 	MultiMap<Atom, OWLAxiom> dirtyMap = new MultiMap<Atom, OWLAxiom>();
 
 	public GeneralisedAtomicDecomposition(
@@ -81,6 +83,13 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 			atomMap.putAll(a, map.get(a));
 		}
 
+	}
+
+	public Set<Atom> getTopAtoms() {
+		Set<Atom> toReturn = new HashSet<Atom>();
+		Set<Atom> bottomAtoms = ad.getBottomAtoms();
+		toReturn.addAll(this.getReducedAtoms(bottomAtoms));
+		return toReturn;
 	}
 
 	public Set<Atom> getBottomAtoms() {
@@ -212,6 +221,26 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 	public MultiMap<OWLAxiom, OWLAxiomInstantiation> getSyntacticRegularities() {
 		return regularitiesMap;
 	}
-	
-	
+
+	public Set<List<Atom>> getPatterns() {
+		Set<List<Atom>> toReturn = new HashSet<List<Atom>>();
+		Set<Atom> topAtoms = this.getTopAtoms();
+		for (Atom atom : topAtoms) {
+			List<Atom> patterns = new ArrayList<Atom>();
+			patterns.add(atom);
+			recurseForDepedencies(atom, patterns);
+			toReturn.add(patterns);
+		}
+		return toReturn;
+	}
+
+	private void recurseForDepedencies(Atom parent, List<Atom> patterns) {
+		for (Atom child : this.getDependencies(parent)) {
+			if (!patterns.contains(child)) {
+				patterns.add(child);
+				recurseForDepedencies(child, patterns);
+			}
+		}
+	}
+
 }
