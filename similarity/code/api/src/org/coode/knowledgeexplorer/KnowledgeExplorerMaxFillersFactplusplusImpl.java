@@ -19,10 +19,8 @@ import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner;
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner.RootNode;
 import org.semanticweb.owlapi.util.MultiMap;
@@ -30,7 +28,6 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
-import uk.ac.manchester.cs.jfact.JFactReasoner;
 
 public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 		KnowledgeExplorer {
@@ -81,8 +78,9 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 				Set<OWLEntity> sig = ax.getSignature();
 				for (OWLEntity e : sig) {
 					axiomMap.put(e, ax);
-					if (!e.isOWLObjectProperty())
+					if (!e.isOWLObjectProperty()) {
 						signature.add(e);
+					}
 				}
 			}
 			// signature.add(c);
@@ -271,7 +269,7 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 
 	@Override
 	public OWLKnowledgeExplorerReasoner getKnowledgeExplorerReasoner() {
-		return (OWLKnowledgeExplorerReasoner) r;
+		return r;
 	}
 
 	@Override
@@ -281,9 +279,16 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 
 	public Set<OWLClass> getOWLClasses() {
 		Set<OWLClass> toReturn = new HashSet<OWLClass>();
-		for (OWLEntity e : signature)
-			if (e.isOWLClass())
+		for (OWLEntity e : signature) {
+			if (e.isOWLClass()) {
 				toReturn.add(e.asOWLClass());
+			}
+		}
 		return toReturn;
+	}
+
+	public void dispose() {
+		r.dispose();
+		reasoner.dispose();
 	}
 }

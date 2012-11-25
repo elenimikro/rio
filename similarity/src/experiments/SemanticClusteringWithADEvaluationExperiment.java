@@ -14,12 +14,10 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
-import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.knowledgeexplorer.ChainsawKnowledgeExplorerMaxFillersImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.oppl.exceptions.OPPLException;
-import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.Utils;
@@ -231,10 +229,12 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 		PrintStream out = new PrintStream(new File(xmlname + ".txt"));
 		ClusterResultsExploitationUtils.printGeneralisationStats(model, out,
 				xmlname);
-		ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix = ExperimentHelper
-				.getClusteringMatrix();
-		ClusterResultsExploitationUtils.filterResults(clusteringMatrix, model,
-				distance, out);
+		// ClusteringProximityMatrix<DistanceTableObject<OWLEntity>>
+		// clusteringMatrix = ExperimentHelper
+		// .getClusteringMatrix();
+		// ClusterResultsExploitationUtils.filterResults(clusteringMatrix,
+		// model,
+		// distance, out);
 		Utils.saveToXML(model, o.getOWLOntologyManager(), xml);
 		return xml;
 	}
