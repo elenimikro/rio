@@ -77,11 +77,11 @@ public class ClusteringWithADEvaluationExperimentBase {
 		// MultiArrayMap<String, Number> indiFileMetrics = new
 		// MultiArrayMap<String, Number>();
 		double totalAverageInternalDistance = 0;
-		int totalAverageExternalDistance = 0;
-		int totalAverageMaxInternalDistance = 0;
-		int totalAverageMinInternalDistance = 0;
-		int totalAverageMaxExternalDistance = 0;
-		int totalAverageMinExternalDistance = 0;
+        double totalAverageExternalDistance = 0;
+        double totalAverageMaxInternalDistance = 0;
+        double totalAverageMinInternalDistance = 0;
+        double totalAverageMaxExternalDistance = 0;
+        double totalAverageMinExternalDistance = 0;
 		double totalAverageHomogeneity = 0;
 
 		int clNo = sortedClusters.size();
@@ -110,22 +110,23 @@ public class ClusteringWithADEvaluationExperimentBase {
 			totalAverageMinInternalDistance += stats.getMinInternalDistance();
 			totalAverageMaxExternalDistance += stats.getMaxExternalDistance();
 			totalAverageMinExternalDistance += stats.getMinExternalDistance();
-			totalAverageHomogeneity += (1 - stats.getAverageInternalDistance());
+			totalAverageHomogeneity += 1 - stats.getAverageInternalDistance();
 		}
 		toReturn.add(new SimpleMetric<Double>("MeanInternalDistance",
-				totalAverageInternalDistance / clNo));
+                totalAverageInternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("MeanExternalDistance",
-				(double) totalAverageExternalDistance / clNo));
+				totalAverageExternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("MaxInternalDistance",
-				(double) totalAverageMaxInternalDistance / clNo));
+				totalAverageMaxInternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("MinInternalDistance",
-				(double) totalAverageMinInternalDistance / clNo));
+				totalAverageMinInternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("MaxExternalDistance",
-				(double) totalAverageMaxExternalDistance / clNo));
+				totalAverageMaxExternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("minExternalDistance",
-				(double) totalAverageMinExternalDistance / clNo));
+				totalAverageMinExternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("homogeneity",
-				totalAverageHomogeneity / clNo));
+ totalAverageHomogeneity
+                / clNo));
 
 		return toReturn;
 	}

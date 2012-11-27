@@ -19,6 +19,7 @@ public abstract class AbstractAxiomBasedDistanceImpl implements
         if (toReturn == 1) {
             if (a != last) {
                 lastset = new HashSet<OWLAxiom>(getAxioms(a));
+                last = a;
             }
             Collection<OWLAxiom> axiomsForB = getAxioms(b);
             if (!lastset.isEmpty() || !axiomsForB.isEmpty()) {

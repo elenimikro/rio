@@ -171,7 +171,7 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 	}
 
 	public MultiMap<OWLEntity, Atom> getTermBasedIndex() {
-		if (entityAtomMap.size() == 0 || entityAtomMap == null) {
+        if (entityAtomMap == null || entityAtomMap.size() == 0) {
 			Set<Collection<OWLAxiom>> keySet = this.delegate.keySet();
 			for (Collection<OWLAxiom> collection : keySet) {
 				Set<OWLEntity> signature = new HashSet<OWLEntity>();

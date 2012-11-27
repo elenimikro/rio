@@ -5,10 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -93,31 +91,32 @@ public class SemanticPopularityClusteringClusteringTest {
 				.buildKnowledgeExplorerClusterDecompositionModel(o,
 						ke.getAxioms(), m, clusters);
 
-		List<SimpleMetric<Double>> list = new ArrayList<SimpleMetric<Double>>();
-		Collection<? extends SimpleMetric<?>> stats = ClusteringWithADEvaluationExperimentBase
+        // List<SimpleMetric<Double>> list = new
+        // ArrayList<SimpleMetric<Double>>();
+        Collection<? extends SimpleMetric<?>> stats = ClusteringWithADEvaluationExperimentBase
 				.getClusteringStats(out, model.getClusterList());
 
-		for (SimpleMetric<?> sm : stats) {
+        for (SimpleMetric<?> sm : stats) {
 			if (sm.getName().equals("MeanInternalDistance")) {
-				assertEquals(0.319, (Double) sm.getValue(), 0.001);
+                assertEquals(0.319, (Double) sm.getValue(), 0.001);
 			}
 			if (sm.getName().equals("MeanExternalDistance")) {
-				assertEquals(0.333, (Double) sm.getValue(), 0.001);
+                assertEquals(0.333, (Double) sm.getValue(), 0.001);
 			}
 			if (sm.getName().equals("MaxInternalDistance")) {
-				assertEquals(0.0, (Double) sm.getValue(), 0.001);
+                assertEquals(0.0, (Double) sm.getValue(), 0.001);
 			}
 			if (sm.getName().equals("MaxInternalDistance")) {
-				assertEquals(0.0, (Double) sm.getValue(), 0.001);
+                assertEquals(0.0, (Double) sm.getValue(), 0.001);
 			}
 			if (sm.getName().equals("MinInternalDistance")) {
-				assertEquals(0.0, (Double) sm.getValue(), 0.001);
+                assertEquals(0.0, (Double) sm.getValue(), 0.001);
 			}
 			if (sm.getName().equals("MaxExternalDistance")) {
-				assertEquals(1.0, (Double) sm.getValue(), 0.001);
+                assertEquals(1.0, (Double) sm.getValue(), 0.001);
 			}
 			if (sm.getName().equals("minExternalDistance")) {
-				assertEquals(0.333, (Double) sm.getValue(), 0.001);
+                assertEquals(0.333, (Double) sm.getValue(), 0.001);
 			}
 			System.out.println(sm.getName() + " : " + sm.getValue());
 		}

@@ -89,8 +89,8 @@ public class SemanticClusteringTasksRunner extends
                 ClusterDecompositionModel<OWLEntity> model = SemanticClusteringWithADEvaluationExperiment
                         .run(clustering_type, metrics, singleOut, o, distance,
                                 ke.getEntities(), entailments);
-                SemanticClusteringWithADEvaluationExperiment.saveResults(substring,
-                        clustering_type, model);
+                SemanticClusteringWithADEvaluationExperiment.saveResults(clustering_type
+                        + substring, model);
                 // structural
                 clustering_type = "structural";
                 distance = DistanceCreator
@@ -98,8 +98,8 @@ public class SemanticClusteringTasksRunner extends
                                 ke);
                 model = SemanticClusteringWithADEvaluationExperiment.run(clustering_type,
                         metrics, singleOut, o, distance, ke.getEntities(), entailments);
-                SemanticClusteringWithADEvaluationExperiment.saveResults(substring,
-                        clustering_type, model);
+                SemanticClusteringWithADEvaluationExperiment.saveResults(clustering_type
+                        + substring, model);
                 // property relevance
                 clustering_type = "property";
                 Set<OWLEntity> filteredSignature = SemanticClusteringWithADEvaluationExperiment
@@ -108,8 +108,8 @@ public class SemanticClusteringTasksRunner extends
                         .createKnowledgeExplorerOWLEntityRelevanceBasedDistance(m, ke);
                 model = SemanticClusteringWithADEvaluationExperiment.run(clustering_type,
                         metrics, singleOut, o, distance, filteredSignature, entailments);
-                SemanticClusteringWithADEvaluationExperiment.saveResults(substring,
-                        clustering_type, model);
+                SemanticClusteringWithADEvaluationExperiment.saveResults(clustering_type
+                        + substring, model);
                 printMetrics(metrics, allResultsFile);
                 firstTime = false;
             }

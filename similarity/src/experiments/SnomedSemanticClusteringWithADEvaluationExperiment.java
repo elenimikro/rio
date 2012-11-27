@@ -1,125 +1,171 @@
 package experiments;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-
 import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class SnomedSemanticClusteringWithADEvaluationExperiment extends
-		ClusteringWithADEvaluationExperimentBase {
-
-	private final static String RESULTS_BASE = "similarity/experiment-results/semantic/";
-
+        ClusteringWithADEvaluationExperimentBase {
+    private final static String root = "similarity/experiment-results/semantic/";
+    private final static String base = "snomed/";
     public static void main(String[] args) throws Exception {
-		String base = "snomed/";
-		String[] input = new String[] { "chronic_module.owl",
-				"acute_module.owl", "present_clinical_finding_module.owl" };
 
-		new File(RESULTS_BASE).mkdirs();
-		File file = new File(RESULTS_BASE + "semantic-allstats.csv");
+        String[] input = new String[] { "chronic_module.owl", "acute_module.owl",
+                "present_clinical_finding_module.owl" };
+        new File(root).mkdirs();
+        String suffix = "semantic-allstats.csv";
+        // File file = new File(root + suffix);
         System.out
                 .println("SnomedSemanticClusteringWithADEvaluationExperiment.main() press enter to start");
         System.in.read();
-        setupClusteringExperiment(base, input, file);
-	}
+        String pop = "_popularity_";
+        String struc = "_structural_";
+        String prop = "_objectproperty_";
+        String i2 = input[2];
+        String i1 = input[1];
+        String i0 = input[0];
+        setupClusteringExperimentPopularity(pop, i2, new File(root + i2 + pop
+                + suffix));
+        setupClusteringExperimentStructural(struc, i2, new File(root + i2 + struc
+                + suffix));
+        setupClusteringExperimentProperty(prop, i2, new File(root + i2 + prop
+                + suffix));
+        setupClusteringExperimentPopularity(pop, i1, new File(root + i1 + pop
+                + suffix));
+        setupClusteringExperimentStructural(struc, i1, new File(root + i1 + struc
+                + suffix));
+        setupClusteringExperimentProperty(prop, i1, new File(root + i1 + prop
+                + suffix));
+        setupClusteringExperimentStructural(struc, i0, new File(root + i0 + struc
+                + suffix));
+        setupClusteringExperimentProperty(prop, i0, new File(root + i0 + prop
+                + suffix));
+        setupClusteringExperimentPopularity(pop, i0, new File(root + i0 + pop
+                + suffix));
+    }
 
-	public static void setupClusteringExperiment(String baseDir,
-			String[] input, File allResultsFile) throws FileNotFoundException,
-			OWLOntologyCreationException, OPPLException,
-			ParserConfigurationException, TransformerFactoryConfigurationError,
-			TransformerException {
-		String current;
-		for (String s : input) {
-			ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
-			System.out
-					.println("\n PopularityClusteringWithADEvaluationExperiment.main() \t "
-							+ s);
-			String substring = s.substring(s.indexOf("/") + 1);
-			String filename = RESULTS_BASE
-					+ substring.replaceAll(".owl", ".csv");
-			// String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
-			File f = new File(filename);
-			if (!f.exists()) {
-				PrintStream singleOut = new PrintStream(f);
-				current = baseDir + s;
+    public static void setupClusteringExperimentPopularity(String type, String current,
+            File allResultsFile) throws Exception {
+        ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
+        String filename = root + current.replaceAll(".owl", "") + type + ".csv";
+        File f = new File(filename);
+        if (!f.exists()) {
+            // load ontology and get general ontology metrics
+            OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+            OWLOntology o = m.loadOntologyFromOntologyDocument(new File(base + current));
+            ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
+            metrics.add(new SimpleMetric<String>("Ontology", current));
+            metrics.addAll(getBasicOntologyMetrics(m));
+            // get KE metrics
+            KnowledgeExplorer ke = SemanticClusteringWithADEvaluationExperiment
+                    .runFactplusplusKnowledgeExplorerReasoner(o);
+            Set<OWLAxiom> entailments = ke.getAxioms();
+            System.out.println("Entailments " + entailments.size());
+            metrics.add(new SimpleMetric<Integer>("#Entailments", entailments.size()));
+            // popularity distance
+            Distance<OWLEntity> distance = DistanceCreator
+                    .createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(m, ke);
+            PrintStream singleOut = new PrintStream(f);
+            ClusterDecompositionModel<OWLEntity> model = SemanticClusteringWithADEvaluationExperiment
+                    .run(type, metrics, singleOut, o, distance, ke.getEntities(),
+                            entailments);
+            singleOut.close();
+            SemanticClusteringWithADEvaluationExperiment.saveResults(current + type,
+                    model);
+            printMetrics(metrics, allResultsFile);
+            firstTime = false;
+        } else {
+            System.out
+                    .println("SnomedSemanticClusteringWithADEvaluationExperiment.setupClusteringExperimentPopularity() already done");
+        }
+    }
 
-				// load ontology and get general ontology metrics
-				OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-				OWLOntology o = m.loadOntologyFromOntologyDocument(new File(
-						current));
-				ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
-				metrics.add(new SimpleMetric<String>("Ontology", s));
-				metrics.addAll(getBasicOntologyMetrics(m));
+    public static void setupClusteringExperimentStructural(String type, String current,
+            File allResultsFile) throws Exception {
+        ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
+        String filename = root + current.replaceAll(".owl", "") + type + ".csv";
+        File f = new File(filename);
+        if (!f.exists()) {
+            // load ontology and get general ontology metrics
+            OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+            OWLOntology o = m.loadOntologyFromOntologyDocument(new File(base + current));
+            ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
+            metrics.add(new SimpleMetric<String>("Ontology", current));
+            metrics.addAll(getBasicOntologyMetrics(m));
+            // get KE metrics
+            KnowledgeExplorer ke = SemanticClusteringWithADEvaluationExperiment
+                    .runFactplusplusKnowledgeExplorerReasoner(o);
+            Set<OWLAxiom> entailments = ke.getAxioms();
+            System.out
+                    .println("SemanticClusteringOfBigOntologiesWithADEvaluationExperiment.setupClusteringExperiment() Entailments "
+                            + entailments.size());
+            metrics.add(new SimpleMetric<Integer>("#Entailments", entailments.size()));
+            // structural
+            Distance<OWLEntity> distance = DistanceCreator
+                    .createStructuralKnowledgeExplorerAxiomRelevanceBasedDistance(o, ke);
+            PrintStream singleOut = new PrintStream(f);
+            ClusterDecompositionModel<OWLEntity> model = SemanticClusteringWithADEvaluationExperiment
+                    .run(type, metrics, singleOut, o, distance, ke.getEntities(),
+                            entailments);
+            singleOut.close();
+            SemanticClusteringWithADEvaluationExperiment.saveResults(current + type,
+                    model);
+            printMetrics(metrics, allResultsFile);
+            firstTime = false;
+        } else {
+            System.out
+                    .println("SnomedSemanticClusteringWithADEvaluationExperiment.setupClusteringExperimentStructural() already done");
+        }
+    }
 
-				// get KE metrics
-				KnowledgeExplorer ke = SemanticClusteringWithADEvaluationExperiment
-						.runFactplusplusKnowledgeExplorerReasoner(o);
-				Set<OWLAxiom> entailments = ke.getAxioms();
-				System.out
-						.println("SemanticClusteringOfBigOntologiesWithADEvaluationExperiment.setupClusteringExperiment() Entailments "
-								+ entailments.size());
-				metrics.add(new SimpleMetric<Integer>("#Entailments",
-						entailments.size()));
-
-				// popularity distance
-				String clustering_type = "popularity";
-				Distance<OWLEntity> distance = DistanceCreator
-						.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-								m, ke);
-				ClusterDecompositionModel<OWLEntity> model = SemanticClusteringWithADEvaluationExperiment
-						.run(clustering_type, metrics, singleOut, o, distance,
-								ke.getEntities(), entailments);
-				SemanticClusteringWithADEvaluationExperiment.saveResults(
-substring,
-                        clustering_type, model);
-
-				// structural
-				clustering_type = "structural-relevance";
-				distance = DistanceCreator
-						.createStructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
-								o, ke);
-				model = SemanticClusteringWithADEvaluationExperiment.run(
-						clustering_type, metrics, singleOut, o, distance,
-						ke.getEntities(), entailments);
-				SemanticClusteringWithADEvaluationExperiment.saveResults(
-substring,
-                        clustering_type, model);
-
-				// property relevance
-				Set<OWLEntity> filteredSignature = SemanticClusteringWithADEvaluationExperiment
-						.getSignatureWithoutProperties(ke);
-				distance = DistanceCreator
-						.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
-								m, ke);
-				clustering_type = "object-property-relevance";
-				model = SemanticClusteringWithADEvaluationExperiment.run(
-						clustering_type, metrics, singleOut, o, distance,
-						filteredSignature, entailments);
-				SemanticClusteringWithADEvaluationExperiment.saveResults(
-substring,
-                        clustering_type, model);
-
-				printMetrics(metrics, allResultsFile);
-
-				firstTime = false;
-			}
-		}
-	}
+    public static void setupClusteringExperimentProperty(String type, String current,
+            File allResultsFile) throws Exception {
+        ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
+        String filename = root + current.replaceAll(".owl", "") + type + ".csv";
+        File f = new File(filename);
+        if (!f.exists()) {
+            // load ontology and get general ontology metrics
+            OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+            OWLOntology o = m.loadOntologyFromOntologyDocument(new File(base + current));
+            ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
+            metrics.add(new SimpleMetric<String>("Ontology", current));
+            metrics.addAll(getBasicOntologyMetrics(m));
+            // get KE metrics
+            KnowledgeExplorer ke = SemanticClusteringWithADEvaluationExperiment
+                    .runFactplusplusKnowledgeExplorerReasoner(o);
+            Set<OWLAxiom> entailments = ke.getAxioms();
+            System.out
+                    .println("SemanticClusteringOfBigOntologiesWithADEvaluationExperiment.setupClusteringExperiment() Entailments "
+                            + entailments.size());
+            metrics.add(new SimpleMetric<Integer>("#Entailments", entailments.size()));
+            // property relevance
+            Set<OWLEntity> filteredSignature = SemanticClusteringWithADEvaluationExperiment
+                    .getSignatureWithoutProperties(ke);
+            Distance<OWLEntity> distance = DistanceCreator
+                    .createKnowledgeExplorerOWLEntityRelevanceBasedDistance(m, ke);
+            PrintStream singleOut = new PrintStream(f);
+            ClusterDecompositionModel<OWLEntity> model = SemanticClusteringWithADEvaluationExperiment
+                    .run(type, metrics, singleOut, o, distance, filteredSignature,
+                            entailments);
+            singleOut.close();
+            SemanticClusteringWithADEvaluationExperiment.saveResults(current + type,
+                    model);
+            printMetrics(metrics, allResultsFile);
+            firstTime = false;
+        } else {
+            System.out
+                    .println("SnomedSemanticClusteringWithADEvaluationExperiment.setupClusteringExperimentProperty() already done");
+        }
+    }
 }

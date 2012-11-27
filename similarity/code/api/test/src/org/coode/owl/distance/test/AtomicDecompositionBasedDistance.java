@@ -14,6 +14,7 @@
 package org.coode.owl.distance.test;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.coode.basetest.TestHelper;
 import org.coode.distance.entityrelevance.AtomicDecompositionRankingRelevancePolicy;
@@ -69,7 +70,7 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
                 ranking.getAverageValue()));
         for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
-                    s.getMembers(), s.getValue(),
+                    Arrays.toString(s.getMembers()), s.getValue(),
  policy.isRelevant(s.getMembers()[0])));
             i++;
         }
@@ -93,7 +94,7 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
                 ranking.getAverageValue()));
         for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
-                    s.getMembers(), s.getValue(),
+                    Arrays.toString(s.getMembers()), s.getValue(),
  policy.isRelevant(s.getMembers()[0])));
             i++;
         }
@@ -119,7 +120,7 @@ public class AtomicDecompositionBasedDistance extends DistanceTestCase {
                 ranking.getAverageValue(), policy.getStandardDeviation()));
         for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
             System.out.println(String.format("%d. %s value %s is relevant: %b", i,
-                    s.getMembers(), s.getValue(),
+                    Arrays.toString(s.getMembers()), s.getValue(),
  policy.isRelevant(s.getMembers()[0])));
             i++;
         }

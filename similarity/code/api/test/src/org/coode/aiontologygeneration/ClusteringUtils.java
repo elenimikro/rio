@@ -19,6 +19,8 @@ import org.coode.oppl.exceptions.RuntimeExceptionHandler;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -85,10 +87,9 @@ public class ClusteringUtils {
 
     public static boolean check(final String onto, final String input1,
             final String input2) throws Exception {
-        // OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        // OWLOntology ontology = manager.loadOntology(IRI.create(new
-        // File(onto)));
-        return check(onto, input1, input2);
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntology ontology = manager.loadOntology(IRI.create(new File(onto)));
+        return check(ontology, input1, input2);
     }
 
     public static boolean check(final OWLOntology onto, final String input1,

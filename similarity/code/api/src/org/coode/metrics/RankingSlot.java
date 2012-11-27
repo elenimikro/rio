@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.coode.metrics;
 
+import java.util.Arrays;
 
 public class RankingSlot<O> {
     private final double value;
@@ -40,12 +41,12 @@ public class RankingSlot<O> {
 		return this.size;
 	}
 
-	public int getMembersHashCode() {
-	    if(hashCode==0) {
-	        hashCode=toReturn.hashCode();
-	    }
-		return this.hashCode;
-	}
+    public int getMembersHashCode() {
+        if (hashCode == 0) {
+            hashCode = Arrays.hashCode(toReturn);
+        }
+        return this.hashCode;
+    }
 	/**
 	 * @return the value
 	 */
