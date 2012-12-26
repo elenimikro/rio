@@ -97,7 +97,8 @@ public class KnowledgeExplorerStructuralDifferenceAgglomerateAll{
 		// KnowledgeExplorer ke = new
 		// KnowledgeExplorerMaxFillerJFactImpl(reasoner, manager);
 		Set<OWLEntity> entities = getEntitiesForClustering(ke.getEntities());
-		Distance<OWLEntity> distance = DistanceCreator.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(manager, ke);
+        Distance<OWLEntity> distance = DistanceCreator
+                .createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(ontology, ke);
 		ClusterCreator clusterer = new ClusterCreator();
 		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(ontology, distance, entities);
 		ClusterDecompositionModel<OWLEntity> model = clusterer

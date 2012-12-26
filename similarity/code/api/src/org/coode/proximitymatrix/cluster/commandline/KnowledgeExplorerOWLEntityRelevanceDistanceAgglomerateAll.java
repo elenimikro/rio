@@ -105,7 +105,8 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll{
 				entities.add(e);
 			}
 		}
-		Distance<OWLEntity> distance = DistanceCreator.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(manager, ke);
+        Distance<OWLEntity> distance = DistanceCreator
+                .createKnowledgeExplorerOWLEntityRelevanceBasedDistance(ontology, ke);
 		ClusterCreator clusterer = new ClusterCreator();
 		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(ontology, distance, entities);
 		ClusterDecompositionModel<OWLEntity> model = clusterer

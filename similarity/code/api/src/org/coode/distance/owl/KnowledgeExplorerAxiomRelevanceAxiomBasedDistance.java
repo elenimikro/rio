@@ -38,7 +38,6 @@ import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.WeakIndexCache;
 
@@ -51,10 +50,8 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
 
     }
 
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final KnowledgeExplorer ke;
     private final EntityMap cache = new EntityMap();
-    private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>(
             false, false);
     private final AxiomMap axiomMap;
@@ -94,27 +91,21 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
 
     private final WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
     public KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-            final Collection<? extends OWLOntology> ontologies,
-            final OWLEntityReplacer replacer, final OWLOntologyManager manager,
+OWLOntology ontology,
+            final OWLEntityReplacer replacer,
             KnowledgeExplorer explorer) {
-        if (ontologies == null) {
-            throw new NullPointerException("The ontolgies canont be null");
-        }
-        if (manager == null) {
-            throw new NullPointerException("The ontolgy manager cannot be null");
-        }
         if (replacer == null) {
             throw new NullPointerException("The replacer cannot be null");
         }
         ke = explorer;
         this.replacer = replacer;
-        axiomMap = new AxiomMap(explorer.getAxioms(), manager, replacer);
-        this.ontologies.addAll(ontologies);
-        ontologyManger = manager;
+        axiomMap = new AxiomMap(explorer.getAxioms(), replacer);
         buildSignature();
         buildAxiomEntityMap();
-        entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
-        factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(),
+
+        entityProvider = new OntologyManagerBasedOWLEntityProvider(
+                ontology.getOWLOntologyManager());
+        factory = new OPPLFactory(ontology.getOWLOntologyManager(), ontology,
                 null);
     }
     
@@ -176,13 +167,9 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
     }
 
     public void dispose() {
-        ontologyManger.removeOntologyChangeListener(listener);
+        // ontologyManger.removeOntologyChangeListener(listener);
     }
 
-    /** @return the ontologyManger */
-    public OWLOntologyManager getOntologyManger() {
-        return ontologyManger;
-    }
 
     /** @return the entityProvider */
     public OWLEntityProvider getEntityProvider() {

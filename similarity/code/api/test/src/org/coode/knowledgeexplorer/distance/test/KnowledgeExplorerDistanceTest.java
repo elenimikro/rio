@@ -117,7 +117,7 @@ public class KnowledgeExplorerDistanceTest {
 						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
 								BufferingMode.NON_BUFFERING)));
 		Distance<OWLEntity> distance = DistanceCreator
-				.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(m, ke);
+                .createKnowledgeExplorerOWLEntityRelevanceBasedDistance(o, ke);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {

@@ -1,7 +1,6 @@
 package org.coode.knowledgeexplorer.distance.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Set;
@@ -57,7 +56,7 @@ public class KnowledgeExplorerCompareDistancesTest {
 
 		AbstractAxiomBasedDistance popularity_distance = (AbstractAxiomBasedDistance) DistanceCreator
 				.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-						o.getOWLOntologyManager(), ke);
+o, ke);
 
 		AbstractAxiomBasedDistance structural_distance = (AbstractAxiomBasedDistance) DistanceCreator
 				.createStructuralKnowledgeExplorerAxiomRelevanceBasedDistance(

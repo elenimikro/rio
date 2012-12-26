@@ -109,7 +109,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 				Set<OWLEntity> filteredSignature = getSignatureWithoutProperties(ke);
 				Distance<OWLEntity> distance = DistanceCreator
 						.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
-								m, ke);
+o, ke);
 				String clustering_type = "object-property-relevance";
 				ClusterDecompositionModel<OWLEntity> model = run(
 						clustering_type, metrics, singleOut, o, distance,
@@ -129,7 +129,7 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 				clustering_type = "popularity";
 				distance = DistanceCreator
 						.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-								m, ke);
+o, ke);
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
                 saveResults(clustering_type + substring, model);

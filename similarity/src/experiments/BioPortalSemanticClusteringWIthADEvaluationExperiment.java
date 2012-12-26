@@ -102,13 +102,15 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends Synta
 						
 						//popularity distance
 						Distance<OWLEntity> distance = DistanceCreator
-								.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(m, ke);
+                                .createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
+                                        o, ke);
 						SemanticClusteringWithADEvaluationExperiment.run("popularity", metrics, singleOut, o, distance, ke.getEntities(), entailments);
 							
 						//property relevance
 						Set<OWLEntity> filteredSignature = SemanticClusteringWithADEvaluationExperiment.getSignatureWithoutProperties(ke);
 						distance = DistanceCreator
-								.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(m, ke);
+                                .createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
+                                        o, ke);
 						SemanticClusteringWithADEvaluationExperiment.run("object-property-relevance", metrics, singleOut, o, distance, filteredSignature, entailments);
 						
 						//structural

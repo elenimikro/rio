@@ -39,19 +39,23 @@ public class DistanceCreator {
 	}
 	
 	public static Distance<OWLEntity> createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-			final OWLOntologyManager manager, KnowledgeExplorer ke) {
+OWLOntology o,
+                    KnowledgeExplorer ke) {
 		final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-				manager.getOWLDataFactory(), new ReplacementByKindStrategy(
-						manager.getOWLDataFactory()));
+o
+                .getOWLOntologyManager().getOWLDataFactory(),
+                new ReplacementByKindStrategy(o.getOWLOntologyManager()
+                        .getOWLDataFactory()));
 		final Distance<OWLEntity> distance = new KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-				manager.getOntologies(), owlEntityReplacer, manager, ke);
+                o, owlEntityReplacer, ke);
 		return distance;
 	}
 	
 	public static Distance<OWLEntity> createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
-			final OWLOntologyManager manager, KnowledgeExplorer ke) {
+OWLOntology o,
+                    KnowledgeExplorer ke) {
 		final Distance<OWLEntity> distance = new KnowledgeExplorerOWLEntityRelevanceBasedDistance(
-				manager.getOntologies(), manager, ke);
+                o, ke);
 		return distance;
 	}
 	

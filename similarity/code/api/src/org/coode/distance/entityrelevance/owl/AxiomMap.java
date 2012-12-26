@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,10 +22,7 @@ import org.coode.distance.owl.OWLEntityReplacer;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class AxiomMap {
@@ -34,14 +30,16 @@ public class AxiomMap {
     private final Map<OWLAxiom, AtomicInteger> axiomCountMap = new HashMap<OWLAxiom, AtomicInteger>();
     private final OWLEntityReplacer replacer;
     private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-    private final OWLOntologyManager ontologyManager;
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
-                throws OWLException {
-            AxiomMap.this.buildMaps(axioms);
-        }
-    };
+
+    // private final OWLOntologyChangeListener listener = new
+    // OWLOntologyChangeListener() {
+    // @Override
+    // public void ontologiesChanged(final List<? extends OWLOntologyChange>
+    // changes)
+    // throws OWLException {
+    // AxiomMap.this.buildMaps(axioms);
+    // }
+    // };
 
     public AxiomMap(final Collection<? extends OWLOntology> ontologies,
             final OWLOntologyManager ontologyManager, final OWLEntityReplacer replacer) {
@@ -51,9 +49,8 @@ public class AxiomMap {
         if (ontologyManager == null) {
             throw new NullPointerException("The ontology manager cannot be null");
         }
-        this.ontologyManager = ontologyManager;
         this.replacer = replacer;
-        ontologyManager.addOntologyChangeListener(listener);
+        // ontologyManager.addOntologyChangeListener(listener);
         for(OWLOntology o : ontologies){
         	axioms.addAll(o.getAxioms());
         }
@@ -62,16 +59,11 @@ public class AxiomMap {
     
     
     public AxiomMap(Set<OWLAxiom> axioms,
-            final OWLOntologyManager ontologyManager, final OWLEntityReplacer replacer) {
+ final OWLEntityReplacer replacer) {
         if (axioms == null) {
             throw new NullPointerException("The set of axioms cannot be null");
         }
-        if (ontologyManager == null) {
-            throw new NullPointerException("The ontology manager cannot be null");
-        }
-        this.ontologyManager = ontologyManager;
         this.replacer = replacer;
-        ontologyManager.addOntologyChangeListener(listener);
         this.axioms.addAll(axioms);
         buildMaps(axioms);
     }
@@ -135,6 +127,6 @@ public class AxiomMap {
     }
 
     public void dispose() {
-        ontologyManager.removeOntologyChangeListener(listener);
+        // ontologyManager.removeOntologyChangeListener(listener);
     }
 }

@@ -40,16 +40,13 @@ import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Eleni Mikroyannidi */
 public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAxiomBasedDistanceImpl{
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final KnowledgeExplorer ke;
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
-    private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
     private final Set<OWLEntity> keSignature = new HashSet<OWLEntity>();
     private final OWLEntityProvider entityProvider;
@@ -88,22 +85,14 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
 
  
     public KnowledgeExplorerOWLEntityRelevanceBasedDistance(
-            final Collection<? extends OWLOntology> ontologies,
-            final OWLOntologyManager manager,
+OWLOntology ontology,
             KnowledgeExplorer explorer) {
-        if (ontologies == null) {
-            throw new NullPointerException("The ontolgies canont be null");
-        }
-        if (manager == null) {
-            throw new NullPointerException("The ontolgy manager cannot be null");
-        }
         ke = explorer;
-        this.ontologies.addAll(ontologies);
-        ontologyManger = manager;
         buildSignature();
         buildAxiomEntityMap();
-        entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
-        factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(),
+        entityProvider = new OntologyManagerBasedOWLEntityProvider(
+                ontology.getOWLOntologyManager());
+        factory = new OPPLFactory(ontology.getOWLOntologyManager(), ontology,
                 null);
         policy = DefaultOWLEntityTypeRelevancePolicy.getObjectPropertyAlwaysRelevantPolicy();
     }
@@ -156,14 +145,6 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
         return found;
     }
 
-    public void dispose() {
-        ontologyManger.removeOntologyChangeListener(listener);
-    }
-
-    /** @return the ontologyManger */
-    public OWLOntologyManager getOntologyManger() {
-        return ontologyManger;
-    }
 
     /** @return the entityProvider */
     public OWLEntityProvider getEntityProvider() {

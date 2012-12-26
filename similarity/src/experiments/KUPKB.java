@@ -15,43 +15,21 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-public class SnomedSemanticClusteringWithADEvaluationExperiment extends
-        ClusteringWithADEvaluationExperimentBase {
-    private final static String root = "similarity/experiment-results/semantic/";
-    private final static String base = "snomed/";
-    public static void main(String[] args) throws Exception {
+public class KUPKB extends ClusteringWithADEvaluationExperimentBase {
+    private final static String root = "similarity/experiment-results/kupkbsemantic/";
+    private final static String input = "http://www.e-lico.eu/public/kupkb/kupkb.owl";
 
-        String[] input = new String[] { "chronic_module.owl", "acute_module.owl",
-                "present_clinical_finding_module.owl" };
+    public static void main(String[] args) throws Exception {
         new File(root).mkdirs();
         String suffix = "semantic-allstats.csv";
-        // File file = new File(root + suffix);
-        System.out
-                .println("SnomedSemanticClusteringWithADEvaluationExperiment.main() press enter to start");
-        System.in.read();
         String pop = "_popularity_";
         String struc = "_structural_";
         String prop = "_objectproperty_";
-        String i2 = input[2];
-        String i1 = input[1];
-        String i0 = input[0];
-        setupClusteringExperimentPopularity(pop, i2, new File(root + i2 + pop
+        setupClusteringExperimentPopularity(pop, "kupkb", new File(root + "kupkb" + pop
                 + suffix));
-        setupClusteringExperimentStructural(struc, i2, new File(root + i2 + struc
-                + suffix));
-        setupClusteringExperimentProperty(prop, i2, new File(root + i2 + prop
-                + suffix));
-        setupClusteringExperimentPopularity(pop, i1, new File(root + i1 + pop
-                + suffix));
-        setupClusteringExperimentStructural(struc, i1, new File(root + i1 + struc
-                + suffix));
-        setupClusteringExperimentProperty(prop, i1, new File(root + i1 + prop
-                + suffix));
-        setupClusteringExperimentStructural(struc, i0, new File(root + i0 + struc
-                + suffix));
-        setupClusteringExperimentProperty(prop, i0, new File(root + i0 + prop
-                + suffix));
-        setupClusteringExperimentPopularity(pop, i0, new File(root + i0 + pop
+        setupClusteringExperimentStructural(struc, "kupkb", new File(root + "kupkb"
+                + struc + suffix));
+        setupClusteringExperimentProperty(prop, "kupkb", new File(root + "kupkb" + prop
                 + suffix));
     }
 
@@ -63,8 +41,10 @@ public class SnomedSemanticClusteringWithADEvaluationExperiment extends
         if (!f.exists()) {
             // load ontology and get general ontology metrics
             OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-            OWLOntology o = m.loadOntologyFromOntologyDocument(new File(base + current));
+            OWLOntology o = ResolveImports.resolveImports("kupkb", input);
             ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
+            System.out.println("KUPKB.setupClusteringExperimentPopularity() "
+                    + o.getAxiomCount());
             metrics.add(new SimpleMetric<String>("Ontology", current));
             metrics.addAll(getBasicOntologyMetrics(m));
             // get KE metrics
@@ -99,8 +79,10 @@ public class SnomedSemanticClusteringWithADEvaluationExperiment extends
         if (!f.exists()) {
             // load ontology and get general ontology metrics
             OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-            OWLOntology o = m.loadOntologyFromOntologyDocument(new File(base + current));
+            OWLOntology o = ResolveImports.resolveImports("kupkb", input);
             ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
+            System.out.println("KUPKB.setupClusteringExperimentStructural() "
+                    + o.getAxiomCount());
             metrics.add(new SimpleMetric<String>("Ontology", current));
             metrics.addAll(getBasicOntologyMetrics(m));
             // get KE metrics
@@ -137,8 +119,10 @@ public class SnomedSemanticClusteringWithADEvaluationExperiment extends
         if (!f.exists()) {
             // load ontology and get general ontology metrics
             OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-            OWLOntology o = m.loadOntologyFromOntologyDocument(new File(base + current));
+            OWLOntology o = ResolveImports.resolveImports("kupkb", input);
             ExperimentHelper.stripOntologyFromAnnotationAssertions(o);
+            System.out.println("KUPKB.setupClusteringExperimentProperty() "
+                    + o.getAxiomCount());
             metrics.add(new SimpleMetric<String>("Ontology", current));
             metrics.addAll(getBasicOntologyMetrics(m));
             // get KE metrics
