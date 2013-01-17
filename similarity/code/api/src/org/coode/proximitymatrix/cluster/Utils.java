@@ -252,7 +252,7 @@ public class Utils {
 			final Collection<? extends Collection<? extends O>> set,
 			final Collection<? extends OWLOntology> ontologies,
 			final ConstraintSystem constraintSystem) throws OPPLException {
-        // int i = 0;
+		// int i = 0;
 		Set<BindingNode> bindings = new HashSet<BindingNode>(set.size());
 		// I need to preload all the constants into a variable before I start
 		Set<OWLLiteral> constants = new HashSet<OWLLiteral>();
@@ -321,7 +321,7 @@ public class Utils {
 						}
 					}
 				}
-                // i++;
+				// i++;
 			}
 		}
 		return new OWLObjectGeneralisation(bindings, constraintSystem);
@@ -356,7 +356,7 @@ public class Utils {
 
 	public static <O extends OWLObject> void checkForPuns(
 			Collection<? extends O> cluster) {
-        // String name = cluster.iterator().next().getClass().getName();
+		// String name = cluster.iterator().next().getClass().getName();
 		Set<String> otherNames = new HashSet<String>();
 		for (OWLObject o : cluster) {
 			otherNames.add(o.getClass().getName());
@@ -475,7 +475,7 @@ public class Utils {
 		SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
 		Handler handler = new Handler(manager);
 		parser.parse(new InputSource(in), handler);
-        toReturn.addAll(handler.clusters);
+		toReturn.addAll(handler.clusters);
 		for (Set<OWLEntity> set : toReturn) {
 			purgePuns(set);
 		}
@@ -490,7 +490,6 @@ public class Utils {
 		parser.parse(new InputSource(in), handler);
 		return handler.getHistory();
 	}
-
 
 	private static void purgePuns(
 			final Collection<? extends OWLEntity> collection) {
@@ -882,6 +881,15 @@ public class Utils {
 		return toReturn;
 	}
 
+	public static MultiMap<OWLAxiom, OWLAxiomInstantiation> extractGeneralisationMap(
+			ClusterDecompositionModel<OWLEntity> model) {
+		MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+		for (Cluster<OWLEntity> c : model.getClusterList()) {
+			toReturn.putAll(model.get(c));
+		}
+		return toReturn;
+	}
+
 	public static Variable<?> getVariable(
 			final Collection<? extends OWLEntity> cluster,
 			final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
@@ -977,8 +985,7 @@ public class Utils {
 	}
 
 	public static <P extends OWLEntity> void saveToXML(
-			final ClusterDecompositionModel<P> model,
- final File file)
+			final ClusterDecompositionModel<P> model, final File file)
 			throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException {
 		List<Cluster<P>> clusterList = model.getClusterList();
@@ -1143,8 +1150,7 @@ public class Utils {
 			Collection<? extends Cluster<P>> _clusters,
 			Collection<? extends OWLOntology> ontologies,
 			OWLObjectGeneralisation generalisation,
-			RuntimeExceptionHandler runtimeExceptionHandler)
- {
+			RuntimeExceptionHandler runtimeExceptionHandler) {
 		ClusterDecompositionModel<P> model = new ClusterDecompositionModel<P>(
 				_clusters, ontologies);
 		for (Cluster<P> cluster : _clusters) {
@@ -1160,8 +1166,7 @@ public class Utils {
 			Collection<? extends Cluster<P>> _clusters,
 			Collection<? extends OWLOntology> ontologies, Set<OWLAxiom> axioms,
 			OWLObjectGeneralisation generalisation,
-			RuntimeExceptionHandler runtimeExceptionHandler)
- {
+			RuntimeExceptionHandler runtimeExceptionHandler) {
 		ClusterDecompositionModel<P> model = new ClusterDecompositionModel<P>(
 				_clusters, ontologies);
 		for (Cluster<P> cluster : _clusters) {
