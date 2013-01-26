@@ -6,6 +6,8 @@ package org.coode.justifications;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.coode.oppl.ConstraintSystem;
@@ -22,18 +24,25 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
+import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
+//import uk.ac.manchester.cs.owl.explanation.ordering.DefaultExplanationOrderer;
+//import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
+
 /**
  * @author eleni mikroyannidi
  * 
- *         Class for checking isomorphic justifications
+ *         Class for checking isomorphic justifications between entailments that
+ *         are abstracted by the same generalisation.
  * 
  */
 public class JustificationSimilarity {
 
-	private final Set<ArrayList<OWLAxiom>> isomorphicJusts = new HashSet<ArrayList<OWLAxiom>>();
 	private final OWLOntology ontology;
 	private final OWLReasonerFactory rfactory;
 	private final MultiMap<OWLAxiom, Explanation<OWLAxiom>> justificationMap = new MultiMap<OWLAxiom, Explanation<OWLAxiom>>();
+	private final MultiMap<Set<OWLAxiom>, OWLAxiom> isomorphicJustifications = new MultiMap<Set<OWLAxiom>, OWLAxiom>();
+
+	private final Set<OWLAxiom> entailments = new HashSet<OWLAxiom>();
 
 	/**
 	 * 
@@ -42,35 +51,65 @@ public class JustificationSimilarity {
 			OWLReasonerFactory rfactory, OWLOntology ontology) {
 		this.ontology = ontology;
 		this.rfactory = rfactory;
+		this.entailments.addAll(entailments);
 		computeJustifications(entailments, 1);
-		computeJustificationSimilarity();
+		computeIsomorphicJustifications();
 	}
 
-	private void computeJustificationSimilarity() {
+	private void computeIsomorphicJustifications() {
 		OWLOntologyManager manager = ontology.getOWLOntologyManager();
 		OPPLFactory factory = new OPPLFactory(manager, ontology, null);
 		ConstraintSystem constraintSystem = factory.createConstraintSystem();
-		ArrayList<OWLAxiom> generalisedAxioms = new ArrayList<OWLAxiom>();
 
 		for (OWLAxiom entailment : justificationMap.keySet()) {
 			Collection<Explanation<OWLAxiom>> collection = justificationMap
 					.get(entailment);
+			StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
+					new OntologyManagerBasedOWLEntityProvider(manager),
+					constraintSystem);
 			for (Explanation<OWLAxiom> expl : collection) {
-				Set<OWLAxiom> axioms = expl.getAxioms();
+				Set<OWLAxiom> generalisedAxioms = new LinkedHashSet<OWLAxiom>();
+				Collection<OWLAxiom> axioms;
+
+				ExplanationOrdererImpl orderer = new ExplanationOrdererImpl(
+						manager);
+				List<OWLAxiom> axs = new ArrayList<OWLAxiom>(orderer
+						.getOrderedExplanation(entailment, expl.getAxioms())
+						.fillDepthFirst());
+				axs.remove(0);
+				axioms = axs;
 				for (OWLAxiom ax : axioms) {
-					StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
-							new OntologyManagerBasedOWLEntityProvider(manager),
-							constraintSystem);
 					OWLAxiom generalised = (OWLAxiom) ax.accept(generalisation);
 					generalisedAxioms.add(generalised);
 				}
-				isomorphicJusts.add(generalisedAxioms);
+				isomorphicJustifications.put(generalisedAxioms, entailment);
 			}
 		}
 	}
 
+	/**
+	 * Implements Jaccard's index and returns the justification similarity
+	 * 
+	 * @return
+	 */
 	public double getJustificationSimilarity() {
-		return (double) justificationMap.size() / isomorphicJusts.size();
+		// computeJustifications(entailments, 1);
+		// computeIsomorphicJustifications();
+		if (isomorphicJustifications.keySet().equals(justificationMap.size())) {
+			return 0;
+		} else {
+			double intersection = 0;
+			double union = isomorphicJustifications.size();
+			for (Set<OWLAxiom> just : isomorphicJustifications.keySet()) {
+				// if a generalised justification covers more than one
+				// entailment then I should
+				// increment the intersection
+				if (isomorphicJustifications.get(just).size() > 1) {
+					intersection += isomorphicJustifications.get(just).size();
+				}
+			}
+			return intersection / union;
+		}
 	}
 
 	private void computeJustifications(Set<OWLAxiom> entailments, int upperLimit) {
@@ -89,8 +128,8 @@ public class JustificationSimilarity {
 		return justificationMap.get(entailment);
 	}
 
-	public Set<ArrayList<OWLAxiom>> getIsomorphicJustifications() {
-		return isomorphicJusts;
+	public Set<Set<OWLAxiom>> getIsomorphicJustifications() {
+		return isomorphicJustifications.keySet();
 	}
 
 	public MultiMap<OWLAxiom, Explanation<OWLAxiom>> getJustificationMap() {

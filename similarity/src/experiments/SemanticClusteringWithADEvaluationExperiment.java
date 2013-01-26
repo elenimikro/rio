@@ -109,12 +109,12 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 				Set<OWLEntity> filteredSignature = getSignatureWithoutProperties(ke);
 				Distance<OWLEntity> distance = DistanceCreator
 						.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
-o, ke);
+								o, ke);
 				String clustering_type = "object-property-relevance";
 				ClusterDecompositionModel<OWLEntity> model = run(
 						clustering_type, metrics, singleOut, o, distance,
 						filteredSignature, entailments);
-                saveResults(clustering_type + substring, model);
+				saveResults(clustering_type + substring, model);
 
 				// structural
 				clustering_type = "structural-relevance";
@@ -123,17 +123,17 @@ o, ke);
 								o, ke);
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
-                saveResults(clustering_type + substring, model);
+				saveResults(clustering_type + substring, model);
 
 				// popularity distance
 				clustering_type = "popularity";
 				distance = DistanceCreator
 						.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-o, ke);
+								o, ke);
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
-                saveResults(clustering_type + substring, model);
-                distance = null;
+				saveResults(clustering_type + substring, model);
+				distance = null;
 
 				printMetrics(metrics, allResultsFile);
 
@@ -219,25 +219,25 @@ o, ke);
 		return ke;
 	}
 
-    protected static File saveResults(String xmlPrefix,
-            ClusterDecompositionModel<OWLEntity> model
-    // ,Distance<OWLEntity> distance
-            ) throws ParserConfigurationException,
+	protected static File saveResults(String xmlPrefix,
+			ClusterDecompositionModel<OWLEntity> model
+	// ,Distance<OWLEntity> distance
+	) throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException,
 			FileNotFoundException {
-        String xmlname = RESULTS_BASE + xmlPrefix + ".xml";
+		String xmlname = RESULTS_BASE + xmlPrefix + ".xml";
 		File xml = new File(xmlname);
 		PrintStream out = new PrintStream(new File(xmlname + ".txt"));
 		ClusterResultsExploitationUtils.printGeneralisationStats(model, out,
 				xmlname);
-        out.close();
-        // ClusteringProximityMatrix<DistanceTableObject<OWLEntity>>
-        // clusteringMatrix = ExperimentHelper
-        // .getClusteringMatrix();
-        // ClusterResultsExploitationUtils.filterResults(clusteringMatrix,
-        // model,
-        // distance, out);
-        Utils.saveToXML(model, xml);
+		out.close();
+		// ClusteringProximityMatrix<DistanceTableObject<OWLEntity>>
+		// clusteringMatrix = ExperimentHelper
+		// .getClusteringMatrix();
+		// ClusterResultsExploitationUtils.filterResults(clusteringMatrix,
+		// model,
+		// distance, out);
+		Utils.saveToXML(model, xml);
 		return xml;
 	}
 }

@@ -1,8 +1,9 @@
 package org.coode.justifications;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -38,14 +39,14 @@ public class TestJustificationSimilarity {
 					.getAllValues());
 			JustificationSimilarity just = new JustificationSimilarity(
 					entailments, new FaCTPlusPlusReasonerFactory(), o);
-			Set<ArrayList<OWLAxiom>> isomorphicJustifications = just
+			Set<Set<OWLAxiom>> isomorphicJustifications = just
 					.getIsomorphicJustifications();
 			assertTrue(isomorphicJustifications.size() > 0);
 			System.out.println("Isomporphic justifications percentage: "
 					+ just.getJustificationSimilarity());
-			for (ArrayList<OWLAxiom> j : isomorphicJustifications) {
-				for (int k = 0; k < isomorphicJustifications.size(); k++) {
-					System.out.println(j.get(k));
+			for (Set<OWLAxiom> j : isomorphicJustifications) {
+				for (OWLAxiom ax : j) {
+					System.out.println(ax);
 				}
 				System.out.println();
 			}
@@ -74,7 +75,7 @@ public class TestJustificationSimilarity {
 				+ entailments);
 		JustificationSimilarity just = new JustificationSimilarity(entailments,
 				new FaCTPlusPlusReasonerFactory(), o);
-		Set<ArrayList<OWLAxiom>> isomorphicJustifications = just
+		Set<Set<OWLAxiom>> isomorphicJustifications = just
 				.getIsomorphicJustifications();
 		assertTrue(isomorphicJustifications.size() > 0);
 		System.out.println("Isomporphic justifications percentage: "
@@ -87,12 +88,13 @@ public class TestJustificationSimilarity {
 				System.out.println("\t" + expl.toString());
 			}
 		}
-		for (ArrayList<OWLAxiom> j : isomorphicJustifications) {
-			for (int k = 0; k < isomorphicJustifications.size(); k++) {
-				System.out.println(j.get(k));
+		for (Set<OWLAxiom> j : isomorphicJustifications) {
+			for (OWLAxiom ax : j) {
+				System.out.println(ax);
 			}
 			System.out.println();
 		}
+		assertEquals(0.5, just.getJustificationSimilarity(), 0.01);
 	}
 
 	@Test
@@ -106,6 +108,7 @@ public class TestJustificationSimilarity {
 				.extractGeneralisationMap(model);
 		System.out.println("Number of generalisations: "
 				+ generalisationMap.keySet().size());
+		double sumJustSimilarity = 0;
 		for (OWLAxiom ax : generalisationMap.keySet()) {
 			System.out.println("Generalisation " + ax);
 			Set<OWLAxiom> entailments = Utils.extractAxioms(generalisationMap
@@ -114,18 +117,29 @@ public class TestJustificationSimilarity {
 					+ entailments);
 			JustificationSimilarity just = new JustificationSimilarity(
 					entailments, new FaCTPlusPlusReasonerFactory(), o);
-			Set<ArrayList<OWLAxiom>> isomorphicJustifications = just
+			Set<Set<OWLAxiom>> isomorphicJustifications = just
 					.getIsomorphicJustifications();
 			assertTrue(isomorphicJustifications.size() > 0);
 			System.out.println("Isomporphic justifications percentage: "
 					+ just.getJustificationSimilarity());
+			assertFalse(just.getJustificationSimilarity() > 1);
 			// for (ArrayList<OWLAxiom> j : isomorphicJustifications) {
 			// for (int k = 0; k < isomorphicJustifications.size(); k++) {
 			// System.out.println(j.get(k));
 			// }
 			// System.out.println();
 			// }
+			sumJustSimilarity += just.getJustificationSimilarity();
 		}
+		double totalMeanJustSimilarity = sumJustSimilarity
+				/ generalisationMap.keySet().size();
+		System.out
+				.println("TestJustificationSimilarity.PizzaJustificationTest() totalMeanJustificationSimilarity "
+						+ totalMeanJustSimilarity);
+		assertFalse(totalMeanJustSimilarity > 1);
+		GeneralisationBasedJustificationSimilarity sim = new GeneralisationBasedJustificationSimilarity(
+				new FaCTPlusPlusReasonerFactory(), o, generalisationMap);
+		assertEquals(sim.getTotalMeanJustificationSimilarity(),
+				totalMeanJustSimilarity, 0.001);
 	}
-
 }

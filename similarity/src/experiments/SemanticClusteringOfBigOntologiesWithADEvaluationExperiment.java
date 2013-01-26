@@ -102,14 +102,13 @@ public class SemanticClusteringOfBigOntologiesWithADEvaluationExperiment extends
 						.getSignatureWithoutProperties(ke);
 				Distance<OWLEntity> distance = DistanceCreator
 						.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
-o, ke);
+								o, ke);
 				String clustering_type = "object-property-relevance";
 				ClusterDecompositionModel<OWLEntity> model = SemanticClusteringWithADEvaluationExperiment
 						.run(clustering_type, metrics, singleOut, o, distance,
 								filteredSignature, entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-clustering_type
-                        + substring, model);
+						clustering_type + substring, model);
 
 				// structural
 				clustering_type = "structural-relevance";
@@ -121,19 +120,17 @@ clustering_type
 						ke.getEntities(), entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
 
-clustering_type
-                        + substring, model);
+				clustering_type + substring, model);
 				// popularity distance
 				clustering_type = "popularity";
 				distance = DistanceCreator
 						.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-o, ke);
+								o, ke);
 				model = SemanticClusteringWithADEvaluationExperiment.run(
 						clustering_type, metrics, singleOut, o, distance,
 						ke.getEntities(), entailments);
 				SemanticClusteringWithADEvaluationExperiment.saveResults(
-clustering_type
-                        + substring, model);
+						clustering_type + substring, model);
 
 				printMetrics(metrics, allResultsFile);
 

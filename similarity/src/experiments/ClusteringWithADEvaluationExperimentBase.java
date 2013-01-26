@@ -36,6 +36,7 @@ public class ClusteringWithADEvaluationExperimentBase {
 			out.print(metrics.get(i).getValue() + ",");
 		}
 		out.println();
+		out.close();
 	}
 
 	public static Collection<? extends SimpleMetric<?>> getBasicOntologyMetrics(
@@ -77,11 +78,11 @@ public class ClusteringWithADEvaluationExperimentBase {
 		// MultiArrayMap<String, Number> indiFileMetrics = new
 		// MultiArrayMap<String, Number>();
 		double totalAverageInternalDistance = 0;
-        double totalAverageExternalDistance = 0;
-        double totalAverageMaxInternalDistance = 0;
-        double totalAverageMinInternalDistance = 0;
-        double totalAverageMaxExternalDistance = 0;
-        double totalAverageMinExternalDistance = 0;
+		double totalAverageExternalDistance = 0;
+		double totalAverageMaxInternalDistance = 0;
+		double totalAverageMinInternalDistance = 0;
+		double totalAverageMaxExternalDistance = 0;
+		double totalAverageMinExternalDistance = 0;
 		double totalAverageHomogeneity = 0;
 
 		int clNo = sortedClusters.size();
@@ -113,7 +114,7 @@ public class ClusteringWithADEvaluationExperimentBase {
 			totalAverageHomogeneity += 1 - stats.getAverageInternalDistance();
 		}
 		toReturn.add(new SimpleMetric<Double>("MeanInternalDistance",
-                totalAverageInternalDistance / clNo));
+				totalAverageInternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("MeanExternalDistance",
 				totalAverageExternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("MaxInternalDistance",
@@ -125,8 +126,7 @@ public class ClusteringWithADEvaluationExperimentBase {
 		toReturn.add(new SimpleMetric<Double>("minExternalDistance",
 				totalAverageMinExternalDistance / clNo));
 		toReturn.add(new SimpleMetric<Double>("homogeneity",
- totalAverageHomogeneity
-                / clNo));
+				totalAverageHomogeneity / clNo));
 
 		return toReturn;
 	}
