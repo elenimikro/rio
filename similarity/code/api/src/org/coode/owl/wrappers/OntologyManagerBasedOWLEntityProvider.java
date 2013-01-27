@@ -32,7 +32,7 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
 
     public OntologyManagerBasedOWLEntityProvider(final OWLOntologyManager ontologyManager) {
         super(ontologyManager);
-        getOntologyManager().addOntologyChangeListener(listener);
+        // getOntologyManager().addOntologyChangeListener(listener);
         loadDelegate();
     }
 
