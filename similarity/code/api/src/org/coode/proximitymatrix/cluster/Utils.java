@@ -95,6 +95,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
@@ -1178,4 +1179,49 @@ public class Utils {
 		return model;
 	}
 
+	public static Set<OWLEntity> getSortedSignature(OWLOntology o) {
+		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
+				new Comparator<OWLEntity>() {
+					@Override
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
+						return shortFormProvider.getShortForm(o1).compareTo(
+								shortFormProvider.getShortForm(o2));
+					}
+				});
+		for (OWLOntology onto : o.getImportsClosure()) {
+			entities.addAll(onto.getSignature());
+		}
+		return entities;
+	}
+
+	public static Set<OWLEntity> getSortedSignature(Set<OWLAxiom> axioms) {
+		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
+				new Comparator<OWLEntity>() {
+					@Override
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
+						return shortFormProvider.getShortForm(o1).compareTo(
+								shortFormProvider.getShortForm(o2));
+					}
+				});
+		for (OWLAxiom ax : axioms) {
+			entities.addAll(ax.getSignature());
+		}
+		return entities;
+	}
+
+	public static Set<OWLEntity> sortSignature(Set<OWLEntity> _entities) {
+		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
+				new Comparator<OWLEntity>() {
+					@Override
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
+						return shortFormProvider.getShortForm(o1).compareTo(
+								shortFormProvider.getShortForm(o2));
+					}
+				});
+		entities.addAll(_entities);
+		return entities;
+	}
 }

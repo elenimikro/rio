@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Set;
 
+import org.coode.basetest.ClusteringHelper;
 import org.coode.basetest.OntologyTestHelper;
 import org.coode.basetest.TestHelper;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
@@ -29,7 +30,7 @@ public class TestJustificationSimilarity {
 	@Test
 	public void SmallOntologyJustificationTest() throws Exception {
 		OWLOntology o = OntologyTestHelper.getSmallMeaningfullTestOntology();
-		ClusterDecompositionModel<OWLEntity> model = OntologyTestHelper
+		ClusterDecompositionModel<OWLEntity> model = ClusteringHelper
 				.getSemanticPopularityClusterModel(o);
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
 		for (int i = 0; i < clusterList.size(); i++) {
@@ -58,7 +59,7 @@ public class TestJustificationSimilarity {
 		ToStringRenderer.getInstance().setRenderer(
 				new ManchesterSyntaxRenderer());
 		OWLOntology o = TestHelper.getPizza();
-		ClusterDecompositionModel<OWLEntity> model = OntologyTestHelper
+		ClusterDecompositionModel<OWLEntity> model = ClusteringHelper
 				.getSemanticPopularityClusterModel(o);
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
 		System.out.println("Number of clusters: " + clusterList.size());
@@ -100,7 +101,7 @@ public class TestJustificationSimilarity {
 	@Test
 	public void PizzaJustificationTest() throws Exception {
 		OWLOntology o = TestHelper.getPizza();
-		ClusterDecompositionModel<OWLEntity> model = OntologyTestHelper
+		ClusterDecompositionModel<OWLEntity> model = ClusteringHelper
 				.getSemanticPopularityClusterModel(o);
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
 		System.out.println("Number of clusters: " + clusterList.size());

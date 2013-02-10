@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.coode.basetest.ClusterCreator;
+import org.coode.basetest.ClusteringHelper;
 import org.coode.basetest.DistanceCreator;
 import org.coode.basetest.OntologyTestHelper;
 import org.coode.basetest.TestHelper;
@@ -64,7 +65,7 @@ public class GeneralisationStatisticsTest {
 					.println("GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() axiom: "
 							+ a);
 		}
-		ClusterDecompositionModel<OWLEntity> model = OntologyTestHelper
+		ClusterDecompositionModel<OWLEntity> model = ClusteringHelper
 				.getPopularityClusterModel(o);
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
 		for (Cluster<OWLEntity> c : clusterList) {
