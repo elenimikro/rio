@@ -46,7 +46,7 @@ public class ExperimentHelper {
 	public static ClusterDecompositionModel<OWLEntity> startSyntacticClustering(
 			OWLOntology o, Distance<OWLEntity> distance,
 			Set<OWLEntity> clusteringSignature) throws OPPLException,
-            ParserConfigurationException {
+			ParserConfigurationException {
 
 		OWLOntologyManager m = o.getOWLOntologyManager();
 		// remove annotations
@@ -66,7 +66,7 @@ public class ExperimentHelper {
 			throws OPPLException, ParserConfigurationException {
 
 		OWLOntologyManager m = o.getOWLOntologyManager();
-        clusterer = new ClusterCreator();
+		clusterer = new ClusterCreator();
 		Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
 				clusteringSignature, m, clusterer);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
@@ -84,7 +84,7 @@ public class ExperimentHelper {
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
 					@Override
-                    public int compare(final OWLEntity o1, final OWLEntity o2) {
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}
@@ -213,12 +213,13 @@ public class ExperimentHelper {
 		try {
 			PrintStream indiout = new PrintStream(f);
 			double totalAverageInternalDistance = 0;
+			double totalAverageHomogeneity = 0;
+
 			int totalAverageExternalDistance = 0;
 			int totalAverageMaxInternalDistance = 0;
 			int totalAverageMinInternalDistance = 0;
 			int totalAverageMaxExternalDistance = 0;
 			int totalAverageMinExternalDistance = 0;
-			double totalAverageHomogeneity = 0;
 
 			int clNo = sortedClusters.size();
 			int index = 0;
@@ -251,16 +252,18 @@ public class ExperimentHelper {
 						.getMaxExternalDistance();
 				totalAverageMinExternalDistance += stats
 						.getMinExternalDistance();
-				totalAverageHomogeneity += 1 - stats
-						.getAverageInternalDistance();
 			}
-			out.println(totalAverageInternalDistance / clNo + ","
+			double avgInternalDistanceFinal = totalAverageInternalDistance
+					/ clNo;
+			totalAverageHomogeneity = 1 - avgInternalDistanceFinal;
+
+			out.println(avgInternalDistanceFinal + ","
 					+ (double) totalAverageExternalDistance / clNo + ","
 					+ (double) totalAverageMaxInternalDistance / clNo + ","
 					+ (double) totalAverageMinInternalDistance / clNo + ","
 					+ (double) totalAverageMaxExternalDistance / clNo + ","
 					+ (double) totalAverageMinExternalDistance / clNo + ","
-					+ totalAverageHomogeneity / clNo);
+					+ totalAverageHomogeneity);
 			indiout.close();
 		} catch (IOException e) {
 			System.out

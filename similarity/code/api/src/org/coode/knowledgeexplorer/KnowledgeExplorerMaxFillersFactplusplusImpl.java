@@ -32,7 +32,7 @@ import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasoner
 public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 		KnowledgeExplorer {
 
-	private final OWLKnowledgeExplorerReasoner r;
+	private final OWLKnowledgeExplorationReasonerWrapper r;
 	private final OWLReasoner reasoner;
 	private final OWLOntology o;
 	private final OWLOntologyManager manager;
@@ -40,7 +40,10 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 	private final MultiMap<OWLEntity, OWLAxiom> axiomMap = new MultiMap<OWLEntity, OWLAxiom>();
 	private final OWLDataFactory dataFactory;
 
-	OWLClass rootClass = null;
+	private OWLClass rootClass = null;
+	private int noOfBlocks = 0;
+
+	private final Set<RootNode> blockedNodes = new HashSet<RootNode>();
 
 	public KnowledgeExplorerMaxFillersFactplusplusImpl(OWLReasoner reasoner) {
 		if (reasoner == null) {
@@ -113,27 +116,27 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 		return axioms;
 	}
 
-    // private Set<OWLClassExpression> getFillers(RootNode node) {
-    // Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
-    // // Fillers.add(Thing); // we never get Thing from KE
-    // for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities())
-    // {
-    // // all in the label is a filler
-    // fillers.add(c);
-    // }
-    // for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
-    // false).getEntities()) {
-    // for (RootNode n : r.getObjectNeighbours(node,
-    // prop.asOWLObjectProperty())) { // for every neighbour of a
-    // // Node...
-    // for (OWLClassExpression f : getFillers(n)) { // and every its
-    // // filler
-    // fillers.add(dataFactory.getOWLObjectSomeValuesFrom(prop, f));
-    // }
-    // }
-    // }
-    // return fillers;
-    // }
+	// private Set<OWLClassExpression> getFillers(RootNode node) {
+	// Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
+	// // Fillers.add(Thing); // we never get Thing from KE
+	// for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities())
+	// {
+	// // all in the label is a filler
+	// fillers.add(c);
+	// }
+	// for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
+	// false).getEntities()) {
+	// for (RootNode n : r.getObjectNeighbours(node,
+	// prop.asOWLObjectProperty())) { // for every neighbour of a
+	// // Node...
+	// for (OWLClassExpression f : getFillers(n)) { // and every its
+	// // filler
+	// fillers.add(dataFactory.getOWLObjectSomeValuesFrom(prop, f));
+	// }
+	// }
+	// }
+	// return fillers;
+	// }
 
 	private Set<OWLClassExpression> getMaxFillers(RootNode node,
 			Set<RootNode> visited) {
@@ -154,7 +157,11 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 		// if(LabC!=null)
 		// System.out.println("KnowledgeExplorerGraph.getMaxFillers() Label " +
 		// LabC);
-
+		RootNode blocker = r.getBlocker(node);
+		if (blocker != null) {
+			blockedNodes.add(blocker);
+			noOfBlocks++;
+		}
 		visited.add(node);
 		// System.out.println("KnowledgeExplorerGraph.getMaxFillers() node " +
 		// node);
@@ -243,8 +250,8 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 				false);
 		for (OWLClassExpression ex : classes) {
 			if (ex instanceof OWLClass && !ex.asOWLClass().equals(c)) {
-				OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(
-						c, ex);
+				OWLSubClassOfAxiom ax = dataFactory
+						.getOWLSubClassOfAxiom(c, ex);
 				if (reasoner.isEntailed(ax)) {
 					toReturn.add(ax);
 				}
@@ -292,4 +299,9 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements
 		r.dispose();
 		reasoner.dispose();
 	}
+
+	public int getNumberOfBlocks() {
+		return noOfBlocks;
+	}
+
 }

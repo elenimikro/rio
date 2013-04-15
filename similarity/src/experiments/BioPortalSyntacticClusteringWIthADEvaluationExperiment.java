@@ -17,10 +17,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.oppl.exceptions.OPPLException;
+import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -30,47 +32,64 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 		SyntacticClusteringWithADEvaluationExperiment {
 
-	private final static String RESULTS_BASE = "similarity/experiment-results/syntactic/bioportal/";
+	private final static String RESULTS_BASE = "experiment-results/syntactic/bioportal/previva-experiment/";
 
+	/**
+	 * @param args
+	 * @throws OWLOntologyCreationException
+	 * @throws OPPLException
+	 * @throws ParserConfigurationException
+	 * @throws FileNotFoundException
+	 */
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException, FileNotFoundException {
-
-		String bioportalList = "similarity/BioPortal_relativeRepositoryIRIs.txt";
-		// BufferedReader d = new BufferedReader(new InputStreamReader(
-		// new FileInputStream(new File(bioportalList))));
-		BufferedReader d = new BufferedReader(new FileReader(new File(
-				bioportalList)));
-		ArrayList<String> inputList = new ArrayList<String>();
-		try {
-			String s = "";
-			while ((s = d.readLine()) != null) {
-				inputList.add(s);
+		if (args.length >= 2) {
+			// input file with ontology lists
+			String bioportalList = args[0];
+			// BufferedReader d = new BufferedReader(new InputStreamReader(
+			// new FileInputStream(new File(bioportalList))));
+			BufferedReader d = new BufferedReader(new FileReader(new File(
+					bioportalList)));
+			ArrayList<String> inputList = new ArrayList<String>();
+			try {
+				String s = "";
+				while ((s = d.readLine()) != null) {
+					inputList.add(s);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			new File(RESULTS_BASE).mkdirs();
+			File output = new File(RESULTS_BASE + "bioportal-syntactic.csv");
+			for (int i = 0; i < inputList.size(); i++) {
+				System.out.println(inputList.get(i));
+			}
+			int timeout = Integer.parseInt(args[1]);
+			System.out.println("Timeout task " + timeout);
+			setupClusteringExperiment(inputList, output, timeout);
+		} else {
+			System.out
+					.println(String
+							.format("Usage java -cp ... %s <ontologyListTextFile> <computationTimeoutinMins>",
+									BioPortalSyntacticClusteringWIthADEvaluationExperiment.class
+											.getCanonicalName()));
 		}
-		new File(RESULTS_BASE).mkdirs();
-		File output = new File(RESULTS_BASE + "bioportal-syntactic.csv");
-		for (int i = 0; i < inputList.size(); i++) {
-			System.out.println(inputList.get(i));
-		}
-		setupClusteringExperiment(inputList, output);
 	}
 
 	public static void setupClusteringExperiment(ArrayList<String> input,
-            File allResultsFile) throws FileNotFoundException {
+			File allResultsFile, int timeout) throws FileNotFoundException {
 		for (final String s : input) {
 			final ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
 			System.out
 					.println("\n PopularityClusteringWithADEvaluationExperiment.main() \t "
 							+ s);
-			String substring = s.substring(s.lastIndexOf("/") + 1);
+			final String substring = s.substring(s.lastIndexOf("/") + 1);
 			String filename = RESULTS_BASE
 					+ substring.replaceAll(".owl", ".csv");
 			System.out
 					.println("BioPortalSyntacticClusteringWIthADEvaluationExperiment.setupClusteringExperiment() "
 							+ substring);
-            // String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
+			// String xml = RESULTS_BASE + substring.replaceAll(".owl", ".xml");
 			File f = new File(filename);
 			if (!f.exists()) {
 
@@ -78,7 +97,8 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 				Callable<Object> task1 = new Callable<Object>() {
 					@Override
 					public Object call() throws OWLOntologyCreationException,
-							OPPLException, ParserConfigurationException {
+							OPPLException, ParserConfigurationException,
+							FileNotFoundException, TransformerException {
 						// load ontology and get general ontology metrics
 						OWLOntologyManager m = OWLManager
 								.createOWLOntologyManager();
@@ -93,28 +113,36 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 						// popularity distance
 						Distance<OWLEntity> distance = DistanceCreator
 								.createAxiomRelevanceAxiomBasedDistance(m);
-						SyntacticClusteringWithADEvaluationExperiment.run(
-								"popularity", metrics, singleOut, o, distance,
-								null);
+						ClusterDecompositionModel<OWLEntity> model = SyntacticClusteringWithADEvaluationExperiment
+								.run("popularity", metrics, singleOut, o,
+										distance, null);
+						SyntacticClusteringWithADEvaluationExperiment
+								.saveResults(substring, "_popularity_", model);
+
+						// structural
+						distance = DistanceCreator
+								.createStructuralAxiomRelevanceAxiomBasedDistance(m);
+						model = SyntacticClusteringWithADEvaluationExperiment
+								.run("structural", metrics, singleOut, o,
+										distance, null);
+						SyntacticClusteringWithADEvaluationExperiment
+								.saveResults(substring, "_structural_", model);
 
 						// property relevance
 						Set<OWLEntity> set = SyntacticClusteringWithADEvaluationExperiment
 								.getSignatureWithoutProperties(o);
 						distance = DistanceCreator
 								.createOWLEntityRelevanceAxiomBasedDistance(m);
-						SyntacticClusteringWithADEvaluationExperiment.run(
-								"object-property-relevance", metrics,
-								singleOut, o, distance, set);
+						model = SyntacticClusteringWithADEvaluationExperiment
+								.run("property", metrics, singleOut, o,
+										distance, set);
+						SyntacticClusteringWithADEvaluationExperiment
+								.saveResults(substring, "_property_", model);
 
-						distance = DistanceCreator
-								.createStructuralAxiomRelevanceAxiomBasedDistance(m);
-						SyntacticClusteringWithADEvaluationExperiment.run(
-								"structural", metrics, singleOut, o, distance,
-								null);
 						return null;
 					}
 				};
-				runTaskWithTimeout(task1, 45, TimeUnit.MINUTES);
+				runTaskWithTimeout(task1, timeout, TimeUnit.MINUTES);
 
 				printMetrics(metrics, allResultsFile);
 				firstTime = false;
@@ -127,7 +155,7 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 		ExecutorService executor = Executors.newCachedThreadPool();
 		Future<Object> future = executor.submit(task);
 		try {
-            future.get(timeout, timeUnit);
+			future.get(timeout, timeUnit);
 		} catch (TimeoutException ex) {
 			System.out.println("Took too long!");
 		} catch (InterruptedException e) {

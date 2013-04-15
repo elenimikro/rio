@@ -89,8 +89,7 @@ public class SyntacticClusteringTasksRunner extends
 				ClusterDecompositionModel<OWLEntity> model = run(
 						clustering_type, metrics, singleOut, o, distance, null);
 				SyntacticClusteringWithADEvaluationExperiment.saveResults(
-substring,
-                        clustering_type, model);
+						substring, clustering_type, model);
 
 				// structural
 				distance = DistanceCreator
@@ -99,8 +98,7 @@ substring,
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						null);
 				SyntacticClusteringWithADEvaluationExperiment.saveResults(
-substring,
-                        clustering_type, model);
+						substring, clustering_type, model);
 				//
 				// // property relevance
 				Set<OWLEntity> set = getSignatureWithoutProperties(o);
@@ -110,8 +108,7 @@ substring,
 				model = run(clustering_type, metrics, singleOut, o, distance,
 						set);
 				SyntacticClusteringWithADEvaluationExperiment.saveResults(
-substring,
-                        clustering_type, model);
+						substring, clustering_type, model);
 
 				printMetrics(metrics, allResultsFile);
 

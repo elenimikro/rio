@@ -66,7 +66,7 @@ public class GeneralisationStatisticsTest {
 							+ a);
 		}
 		ClusterDecompositionModel<OWLEntity> model = ClusteringHelper
-				.getPopularityClusterModel(o);
+				.getSyntacticPopularityClusterModel(o);
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
 		for (Cluster<OWLEntity> c : clusterList) {
 			Variable<?> var = model.getVariableRepresentative(c);

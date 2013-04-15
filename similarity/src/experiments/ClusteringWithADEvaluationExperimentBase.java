@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.coode.proximitymatrix.cluster.Cluster;
@@ -21,19 +22,19 @@ public class ClusteringWithADEvaluationExperimentBase {
 	protected static boolean firstTime = true;
 
 	@SuppressWarnings("resource")
-	protected static void printMetrics(ArrayList<SimpleMetric<?>> metrics,
+	protected static void printMetrics(List<SimpleMetric<?>> indi_metrics,
 			File file) throws FileNotFoundException {
 		FileOutputStream fout = new FileOutputStream(file, true);
 		PrintStream out = new PrintStream(fout);
 		// if(!file.exists()){
 		if (firstTime) {
-			for (int i = 0; i < metrics.size(); i++) {
-				out.print(metrics.get(i).getName() + ",");
+			for (int i = 0; i < indi_metrics.size(); i++) {
+				out.print(indi_metrics.get(i).getName() + ",");
 			}
 			out.println();
 		}
-		for (int i = 0; i < metrics.size(); i++) {
-			out.print(metrics.get(i).getValue() + ",");
+		for (int i = 0; i < indi_metrics.size(); i++) {
+			out.print(indi_metrics.get(i).getValue() + ",");
 		}
 		out.println();
 		out.close();

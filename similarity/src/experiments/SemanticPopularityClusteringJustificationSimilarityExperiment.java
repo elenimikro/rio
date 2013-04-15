@@ -89,7 +89,7 @@ public class SemanticPopularityClusteringJustificationSimilarityExperiment {
 			metrics.add(new SimpleMetric<String>("Ontology", input));
 
 			// get KE metrics
-			KnowledgeExplorer ke = SemanticClusteringWithADEvaluationExperiment
+			KnowledgeExplorer ke = ExperimentUtils
 					.runFactplusplusKnowledgeExplorerReasoner(o);
 			Set<OWLAxiom> entailments = ke.getAxioms();
 			System.out.println("Entailments " + entailments.size());

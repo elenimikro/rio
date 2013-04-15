@@ -16,7 +16,6 @@ import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.ChainsawKnowledgeExplorerMaxFillersImpl;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
-import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
@@ -36,7 +35,6 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import uk.ac.manchester.cs.chainsaw.ChainsawReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
-import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 
 public class SemanticClusteringWithADEvaluationExperiment extends
 		ClusteringWithADEvaluationExperimentBase {
@@ -96,7 +94,8 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 				metrics.addAll(getBasicOntologyMetrics(m));
 
 				// get KE metrics
-				KnowledgeExplorer ke = runFactplusplusKnowledgeExplorerReasoner(o);
+				KnowledgeExplorer ke = ExperimentUtils
+						.runFactplusplusKnowledgeExplorerReasoner(o);
 				Set<OWLAxiom> entailments = ke.getAxioms();
 
 				System.out
@@ -203,20 +202,6 @@ public class SemanticClusteringWithADEvaluationExperiment extends
 						new FaCTPlusPlusReasonerFactory(), o,
 						new SimpleConfiguration()));
 		return chainke;
-	}
-
-	public static KnowledgeExplorer runFactplusplusKnowledgeExplorerReasoner(
-			OWLOntology o) {
-		OWLReasoner reasoner = new FaCTPlusPlusReasoner(o,
-				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
-				new OWLKnowledgeExplorationReasonerWrapper(
-						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
-								BufferingMode.NON_BUFFERING)));
-
-		return ke;
 	}
 
 	protected static File saveResults(String xmlPrefix,
