@@ -1,6 +1,7 @@
 package org.coode.knowledgeexplorer.distance.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -96,8 +97,8 @@ public class KnowledgeExplorerDistanceTest {
 		JFactReasoner reasoner = new JFactReasoner(o,
 				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(
-				reasoner, new OWLKnowledgeExplorationReasonerWrapper(
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
+				new OWLKnowledgeExplorationReasonerWrapper(
 						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
 								BufferingMode.NON_BUFFERING)));
 		Set<OWLEntity> set = ke.getEntities();
@@ -105,24 +106,23 @@ public class KnowledgeExplorerDistanceTest {
 	}
 
 	@Test
-	public void knowledgeExplorerDistanceTest()
- throws OPPLException,
+	public void knowledgeExplorerDistanceTest() throws OPPLException,
 			ParserConfigurationException {
 		// assertEquals(7, o.getAxiomCount());
 		JFactReasoner reasoner = new JFactReasoner(o,
 				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(
-				reasoner, new OWLKnowledgeExplorationReasonerWrapper(
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
+				new OWLKnowledgeExplorationReasonerWrapper(
 						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
 								BufferingMode.NON_BUFFERING)));
 		Distance<OWLEntity> distance = DistanceCreator
-                .createKnowledgeExplorerOWLEntityRelevanceBasedDistance(o, ke);
+				.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(o, ke);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
 					@Override
-                    public int compare(final OWLEntity o1, final OWLEntity o2) {
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}

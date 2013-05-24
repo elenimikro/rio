@@ -1,10 +1,9 @@
 package experiments;
 
+public class SimpleMetric<M> {
 
-public class SimpleMetric<M>{
-	
-	private M value;
-	private String name;
+	private final M value;
+	private final String name;
 
 	public SimpleMetric(String name, M value) {
 		this.value = value;
@@ -17,6 +16,12 @@ public class SimpleMetric<M>{
 
 	public M getValue() {
 		return value;
+	}
+
+	@Override
+	public String toString() {
+		String toReturn = name + ": " + value.toString();
+		return toReturn;
 	}
 
 }

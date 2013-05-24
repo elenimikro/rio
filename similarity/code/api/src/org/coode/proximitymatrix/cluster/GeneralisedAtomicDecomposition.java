@@ -15,13 +15,13 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
-import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposer;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
+import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 
 public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 
 	private final ClusterDecompositionModel<OWLEntity> model;
-	private final AtomicDecomposer ad;
+	private final AtomicDecomposition ad;
 	private final OWLOntology o;
 
 	private final Map<OWLAxiom, Atom> genAtomMap = new HashMap<OWLAxiom, Atom>();
@@ -104,7 +104,7 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 
 	}
 
-	public AtomicDecomposer getAtomicDecomposer() {
+	public AtomicDecomposition getAtomicDecomposer() {
 		return ad;
 	}
 
@@ -171,7 +171,7 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
 	}
 
 	public MultiMap<OWLEntity, Atom> getTermBasedIndex() {
-        if (entityAtomMap == null || entityAtomMap.size() == 0) {
+		if (entityAtomMap == null || entityAtomMap.size() == 0) {
 			Set<Collection<OWLAxiom>> keySet = this.delegate.keySet();
 			for (Collection<OWLAxiom> collection : keySet) {
 				Set<OWLEntity> signature = new HashSet<OWLEntity>();

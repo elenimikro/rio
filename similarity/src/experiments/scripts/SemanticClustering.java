@@ -54,13 +54,12 @@ public class SemanticClustering extends
 
 		String clustering_type = "popularity";
 		Distance<OWLEntity> distance = DistanceCreator
-				.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
-o, ke);
+				.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(o, ke);
 		PrintStream out = new PrintStream(filename);
 		ClusterDecompositionModel<OWLEntity> model = run(clustering_type, out,
 				o, distance, ke.getEntities(), entailments);
-        IOExperimentUtils.saveResults(filename, clustering_type, model);
-        out.close();
+		IOExperimentUtils.saveResults(filename, clustering_type, model);
+		out.close();
 	}
 
 	public ClusterDecompositionModel<OWLEntity> run(String distanceType,

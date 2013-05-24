@@ -49,7 +49,7 @@ public class BioPortalClusteringMethodComparison {
 				inputList.add(s);
 			}
 			d.close();
-			openFilesAndBuildClusters(inputList);
+			runComparison(inputList);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (OWLOntologyCreationException e) {
@@ -66,7 +66,7 @@ public class BioPortalClusteringMethodComparison {
 
 	}
 
-	public static void openFilesAndBuildClusters(ArrayList<String> input)
+	public static void runComparison(ArrayList<String> input)
 			throws OWLOntologyCreationException, FileNotFoundException,
 			ParserConfigurationException, SAXException, IOException,
 			UnknownOWLOntologyException, OPPLException {
@@ -243,6 +243,7 @@ public class BioPortalClusteringMethodComparison {
 			entities.addAll(onto.getSignature());
 		}
 
+		// map entities to clusters
 		Map<OWLEntity, Integer> popularityMap = new HashMap<OWLEntity, Integer>();
 		Map<OWLEntity, Integer> structuralMap = new HashMap<OWLEntity, Integer>();
 		Map<OWLEntity, Integer> propertyMap = new HashMap<OWLEntity, Integer>();

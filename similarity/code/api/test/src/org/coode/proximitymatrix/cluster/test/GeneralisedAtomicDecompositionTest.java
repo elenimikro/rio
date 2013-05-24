@@ -1,6 +1,7 @@
 package org.coode.proximitymatrix.cluster.test;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -35,7 +36,7 @@ import uk.ac.manchester.cs.atomicdecomposition.Atom;
 public class GeneralisedAtomicDecompositionTest {
 
 	private ClusterDecompositionModel<OWLEntity> model;
-    // private AtomicDecomposer ad;
+	// private AtomicDecomposer ad;
 	private OWLOntology o;
 
 	@Before
@@ -74,7 +75,7 @@ public class GeneralisedAtomicDecompositionTest {
 		m.addAxiom(o, jg);
 		m.addAxiom(o, ki);
 
-        // ad = new AtomicDecomposerOWLAPITOOLS(o);
+		// ad = new AtomicDecomposerOWLAPITOOLS(o);
 
 		assertEquals(10, o.getSignature().size());
 
@@ -120,8 +121,7 @@ public class GeneralisedAtomicDecompositionTest {
 	}
 
 	@Test
-	public void testGeneralisationAtomicDecomposition()
- {
+	public void testGeneralisationAtomicDecomposition() {
 		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
 				model, o);
 

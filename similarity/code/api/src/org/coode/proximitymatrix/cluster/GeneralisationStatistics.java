@@ -1,5 +1,6 @@
 package org.coode.proximitymatrix.cluster;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,29 +17,22 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
-public class GeneralisationStatistics<P> {
+import experiments.SimpleMetric;
 
-	private final ClusterDecompositionModel<P> model;
+public class GeneralisationStatistics<C extends Set<P>, P> {
+
+	private final RegularitiesDecompositionModel<C, P> model;
 	private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
 	private final MultiMap<OWLAxiom, OWLAxiomInstantiation> genMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 
-    // private final Map<Variable<?>, MultiMap<OWLObject, OWLAxiom>>
-    // breakdownsMap = new HashMap<Variable<?>, MultiMap<OWLObject,
-    // OWLAxiom>>();
-    // private final MultiMap<OWLObject, OWLAxiom> clusterAppearanceBreakDown =
-    // new MultiMap<OWLObject, OWLAxiom>();
-
-    // private final Map<OWLAxiom, Double> generalisationCoverageStats = new
-    // HashMap<OWLAxiom, Double>();
-
-	private GeneralisationStatistics(ClusterDecompositionModel<P> model) {
+	private GeneralisationStatistics(RegularitiesDecompositionModel<C, P> model) {
 		this.model = model;
 		this.ontologies.addAll(this.model.getOntologies());
 		extractGeneralisationMap();
 	}
 
 	private void extractGeneralisationMap() {
-		List<Cluster<P>> clusterList = this.model.getClusterList();
+		List<C> clusterList = this.model.getClusterList();
 		for (int i = 0; i < clusterList.size(); i++) {
 			this.genMap.putAll(model.get(clusterList.get(i)));
 		}
@@ -53,18 +47,18 @@ public class GeneralisationStatistics<P> {
 	}
 
 	public double getMeanClusterCoveragePerGeneralisation() {
-		List<Cluster<P>> clusterList = this.model.getClusterList();
-		Map<Variable<?>, Cluster<P>> variableMap = new HashMap<Variable<?>, Cluster<P>>();
+		List<C> clusterList = this.model.getClusterList();
+		Map<Variable<?>, C> variableMap = new HashMap<Variable<?>, C>();
 		for (int i = 0; i < clusterList.size(); i++) {
-			Cluster<P> cluster = clusterList.get(i);
+			C cluster = clusterList.get(i);
 			Set<OWLEntity> clusterSet = new HashSet<OWLEntity>();
 			for (P e : cluster) {
 				clusterSet.add((OWLEntity) e);
 			}
-			// Variable<?> variable = Utils.getVariable(clusterSet,
-			// this.model.get(cluster));
-			Variable<?> variable = this.model
-					.getVariableRepresentative(cluster);
+			Variable<?> variable = Utils.getVariable(clusterSet,
+					this.model.get(cluster));
+			// Variable<?> variable = this.model
+			// .getVariableRepresentative(cluster);
 			if (variable != null) {
 				variableMap.put(variable, cluster);
 			}
@@ -85,8 +79,7 @@ public class GeneralisationStatistics<P> {
 			for (Variable<?> v : map.keySet()) {
 				double count = 0;
 				if (v != null) {
-					SimpleCluster<P> cluster = (SimpleCluster<P>) variableMap
-							.get(v);
+					C cluster = variableMap.get(v);
 					if (cluster != null) {
 						count = (double) map.get(v).size() / cluster.size();
 					}
@@ -97,27 +90,6 @@ public class GeneralisationStatistics<P> {
 		}
 		return genCoverage / genMap.keySet().size();
 	}
-
-    // private void buildBreakdownMap() {
-    // List<Cluster<P>> clusterList = this.model.getClusterList();
-    // for (int i = 0; i < clusterList.size(); i++) {
-    // SimpleCluster<OWLEntity> simplecluster = (SimpleCluster<OWLEntity>)
-    // clusterList
-    // .get(i);
-    // Iterator<OWLEntity> it = simplecluster.iterator();
-    // Set<OWLEntity> cluster = new HashSet<OWLEntity>();
-    // while (it.hasNext()) {
-    // cluster.add(it.next());
-    // }
-    // Variable<?> clusterVariable = Utils.getVariable(cluster, genMap);
-    // if (clusterVariable != null) {
-    // MultiMap<OWLObject, OWLAxiom> clusterAppearanceBreakdown = Utils
-    // .buildClusterAppearanceBreakdown(cluster, genMap);
-    // this.breakdownsMap.put(clusterVariable,
-    // clusterAppearanceBreakdown);
-    // }
-    // }
-    // }
 
 	public double getRatioOfGeneralisedAxiomsToTotalAxioms() {
 		int osize = 0;
@@ -133,7 +105,7 @@ public class GeneralisationStatistics<P> {
 	}
 
 	public double getMeanEntitiesPerCluster() {
-		List<Cluster<P>> clusterList = this.model.getClusterList();
+		List<C> clusterList = this.model.getClusterList();
 		int size = 0;
 		for (int i = 0; i < clusterList.size(); i++) {
 			size += clusterList.get(i).size();
@@ -142,12 +114,31 @@ public class GeneralisationStatistics<P> {
 	}
 
 	public void buildDescriptiveStatistics() {
-        // DescriptiveStatistics stats = new DescriptiveStatistics();
+		// DescriptiveStatistics stats = new DescriptiveStatistics();
 		// stats.a
 	}
 
-	public static <P extends OWLEntity> GeneralisationStatistics<P> buildStatistics(
-			ClusterDecompositionModel<P> model) {
-		return new GeneralisationStatistics<P>(model);
+	public List<SimpleMetric<?>> getStats() {
+		List<SimpleMetric<?>> stats = new ArrayList<SimpleMetric<?>>();
+		stats.add(new SimpleMetric<Integer>("# Generalisations", this
+				.getNumberOfGeneralisations()));
+		stats.add(new SimpleMetric<Integer>("# Instantiations", this
+				.getNumberOfInstantiations()));
+		stats.add(new SimpleMetric<Double>("# Generalised Axioms", this
+				.getRatioOfGeneralisedAxiomsToTotalAxioms()));
+		stats.add(new SimpleMetric<Double>(
+				"Mean instantiations per generalisation", this
+						.getMeanOWLAxiomInstantiationsPerGeneralisation()));
+		stats.add(new SimpleMetric<Double>("Mean entities per cluster", this
+				.getMeanEntitiesPerCluster()));
+		stats.add(new SimpleMetric<Double>("Mean cluster coverage", this
+				.getMeanClusterCoveragePerGeneralisation()));
+
+		return stats;
+	}
+
+	public static <C extends Set<P>, P extends OWLEntity> GeneralisationStatistics<C, P> buildStatistics(
+			RegularitiesDecompositionModel<C, P> model) {
+		return new GeneralisationStatistics<C, P>(model);
 	}
 }

@@ -16,6 +16,7 @@ import org.coode.oppl.exceptions.OPPLException;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
+import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -142,9 +143,9 @@ public class ClusteringHelper {
 		return model;
 	}
 
-	public static MultiMap<OWLAxiom, OWLAxiomInstantiation> extractGeneralisationMap(
-			ClusterDecompositionModel<OWLEntity> model) {
-		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
+	public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation> extractGeneralisationMap(
+			RegularitiesDecompositionModel<C, OWLEntity> model) {
+		List<C> clusterList = model.getClusterList();
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 		for (int counter = 0; counter < clusterList.size(); counter++) {
 			multiMap.putAll(model.get(clusterList.get(counter)));

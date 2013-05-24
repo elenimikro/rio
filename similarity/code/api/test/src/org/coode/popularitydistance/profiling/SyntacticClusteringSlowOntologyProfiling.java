@@ -24,8 +24,8 @@ import experiments.ExperimentHelper;
 
 public class SyntacticClusteringSlowOntologyProfiling {
 
-    private static String ontoName = "documents/ChronicALLModule.owl";
-    private static String xml = "documents/ChronicALLModule-syntactic-popularity.xml";
+	private static String ontoName = "documents/ChronicALLModule.owl";
+	private static String xml = "documents/ChronicALLModule-syntactic-popularity.xml";
 
 	public static void testSyntacticClustering()
 			throws OWLOntologyCreationException, OPPLException,
@@ -33,24 +33,27 @@ public class SyntacticClusteringSlowOntologyProfiling {
 			TransformerException {
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 		OWLOntology o = m.loadOntologyFromOntologyDocument(new File(ontoName));
-		System.out.println("SyntacticClusteringTest.testSyntacticClustering() " + ontoName);
-		System.out.println("SyntacticClusteringTest.testSyntacticClustering() Ontology was loaded");
-        o.getOWLOntologyManager().removeAxioms(
-                o,
-                new HashSet<OWLAnnotationAssertionAxiom>(o
-                        .getAxioms(AxiomType.ANNOTATION_ASSERTION)));
-        Distance<OWLEntity> distance = DistanceCreator
+		System.out.println("SyntacticClusteringTest.testSyntacticClustering() "
+				+ ontoName);
+		System.out
+				.println("SyntacticClusteringTest.testSyntacticClustering() Ontology was loaded");
+		o.getOWLOntologyManager().removeAxioms(
+				o,
+				new HashSet<OWLAnnotationAssertionAxiom>(o
+						.getAxioms(AxiomType.ANNOTATION_ASSERTION)));
+		Distance<OWLEntity> distance = DistanceCreator
 				.createAxiomRelevanceAxiomBasedDistance(m);
-		System.out.println("SyntacticClusteringTest.testSyntacticClustering() Distance was created");
+		System.out
+				.println("SyntacticClusteringTest.testSyntacticClustering() Distance was created");
 		ClusterDecompositionModel<OWLEntity> model = ExperimentHelper
 				.startSyntacticClustering(o, distance, null);
-        Utils.saveToXML(model, new File(xml));
+		Utils.saveToXML(model, new File(xml));
 	}
 
 	public static void main(String[] args) throws OWLOntologyCreationException,
 			OPPLException, ParserConfigurationException,
-            TransformerFactoryConfigurationError, TransformerException {
-        testSyntacticClustering();
+			TransformerFactoryConfigurationError, TransformerException {
+		testSyntacticClustering();
 	}
 
 }

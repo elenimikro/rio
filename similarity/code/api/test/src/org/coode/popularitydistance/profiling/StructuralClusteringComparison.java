@@ -52,7 +52,7 @@ public class StructuralClusteringComparison {
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
 					@Override
-                    public int compare(final OWLEntity o1, final OWLEntity o2) {
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}
@@ -67,7 +67,7 @@ public class StructuralClusteringComparison {
 				distance, o.getSignature());
 		ClusterDecompositionModel<OWLEntity> model = clusterer
 				.buildClusterDecompositionModel(o, m, clusters);
-        Utils.saveToXML(model, new File(saveTo));
+		Utils.saveToXML(model, new File(saveTo));
 		correct &= ClusteringUtils.check(o, saveTo, compareTo);
 		System.out.println("correct? " + correct);
 	}

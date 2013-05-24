@@ -44,22 +44,29 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 
-/** Class for computing syntactic similarities, using the AxiomBased distance
+/**
+ * Class for computing syntactic similarities, using the AxiomBased distance
  * with the objproperties always relevant policy.
  * 
- * @author elenimikroyannidi */
-public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll{
-    /** @param args
-     * @throws OWLOntologyCreationException 
-     * @throws ParserConfigurationException 
-     * @throws OPPLException 
-     * @throws TransformerException 
-     * @throws TransformerFactoryConfigurationError */
-    public static void main(final String[] args) throws OWLOntologyCreationException, OPPLException, ParserConfigurationException, TransformerFactoryConfigurationError, TransformerException {
-        KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll agglomerator = new KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll();
-        agglomerator.checkArgumentsAndRun(args);
-    }
-  
+ * @author elenimikroyannidi
+ */
+public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll {
+	/**
+	 * @param args
+	 * @throws OWLOntologyCreationException
+	 * @throws ParserConfigurationException
+	 * @throws OPPLException
+	 * @throws TransformerException
+	 * @throws TransformerFactoryConfigurationError
+	 */
+	public static void main(final String[] args)
+			throws OWLOntologyCreationException, OPPLException,
+			ParserConfigurationException, TransformerFactoryConfigurationError,
+			TransformerException {
+		KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll agglomerator = new KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll();
+		agglomerator.checkArgumentsAndRun(args);
+	}
+
 	public void checkArgumentsAndRun(final String[] args)
 			throws OWLOntologyCreationException, OPPLException,
 			ParserConfigurationException, TransformerFactoryConfigurationError,
@@ -83,36 +90,40 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll{
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 		OWLOntology ontology = TestHelper.loadIRIMappers(iri, manager);
 
-	 JFactReasoner reasoner = new JFactReasoner(ontology, new SimpleConfiguration(),
-	                BufferingMode.NON_BUFFERING);
+		JFactReasoner reasoner = new JFactReasoner(ontology,
+				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
 		reasoner.precomputeInferences();
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(reasoner);
-		//KnowledgeExplorer ke = new KnowledgeExplorerMaxFillerJFactImpl(reasoner, manager);
+		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(
+				reasoner);
+		// KnowledgeExplorer ke = new
+		// KnowledgeExplorerMaxFillerJFactImpl(reasoner, manager);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
 					@Override
-                    public int compare(final OWLEntity o1, final OWLEntity o2) {
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}
 				});
-		
+
 		Set<OWLEntity> set = ke.getEntities();
 		assertNotNull(set);
-		for(OWLEntity e : set){
-			if(!e.isType(EntityType.OBJECT_PROPERTY)){
+		for (OWLEntity e : set) {
+			if (!e.isType(EntityType.OBJECT_PROPERTY)) {
 				entities.add(e);
 			}
 		}
-        Distance<OWLEntity> distance = DistanceCreator
-                .createKnowledgeExplorerOWLEntityRelevanceBasedDistance(ontology, ke);
+		Distance<OWLEntity> distance = DistanceCreator
+				.createKnowledgeExplorerOWLEntityRelevanceBasedDistance(
+						ontology, ke);
 		ClusterCreator clusterer = new ClusterCreator();
-		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(ontology, distance, entities);
+		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(ontology,
+				distance, entities);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
 				.buildKnowledgeExplorerClusterDecompositionModel(ontology,
 						ke.getAxioms(), manager, clusters);
-        Utils.saveToXML(model, outfile);
+		Utils.saveToXML(model, outfile);
 		return model;
 	}
 }

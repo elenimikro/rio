@@ -129,4 +129,9 @@ public class AxiomMap {
     public void dispose() {
         // ontologyManager.removeOntologyChangeListener(listener);
     }
+
+
+	public Set<OWLAxiom> getAxioms() {
+		return axioms;
+	}
 }

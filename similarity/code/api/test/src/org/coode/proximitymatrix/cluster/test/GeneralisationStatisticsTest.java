@@ -1,6 +1,7 @@
 package org.coode.proximitymatrix.cluster.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
@@ -47,7 +48,7 @@ public class GeneralisationStatisticsTest {
 				distance, o.getSignature());
 		ClusterDecompositionModel<OWLEntity> model = clusterer
 				.buildClusterDecompositionModel(o, m, agglomerateAll);
-		GeneralisationStatistics<OWLEntity> stats = GeneralisationStatistics
+		GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats = GeneralisationStatistics
 				.buildStatistics(model);
 		double meanClusterCoveragePerGeneralisation = stats
 				.getMeanClusterCoveragePerGeneralisation();
@@ -79,7 +80,7 @@ public class GeneralisationStatisticsTest {
 								+ c);
 			}
 		}
-		GeneralisationStatistics<OWLEntity> stats = GeneralisationStatistics
+		GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats = GeneralisationStatistics
 				.buildStatistics(model);
 		double meanClusterCoveragePerGeneralisation = stats
 				.getMeanClusterCoveragePerGeneralisation();

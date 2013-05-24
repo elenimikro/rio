@@ -15,14 +15,14 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
-import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposer;
+import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 
 public class ClusteringWithADEvaluationExperimentBase {
 
 	protected static boolean firstTime = true;
 
 	@SuppressWarnings("resource")
-	protected static void printMetrics(List<SimpleMetric<?>> indi_metrics,
+	public static void printMetrics(List<SimpleMetric<?>> indi_metrics,
 			File file) throws FileNotFoundException {
 		FileOutputStream fout = new FileOutputStream(file, true);
 		PrintStream out = new PrintStream(fout);
@@ -36,6 +36,7 @@ public class ClusteringWithADEvaluationExperimentBase {
 		for (int i = 0; i < indi_metrics.size(); i++) {
 			out.print(indi_metrics.get(i).getValue() + ",");
 		}
+		firstTime = false;
 		out.println();
 		out.close();
 	}
@@ -59,7 +60,7 @@ public class ClusteringWithADEvaluationExperimentBase {
 	}
 
 	public static Collection<? extends SimpleMetric<?>> getADMetrics(
-			AtomicDecomposer ad) {
+			AtomicDecomposition ad) {
 		ArrayList<SimpleMetric<?>> toReturn = new ArrayList<SimpleMetric<?>>();
 		Set<Atom> atoms = ad.getAtoms();
 		toReturn.add(new SimpleMetric<Integer>("#OriginalAtoms", atoms.size()));

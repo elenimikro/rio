@@ -118,7 +118,7 @@ public class ExperimentHelper {
 	public static Collection<? extends SimpleMetric<?>> getClusteringMetrics(
 			ClusterDecompositionModel<OWLEntity> model) {
 		ArrayList<SimpleMetric<?>> toReturn = new ArrayList<SimpleMetric<?>>();
-		GeneralisationStatistics<OWLEntity> genStats = GeneralisationStatistics
+		GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> genStats = GeneralisationStatistics
 				.buildStatistics(model);
 		int clusterNo = model.getClusterList().size();
 		int numberOfGeneralisations = genStats.getNumberOfGeneralisations();
@@ -176,7 +176,7 @@ public class ExperimentHelper {
 			ClusterDecompositionModel<OWLEntity> model,
 			GeneralisedAtomicDecomposition<OWLEntity> gad) {
 		// generalisation quality metrics
-		GeneralisationStatistics<OWLEntity> genStats = GeneralisationStatistics
+		GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> genStats = GeneralisationStatistics
 				.buildStatistics(model);
 		int clusterNo = model.getClusterList().size();
 		int numberOfGeneralisations = genStats.getNumberOfGeneralisations();

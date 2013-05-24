@@ -21,9 +21,9 @@ public class IOExperimentUtils {
 
 	private static String results_base = "";
 
-    public static File saveResults(String substring, String clustering_type,
-            ClusterDecompositionModel<OWLEntity> model)
-            throws ParserConfigurationException,
+	public static File saveResults(String substring, String clustering_type,
+			ClusterDecompositionModel<OWLEntity> model)
+			throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException,
 			FileNotFoundException {
 		String xmlname = results_base + clustering_type + "-"
@@ -37,7 +37,7 @@ public class IOExperimentUtils {
 		// ClusterResultsExploitationUtils.filterResults(clusteringMatrix,
 		// model,
 		// distance, out);
-        Utils.saveToXML(model, xml);
+		Utils.saveToXML(model, xml);
 		return xml;
 	}
 

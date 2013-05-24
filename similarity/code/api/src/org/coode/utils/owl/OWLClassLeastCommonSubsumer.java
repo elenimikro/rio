@@ -22,7 +22,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
-public class OWLClassLeastCommonSubsumer extends LeastCommonSubsumer<OWLClass, OWLClass> {
+public class OWLClassLeastCommonSubsumer extends
+		LeastCommonSubsumer<OWLClass, OWLClass> {
 	public OWLClassLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
 			OWLDataFactory dataFactory) {
 		super(axiomProvider, dataFactory.getOWLThing());
@@ -36,8 +37,9 @@ public class OWLClassLeastCommonSubsumer extends LeastCommonSubsumer<OWLClass, O
 				public void visit(OWLSubClassOfAxiom axiom) {
 					if (!axiom.getSubClass().isAnonymous()
 							&& !axiom.getSuperClass().isAnonymous()) {
-						OWLClassLeastCommonSubsumer.this.addParent(axiom.getSubClass()
-								.asOWLClass(), axiom.getSuperClass().asOWLClass());
+						OWLClassLeastCommonSubsumer.this.addParent(axiom
+								.getSubClass().asOWLClass(), axiom
+								.getSuperClass().asOWLClass());
 					}
 				}
 			});

@@ -1,6 +1,8 @@
 package org.coode.proximitymatrix.cluster.test;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,14 +34,14 @@ import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
-import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposer;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
+import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 
 public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 
 	private ClusterDecompositionModel<OWLEntity> model;
-	private AtomicDecomposer ad;
+	private AtomicDecomposerOWLAPITOOLS ad;
 	private OWLOntology pizza;
 
 	@Before
@@ -56,7 +58,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {
 					@Override
-                    public int compare(final OWLEntity o1, final OWLEntity o2) {
+					public int compare(final OWLEntity o1, final OWLEntity o2) {
 						return shortFormProvider.getShortForm(o1).compareTo(
 								shortFormProvider.getShortForm(o2));
 					}
@@ -71,7 +73,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 	}
 
 	@Test
-    public void testPizzaAtomiDecompositionGeneralisationEvaluator() {
+	public void testPizzaAtomiDecompositionGeneralisationEvaluator() {
 		assertNotNull(model);
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> genmap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
@@ -93,7 +95,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 		assertNotNull(logicalAxioms);
 		assertTrue(logicalAxioms.size() > 0);
 		List<OWLAxiom> axiomlist = new ArrayList<OWLAxiom>(genmap.keySet());
-		AtomicDecomposer gen_ad = new AtomicDecomposerOWLAPITOOLS(axiomlist,
+		AtomicDecomposition gen_ad = new AtomicDecomposerOWLAPITOOLS(axiomlist,
 				ModuleType.BOT);
 		// assertTrue(gen_ad.getAtoms().size()>0);
 		System.out
@@ -115,7 +117,7 @@ public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
 	}
 
 	@Test
-    public void pizzaGeneralisedADTest() {
+	public void pizzaGeneralisedADTest() {
 		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
 				model, pizza);
 		assertTrue(ad.getAtoms().size() > gad.getAtoms().size());

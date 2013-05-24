@@ -328,7 +328,7 @@ public class Utils {
 		return new OWLObjectGeneralisation(bindings, constraintSystem);
 	}
 
-	private static String createName(final String string,
+	public static String createName(final String string,
 			final Set<String> names, final Set<String> rootNames) {
 		if (!rootNames.contains(string)) {
 			if (names.contains(string)) {
@@ -882,10 +882,10 @@ public class Utils {
 		return toReturn;
 	}
 
-	public static MultiMap<OWLAxiom, OWLAxiomInstantiation> extractGeneralisationMap(
-			ClusterDecompositionModel<OWLEntity> model) {
+	public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation> extractGeneralisationMap(
+			RegularitiesDecompositionModel<C, OWLEntity> model) {
 		MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-		for (Cluster<OWLEntity> c : model.getClusterList()) {
+		for (C c : model.getClusterList()) {
 			toReturn.putAll(model.get(c));
 		}
 		return toReturn;
@@ -985,11 +985,11 @@ public class Utils {
 		return toReturn;
 	}
 
-	public static <P extends OWLEntity> void saveToXML(
-			final ClusterDecompositionModel<P> model, final File file)
+	public static <C extends Set<P>, P extends OWLEntity> void saveToXML(
+			final RegularitiesDecompositionModel<C, P> model, final File file)
 			throws ParserConfigurationException,
 			TransformerFactoryConfigurationError, TransformerException {
-		List<Cluster<P>> clusterList = model.getClusterList();
+		List<C> clusterList = model.getClusterList();
 		ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
 
 		Document document = toXML(model, clusterList, renderer);
@@ -1004,16 +1004,16 @@ public class Utils {
 
 	}
 
-	private static <P extends OWLEntity> Document toXML(
-			final ClusterDecompositionModel<P> model,
-			List<Cluster<P>> clusterList,
+	private static <C extends Set<P>, P extends OWLEntity> Document toXML(
+			final RegularitiesDecompositionModel<C, P> model,
+			List<C> clusterList,
 			ManchesterOWLSyntaxOWLObjectRendererImpl renderer)
 			throws ParserConfigurationException {
 		Document document = DocumentBuilderFactory.newInstance()
 				.newDocumentBuilder().newDocument();
 		Element root = document.createElement("Clusters");
 		document.appendChild(root);
-		for (Cluster<P> cluster : clusterList) {
+		for (C cluster : clusterList) {
 			Element clusterNode = document.createElement("Cluster");
 			root.appendChild(clusterNode);
 			for (P o : cluster) {

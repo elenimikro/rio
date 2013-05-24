@@ -1,10 +1,7 @@
 package experiments;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Set;
@@ -48,17 +45,8 @@ public class BioPortalSyntacticClusteringWIthADEvaluationExperiment extends
 			String bioportalList = args[0];
 			// BufferedReader d = new BufferedReader(new InputStreamReader(
 			// new FileInputStream(new File(bioportalList))));
-			BufferedReader d = new BufferedReader(new FileReader(new File(
-					bioportalList)));
-			ArrayList<String> inputList = new ArrayList<String>();
-			try {
-				String s = "";
-				while ((s = d.readLine()) != null) {
-					inputList.add(s);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			ArrayList<String> inputList = ExperimentUtils
+					.extractListFromFile(bioportalList);
 			new File(RESULTS_BASE).mkdirs();
 			File output = new File(RESULTS_BASE + "bioportal-syntactic.csv");
 			for (int i = 0; i < inputList.size(); i++) {

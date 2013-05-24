@@ -32,7 +32,7 @@ public class KERunner {
 			OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
 			OWLOntology ontology = manager
 					.loadOntologyFromOntologyDocument(ontoFile);
-			ExperimentHelper.stripOntologyFromAnnotationAssertions(ontology);
+			// ExperimentHelper.stripOntologyFromAnnotationAssertions(ontology);
 
 			KnowledgeExplorer ke = ExperimentUtils
 					.runFactplusplusKnowledgeExplorerReasoner(ontology);
