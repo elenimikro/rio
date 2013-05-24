@@ -1,6 +1,0 @@
-bioportal/bleeding-history-phenotype/bleeding-history-phenotype_main.owl
-bioportal/amphibian-gross-anatomy/amphibian-gross-anatomy_main.owl
-bioportal/bioinformatics-data-formats-identifiers-operations-and-topics/bioinformatics-data-formats-identifiers-operations-and-topics_main.owl
-bioportal/loggerhead-nesting/loggerhead-nesting_main.owl
-bioportal/physico-chemical-process/physico-chemical-process_main.owl
-bioportal/environment-ontology/environment-ontology_main.owl
