@@ -17,10 +17,12 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.InferenceType;
@@ -101,12 +103,26 @@ public class ClusteringHelper {
 	}
 
 	public static ClusterDecompositionModel<OWLEntity> getSyntacticPopularityClusterModel(
+			Set<OWLAxiom> seedAxioms) {
+		OWLOntology onto = null;
+		try {
+			onto = OWLManager.createOWLOntologyManager().createOntology(
+					seedAxioms);
+		} catch (OWLOntologyCreationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return getSyntacticPopularityClusterModel(onto);
+	}
+
+	public static ClusterDecompositionModel<OWLEntity> getSyntacticPopularityClusterModel(
 			OWLOntology o) {
 		try {
 			OWLOntologyManager m = o.getOWLOntologyManager();
 			AxiomRelevanceAxiomBasedDistance distance = (AxiomRelevanceAxiomBasedDistance) DistanceCreator
 					.createAxiomRelevanceAxiomBasedDistance(m);
-
+			// XXX: remove next comment
+			System.out.println("Distance was created...");
 			final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 			Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 					new Comparator<OWLEntity>() {
@@ -138,8 +154,7 @@ public class ClusteringHelper {
 		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
 				distance, entities);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildClusterDecompositionModel(o, o.getOWLOntologyManager(),
-						clusters);
+				.buildClusterDecompositionModel(o, clusters);
 		return model;
 	}
 

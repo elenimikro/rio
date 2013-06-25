@@ -37,7 +37,6 @@ public class ClusterCreator {
 
 	private ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix;
 
-	@SuppressWarnings("unused")
 	public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(
 			OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> entities)
 			throws OPPLException, ParserConfigurationException {
@@ -45,6 +44,8 @@ public class ClusterCreator {
 				entities, distance);
 		MultiMap<OWLEntity, OWLEntity> equivalenceClasses = org.coode.distance.Utils
 				.getEquivalenceClasses(entities, distance);
+		// XXX: to remove
+		System.out.println("Computed equivalent classes...");
 		entities = new HashSet<OWLEntity>(equivalenceClasses.keySet());
 		final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
 				entities, distance);
@@ -145,10 +146,10 @@ public class ClusterCreator {
 	}
 
 	public <P extends OWLEntity> ClusterDecompositionModel<P> buildClusterDecompositionModel(
-			OWLOntology o, OWLOntologyManager manager,
-			Set<Cluster<OWLEntity>> clusters) throws OPPLException {
-		ConstraintSystem constraintSystem = new OPPLFactory(manager, o, null)
-				.createConstraintSystem();
+			OWLOntology o, Set<Cluster<OWLEntity>> clusters)
+			throws OPPLException {
+		ConstraintSystem constraintSystem = new OPPLFactory(
+				o.getOWLOntologyManager(), o, null).createConstraintSystem();
 		System.out
 				.println("ClusterCreator.buildClusterDecompositionModel() clusters "
 						+ clusters);

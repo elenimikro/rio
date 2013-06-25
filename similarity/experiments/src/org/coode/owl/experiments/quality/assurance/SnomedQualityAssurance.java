@@ -40,7 +40,7 @@ public class SnomedQualityAssurance {
 				if (!xml.exists()) {
 					OWLOntology o = ExperimentUtils.loadOntology(new File(
 							ontologyName));
-					LexicalAndAxiomaticPatternBasedQualityAssurance qa = new LexicalAndAxiomaticPatternBasedQualityAssurance(
+					LexicalAndAxiomaticPatternBasedQualityAssurance<?> qa = new LexicalAndAxiomaticPatternBasedQualityAssurance(
 							keyword, o);
 					Set<OWLAnnotationAssertionAxiom> annotations = ExperimentHelper
 							.stripOntologyFromAnnotationAssertions(o);
@@ -62,7 +62,6 @@ public class SnomedQualityAssurance {
 								.format("Usage java -cp ... %s <ontology-module.owl> <keyword>",
 										SnomedQualityAssurance.class
 												.getCanonicalName()));
-
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -66,7 +66,7 @@ public class StructuralClusteringComparison {
 		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
 				distance, o.getSignature());
 		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildClusterDecompositionModel(o, m, clusters);
+				.buildClusterDecompositionModel(o, clusters);
 		Utils.saveToXML(model, new File(saveTo));
 		correct &= ClusteringUtils.check(o, saveTo, compareTo);
 		System.out.println("correct? " + correct);

@@ -139,7 +139,7 @@ public class KnowledgeExplorerDistanceTest {
 		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
 				distance, entities);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildClusterDecompositionModel(o, m, clusters);
+				.buildClusterDecompositionModel(o, clusters);
 		assertNotNull(model);
 	}
 }

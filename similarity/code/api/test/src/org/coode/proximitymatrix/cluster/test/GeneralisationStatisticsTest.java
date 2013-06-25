@@ -47,7 +47,7 @@ public class GeneralisationStatisticsTest {
 		Set<Cluster<OWLEntity>> agglomerateAll = clusterer.agglomerateAll(o,
 				distance, o.getSignature());
 		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildClusterDecompositionModel(o, m, agglomerateAll);
+				.buildClusterDecompositionModel(o, agglomerateAll);
 		GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats = GeneralisationStatistics
 				.buildStatistics(model);
 		double meanClusterCoveragePerGeneralisation = stats

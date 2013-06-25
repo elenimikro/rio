@@ -56,7 +56,7 @@ public class ExperimentHelper {
 		// put annotations back in
 		// m.addAxioms(o, annotationAssertions);
 		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildClusterDecompositionModel(o, m, clusters);
+				.buildClusterDecompositionModel(o, clusters);
 		return model;
 	}
 

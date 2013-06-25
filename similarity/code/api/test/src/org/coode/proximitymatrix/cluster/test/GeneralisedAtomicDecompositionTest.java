@@ -103,7 +103,7 @@ public class GeneralisedAtomicDecompositionTest {
 		}
 		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
 				distance, entities);
-		model = clusterer.buildClusterDecompositionModel(o, m, clusters);
+		model = clusterer.buildClusterDecompositionModel(o, clusters);
 
 		List<Cluster<OWLEntity>> clusterList = model.getClusterList();
 		for (int counter = 0; counter < clusterList.size(); counter++) {
