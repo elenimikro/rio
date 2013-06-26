@@ -25,7 +25,7 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
         @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
-            delegate.clear();
+            clear();
             OntologyManagerBasedOWLEntityProvider.this.loadDelegate();
         }
     };
@@ -39,7 +39,7 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
     private void loadDelegate() {
         Set<OWLOntology> ontologies = getOntologyManager().getOntologies();
         for (OWLOntology ontology : ontologies) {
-            delegate.addAll(ontology.getSignature());
+            addAll(ontology.getSignature());
         }
     }
 

@@ -27,7 +27,7 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase 
         @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
-            delegate.clear();
+            clear();
             GeneralisationBasedOWLEntityProvider.this.loadDelegate();
         }
     };
@@ -42,7 +42,7 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase 
 
     private void loadDelegate() {
         for (OWLAxiom ax : axioms) {
-            delegate.addAll(ax.getSignature());
+            addAll(ax.getSignature());
         }
     }
 

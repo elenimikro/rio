@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -24,9 +25,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 public abstract class AbstractRanking implements Ranking {
     private final Metric<OWLEntity> metric;
-    // private SortedSet<R> ranking = new TreeSet<R>();
-    // private final double[] valueList;
-    private double max = -1D;
+    private Double max = -1D;
 
     static class Entry {
         double key;
@@ -83,14 +82,15 @@ public abstract class AbstractRanking implements Ranking {
     }
 
     static class TinyDoubleMap {
-        final double[] list;
-        final int[] occs;
+        private SlowDoubleBag bag;
+        private SlowDoubleBag occurrences;
         final double[] keyset;
         int size;
+        int total_occurrences = 0;
 
-        public TinyDoubleMap(double[] all, Collection<Double> keys) {
-            list = all;
-            occs = new int[all.length];
+        public TinyDoubleMap(double[] all, List<Double> keys) {
+            bag = new SlowDoubleBag(all, keys);
+            occurrences = new SlowDoubleBag(all.length, keys);
             size = 0;
             keyset = new double[keys.size()];
             Iterator<Double> it = keys.iterator();
@@ -100,34 +100,36 @@ public abstract class AbstractRanking implements Ranking {
         }
 
         void add(double e, int occ) {
-            for (int i = 0; i < list.length; i++) {
-                if (list[i] == e) {
-                    occs[i] = occ;
-                }
-            }
+            int theOccs = bag.occurrences(e);
+            total_occurrences += theOccs * occ;
+            occurrences.setOccurrence(e, occ);
         }
 
-        int get(double d) {
+        public double mean() {
+            double meanTest = 0;
             for (int i = 0; i < size; i++) {
-                if (list[i] == d) {
-                    return occs[i];
-                }
+                double d = bag.get(i);
+                meanTest += d * bag.occurrences(d) * occurrences.occurrences(d);
             }
-            return 0;
+            return meanTest;
         }
 
         public double[] keys() {
             return keyset;
         }
 
-        public double[] valueList() {
-            return list;
-        }
-
         public void collect(Set<Double> set) {
             for (int i = 0; i < size; i++) {
                 set.add(keyset[i]);
             }
+        }
+
+        public int addOccurrences() {
+            return total_occurrences;
+        }
+
+        public Iterable<Double> iterate() {
+            return bag;
         }
     }
 
@@ -152,15 +154,18 @@ public abstract class AbstractRanking implements Ranking {
         int i = 0;
         MultiMap<Double, OWLEntity> map = new MultiMap<Double, OWLEntity>(false, false);
         for (OWLEntity o : objects) {
-            double value = this.metric.getValue(o);
-            if (max < value) {
+            Double value = filter(this.metric.getValue(o));
+            if (max.compareTo(value) < 0) {
                 max = value;
             }
             valueList[i++] = value;
             map.put(value, o);
         }
-        dmap = new TinyDoubleMap(valueList, map.keySet());
-        for (double key : map.keySet()) {
+        // System.out.println("AbstractRanking.AbstractRanking() " +
+        // valueList.length + "\t"
+        // + map.keySet().size() + "\t" + size(valueList));
+        dmap = new TinyDoubleMap(valueList, new ArrayList<Double>(map.keySet()));
+        for (Double key : map.keySet()) {
             dmap.add(key, map.get(key).size());
         }
         Collection<OWLEntity> m = map.get(max);
@@ -169,6 +174,19 @@ public abstract class AbstractRanking implements Ranking {
         for (int x = 0; x < maxEntities.length; x++) {
             maxEntities[x] = it.next();
         }
+    }
+
+    private int size(double[] valueList) {
+        Set<Double> set = new HashSet<Double>();
+        for (double d : valueList) {
+            set.add(d);
+        }
+        return set.size();
+    }
+
+    private Double filter(double value) {
+        double d = Math.rint(value * 1000) / 1000;
+        return Double.valueOf(d);
     }
 
     /** @return the metric */
@@ -246,40 +264,44 @@ public abstract class AbstractRanking implements Ranking {
 
     public double computeStandardDeviation() {
         StandardDeviation sd = new StandardDeviation();
-        for (double i : dmap.list) {
+        for (double i : dmap.iterate()) {
             sd.increment(i);
         }
         return sd.getResult();
     }
 
     public double computeAverage() {
-        final int size = dmap.list.length;
+        final int size = dmap.size;
         if (size == 0) {
             return 0D;
         }
         double total = 0;
-        for (double d : dmap.list) {
+        for (double d : dmap.iterate()) {
             total += d;
         }
         return total / size;
     }
 
     public final int computeSampleSize() {
-        int toReturn = 0;
-        for (int i : dmap.occs) {
-            toReturn += i;
-        }
-        return toReturn;
+        return dmap.addOccurrences();
+        // int toReturn = 0;
+        // for (int i : dmap.occs) {
+        // toReturn += i;
+        // }
+        // return toReturn;
     }
 
     public final double computeMean() {
-        final int size = dmap.list.length;
-        int counter = 0;
-        double mean = 0;
-        for (int i = 0; i < size; i++) {
-            counter += dmap.occs[i];
-            mean += dmap.list[i] * dmap.occs[i];
+        // final int size = dmap.size;
+        int counter = dmap.addOccurrences();
+        if (counter == 0) {
+            return 0;
         }
+        double mean = dmap.mean();
+        // for (int i = 0; i < size; i++) {
+        // // counter += dmap.occs[i];
+        // mean += dmap.valueListTimesOccurrences(i);
+        // }
         if (counter > 0) {
             return mean / counter;
         }

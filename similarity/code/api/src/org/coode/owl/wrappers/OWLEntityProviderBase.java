@@ -8,8 +8,8 @@ import java.util.Set;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-public class OWLEntityProviderBase {
-    protected final Set<OWLEntity> delegate = new HashSet<OWLEntity>();
+public abstract class OWLEntityProviderBase implements OWLEntityProvider {
+    private final Set<OWLEntity> delegate = new HashSet<OWLEntity>();
     private final OWLOntologyManager ontologyManager;
 
     public OWLEntityProviderBase(final OWLOntologyManager ontologyManager) {
@@ -23,14 +23,16 @@ public class OWLEntityProviderBase {
      * @return
      * @see java.util.Set#add(java.lang.Object) */
     public boolean add(final OWLEntity e) {
-        return delegate.add(e);
+        return false;
+        // return delegate.add(e);
     }
 
     /** @param c
      * @return
      * @see java.util.Set#addAll(java.util.Collection) */
     public boolean addAll(final Collection<? extends OWLEntity> c) {
-        return delegate.addAll(c);
+        return false;
+        // return delegate.addAll(c);
     }
 
     /** @see java.util.Set#clear() */
