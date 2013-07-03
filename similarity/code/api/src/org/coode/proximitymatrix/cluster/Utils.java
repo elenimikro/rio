@@ -82,6 +82,7 @@ import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
@@ -93,8 +94,10 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -1223,5 +1226,26 @@ public class Utils {
 				});
 		entities.addAll(_entities);
 		return entities;
+	}
+
+	public static org.coode.utils.owl.ManchesterSyntaxRenderer enableLabelRendering(
+			OWLOntologyManager manager) {
+		OWLDataFactory dataFactory = manager.getOWLDataFactory();
+		ShortFormProvider shortFormProvider = new AnnotationValueShortFormProvider(
+				Arrays.asList(dataFactory.getRDFSLabel()),
+				Collections.<OWLAnnotationProperty, List<String>> emptyMap(),
+				manager);
+		org.coode.utils.owl.ManchesterSyntaxRenderer renderer = new org.coode.utils.owl.ManchesterSyntaxRenderer();
+		// ManchesterOWLSyntaxObjectRenderer renderer = new
+		// ManchesterOWLSyntaxObjectRenderer(
+		// new OutputStreamWriter(System.out),
+		// new AnnotationValueShortFormProvider(Arrays.asList(dataFactory
+		// .getRDFSLabel()), Collections
+		// .<OWLAnnotationProperty, List<String>> emptyMap(),
+		// manager));
+		// //
+		// ToStringRenderer.getInstance().setRenderer(renderer);
+		renderer.setShortFormProvider(shortFormProvider);
+		return renderer;
 	}
 }
