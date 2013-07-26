@@ -34,6 +34,7 @@ public class TestHelper {
 			throws OWLOntologyCreationException {
 		for (IRI iri : iris) {
 			URI uri = iri.toURI();
+			System.out.println(uri);
 			if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
 				File file = new File(uri);
 				File parentFile = file.getParentFile();

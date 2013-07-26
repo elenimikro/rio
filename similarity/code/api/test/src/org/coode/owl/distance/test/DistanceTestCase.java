@@ -10,13 +10,16 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.util.Collection;
 
-import junit.framework.TestCase;
-
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
+import org.junit.Before;
+import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.IRI;
@@ -31,7 +34,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-public abstract class DistanceTestCase extends TestCase {
+public abstract class DistanceTestCase {
 	protected static final String pizza_ns = "http://www.co-ode.org/ontologies/pizza/pizza.owl#";
 
 	protected abstract DistanceBuilder getDistanceBuilder();
@@ -42,12 +45,13 @@ public abstract class DistanceTestCase extends TestCase {
 		return ontologyManager;
 	}
 
-	@Override
+	@Before
 	protected void setUp() throws Exception {
 		ToStringRenderer.getInstance().setRenderer(
 				new ManchesterSyntaxRenderer());
 	}
 
+	@Test
 	protected void properTest(final AbstractAxiomBasedDistance distance,
 			final OWLEntity... entities) {
 		for (OWLEntity c : entities) {

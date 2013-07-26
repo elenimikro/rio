@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,8 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
@@ -32,16 +32,14 @@ import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.WardsProximityMeasureFactory;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
+import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-public class TestProximityMatrix extends TestCase {
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
+public class TestProximityMatrix {
 
+	@Test
 	public void testAgglomerate() {
 		OWLOntology ontology = TestHelper.getPizza();
 		OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();

@@ -1,11 +1,12 @@
 package org.coode.owl.structural.difference.test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
@@ -16,6 +17,7 @@ import org.coode.oppl.exceptions.OPPLException;
 import org.coode.oppl.variabletypes.InputVariable;
 import org.coode.oppl.variabletypes.VariableType;
 import org.coode.oppl.variabletypes.VariableTypeFactory;
+import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -24,8 +26,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-public class OPPLAssignmentMapTest extends TestCase {
+public class OPPLAssignmentMapTest {
 
+	@Test
 	public void testAsignmentMapDisjointness()
 			throws OWLOntologyCreationException, OPPLException {
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
