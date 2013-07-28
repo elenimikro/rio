@@ -1,0 +1,2970 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.co-ode.org/roberts/upper.owl#"
+     xml:base="http://www.co-ode.org/roberts/upper.owl"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:upper="http://www.co-ode.org/roberts/upper.owl#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:unnamed="http://www.owl-ontologies.com/unnamed.owl#">
+    <owl:Ontology rdf:about="http://www.co-ode.org/roberts/upper.owl">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Double click on rdfs:comment at left                                       
+
+This is a demonstration ontology reconstructing much of the OpenGALEN Upper Ontology in OWL-DL.  Detailed comments are included with classes and properties along with demonstration notions preceded with the prefix &quot;Probe_&quot;.
+
+The ontology is provided strictly &quot;as is&quot; and without guarantees.  It is still in progress and will be updated from time to time.
+
+The ontology is free for use with acknowledgement to OpenGALEN and the University of Manchester.
+
+All material copyright University of Manchester.
+
+A discussion is available in &quot;Patterns, Properties and Minimizing Commitment:
+Reconstruction of the GALEN Upper Ontology in OWL&quot; Alan L Rector and Jeremy Rogers, to be presented at the Workshop on Core Ontologies (CORONT) in conjunction with the European Knowledge Acquisition Workshop (EKAW-2004), Northampton, UK. 
+
+All material available from http://www.cs.man.ac.uk/~rector/ontologies/sample-top-bio/</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2002/07/owl#versionInfo"/>
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#label"/>
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/description"/>
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#comment"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Dependence_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Dependence_property">
+        <rdfs:label>dependence_property</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Instrinsic_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Instrinsic_property">
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_intrinsic_property"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Refining_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Inverse_Refining_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Inverse_Refining_property">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">See Refining Property</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Refining_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">See Relational Property</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relational_property"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Inverse_intrinsic_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Inverse_intrinsic_property">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Refining_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Inverse_modifier_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Inverse_modifier_property">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Refining_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Inverse_selector_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Inverse_selector_property">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_intrinsic_property"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Selector_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Modifier_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Modifier_property">
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_modifier_property"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Refining_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Refining_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Refining_property">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Properties linking self-standing entities to refining entities or refining entities to each other.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Dependence_property"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Domain_entity"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Refining_entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Relational_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Relational_property">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Properties linking self-standing entities</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Selector_property -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#Selector_property">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Instrinsic_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#acts_on -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#acts_on">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Acts on substrate
+
+Pumping acts_on blood.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_participant"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#affects -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#affects">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subvariety of acts_on which indicates actual effect on the thing acted on - creation, modification, etc.  A sub of has_locus.  Otherwise, everything acted on by the process would become the locus. Counterexample - heart failure.  The pumping acts on blood but is adequate.  It affects circulation. 
+
+This is a variant of the GALEN version which achieved many of the same effects via the propagates_via axiom.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#acts_on"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_locus"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#contains -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#contains">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#defines -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#defines">
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Material_entity"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_material_entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#embodies -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#embodies">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_non_physical_aspect"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_embodied_as"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_actor -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_actor">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The actor in a process.  If the Heart is the actor in a pathological process then it is a locus of the pathology - see Circulatory_failure_due_to_cardiac_failure</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_locus"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_participant"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_agent -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_agent">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Whereas actors can be either occurrents or continants. Agents - the initator, must be a continuant. 
+
+Occurrents that have agents are known as Acts.</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_actor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_connection_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_connection_to">
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_connected_to"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_physical_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_constituent -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_constituent">
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_structural_part"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_discrete_part -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_discrete_part">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The relations between distinct things - i.e. things that have a distinct shape a well defined numbers of parts and their parts - see is_subdivision_of</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_structural_part"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_distinct_part -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_distinct_part">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_structural_part"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_distinct_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_final_physical_location -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_final_physical_location">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_physical_location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_functional_part -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_functional_part">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_gross_part"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_grain -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_grain">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_member"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_gross_part -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_gross_part">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">has_clinical_part</rdfs:label>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The usual  meaning of partonomy - including functional and physical partonomy but excluding membership.  In general faults etc of gross parts are faults of the whole.  Whereas this is not true of the more general is_part_of relation.  (Known as &quot;is_clinical_part_of&quot; in reconstruction of GALEN)</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_part"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_gross_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_group_member -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_group_member">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_member"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_in_group_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_initial_physical_location -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_initial_physical_location">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_physical_location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_laterality -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_laterality">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Laterality"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Selector_property"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_laterality_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_left_right_symmetry -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_left_right_symmetry">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Instrinsic_property"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Left_right_symmetry"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_level_quality -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_level_quality">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Activity_Level"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_quality"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_location -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_location">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Most general notion of location.  Not necessarily physical
+
+NOT GALEN &quot;hasLocation&quot;</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relational_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_locus -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_locus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GALEN &#39;hasLocation&#39; - locus of pathology.
+
+NB because of differences between sanctioning and domain/range constraints, must always ask for has_normality pathological &amp; hasLocus...</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_location"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_locus_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_manifestation -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_manifestation">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Relation between a pattern or agent and its manifestation.  Whether agents are patterns/information or not has been left open. 
+
+A subproperty of has_location because the agent is co-located with its manifestation.</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_location"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_manifestation_of"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_non_physical_aspect_of"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Pattern"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_member -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_member">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_part"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_member_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_non_physical_aspect -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_non_physical_aspect">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_physical_entity"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_normality_status -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_normality_status">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier_property"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Normality_status"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_normality_status_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_organisational_part -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_organisational_part">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_gross_part"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_organisational_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_outcome -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_outcome">
+        <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TODO: Consider whether to place under affects.  should has_outcome be a child of has_locus.</owl:versionInfo>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">has_outcome 
+
+The general outcome of an act.
+
+Should probably be a sub of affects.  
+
+Still being chased.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#acts_on"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_part -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_part">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_physical_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_participant -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_participant">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Relation betwen occurrents and either continuants or other occurrents.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relational_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_physical_location -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_physical_location">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physical location</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_location"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_physical_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_portion -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_portion">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_structural_part"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_portion_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_quality -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_quality">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quality"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_quantity -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_quantity">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier_property"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-extent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_status -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_status">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier_property"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quality"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quality_status_partition"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_status_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_structural_part -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_structural_part">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_gross_part"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_structural_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_subdivision -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_subdivision">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_structural_part"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_topology -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_topology">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Instrinsic_property"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_object"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Topology_value_partition"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_topology_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_units -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_units">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier_property"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Unit"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#inverse_of_Teaching-top-redone-02-05_Slot_1"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#includes -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#includes">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">relation between syndrome and the different pathologies.
+
+The Subproperty includes_specifically is a sub of has_locus.  So in general a syndrome or &quot;Clinical Situation&quot; can include things which it is not a disease of - e.g. Diabetes should not be a renal or eye disease, although the total syndrome includes these things, at least as possibilities.
+
+However, in this version this broader version of includes is not used.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_member"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#includes_specifically -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#includes_specifically">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The specific version of includes which points to the causative or key pathology. 
+
+Follows GALEN naming conventions.  Alternatives welcome.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_locus"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#includes"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#inverse_of_Teaching-top-redone-02-05_Slot_0 -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#inverse_of_Teaching-top-redone-02-05_Slot_0">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_modifier_property"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_quantity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#inverse_of_Teaching-top-redone-02-05_Slot_1 -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#inverse_of_Teaching-top-redone-02-05_Slot_1">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_modifier_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#inverse_of_Teaching-top-redone-02-07_Slot_4 -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#inverse_of_Teaching-top-redone-02-07_Slot_4">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_physical_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_acted_on_by -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_acted_on_by">
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#acts_on"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_participant_in"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_actor_in -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_actor_in">
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_actor"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_locus_of"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_participant_in"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_affected_by -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_affected_by">
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#affects"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_locus_of"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_participant_in"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_agent_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_agent_of">
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_agent"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_actor_in"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_connected_to -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_connected_to">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Connection.  Not symmetric in GALEN because GALEN handled symmetric properties badly.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_physical_location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_constituent_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_constituent_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_constituent"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_structural_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_contained_in -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_contained_in">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Containment.  In this veresion must be contained in a cavity.
+
+This is more pedantic than GALEN.
+
+Note containment implies location but not partonomy</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Material_entity"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#contains"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_defined_by -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_defined_by">
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#defines"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_distinct_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_distinct_part_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_structural_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_embodied_as -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_embodied_as">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The relation between an agent and the physical manifestation</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_non_physical_aspect_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_functional_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_functional_part_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_functional_part"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_gross_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_grain_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_grain_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Membership of collective. 
+
+Grains of sand - beach.
+
+Molecules - substances
+
+is_grain_of is the fundamental entity for spanning levels of granularity.
+
+A grain is a</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Collective"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_thing"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_grain"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_member_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_gross_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_gross_part_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">is_clinical_part_of</rdfs:label>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The usual  meaning of partonomy - including functional and physical partonomy but excluding membership.  In general faults etc of gross parts are faults of the whole.  Whereas this is not true of th emore general is_part_of relation.  (Known as &quot;is_clinical_part_of&quot; in reconstruction of GALEN)</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_in_group_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_in_group_of">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Group membership as in goose - flock of geese.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_member_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_laterality_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_laterality_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_selector_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_level_quality_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_level_quality_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_level_quality"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_quality_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_location_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_location_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_locus_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_locus_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_manifestation_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_manifestation_of">
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_non_physical_aspect"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_location_of"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Pattern"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_member_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_member_of">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Membership - not standard partonomy and not included in clinical partonomy</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Complex"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_non_physical_aspect_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_non_physical_aspect_of">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The top property linking non-physical to physical entities.  More a convenience for organisation than a property to be used. 
+
+We are agnostic about whether one non_physical entity can be linked to other non-physical entities.  Hence the range is merely self-standing entity.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_physical_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relational_property"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_non_physical_aspect"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_normality_status_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_normality_status_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_modifier_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_occupied_by -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_occupied_by">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_of">
+        <rdfs:label>is_of</rdfs:label>
+        <dc:description>The property that links regions to the things they are regions of, and more generally modalities and related dependent notions to their kernel notions</dc:description>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Dependence_property"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Dependent_entity"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_organisational_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_organisational_part_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Organisation"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Organisation"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_gross_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_outcome_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_outcome_of">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Outcome of process.  
+
+Has additional parent has_locus to get reasoning right in absence of more sophisticated rules.</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_locus"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_outcome"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_acted_on_by"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_owned_by -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_owned_by">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#owns"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_part_of">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Generic partonomy including  membership.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_part"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_physical_location"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_participant_in -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_participant_in">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_Relational_property"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_participant"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_physical_location_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_physical_location_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_location_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_portion_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_portion_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The relation between two mass entities which are mixed or parts.</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_structural_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_quality_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_quality_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GALEN isFeatureOf
+
+Children for each quality to control cardinality. 
+
+Links features to self-standing entities.
+
+Placed in this way around to make child of</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quality"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relational_property"/>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_quality"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_role_played_by -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_role_played_by">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Link between a role and the things that play that role.  
+
+In this direction to be consistent with location and manifestation</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_non_physical_aspect_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_status_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_status_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_modifier_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_structural_part_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_structural_part_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structural partonomy not including membership. Structural partonomy in GALEN does not cross scales. 
+
+The domain of of independent entity forces bunches of things, etc. to be independent even though the parent notion of bunch is not.</rdfs:comment>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_gross_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_subdivision_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_subdivision_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The relation between</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_subdivision"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_structural_part_of"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#is_topology_of -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#is_topology_of">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Inverse_intrinsic_property"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#occupies -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#occupies">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The relation of an agent to its official &#39;residence&#39; or buildings which it occupies.  Applies to both organisations and individuals.  For an organisation, may be considered locative. However, the legal location of an organisation is a tricky matter which we defer here. Note the range is too broad, but it is easier to say any building entity than to make it more precise.</rdfs:comment>
+        <rdfs:range rdf:resource="http://www.co-ode.org/roberts/upper.owl#Building_entity"/>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relational_property"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_occupied_by"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#owns -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#owns">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Only agents can own things.  Just about anything except a person can be owned.  (Even a person&#39;s body, after they are dead is owned in English law, and a person owns their body and body parts under many jurisdictions before death)</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relational_property"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+                    <owl:Class>
+                        <owl:complementOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Person"/>
+                    </owl:Class>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#plays_role -->
+
+    <owl:ObjectProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#plays_role">
+        <rdfs:subPropertyOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_non_physical_aspect"/>
+        <owl:inverseOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_role_played_by"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#has_magnitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.co-ode.org/roberts/upper.owl#has_magnitude">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The numeric value of a quantity.
+
+
+
+
+
+
+
+Cannot have place in the hierarchy parallel to that of has_unit, because a data type property cannot be the subproperty of an object property or vice versa.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Act -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Act">
+        <rdfs:label>Act</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_agent"/>
+                        <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An occurrent that has an agent.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Activity_Level -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Activity_Level">
+        <rdfs:label>Activity Level</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quality"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The level of activity of a process. 
+
+
+
+
+
+Amongst other statuses takes Level_adequacy_status</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Afrtistic_style -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Afrtistic_style">
+        <rdfs:label>Afrtistic Style</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Style"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Agent -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Agent">
+        <rdfs:label>Agent</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_agent_of"/>
+                        <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An actual agent - the agent of some real occurrent.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Aggregation -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Aggregation">
+        <rdfs:label>Aggregation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Complex"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relation"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anything that brings together things of a given sort. 
+
+Aggregations are always defined using universal rather than existential restrictions</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Area_extent -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Area_extent">
+        <rdfs:label>Area Extent</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-extent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_quantity"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_units"/>
+                                <owl:allValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Area_unit"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Area_unit -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Area_unit">
+        <rdfs:label>Area Unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Unit"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Artifact -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Artifact">
+        <rdfs:label>Artifact</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_outcome_of"/>
+                        <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Act"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The notion of &quot;Artifact&quot; is of something created by an Act (by definition performed by some &quot;Potential_agent&quot;).
+
+In this version Artifacts are required to be continuants, but even this limitations is not definite.  A performance is certainly artefactual.  This limits the Artefact to the script and not the performance.  I think that is the usual meaning of the word, but others may choose to differ. 
+
+Certainly the notion of a &quot;Continuant that is the outcome of some Act&quot; is useful.  Whether the labelling is correct or not remains to be discussed.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Book_copy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Book_copy">
+        <rdfs:label>Book Copy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Written_object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Book_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Book_oeuvre">
+        <rdfs:label>Book Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Building -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Building">
+        <rdfs:label>Building</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Building_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Material_entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Building_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Building_entity">
+        <rdfs:label>Building Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Made_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Must be part of Physical_discrete_continuant_entity rather than physical object, because some parts of buildings are the spaces.  Spaces are non-material, so building parts can&#39;t all be material.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Cavity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Cavity">
+        <rdfs:label>Cavity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_material_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A space or hole.  &quot;Cavity&quot; is the common anatomic phrase.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Classical -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Classical">
+        <rdfs:label>Classical</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Musical_style"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Cluster -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Cluster">
+        <rdfs:label>Cluster</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Group"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ad hoc grouping - taken from FMA</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Collective -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Collective">
+        <rdfs:label>Collective</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Aggregation"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A collection of grains at one level of granularity that make up a mass entity at the next - i.e. an entity where it is the behaviour of the collective of grains that is important rather than the behaviour of the individual grains is unimportant 
+
+In general, informally &quot;multiple of&quot; can be read as a pluraliser, i.e.
+
+&quot;Multiple has_grain only Red_cell&quot; = &quot;Red cells&quot;
+
+Note that multiples are always formed with universal restrictions rather than existential. IE multiples are homogeneous.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Collective_of_sound_signals -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Collective_of_sound_signals">
+        <rdfs:label>Collective Of Sound Signals</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Collective"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_grain"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Signal"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_constituent"/>
+                                <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Sound_energy"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A collection of signals that are made of (has_constituent) sound</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Compass_positional_relation -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Compass_positional_relation">
+        <rdfs:label>Compass Positional Relation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Complex -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Complex">
+        <rdfs:label>Complex</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anything that is in any way aggregated</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Continuant_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Continuant_entity">
+        <rdfs:label>Continuant Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Continuant or Endurant.
+
+Entities that persists in time but has parts in space.
+
+As opposed to Occurrent</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Creation_act -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Creation_act">
+        <rdfs:label>Creation Act</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Act"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The act of creating, specifically of a pattern.  The act of &quot;Creation&quot; will remain otherwise unanalysed in this version.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Dependent_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Dependent_entity">
+        <rdfs:label>Dependent Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Domain_entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Discrete_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Discrete_entity">
+        <rdfs:label>Discrete Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Countable entities - people, buildings, organs, etc.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Domain_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Domain_entity">
+        <rdfs:label>Domain Entity</rdfs:label>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">See comment under Metadata tab for ontology documentation.  (double click on rdfs:comment)
+
+Domain_entity is the top proper entity in the ontology.  We recommend defining a top entity within the ontology because:
+
+a) It is often useful to define other entities either for debugging purposes (probes) or to simulate individuals, etc.
+
+b) Some tools treat the immediate children of owl:Thing peculirarly.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Duration_unit -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Duration_unit">
+        <rdfs:label>Duration Unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Unit"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Energy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Energy">
+        <rdfs:label>Energy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Essay_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Essay_oeuvre">
+        <rdfs:label>Essay Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Exam_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Exam_oeuvre">
+        <rdfs:label>Exam Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Folk -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Folk">
+        <rdfs:label>Folk</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Musical_style"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Group -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Group">
+        <rdfs:label>Group</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Aggregation"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A discrete collection of things - flocks etc.
+
+Also includes</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Handout_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Handout_oeuvre">
+        <rdfs:label>Handout Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Hollow_object -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Hollow_object">
+        <rdfs:label>Hollow Object</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_object"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_topology"/>
+                        <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#hollow_topology"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Intrinsic_property_partition -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Intrinsic_property_partition">
+        <rdfs:label>Intrinsic Property Partition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Refining_entity"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Intrinsic properties are those which are not &quot;qualities&quot; - laterality, topology, etc.  There is usually little point in reifying such properties.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Jazz -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Jazz">
+        <rdfs:label>Jazz</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Musical_style"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Journal_copy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Journal_copy">
+        <rdfs:label>Journal Copy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Written_object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Language_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre">
+        <rdfs:label>Language Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Oeuvre"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anything oevre that depends on language, whether written or spoken.   Clearly an entire subontology couold be developed here.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Laterality -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Laterality">
+        <rdfs:label>Laterality</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#left_laterality"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#right_laterality"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Selector"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sidedness - the left/right hand</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Left_right_symmetry -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Left_right_symmetry">
+        <rdfs:label>Left Right Symmetry</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#paired_symmetry"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#unpaired_symmetry"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Intrinsic_property_partition"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Used in anatomy to identify parts of the body which have left and right versions, which may be different (e.g. the, lungs, the hemispheres of the brain) or mirror images of each other, e.g. hands, arms, etc.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Length_unit -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Length_unit">
+        <rdfs:label>Length Unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Unit"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Level_adequacy_status -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Level_adequacy_status">
+        <rdfs:label>Level Adequacy Status</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#adequate_status"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#inadequate_status"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#super_adequate_status"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quality_status_partition"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The level of a process.  Used in this demonstration to define Heart Failure.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Line -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Line">
+        <rdfs:label>Line</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_material_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The line formed by some physical marks or markers, for example a crease.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Linear_extent -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Linear_extent">
+        <rdfs:label>Linear Extent</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-extent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_quantity"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_units"/>
+                                <owl:allValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Length_unit"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Literary_style -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Literary_style">
+        <rdfs:label>Literary Style</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Style"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Machine -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Machine">
+        <rdfs:label>Machine</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Building_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Material_entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Made_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Made_entity">
+        <rdfs:label>Made Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Artifact"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_thing"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anything that is made.  Made artefacts other than things like Bonzai trees or ornamental gardens, etc.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Mass_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Mass_entity">
+        <rdfs:label>Mass Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Measurable entities - water, air,blood,  tissue, etc. 
+
+as opposed to Discrete_entities</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Mass_physical_continuant -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Mass_physical_continuant">
+        <rdfs:label>Mass Physical Continuant</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Material_building_part -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Material_building_part">
+        <rdfs:label>Material Building Part</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Material_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Part_of_building"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The actual material</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Material_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Material_entity">
+        <rdfs:label>Material Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_continuant_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An physical entity that has mass/energy as opposed to holes (&quot;cavities&quot;) lines, etc.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Material_machine_part -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Material_machine_part">
+        <rdfs:label>Material Machine Part</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Material_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Part_of_machine"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Part_of_machine"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The actual material</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Modifier -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Modifier">
+        <rdfs:label>Modifier</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Refining_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Modifiers are the common modifiers which change the state of a quality or other aspect of a self-standing entity.  In many cases it is worth representing the &quot;quality&quot; as a class.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Musical_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Musical_oeuvre">
+        <rdfs:label>Musical Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Musical_style -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Musical_style">
+        <rdfs:label>Musical Style</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Style"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Non_material_building_part -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_material_building_part">
+        <rdfs:label>Non Material Building Part</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_material_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Part_of_building"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Non_material_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_material_entity">
+        <rdfs:label>Non Material Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_continuant_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Physical entities that do not have mass but are defined by other phyhsical entities, e.g. a planar surface defined by a table.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Non_material_machine_part -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_material_machine_part">
+        <rdfs:label>Non Material Machine Part</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_material_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Part_of_machine"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Part_of_machine"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Non_physical_discrete_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_physical_discrete_entity">
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Non_physical_discrete_entity</rdfs:label>
+        <rdfs:label>Non Physical Discrete Entity</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_physical_entity"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Only boundaries are marked as discrete.  Patterns and Organisations should probably also be discrete but requires more consideration.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Non_physical_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Non_physical_entity">
+        <rdfs:label>Non Physical Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">See Physical_entity</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Normality_status -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Normality_status">
+        <rdfs:label>Normality Status</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#non_Normal"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#normal"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Status_partition"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Normality_status is a special status for biomedical ontologies.  It has a much more complex structure than most other status, but is a good demonstration of the advantages of using &quot;value partitions&quot; rather than simple values.
+
+NB - essentially a value partition - two values plus a covering axiom.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Occurrent_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Occurrent_entity">
+        <rdfs:label>Occurrent Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Things that happen - processes, events, and activities
+Occurents - have duration - have parts in time as well as space. 
+
+as opposed to Continuant</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Oeuvre">
+        <rdfs:label>Oeuvre</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Pattern"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_outcome_of"/>
+                        <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Act"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">&#39;Oeuvre&#39; is the french word for &quot;work&quot; in the sense of &quot;work of art&quot; or &quot;work of literature&quot;.  It is used here to avoid the English homonym of &quot;work&quot; as a verb or the type of working that we do for a living. 
+
+In this version we will take a very simple versio and just define written, musical and visual oeuvre without trying to analyse them further.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Organisation -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Organisation">
+        <rdfs:label>Organisation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Group"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_physical_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_member"/>
+                <owl:allValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Organisations are here taken as being co-extensive with the group of agents that make them up - which can of course be empty.  Alternatively we could take the Organisation as independent and constituted by the group of agents.
+
+One might also wish to argue that an organisation has to be an actual agent - in effect that it has to do something - but it is more that it is empowered to do things than that it does them which seems to count.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Organisational_role -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Organisational_role">
+        <rdfs:label>Organisational Role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Role_played"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Pamphlet_copy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Pamphlet_copy">
+        <rdfs:label>Pamphlet Copy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Written_object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Part_of_building -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Part_of_building">
+        <rdfs:label>Part Of Building</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Building_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Note - not all parts of buildings are material.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Part_of_machine -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Part_of_machine">
+        <rdfs:label>Part Of Machine</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Building_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Note - not all parts of buildings are material.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Pattern -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Pattern">
+        <rdfs:label>Pattern</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_physical_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Patterns are general forms and scripts including &#39;oeuvres&#39; - the abstractions for intellectual outputs.  These were not developed in GALEN and so are left undeveloped here. 
+
+There is also an argument, according to Barry Smith, for using pattern rather than complexes for Diseases/Clinical situations.   However, this leaves us with three entities at least for each disease. Furthermore, we talk of the duration etc. of a disaease which seems to apply more sensibly to the process.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Performance_Act -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Performance_Act">
+        <rdfs:label>Performance Act</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Act"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The act of performing.  &quot;Performance&quot; will be left otherwise uninterpreted in this version.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Performance_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Performance_oeuvre">
+        <rdfs:label>Performance Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Person -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Person">
+        <rdfs:label>Person</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_object"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Potential_agent"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The agentive aspect of a person.  That which ceases to exist when the person dies. 
+
+It is difficult to avoid some degree of dualism.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Photocopy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Photocopy">
+        <rdfs:label>Photocopy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Written_object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Photocopy_of_a_professors_hand_out -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Photocopy_of_a_professors_hand_out">
+        <rdfs:label>Photocopy Of A Professors Hand Out</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Photocopy"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_manifestation_of"/>
+                        <owl:someValuesFrom>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Handout_oeuvre"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_outcome_of"/>
+                                        <owl:someValuesFrom>
+                                            <owl:Class>
+                                                <owl:intersectionOf rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Creation_act"/>
+                                                    <owl:Restriction>
+                                                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_agent"/>
+                                                        <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Person"/>
+                                                    </owl:Restriction>
+                                                </owl:intersectionOf>
+                                            </owl:Class>
+                                        </owl:someValuesFrom>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_continuant_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_continuant_entity">
+        <rdfs:label>Physical Continuant Entity</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A common parent for material and non-material physical things. No obvious label has been suggested other than the literal one given here. 
+
+However, it is very useful, even necessary that includes both material things and the holes and other non-material entities defined by the material things.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_discrete_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_discrete_entity">
+        <rdfs:label>Physical Discrete Entity</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Discrete physical things, whether occurrents or continuants, whether material or non-material.  
+
+This may be redundant, depending on ones views of mass occurrents such as &quot;walking&quot;, &quot;digesting&quot;, &quot;talking&quot;, etc.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_entity">
+        <rdfs:label>Physical Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Those things that are manifest physically - both occurrrents and continuants but not abstractions such as ideas, patterns, etc. 
+
+This ontology is specifically silent on whether &quot;Agents&quot; are physical or not in order to be able to fit in with ontologies which make either choice.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_manifestation_of_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_manifestation_of_oeuvre">
+        <rdfs:label>Physical Manifestation Of Oeuvre</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_object"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_manifestation_of"/>
+                        <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Oeuvre"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_outcome_of"/>
+                <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Act"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_mass_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_mass_entity">
+        <rdfs:label>Physical Mass Entity</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Mass_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_object -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_object">
+        <rdfs:label>Physical Object</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Material_entity"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_role -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_role">
+        <rdfs:label>Physical Role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Role_played"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Physical_thing -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_thing">
+        <rdfs:label>Physical Thing</rdfs:label>
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+                    <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Material_or_non_material - includes both objects and holes, lines, etc. 
+
+We don&#39;t have a convenient inclusive label.   We&#39;ve used &quot;Physical thing&quot; as less bad than others. 
+
+&quot;Physical_feature&quot; has too many misleading connotations.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Plane -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Plane">
+        <rdfs:label>Plane</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Non_material_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A flat surface</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Play_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Play_oeuvre">
+        <rdfs:label>Play Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Poem_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Poem_oeuvre">
+        <rdfs:label>Poem Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Pop -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Pop">
+        <rdfs:label>Pop</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Musical_style"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Positional_relation -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Positional_relation">
+        <rdfs:label>Positional Relation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Potential_agent -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Potential_agent">
+        <rdfs:label>Potential Agent</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Continuant_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Potential_agent serves as the domain for has_agent.
+
+The list of potential agents is deliberately left open and no statement is made about whether they need by physical or not.  
+
+Alternatively one could leave the domain of has_agent as simply discrete continuant.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Print_out_copy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Print_out_copy">
+        <rdfs:label>Print Out Copy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Written_object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Psycho_social_role -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Psycho_social_role">
+        <rdfs:label>Psycho Social Role</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Role_played"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Quality -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Quality">
+        <rdfs:label>Quality</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Quality_status_partition -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Quality_status_partition">
+        <rdfs:label>Quality Status Partition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Status_partition"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quality_status_partitions are the vast majority of status partitions which go with qualities. 
+
+
+
+Only a single example, &quot;Level&quot; is given here, but most clinical features such as body temperature, height, weight, pulse rate, etc. would be treated as &quot;qualities&quot;.  Each would have its own &quot;Quality&quot; defined under self-standing entities and a set of mutually exclusive statuses.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Quantity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Quantity">
+        <rdfs:label>Quantity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quantities have a magnitude and units.  They are not so much modifiers as there is no other obvious place for them.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Refining_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Refining_entity">
+        <rdfs:label>Refining Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Dependent_entity"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">All entities which are dependent modifiers - roughly speaking value types and values.  (See SWBP note on value partitions)</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Region -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Region">
+        <rdfs:label>Region</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Dependent_entity"/>
+        <dc:description>A arbitrary or humanly defined division of a physical object.
+Typically might be bounded  by things or be characterised by being the left or right side, front or back, upper or lower half, etc.
+
+In a sense related portion</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Relation -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Relation">
+        <rdfs:label>Relation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Complex"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reified relations.  Primarily in biology &quot;Qualities&quot; but might also be other forms of relationship</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Role_played -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Role_played">
+        <rdfs:label>Role Played</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Pattern"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">&quot;Roles&quot; are summarisers which indecated what roles a entity plays in different situations.  To emphasize this aspect and reduce ambiguity, we use the suffixe  &quot;_played&quot;.   (This leads to some ugly exprssions of the form &quot;...plays_role x_played&quot;.  So normally, specific roles are given just the suffix &quot;_role&quot;, e.g. &quot;Music_role&quot;, &quot;Catalyst_role&quot; etc.  
+
+In some cases such as &quot;Music_role&quot; or &quot;Literature_role&quot; they are natural kinds that probably can&#39;t be defined. 
+
+In other cases such as &quot;Catalyst role&quot;, it may be that they could be defined, but for the purposes of this ontology we choose not to do so. 
+
+Note also that most roles are actually with respect to some other individual, agent, or situation. Arguable all roles have this feature. 
+
+The importantance of roles is that they allow the same thing  play more than one role - e.g. a ring tone to play both a music role and a signalling role. 
+
+Note that Roles are disjoint, but the property plays_role is multi-valued (not functional).  Hence the same entity can play many roles simultaneously.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Selector -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Selector">
+        <rdfs:label>Selector</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Intrinsic_property_partition"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#Topology_value_partition"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Selectors are things that select one of a finite list of things rather than actually modifying something.  Examples are left_hand or &quot;left laterality&quot; vs &quot;right laterality&quot; , ordinals that number parts of the body such as the spine, etc.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Self_standing_entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Self_standing_entity">
+        <rdfs:label>Self Standing Entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Domain_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Entities which can stand on their own.  
+
+Primitive self-standing entities in the upper ontology come in disjoint pairs.  In the domain ontology they form disjoint non-exhaustive trees.
+
+The pairs show up poorly because the windows are ordered alphabetically.  However, they can be identified by the disjoint axioms (lower right hand corner of this tab).  The disjoint pairs are deiberately not exhaustive - i.e. we defer the issue of whether everything must be either physical or non-physical etc.  This allows defering commitment on such issues as whether sets of physical things are themselves physical, etc.  This is a matter on which other ontologies differe. 
+
+Also no opposite for &#39;Complex&#39; is provided, again to defer decisions.
+
+&#39;Biological&#39; is included for convenience in a BioMedical ontology. 
+
+In general it should be possible to classify a self-standing entity by asking questions about the basic dichotomies and subdichotomies 
+
+Asa  matter of style in this version, dichotomies have been represented as a pair of disjoint entities but have not been made exhaustive, e.g. it would be possible for something to be neither physical nor non-physical.  This is part of the policy of deliberately deferring ontological commitments.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Signal -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Signal">
+        <rdfs:label>Signal</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Discrete_entity"/>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_manifestation_of"/>
+                <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Pattern"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Signals are discrete occurrents that are manifestations information - i.e. are the manifestation of a pattern.  Signals have to be carried by something - i.e. constituted by some underlying mass medium, e.g. a form of energy.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Situated_positional_relation -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Situated_positional_relation">
+        <rdfs:label>Situated Positional Relation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Sound_energy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Sound_energy">
+        <rdfs:label>Sound Energy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Energy"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-entity -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-entity">
+        <rdfs:label>Spatio-temporal-entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_discrete_entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A placeholder for points and spatio-temporal notions other than extents.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-extent -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-extent">
+        <rdfs:label>Spatio-temporal-extent</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-entity"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subsumes extents of any diimensionality.  The important cases are covered currently.  Could be defined in terms of dimensionality in a future version.
+
+Spatio-temporal extents should be capable of taking magnitude values, and indeed this can be entered in Protege, but they will not perform as expected with the classifier.   However, they are created for purposes of illustration.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Status_partition -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Status_partition">
+        <rdfs:label>Status Partition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Used in clinical systems.  Also a useful demonstration of how negation can be used in complex ways, so included here.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Style -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Style">
+        <rdfs:label>Style</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Quality"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#System -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#System">
+        <rdfs:label>System</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Group"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Functional system</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Temporal_extents -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Temporal_extents">
+        <rdfs:label>Temporal Extents</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-extent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_quantity"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_units"/>
+                                <owl:allValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Duration_unit"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Topology_value_partition -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Topology_value_partition">
+        <rdfs:label>Topology Value Partition</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Intrinsic_property_partition"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">General topological characteristics used in anatomy.  The most important variants are hollow and solid, but there are many variants, only a few of which are detailed here.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Typscript_copy -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Typscript_copy">
+        <rdfs:label>Typscript Copy</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Written_object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Unit -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Unit">
+        <rdfs:label>Unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Modifier"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Units should, by rights be individuals. 
+Only the classes are actually given.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Value -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Value">
+        <rdfs:label>Value</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Refining_entity"/>
+        <dc:description>General parent for modifier values.  Can be used either with a single property such as &quot;has_quality&quot; as in  BFO or with a separate property for each modifier as in the more usual practice.</dc:description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Visual_oeuvre -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Visual_oeuvre">
+        <rdfs:label>Visual Oeuvre</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Oeuvre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Volume_extents -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Volume_extents">
+        <rdfs:label>Volume Extents</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Spatio-temporal-extent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_quantity"/>
+                <owl:allValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#has_units"/>
+                                <owl:allValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Volume_unit"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:allValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Volume_unit -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Volume_unit">
+        <rdfs:label>Volume Unit</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Unit"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Written_object -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#Written_object">
+        <rdfs:label>Written Object</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Physical_object"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.co-ode.org/roberts/upper.owl#is_manifestation_of"/>
+                <owl:someValuesFrom rdf:resource="http://www.co-ode.org/roberts/upper.owl#Language_oeuvre"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">We could describe this an an object that is the manifestation outcome of writing, or that contains writing, etc. We shall keep the commitments minimal for now as to how the writing got to the physical page - e.g. was it photocopied, printed, etc. 
+
+Merely by saying that it is the manifestation of an Oeuvre we demand that it be the outcome of some act.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#adequate_status -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#adequate_status">
+        <rdfs:label>Adequate Status</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Level_adequacy_status"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#behind -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#behind">
+        <rdfs:label>Behind</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Situated_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#closed_hollow_topology -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#closed_hollow_topology">
+        <rdfs:label>Closed Hollow Topology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#hollow_topology"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#tubular_topology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#hollow_topology -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#hollow_topology">
+        <rdfs:label>Hollow Topology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Topology_value_partition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#in_front_of -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#in_front_of">
+        <rdfs:label>In Front Of</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Situated_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#inadequate_status -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#inadequate_status">
+        <rdfs:label>Inadequate Status</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Level_adequacy_status"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#intrinsically_non_Normal -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#intrinsically_non_Normal">
+        <rdfs:label>Intrinsically Non Normal</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#non_Normal"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#left_laterality -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#left_laterality">
+        <rdfs:label>Left Laterality</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Laterality"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#right_laterality"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#mirror_image_symmetry -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#mirror_image_symmetry">
+        <rdfs:label>Mirror Image Symmetry</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#paired_symmetry"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#non_Normal -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#non_Normal">
+        <rdfs:label>Non Normal</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Normality_status"/>
+        <owl:disjointWith rdf:resource="http://www.co-ode.org/roberts/upper.owl#normal"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Anything worth noting as out of the ordinary.  There are many different ways of being non_Normal and endless discussions of the variants, but the one thing people seem to be able to agree on is a notion of &#39;not normal&#39;.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#normal -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#normal">
+        <rdfs:label>Normal</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Normality_status"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Not non-normal - actually better thought of that way although not represented in this form.  Those things not worth noting because they are expected and noting them would not, in general, convey useful information unless there were some reason to suspect that in the given circumstances they would be non-normal.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#paired_symmetry -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#paired_symmetry">
+        <rdfs:label>Paired Symmetry</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Left_right_symmetry"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#right_laterality -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#right_laterality">
+        <rdfs:label>Right Laterality</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Laterality"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#single_membrane_topology -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#single_membrane_topology">
+        <rdfs:label>Single Membrane Topology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Topology_value_partition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#solid_topology -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#solid_topology">
+        <rdfs:label>Solid Topology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Topology_value_partition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#super_adequate_status -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#super_adequate_status">
+        <rdfs:label>Super Adequate Status</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Level_adequacy_status"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#to_the_east_of -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#to_the_east_of">
+        <rdfs:label>To The East Of</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Compass_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#to_the_left_of -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#to_the_left_of">
+        <rdfs:label>To The Left Of</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Situated_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#to_the_north_of -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#to_the_north_of">
+        <rdfs:label>To The North Of</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Compass_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#to_the_right_of -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#to_the_right_of">
+        <rdfs:label>To The Right Of</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Situated_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#to_the_south_of -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#to_the_south_of">
+        <rdfs:label>To The South Of</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Compass_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#to_the_west_of -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#to_the_west_of">
+        <rdfs:label>To The West Of</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Compass_positional_relation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#tubular_topology -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#tubular_topology">
+        <rdfs:label>Tubular Topology</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#hollow_topology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#unpaired_symmetry -->
+
+    <owl:Class rdf:about="http://www.co-ode.org/roberts/upper.owl#unpaired_symmetry">
+        <rdfs:label>Unpaired Symmetry</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.co-ode.org/roberts/upper.owl#Left_right_symmetry"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Thing">
+        <rdfs:label>Owl:Thing</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Feet -->
+
+    <owl:Thing rdf:about="http://www.co-ode.org/roberts/upper.owl#Feet">
+        <rdf:type rdf:resource="http://www.co-ode.org/roberts/upper.owl#Length_unit"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Inches -->
+
+    <owl:Thing rdf:about="http://www.co-ode.org/roberts/upper.owl#Inches">
+        <rdf:type rdf:resource="http://www.co-ode.org/roberts/upper.owl#Length_unit"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#Metres -->
+
+    <owl:Thing rdf:about="http://www.co-ode.org/roberts/upper.owl#Metres">
+        <rdf:type rdf:resource="http://www.co-ode.org/roberts/upper.owl#Length_unit"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#seconds -->
+
+    <owl:Thing rdf:about="http://www.co-ode.org/roberts/upper.owl#seconds">
+        <rdf:type rdf:resource="http://www.co-ode.org/roberts/upper.owl#Duration_unit"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#square_feet -->
+
+    <owl:Thing rdf:about="http://www.co-ode.org/roberts/upper.owl#square_feet">
+        <rdf:type rdf:resource="http://www.co-ode.org/roberts/upper.owl#Area_unit"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#square_inches -->
+
+    <owl:Thing rdf:about="http://www.co-ode.org/roberts/upper.owl#square_inches">
+        <rdf:type rdf:resource="http://www.co-ode.org/roberts/upper.owl#Area_unit"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.co-ode.org/roberts/upper.owl#square_metre -->
+
+    <owl:Thing rdf:about="http://www.co-ode.org/roberts/upper.owl#square_metre">
+        <rdf:type rdf:resource="http://www.co-ode.org/roberts/upper.owl#Area_unit"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    </owl:Thing>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#hollow_topology"/>
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#single_membrane_topology"/>
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#solid_topology"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Quantity"/>
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Status_partition"/>
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Unit"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Area_unit"/>
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Duration_unit"/>
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Length_unit"/>
+            <rdf:Description rdf:about="http://www.co-ode.org/roberts/upper.owl#Volume_unit"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.0.0.1443) http://owlapi.sourceforge.net -->
+

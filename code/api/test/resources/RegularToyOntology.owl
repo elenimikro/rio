@@ -1,0 +1,783 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#"
+     xml:base="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1 -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1">
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2 -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2">
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_3 -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_3">
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topObjectProperty -->
+
+    <owl:ObjectProperty rdf:about="&owl;topObjectProperty"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B1 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B1">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B3 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B3">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B4 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B4">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B5 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B5">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D1 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D1">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B1"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D10 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D10">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B5"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B5"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D11 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D11">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B1"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B1"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D12 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D12">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D2 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D2">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D3 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D3">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B3"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B3"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D4 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D4">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B4"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B4"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D5 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D5">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B5"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B5"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D6 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D6">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B1"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B1"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D7 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D7">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B2"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D8 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D8">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B3"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B3"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D9 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D9">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#D"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B4"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_1"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#B4"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#has_prop_2"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#I -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#I">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#J -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#J">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#K -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#K">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#A"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#J"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#J"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern1 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern1">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePatterns"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern2 -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern2">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePatterns"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePatterns -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePatterns"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern2"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_10 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_10">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_5"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_11 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_11">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_12 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_12">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_13 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_13">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_3"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_14 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_14">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_4"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_15 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_15">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_5"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_16 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_16">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_17 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_17">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_18 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_18">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_3"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_19 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_19">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_4"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern2"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_20 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_20">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_5"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_21 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_21">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_22 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_22">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_23 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_23">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_3"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_3 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_3">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern2"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_3"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_4 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_4">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern2"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_4"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_5 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_5">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#ProbePattern2"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_5"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_6 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_6">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_7 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_7">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_2"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_8 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_8">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_3"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_9 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_9">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L"/>
+        <has_prop_3 rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_4"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_3 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_3">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_4 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_4">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_5 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M_indi_5">
+        <rdf:type rdf:resource="http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#M"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.1.0.1602) http://owlapi.sourceforge.net -->
+
