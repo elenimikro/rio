@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
+import org.coode.atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
+
 public interface GeneralisationTreeNodeVisitor {
     void visitAxiomGeneralisationTreeNode(
             AxiomGeneralisationTreeNode axiomGeneralisationTreeNode);
