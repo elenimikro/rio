@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Clusters>
+   <Cluster size="46">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001013"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001012"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001843"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000068"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001839"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000067"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000066"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001412"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000065"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001836"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000061"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001293"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001865"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001456"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001375"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000069"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001002"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001310"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001003"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001004"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001438"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001786"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001027"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001026"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000070"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000089"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000002062"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000071"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000002065"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001024"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000106"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000107"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001898"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000108"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000109"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000055"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000102"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000103"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000104"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000105"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001083"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000002025"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000100"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001945"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000101"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001447"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_1_conjunction and (has_plasma_membrane_part some ?FMA_63887) and (lacks_plasma_membrane_part some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000011 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some DC_CL_0000090) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001012)"/>
+         </Generalisation>
+         <Generalisation axiom="?DC_CL_0000035 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some PRO_000001483) and (lacks_plasma_membrane_part some PRO_000001892)" count="1" instantiationStats="?CARO_0000013 count: 1; ?DC_CL_0000035 count: 1; ?FMA_63887 count: 9">
+            <Axiom axiom="DC_CL_0000035 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001786) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001456) and (lacks_plasma_membrane_part some PRO_000001483) and (lacks_plasma_membrane_part some PRO_000001892) and (lacks_plasma_membrane_part some PRO_000001945)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000089) and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000012 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001004) and (has_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some DC_CL_0000090) and (lacks_plasma_membrane_part some PRO_000001026)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 SubClassOf has_plasma_membrane_part some ?FMA_63887" count="66" instantiationStats="?cluster_1 count: 9; ?FMA_63887 count: 10">
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 12; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000043 EquivalentTo CL_0000048 and (has_plasma_membrane_part some DC_CL_0000105) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839) and (lacks_plasma_membrane_part some PRO_000001843)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_high_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 5">
+            <Axiom axiom="DC_CL_0000003 EquivalentTo CL_0000738 and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001013) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000019 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some DC_CL_0000090)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000001300) and (has_plasma_membrane_part some PRO_000001905)" count="1" instantiationStats="?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000020 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some DC_CL_0000061) and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000001300) and (has_plasma_membrane_part some PRO_000001905) and (has_plasma_membrane_part some PRO_000002025)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082) and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 3; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000042 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_low_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887) and (has_plasma_membrane_part some ?DC_CL_0000082) and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000001 EquivalentTo CL_0000738 and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001013) and (has_plasma_membrane_part some DC_CL_0000100) and (has_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?FMA_63887 SubClassOf FMA_63887" count="46" instantiationStats="?FMA_63887 count: 46">
+            <Axiom axiom="DC_CL_0000070 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000107 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001004 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000055 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000002025 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000061 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000071 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000102 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000067 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000002065 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000089 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000108 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000109 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000002062 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001898 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000104 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001412 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000068 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001786 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001083 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001012 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001013 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000065 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001945 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001836 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001003 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000066 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000101 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001447 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001310 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000069 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001027 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001002 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001843 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001375 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001865 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000103 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001293 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001456 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001026 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001438 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000106 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001839 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000105 SubClassOf FMA_63887"/>
+            <Axiom axiom="DC_CL_0000100 SubClassOf FMA_63887"/>
+            <Axiom axiom="PRO_000001024 SubClassOf FMA_63887"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000004 EquivalentTo CL_0000738 and (has_plasma_membrane_part some DC_CL_0000101) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001013) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="3" instantiationStats="?CARO_0000013 count: 2; ?cluster_2 count: 3; ?FMA_63887 count: 14; ?DC_CL_0000082 count: 2">
+            <Axiom axiom="DC_CL_0000034 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000105) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001375) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000036 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001375) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000040 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo DC_CL_0000021 and (has_high_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887) and (has_low_plasma_membrane_amount_relative_to_leukocyte some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 1">
+            <Axiom axiom="DC_CL_0000027 EquivalentTo DC_CL_0000021 and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001026) and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000090)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_3 EquivalentTo ?cluster_1 and ?expression_conjunction and (has_plasma_membrane_part some ?FMA_63887)" count="9" instantiationStats="?cluster_3 count: 9; ?cluster_1 count: 9; ?FMA_63887 count: 4">
+            <Axiom axiom="DC_CL_0000009 EquivalentTo DC_CL_0000004 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000031 EquivalentTo DC_CL_0000027 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000025 EquivalentTo DC_CL_0000020 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000029 EquivalentTo DC_CL_0000026 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000007 EquivalentTo DC_CL_0000001 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000015 EquivalentTo DC_CL_0000011 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000023 EquivalentTo DC_CL_0000019 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000018 EquivalentTo DC_CL_0000013 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000016 EquivalentTo DC_CL_0000012 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082)" count="2" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 2; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000032 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001898) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+            <Axiom axiom="DC_CL_0000038 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001945) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001898)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo DC_CL_0000021 and ?expression_2_conjunction" count="1" instantiationStats="?cluster_1 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000026 EquivalentTo DC_CL_0000021 and (has_plasma_membrane_part some PRO_000001447) and (has_plasma_membrane_part some PRO_000002025)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 EquivalentTo ?cluster_1 and ?expression_3_conjunction and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?cluster_4 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000008 EquivalentTo DC_CL_0000004 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (lacks_plasma_membrane_part some PRO_000001438)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 EquivalentTo ?cluster_1 and ?expression_3_conjunction" count="8" instantiationStats="?cluster_4 count: 8; ?cluster_1 count: 8; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000006 EquivalentTo DC_CL_0000001 and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000028 EquivalentTo DC_CL_0000026 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000022 EquivalentTo DC_CL_0000019 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000017 EquivalentTo DC_CL_0000013 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000030 EquivalentTo DC_CL_0000027 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000010 EquivalentTo DC_CL_0000012 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000014 EquivalentTo DC_CL_0000011 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000024 EquivalentTo DC_CL_0000020 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+         </Generalisation>
+         <Generalisation axiom="?DC_CL_0000089 SubClassOf ?FMA_63887" count="2" instantiationStats="?DC_CL_0000089 count: 2; ?FMA_63887 count: 1">
+            <Axiom axiom="DC_CL_0000090 SubClassOf DC_CL_0000089"/>
+            <Axiom axiom="DC_CL_0000091 SubClassOf DC_CL_0000089"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000033 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000002062)"/>
+         </Generalisation>
+         <Generalisation axiom="DC_CL_0000021 EquivalentTo ?cluster_1 and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?cluster_1 count: 1; ?FMA_63887 count: 1">
+            <Axiom axiom="DC_CL_0000021 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001293)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000002001)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000041 EquivalentTo CL_0000738 and (has_plasma_membrane_part some DC_CL_0000102) and (has_plasma_membrane_part some PRO_000002001) and (has_plasma_membrane_part some PRO_000002065)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_plasma_membrane_part some ?FMA_63887) and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 5; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000039 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_1_conjunction and (has_plasma_membrane_part some ?DC_CL_0000089) and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000013 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some DC_CL_0000090) and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001012)"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="11">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000003"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000004"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000027"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000019"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000026"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000043"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000001"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000011"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000020"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000012"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000013"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_1_conjunction and (has_plasma_membrane_part some ?FMA_63887) and (lacks_plasma_membrane_part some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000011 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some DC_CL_0000090) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001012)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000089) and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000012 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001004) and (has_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some DC_CL_0000090) and (lacks_plasma_membrane_part some PRO_000001026)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 SubClassOf has_plasma_membrane_part some ?FMA_63887" count="66" instantiationStats="?cluster_1 count: 9; ?FMA_63887 count: 10">
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000068"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000108"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_plasma_membrane_part some DC_CL_0000109"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000069"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_plasma_membrane_part some DC_CL_0000071"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000065"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_plasma_membrane_part some DC_CL_0000070"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000107"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_plasma_membrane_part some DC_CL_0000066"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_plasma_membrane_part some DC_CL_0000067"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 12; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000043 EquivalentTo CL_0000048 and (has_plasma_membrane_part some DC_CL_0000105) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839) and (lacks_plasma_membrane_part some PRO_000001843)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_high_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 5">
+            <Axiom axiom="DC_CL_0000003 EquivalentTo CL_0000738 and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001013) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000019 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some DC_CL_0000090)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 SubClassOf has_function some ?DC_CL_0100000" count="17" instantiationStats="?DC_CL_0100000 count: 2; ?cluster_1 count: 9">
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_function some DC_CL_0000133"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000001300) and (has_plasma_membrane_part some PRO_000001905)" count="1" instantiationStats="?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000020 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some DC_CL_0000061) and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000001300) and (has_plasma_membrane_part some PRO_000001905) and (has_plasma_membrane_part some PRO_000002025)"/>
+         </Generalisation>
+         <Generalisation axiom="?FMA_67498 SubClassOf is_location_of some ?cluster_1" count="5" instantiationStats="?cluster_1 count: 4; ?FMA_67498 count: 2">
+            <Axiom axiom="FMA_9607 SubClassOf is_location_of some DC_CL_0000001"/>
+            <Axiom axiom="FMA_5034 SubClassOf is_location_of some DC_CL_0000026"/>
+            <Axiom axiom="FMA_5034 SubClassOf is_location_of some DC_CL_0000020"/>
+            <Axiom axiom="FMA_5034 SubClassOf is_location_of some DC_CL_0000004"/>
+            <Axiom axiom="FMA_9607 SubClassOf is_location_of some DC_CL_0000020"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 SubClassOf has_disposition some ?DC_CL_1000000" count="7" instantiationStats="?cluster_1 count: 7; ?DC_CL_1000000 count: 4">
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_disposition some DC_CL_0000124"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_disposition some DC_CL_0000127"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_disposition some DC_CL_0000128"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_disposition some DC_CL_0000126"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_disposition some DC_CL_0000127"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_disposition some DC_CL_0000126"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_disposition some DC_CL_0000126"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_low_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887) and (has_plasma_membrane_part some ?DC_CL_0000082) and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000001 EquivalentTo CL_0000738 and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001013) and (has_plasma_membrane_part some DC_CL_0000100) and (has_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_6 SubClassOf is_location_of some ?cluster_1" count="3" instantiationStats="?cluster_1 count: 3; ?cluster_6 count: 2">
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000043"/>
+            <Axiom axiom="FMA_7196 SubClassOf is_location_of some DC_CL_0000004"/>
+            <Axiom axiom="FMA_7196 SubClassOf is_location_of some DC_CL_0000003"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000004 EquivalentTo CL_0000738 and (has_plasma_membrane_part some DC_CL_0000101) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001013) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119 SubClassOf is_location_of some ?cluster_1" count="2" instantiationStats="?UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119 count: 2; ?cluster_1 count: 2">
+            <Axiom axiom="FMA_70323 SubClassOf is_location_of some DC_CL_0000020"/>
+            <Axiom axiom="MA_0000152 SubClassOf is_location_of some DC_CL_0000019"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 SubClassOf has_disposition some DC_CL_0000129" count="1" instantiationStats="?cluster_1 count: 1">
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_disposition some DC_CL_0000129"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo DC_CL_0000021 and (has_high_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887) and (has_low_plasma_membrane_amount_relative_to_leukocyte some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 1">
+            <Axiom axiom="DC_CL_0000027 EquivalentTo DC_CL_0000021 and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001026) and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000090)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_3 EquivalentTo ?cluster_1 and ?expression_conjunction and (has_plasma_membrane_part some ?FMA_63887)" count="9" instantiationStats="?cluster_3 count: 9; ?cluster_1 count: 9; ?FMA_63887 count: 4">
+            <Axiom axiom="DC_CL_0000009 EquivalentTo DC_CL_0000004 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000031 EquivalentTo DC_CL_0000027 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000025 EquivalentTo DC_CL_0000020 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000029 EquivalentTo DC_CL_0000026 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000007 EquivalentTo DC_CL_0000001 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000015 EquivalentTo DC_CL_0000011 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000023 EquivalentTo DC_CL_0000019 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000018 EquivalentTo DC_CL_0000013 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000016 EquivalentTo DC_CL_0000012 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo DC_CL_0000021 and ?expression_2_conjunction" count="1" instantiationStats="?cluster_1 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000026 EquivalentTo DC_CL_0000021 and (has_plasma_membrane_part some PRO_000001447) and (has_plasma_membrane_part some PRO_000002025)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 EquivalentTo ?cluster_1 and ?expression_3_conjunction and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?cluster_4 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000008 EquivalentTo DC_CL_0000004 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (lacks_plasma_membrane_part some PRO_000001438)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_5 SubClassOf is_location_of some ?cluster_1" count="16" instantiationStats="?cluster_1 count: 6; ?cluster_5 count: 5">
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000001"/>
+            <Axiom axiom="MA_0000137 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000137 SubClassOf is_location_of some DC_CL_0000011"/>
+            <Axiom axiom="DC_CL_0000118 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000141 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000141 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000019"/>
+            <Axiom axiom="MA_0000141 SubClassOf is_location_of some DC_CL_0000001"/>
+            <Axiom axiom="DC_CL_0000118 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000027"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000137 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000142 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000142 SubClassOf is_location_of some DC_CL_0000011"/>
+            <Axiom axiom="MA_0000142 SubClassOf is_location_of some DC_CL_0000012"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf arises_from some ?cluster_1" count="2" instantiationStats="?cluster_2 count: 2; ?cluster_1 count: 1">
+            <Axiom axiom="DC_CL_0000034 SubClassOf arises_from some DC_CL_0000043"/>
+            <Axiom axiom="DC_CL_0000036 SubClassOf arises_from some DC_CL_0000043"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 EquivalentTo ?cluster_1 and ?expression_3_conjunction" count="8" instantiationStats="?cluster_4 count: 8; ?cluster_1 count: 8; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000006 EquivalentTo DC_CL_0000001 and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000028 EquivalentTo DC_CL_0000026 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000022 EquivalentTo DC_CL_0000019 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000017 EquivalentTo DC_CL_0000013 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000030 EquivalentTo DC_CL_0000027 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000010 EquivalentTo DC_CL_0000012 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000014 EquivalentTo DC_CL_0000011 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000024 EquivalentTo DC_CL_0000020 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+         </Generalisation>
+         <Generalisation axiom="?UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105 SubClassOf is_location_of some ?cluster_1" count="2" instantiationStats="?cluster_1 count: 2; ?UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105 count: 2">
+            <Axiom axiom="FMA_70596 SubClassOf is_location_of some DC_CL_0000026"/>
+            <Axiom axiom="MA_0000153 SubClassOf is_location_of some DC_CL_0000027"/>
+         </Generalisation>
+         <Generalisation axiom="DC_CL_0000021 EquivalentTo ?cluster_1 and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?cluster_1 count: 1; ?FMA_63887 count: 1">
+            <Axiom axiom="DC_CL_0000021 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001293)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_1_conjunction and (has_plasma_membrane_part some ?DC_CL_0000089) and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000013 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some DC_CL_0000090) and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001012)"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="9">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000042"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000041"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000040"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000036"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000038"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000039"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000032"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000033"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000034"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_2 SubClassOf arises_from some ?DC_CL_0000035" count="2" instantiationStats="?DC_CL_0000035 count: 1; ?cluster_2 count: 2">
+            <Axiom axiom="DC_CL_0000038 SubClassOf arises_from some DC_CL_0000035"/>
+            <Axiom axiom="DC_CL_0000032 SubClassOf arises_from some DC_CL_0000035"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf arises_from some ?cluster_2" count="4" instantiationStats="?cluster_2 count: 7">
+            <Axiom axiom="DC_CL_0000042 SubClassOf arises_from some DC_CL_0000038"/>
+            <Axiom axiom="DC_CL_0000040 SubClassOf arises_from some DC_CL_0000032"/>
+            <Axiom axiom="DC_CL_0000033 SubClassOf arises_from some DC_CL_0000034"/>
+            <Axiom axiom="DC_CL_0000039 SubClassOf arises_from some DC_CL_0000032"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_6 SubClassOf is_location_of some ?cluster_2" count="9" instantiationStats="?cluster_2 count: 9; ?cluster_6 count: 2">
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000036"/>
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000041"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000042"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000038"/>
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000034"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000033"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000032"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000039"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000040"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf arises_from some ?cluster_2" count="5" instantiationStats="?cluster_4 count: 5; ?cluster_2 count: 1">
+            <Axiom axiom="DC_CL_0000014 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000006 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000017 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000022 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000010 SubClassOf arises_from some DC_CL_0000041"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="3" instantiationStats="?CARO_0000013 count: 2; ?cluster_2 count: 3; ?FMA_63887 count: 14; ?DC_CL_0000082 count: 2">
+            <Axiom axiom="DC_CL_0000034 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000105) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001375) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000036 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001375) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000040 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf has_disposition some ?DC_CL_1000000" count="1" instantiationStats="?cluster_2 count: 1; ?DC_CL_1000000 count: 1">
+            <Axiom axiom="DC_CL_0000033 SubClassOf has_disposition some DC_CL_0000125"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082)" count="2" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 2; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000032 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001898) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+            <Axiom axiom="DC_CL_0000038 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001945) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001898)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082) and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 3; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000042 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf arises_from some ?cluster_1" count="2" instantiationStats="?cluster_2 count: 2; ?cluster_1 count: 1">
+            <Axiom axiom="DC_CL_0000034 SubClassOf arises_from some DC_CL_0000043"/>
+            <Axiom axiom="DC_CL_0000036 SubClassOf arises_from some DC_CL_0000043"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000033 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000002062)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_plasma_membrane_part some ?FMA_63887) and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 5; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000039 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000002001)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000041 EquivalentTo CL_0000738 and (has_plasma_membrane_part some DC_CL_0000102) and (has_plasma_membrane_part some PRO_000002001) and (has_plasma_membrane_part some PRO_000002065)"/>
+         </Generalisation>
+         <Generalisation axiom="?CARO_0000013 EquivalentTo ?cluster_2_disjunction" count="4" instantiationStats="?CARO_0000013 count: 4; ?cluster_2 count: 8">
+            <Axiom axiom="DC_CL_1111000 EquivalentTo DC_CL_0000033 or DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_1100000 EquivalentTo DC_CL_0000038 or DC_CL_0000039 or DC_CL_0000040"/>
+            <Axiom axiom="DC_CL_1111100 EquivalentTo DC_CL_0000034 or DC_CL_0000036"/>
+            <Axiom axiom="DC_CL_1110000 EquivalentTo DC_CL_0000039 or DC_CL_0000042"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf arises_from some ?CARO_0000013" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1">
+            <Axiom axiom="DC_CL_0000041 SubClassOf arises_from some DC_CL_1111100"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="9">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000015"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000016"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000029"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000009"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000018"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000025"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000007"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000023"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000031"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_3 EquivalentTo ?cluster_1 and ?expression_conjunction and (has_plasma_membrane_part some ?FMA_63887)" count="9" instantiationStats="?cluster_3 count: 9; ?cluster_1 count: 9; ?FMA_63887 count: 4">
+            <Axiom axiom="DC_CL_0000009 EquivalentTo DC_CL_0000004 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000031 EquivalentTo DC_CL_0000027 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000025 EquivalentTo DC_CL_0000020 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000029 EquivalentTo DC_CL_0000026 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000007 EquivalentTo DC_CL_0000001 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000015 EquivalentTo DC_CL_0000011 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000023 EquivalentTo DC_CL_0000019 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000018 EquivalentTo DC_CL_0000013 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+            <Axiom axiom="DC_CL_0000016 EquivalentTo DC_CL_0000012 and (has_high_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438) and (has_plasma_membrane_part some PRO_000001310)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_3 SubClassOf has_disposition some ?DC_CL_1000000" count="1" instantiationStats="?cluster_3 count: 1; ?DC_CL_1000000 count: 1">
+            <Axiom axiom="DC_CL_0000015 SubClassOf has_disposition some DC_CL_0000128"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_3 SubClassOf transformation_of some ?cluster_4" count="9" instantiationStats="?cluster_4 count: 9; ?cluster_3 count: 9">
+            <Axiom axiom="DC_CL_0000007 SubClassOf transformation_of some DC_CL_0000006"/>
+            <Axiom axiom="DC_CL_0000015 SubClassOf transformation_of some DC_CL_0000014"/>
+            <Axiom axiom="DC_CL_0000029 SubClassOf transformation_of some DC_CL_0000028"/>
+            <Axiom axiom="DC_CL_0000016 SubClassOf transformation_of some DC_CL_0000010"/>
+            <Axiom axiom="DC_CL_0000018 SubClassOf transformation_of some DC_CL_0000017"/>
+            <Axiom axiom="DC_CL_0000031 SubClassOf transformation_of some DC_CL_0000030"/>
+            <Axiom axiom="DC_CL_0000023 SubClassOf transformation_of some DC_CL_0000022"/>
+            <Axiom axiom="DC_CL_0000009 SubClassOf transformation_of some DC_CL_0000008"/>
+            <Axiom axiom="DC_CL_0000025 SubClassOf transformation_of some DC_CL_0000024"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="9">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000014"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000006"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000017"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000028"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000008"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000024"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000022"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000010"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000030"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_4 SubClassOf has_function some DC_CL_0000136" count="2" instantiationStats="?cluster_4 count: 2">
+            <Axiom axiom="DC_CL_0000024 SubClassOf has_function some DC_CL_0000136"/>
+            <Axiom axiom="DC_CL_0000028 SubClassOf has_function some DC_CL_0000136"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 EquivalentTo ?cluster_1 and ?expression_3_conjunction and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?cluster_4 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000008 EquivalentTo DC_CL_0000004 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (lacks_plasma_membrane_part some PRO_000001438)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf has_disposition some ?DC_CL_1000000" count="2" instantiationStats="?cluster_4 count: 2; ?DC_CL_1000000 count: 1">
+            <Axiom axiom="DC_CL_0000008 SubClassOf has_disposition some DC_CL_0000125"/>
+            <Axiom axiom="DC_CL_0000006 SubClassOf has_disposition some DC_CL_0000125"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf arises_from some ?CARO_0000013" count="3" instantiationStats="?CARO_0000013 count: 3; ?cluster_4 count: 3">
+            <Axiom axiom="DC_CL_0000024 SubClassOf arises_from some DC_CL_1110000"/>
+            <Axiom axiom="DC_CL_0000008 SubClassOf arises_from some DC_CL_1100000"/>
+            <Axiom axiom="DC_CL_0000030 SubClassOf arises_from some DC_CL_1111000"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 EquivalentTo ?cluster_1 and ?expression_3_conjunction" count="8" instantiationStats="?cluster_4 count: 8; ?cluster_1 count: 8; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000006 EquivalentTo DC_CL_0000001 and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000028 EquivalentTo DC_CL_0000026 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000022 EquivalentTo DC_CL_0000019 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000017 EquivalentTo DC_CL_0000013 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000030 EquivalentTo DC_CL_0000027 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000010 EquivalentTo DC_CL_0000012 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000014 EquivalentTo DC_CL_0000011 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+            <Axiom axiom="DC_CL_0000024 EquivalentTo DC_CL_0000020 and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000103) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001412) and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001438)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_3 SubClassOf transformation_of some ?cluster_4" count="9" instantiationStats="?cluster_4 count: 9; ?cluster_3 count: 9">
+            <Axiom axiom="DC_CL_0000007 SubClassOf transformation_of some DC_CL_0000006"/>
+            <Axiom axiom="DC_CL_0000015 SubClassOf transformation_of some DC_CL_0000014"/>
+            <Axiom axiom="DC_CL_0000029 SubClassOf transformation_of some DC_CL_0000028"/>
+            <Axiom axiom="DC_CL_0000016 SubClassOf transformation_of some DC_CL_0000010"/>
+            <Axiom axiom="DC_CL_0000018 SubClassOf transformation_of some DC_CL_0000017"/>
+            <Axiom axiom="DC_CL_0000031 SubClassOf transformation_of some DC_CL_0000030"/>
+            <Axiom axiom="DC_CL_0000023 SubClassOf transformation_of some DC_CL_0000022"/>
+            <Axiom axiom="DC_CL_0000009 SubClassOf transformation_of some DC_CL_0000008"/>
+            <Axiom axiom="DC_CL_0000025 SubClassOf transformation_of some DC_CL_0000024"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf arises_from some ?cluster_2" count="5" instantiationStats="?cluster_4 count: 5; ?cluster_2 count: 1">
+            <Axiom axiom="DC_CL_0000014 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000006 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000017 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000022 SubClassOf arises_from some DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_0000010 SubClassOf arises_from some DC_CL_0000041"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf has_function some ?DC_CL_0100000" count="6" instantiationStats="?cluster_4 count: 6; ?DC_CL_0100000 count: 1">
+            <Axiom axiom="DC_CL_0000014 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000010 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000006 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000008 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000024 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000028 SubClassOf has_function some DC_CL_0000135"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="6">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_1100000"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#CL_0000738"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_1111000"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#CL_0000048"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_1110000"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_1111100"/>
+      <Generalisations>
+         <Generalisation axiom="?DC_CL_0000035 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some PRO_000001483) and (lacks_plasma_membrane_part some PRO_000001892)" count="1" instantiationStats="?CARO_0000013 count: 1; ?DC_CL_0000035 count: 1; ?FMA_63887 count: 9">
+            <Axiom axiom="DC_CL_0000035 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001786) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001456) and (lacks_plasma_membrane_part some PRO_000001483) and (lacks_plasma_membrane_part some PRO_000001892) and (lacks_plasma_membrane_part some PRO_000001945)"/>
+         </Generalisation>
+         <Generalisation axiom="?CARO_0000013 SubClassOf CARO_0000013" count="6" instantiationStats="?CARO_0000013 count: 6">
+            <Axiom axiom="DC_CL_1111000 SubClassOf CARO_0000013"/>
+            <Axiom axiom="DC_CL_1100000 SubClassOf CARO_0000013"/>
+            <Axiom axiom="CL_0000738 SubClassOf CARO_0000013"/>
+            <Axiom axiom="DC_CL_1111100 SubClassOf CARO_0000013"/>
+            <Axiom axiom="CL_0000048 SubClassOf CARO_0000013"/>
+            <Axiom axiom="DC_CL_1110000 SubClassOf CARO_0000013"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 12; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000043 EquivalentTo CL_0000048 and (has_plasma_membrane_part some DC_CL_0000105) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839) and (lacks_plasma_membrane_part some PRO_000001843)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000004 EquivalentTo CL_0000738 and (has_plasma_membrane_part some DC_CL_0000101) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001013) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_high_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 5">
+            <Axiom axiom="DC_CL_0000003 EquivalentTo CL_0000738 and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001013) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="3" instantiationStats="?CARO_0000013 count: 2; ?cluster_2 count: 3; ?FMA_63887 count: 14; ?DC_CL_0000082 count: 2">
+            <Axiom axiom="DC_CL_0000034 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000105) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001375) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000036 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001375) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000040 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082)" count="2" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 2; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000032 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001898) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+            <Axiom axiom="DC_CL_0000038 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001945) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001898)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082) and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 3; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000042 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_low_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887) and (has_plasma_membrane_part some ?DC_CL_0000082) and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000001 EquivalentTo CL_0000738 and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001013) and (has_plasma_membrane_part some DC_CL_0000100) and (has_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf arises_from some ?CARO_0000013" count="3" instantiationStats="?CARO_0000013 count: 3; ?cluster_4 count: 3">
+            <Axiom axiom="DC_CL_0000024 SubClassOf arises_from some DC_CL_1110000"/>
+            <Axiom axiom="DC_CL_0000008 SubClassOf arises_from some DC_CL_1100000"/>
+            <Axiom axiom="DC_CL_0000030 SubClassOf arises_from some DC_CL_1111000"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000033 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000002062)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_plasma_membrane_part some ?FMA_63887) and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 5; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000039 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000002001)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000041 EquivalentTo CL_0000738 and (has_plasma_membrane_part some DC_CL_0000102) and (has_plasma_membrane_part some PRO_000002001) and (has_plasma_membrane_part some PRO_000002065)"/>
+         </Generalisation>
+         <Generalisation axiom="?CARO_0000013 EquivalentTo ?cluster_2_disjunction" count="4" instantiationStats="?CARO_0000013 count: 4; ?cluster_2 count: 8">
+            <Axiom axiom="DC_CL_1111000 EquivalentTo DC_CL_0000033 or DC_CL_0000041"/>
+            <Axiom axiom="DC_CL_1100000 EquivalentTo DC_CL_0000038 or DC_CL_0000039 or DC_CL_0000040"/>
+            <Axiom axiom="DC_CL_1111100 EquivalentTo DC_CL_0000034 or DC_CL_0000036"/>
+            <Axiom axiom="DC_CL_1110000 EquivalentTo DC_CL_0000039 or DC_CL_0000042"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf arises_from some ?CARO_0000013" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1">
+            <Axiom axiom="DC_CL_0000041 SubClassOf arises_from some DC_CL_1111100"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="5">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000118"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#MA_0000137"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#MA_0000139"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#MA_0000142"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#MA_0000141"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_5 SubClassOf UBERON_FMA_15054-MA_0000137" count="1" instantiationStats="?cluster_5 count: 1">
+            <Axiom axiom="MA_0000137 SubClassOf UBERON_FMA_15054-MA_0000137"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_5 SubClassOf UBERON_FMA_9607-MA_0000142-MIAA_0000080-XAO_0000163-ZFA_0001078" count="1" instantiationStats="?cluster_5 count: 1">
+            <Axiom axiom="MA_0000142 SubClassOf UBERON_FMA_9607-MA_0000142-MIAA_0000080-XAO_0000163-ZFA_0001078"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_5 SubClassOf UBERON_FMA_7196-MA_0000141-MIAA_0000085-XAO_0000328-ZFA_0000436" count="1" instantiationStats="?cluster_5 count: 1">
+            <Axiom axiom="MA_0000141 SubClassOf UBERON_FMA_7196-MA_0000141-MIAA_0000085-XAO_0000328-ZFA_0000436"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_5 SubClassOf is_location_of some ?cluster_1" count="16" instantiationStats="?cluster_1 count: 6; ?cluster_5 count: 5">
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000001"/>
+            <Axiom axiom="MA_0000137 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000137 SubClassOf is_location_of some DC_CL_0000011"/>
+            <Axiom axiom="DC_CL_0000118 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000141 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000141 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000019"/>
+            <Axiom axiom="MA_0000141 SubClassOf is_location_of some DC_CL_0000001"/>
+            <Axiom axiom="DC_CL_0000118 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000027"/>
+            <Axiom axiom="MA_0000139 SubClassOf is_location_of some DC_CL_0000012"/>
+            <Axiom axiom="MA_0000137 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000142 SubClassOf is_location_of some DC_CL_0000013"/>
+            <Axiom axiom="MA_0000142 SubClassOf is_location_of some DC_CL_0000011"/>
+            <Axiom axiom="MA_0000142 SubClassOf is_location_of some DC_CL_0000012"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_5 SubClassOf UBERON_0000030" count="1" instantiationStats="?cluster_5 count: 1">
+            <Axiom axiom="DC_CL_0000118 SubClassOf UBERON_0000030"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_5 SubClassOf UBERON_0000029" count="1" instantiationStats="?cluster_5 count: 1">
+            <Axiom axiom="MA_0000139 SubClassOf UBERON_0000029"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="5">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000127"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000126"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000125"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000124"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000128"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_3 SubClassOf has_disposition some ?DC_CL_1000000" count="1" instantiationStats="?cluster_3 count: 1; ?DC_CL_1000000 count: 1">
+            <Axiom axiom="DC_CL_0000015 SubClassOf has_disposition some DC_CL_0000128"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf has_disposition some ?DC_CL_1000000" count="2" instantiationStats="?cluster_4 count: 2; ?DC_CL_1000000 count: 1">
+            <Axiom axiom="DC_CL_0000008 SubClassOf has_disposition some DC_CL_0000125"/>
+            <Axiom axiom="DC_CL_0000006 SubClassOf has_disposition some DC_CL_0000125"/>
+         </Generalisation>
+         <Generalisation axiom="?DC_CL_1000000 SubClassOf DC_CL_1000000" count="5" instantiationStats="?DC_CL_1000000 count: 5">
+            <Axiom axiom="DC_CL_0000128 SubClassOf DC_CL_1000000"/>
+            <Axiom axiom="DC_CL_0000124 SubClassOf DC_CL_1000000"/>
+            <Axiom axiom="DC_CL_0000127 SubClassOf DC_CL_1000000"/>
+            <Axiom axiom="DC_CL_0000125 SubClassOf DC_CL_1000000"/>
+            <Axiom axiom="DC_CL_0000126 SubClassOf DC_CL_1000000"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 SubClassOf has_disposition some ?DC_CL_1000000" count="7" instantiationStats="?cluster_1 count: 7; ?DC_CL_1000000 count: 4">
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_disposition some DC_CL_0000124"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_disposition some DC_CL_0000127"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_disposition some DC_CL_0000128"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_disposition some DC_CL_0000126"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_disposition some DC_CL_0000127"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_disposition some DC_CL_0000126"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_disposition some DC_CL_0000126"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf has_disposition some ?DC_CL_1000000" count="1" instantiationStats="?cluster_2 count: 1; ?DC_CL_1000000 count: 1">
+            <Axiom axiom="DC_CL_0000033 SubClassOf has_disposition some DC_CL_0000125"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="3">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#FMA_9608"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#MA_0000134"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#FMA_7196"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_6 SubClassOf UBERON_FMA_7196-MA_0000141-MIAA_0000085-XAO_0000328-ZFA_0000436" count="1" instantiationStats="?cluster_6 count: 1">
+            <Axiom axiom="FMA_7196 SubClassOf UBERON_FMA_7196-MA_0000141-MIAA_0000085-XAO_0000328-ZFA_0000436"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_6 SubClassOf is_location_of some ?DC_CL_0000035" count="1" instantiationStats="?DC_CL_0000035 count: 1; ?cluster_6 count: 1">
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000035"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_6 SubClassOf is_location_of some ?cluster_1" count="3" instantiationStats="?cluster_1 count: 3; ?cluster_6 count: 2">
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000043"/>
+            <Axiom axiom="FMA_7196 SubClassOf is_location_of some DC_CL_0000004"/>
+            <Axiom axiom="FMA_7196 SubClassOf is_location_of some DC_CL_0000003"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_6 SubClassOf UBERON_FMA_9608-MA_0000134-MIAA_0000084-XAO_0000123-ZFA_0000669" count="2" instantiationStats="?cluster_6 count: 2">
+            <Axiom axiom="MA_0000134 SubClassOf UBERON_FMA_9608-MA_0000134-MIAA_0000084-XAO_0000123-ZFA_0000669"/>
+            <Axiom axiom="FMA_9608 SubClassOf UBERON_FMA_9608-MA_0000134-MIAA_0000084-XAO_0000123-ZFA_0000669"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_6 SubClassOf is_location_of some ?cluster_2" count="9" instantiationStats="?cluster_2 count: 9; ?cluster_6 count: 2">
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000036"/>
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000041"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000042"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000038"/>
+            <Axiom axiom="MA_0000134 SubClassOf is_location_of some DC_CL_0000034"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000033"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000032"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000039"/>
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000040"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="3">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000134"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000133"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000135"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_1 SubClassOf has_function some ?DC_CL_0100000" count="17" instantiationStats="?DC_CL_0100000 count: 2; ?cluster_1 count: 9">
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000011 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000004 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000013 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000001 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000012 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_function some DC_CL_0000134"/>
+            <Axiom axiom="DC_CL_0000019 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000026 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000027 SubClassOf has_function some DC_CL_0000133"/>
+            <Axiom axiom="DC_CL_0000020 SubClassOf has_function some DC_CL_0000133"/>
+         </Generalisation>
+         <Generalisation axiom="?DC_CL_0100000 SubClassOf DC_CL_0100000" count="3" instantiationStats="?DC_CL_0100000 count: 3">
+            <Axiom axiom="DC_CL_0000134 SubClassOf DC_CL_0100000"/>
+            <Axiom axiom="DC_CL_0000133 SubClassOf DC_CL_0100000"/>
+            <Axiom axiom="DC_CL_0000135 SubClassOf DC_CL_0100000"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_4 SubClassOf has_function some ?DC_CL_0100000" count="6" instantiationStats="?cluster_4 count: 6; ?DC_CL_0100000 count: 1">
+            <Axiom axiom="DC_CL_0000014 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000010 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000006 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000008 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000024 SubClassOf has_function some DC_CL_0000135"/>
+            <Axiom axiom="DC_CL_0000028 SubClassOf has_function some DC_CL_0000135"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="2">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#MA_0000153"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#FMA_70596"/>
+      <Generalisations>
+         <Generalisation axiom="?UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105 SubClassOf UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105" count="2" instantiationStats="?UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105 count: 2">
+            <Axiom axiom="FMA_70596 SubClassOf UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105"/>
+            <Axiom axiom="MA_0000153 SubClassOf UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105"/>
+         </Generalisation>
+         <Generalisation axiom="?UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105 SubClassOf is_location_of some ?cluster_1" count="2" instantiationStats="?cluster_1 count: 2; ?UBERON_FBbt_00004993-FBbt_00005401-FMA_70596-MA_0000153-MIAA_0000154-WBbt_0005733-XAO_0000028-ZFA_0000105 count: 2">
+            <Axiom axiom="FMA_70596 SubClassOf is_location_of some DC_CL_0000026"/>
+            <Axiom axiom="MA_0000153 SubClassOf is_location_of some DC_CL_0000027"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="2">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#FMA_70323"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#MA_0000152"/>
+      <Generalisations>
+         <Generalisation axiom="?UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119 SubClassOf UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119" count="2" instantiationStats="?UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119 count: 2">
+            <Axiom axiom="MA_0000152 SubClassOf UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119"/>
+            <Axiom axiom="FMA_70323 SubClassOf UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119"/>
+         </Generalisation>
+         <Generalisation axiom="?UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119 SubClassOf is_location_of some ?cluster_1" count="2" instantiationStats="?UBERON_FMA_70323-MA_0000152-MIAA_0000153-XAO_0000217-ZFA_0001119 count: 2; ?cluster_1 count: 2">
+            <Axiom axiom="FMA_70323 SubClassOf is_location_of some DC_CL_0000020"/>
+            <Axiom axiom="MA_0000152 SubClassOf is_location_of some DC_CL_0000019"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="2">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000091"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000090"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_1_conjunction and (has_plasma_membrane_part some ?FMA_63887) and (lacks_plasma_membrane_part some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000011 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some DC_CL_0000090) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001012)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000089) and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000012 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001004) and (has_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some DC_CL_0000090) and (lacks_plasma_membrane_part some PRO_000001026)"/>
+         </Generalisation>
+         <Generalisation axiom="?DC_CL_0000089 SubClassOf ?FMA_63887" count="2" instantiationStats="?DC_CL_0000089 count: 2; ?FMA_63887 count: 1">
+            <Axiom axiom="DC_CL_0000090 SubClassOf DC_CL_0000089"/>
+            <Axiom axiom="DC_CL_0000091 SubClassOf DC_CL_0000089"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 2">
+            <Axiom axiom="DC_CL_0000019 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some PRO_000001012) and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some DC_CL_0000090)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo DC_CL_0000021 and (has_high_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887) and (has_low_plasma_membrane_amount_relative_to_leukocyte some ?DC_CL_0000089)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 1">
+            <Axiom axiom="DC_CL_0000027 EquivalentTo DC_CL_0000021 and (has_high_plasma_membrane_amount_relative_to_leukocyte some PRO_000001026) and (has_low_plasma_membrane_amount_relative_to_leukocyte some DC_CL_0000090)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?cluster_1 and ?expression_1_conjunction and (has_plasma_membrane_part some ?DC_CL_0000089) and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?DC_CL_0000089 count: 1; ?cluster_1 count: 2; ?FMA_63887 count: 3">
+            <Axiom axiom="DC_CL_0000013 EquivalentTo DC_CL_0000003 and (has_plasma_membrane_part some DC_CL_0000090) and (has_plasma_membrane_part some PRO_000001026) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001012)"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="2">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#FMA_9607"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#FMA_5034"/>
+      <Generalisations>
+         <Generalisation axiom="?FMA_67498 SubClassOf UBERON_FMA_9607-MA_0000142-MIAA_0000080-XAO_0000163-ZFA_0001078" count="1" instantiationStats="?FMA_67498 count: 1">
+            <Axiom axiom="FMA_9607 SubClassOf UBERON_FMA_9607-MA_0000142-MIAA_0000080-XAO_0000163-ZFA_0001078"/>
+         </Generalisation>
+         <Generalisation axiom="?FMA_67498 SubClassOf is_location_of some ?cluster_1" count="5" instantiationStats="?cluster_1 count: 4; ?FMA_67498 count: 2">
+            <Axiom axiom="FMA_9607 SubClassOf is_location_of some DC_CL_0000001"/>
+            <Axiom axiom="FMA_5034 SubClassOf is_location_of some DC_CL_0000026"/>
+            <Axiom axiom="FMA_5034 SubClassOf is_location_of some DC_CL_0000020"/>
+            <Axiom axiom="FMA_5034 SubClassOf is_location_of some DC_CL_0000004"/>
+            <Axiom axiom="FMA_9607 SubClassOf is_location_of some DC_CL_0000020"/>
+         </Generalisation>
+         <Generalisation axiom="?FMA_67498 SubClassOf UBERON_0000029" count="1" instantiationStats="?FMA_67498 count: 1">
+            <Axiom axiom="FMA_5034 SubClassOf UBERON_0000029"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="2">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001014"/>
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#PRO_000001015"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082)" count="2" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 2; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000032 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001898) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+            <Axiom axiom="DC_CL_0000038 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001945) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001898)"/>
+         </Generalisation>
+         <Generalisation axiom="?DC_CL_0000082 SubClassOf DC_CL_0000082" count="2" instantiationStats="?DC_CL_0000082 count: 2">
+            <Axiom axiom="PRO_000001014 SubClassOf DC_CL_0000082"/>
+            <Axiom axiom="PRO_000001015 SubClassOf DC_CL_0000082"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_2_conjunction and (has_plasma_membrane_part some ?DC_CL_0000082) and (lacks_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 3; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000042 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000004 EquivalentTo CL_0000738 and (has_plasma_membrane_part some DC_CL_0000101) and (has_plasma_membrane_part some PRO_000001015) and (has_plasma_membrane_part some PRO_000001292) and (has_plasma_membrane_part some PRO_000001865) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001013) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 12; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000043 EquivalentTo CL_0000048 and (has_plasma_membrane_part some DC_CL_0000105) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839) and (lacks_plasma_membrane_part some PRO_000001843)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_1 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_low_plasma_membrane_amount_relative_to_leukocyte some ?FMA_63887) and (has_plasma_membrane_part some ?DC_CL_0000082) and (has_plasma_membrane_part some ?FMA_63887)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_1 count: 1; ?FMA_63887 count: 7; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000001 EquivalentTo CL_0000738 and (has_low_plasma_membrane_amount_relative_to_leukocyte some PRO_000001013) and (has_plasma_membrane_part some DC_CL_0000100) and (has_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="3" instantiationStats="?CARO_0000013 count: 2; ?cluster_2 count: 3; ?FMA_63887 count: 14; ?DC_CL_0000082 count: 2">
+            <Axiom axiom="DC_CL_0000034 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000105) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001375) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000036 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001375) and (has_plasma_membrane_part some PRO_000002065) and (lacks_plasma_membrane_part some DC_CL_0000089) and (lacks_plasma_membrane_part some DC_CL_0000100) and (lacks_plasma_membrane_part some DC_CL_0000104) and (lacks_plasma_membrane_part some DC_CL_0000106) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001014) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001839)"/>
+            <Axiom axiom="DC_CL_0000040 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001836) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027)"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and (has_plasma_membrane_part some ?FMA_63887) and (lacks_plasma_membrane_part some ?DC_CL_0000082)" count="1" instantiationStats="?CARO_0000013 count: 1; ?cluster_2 count: 1; ?FMA_63887 count: 5; ?DC_CL_0000082 count: 1">
+            <Axiom axiom="DC_CL_0000039 EquivalentTo CL_0000738 and (has_plasma_membrane_part some PRO_000001003) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001004) and (lacks_plasma_membrane_part some PRO_000001015) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001836)"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+   <Cluster size="1">
+      <Item iri="http://purl.org/obo/owlapi/dc-cl#DC_CL_0000035"/>
+      <Generalisations>
+         <Generalisation axiom="?cluster_6 SubClassOf is_location_of some ?DC_CL_0000035" count="1" instantiationStats="?DC_CL_0000035 count: 1; ?cluster_6 count: 1">
+            <Axiom axiom="FMA_9608 SubClassOf is_location_of some DC_CL_0000035"/>
+         </Generalisation>
+         <Generalisation axiom="?cluster_2 SubClassOf arises_from some ?DC_CL_0000035" count="2" instantiationStats="?DC_CL_0000035 count: 1; ?cluster_2 count: 2">
+            <Axiom axiom="DC_CL_0000038 SubClassOf arises_from some DC_CL_0000035"/>
+            <Axiom axiom="DC_CL_0000032 SubClassOf arises_from some DC_CL_0000035"/>
+         </Generalisation>
+         <Generalisation axiom="?DC_CL_0000035 EquivalentTo ?CARO_0000013 and ?expression_1_conjunction and ?expression_2_conjunction and (lacks_plasma_membrane_part some PRO_000001483) and (lacks_plasma_membrane_part some PRO_000001892)" count="1" instantiationStats="?CARO_0000013 count: 1; ?DC_CL_0000035 count: 1; ?FMA_63887 count: 9">
+            <Axiom axiom="DC_CL_0000035 EquivalentTo CL_0000048 and (has_plasma_membrane_part some PRO_000001003) and (has_plasma_membrane_part some PRO_000001786) and (lacks_plasma_membrane_part some PRO_000001002) and (lacks_plasma_membrane_part some PRO_000001012) and (lacks_plasma_membrane_part some PRO_000001024) and (lacks_plasma_membrane_part some PRO_000001027) and (lacks_plasma_membrane_part some PRO_000001083) and (lacks_plasma_membrane_part some PRO_000001456) and (lacks_plasma_membrane_part some PRO_000001483) and (lacks_plasma_membrane_part some PRO_000001892) and (lacks_plasma_membrane_part some PRO_000001945)"/>
+         </Generalisation>
+      </Generalisations>
+   </Cluster>
+</Clusters>

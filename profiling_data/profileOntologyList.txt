@@ -1,0 +1,4 @@
+ontologies/profiling_ontologies/b/bfo.owl
+ontologies/profiling_ontologies/n/nci-2012.owl.xml
+ontologies/profiling_ontologies/o/obi.owl
+ontologies/profiling_ontologies/p/protege-dc.owl

@@ -1,0 +1,10 @@
+ontologies/easy/b/bleeding-history-phenotype.owl.xml
+ontologies/easy/d/dendritic-cell.owl.xml
+ontologies/easy/h/human-developmental-anatomy-abstract-version.owl.xml
+ontologies/easy/i/interaction-network-ontology.owl.xml
+ontologies/hard/b/biotop.owl.xml
+ontologies/hard/i/imgt-ontology.owl.xml
+ontologies/hard/l/lipid-ontology.owl.xml
+ontologies/medium/a/adverse-event-reporting-ontology.owl.xml
+ontologies/medium/b/breast-tissue-cell-lines.owl.xml
+ontologies/medium/d/drosophila-development.owl.xml

@@ -1,0 +1,7 @@
+bioportal/adverse-event-reporting-ontology/adverse-event-reporting-ontology_main.owl
+bioportal/amino-acid/amino-acid_main.owl
+bioportal/import/http_www.co-ode.org_ontologies_amino-acid_2005_10_11_amino-acid.owl
+bioportal/drosophila-development/drosophila-development_main.owl
+bioportal/imgt-ontology/imgt-ontology_main.owl
+bioportal/tick-gross-anatomy/tick-gross-anatomy_main.owl
+bioportal/breast-tissue-cell-lines/breast-tissue-cell-lines_main.owl
