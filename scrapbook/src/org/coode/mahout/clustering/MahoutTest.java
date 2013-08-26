@@ -118,20 +118,28 @@ public class MahoutTest {
 				.createAxiomRelevanceAxiomBasedDistance(ontology
 						.getOWLOntologyManager());
 
-		Map<OWLEntity, OWLAxiom[]> entityAxiomMap = new HashMap<OWLEntity, OWLAxiom[]>();
+		Map<OWLEntity, Integer[]> entityAxiomMap = new HashMap<OWLEntity, Integer[]>();
+		List<Vector> points = new ArrayList<Vector>();
+		Map<OWLAxiom, Integer> axiomIdMap = new HashMap<OWLAxiom, Integer>();
+		int index = 0;
 		for (OWLEntity e : ontology.getSignature()) {
 			Collection<OWLAxiom> distAxioms = distance.getAxioms(e);
-			OWLAxiom[] axioms = new OWLAxiom[distAxioms.size()];
-			int index = 0;
+			Integer[] axiomIDs = new Integer[distAxioms.size()];
 			for (OWLAxiom a : distAxioms) {
-				axioms[index] = a;
-				index++;
+				if (axiomIdMap.get(a) == null) {
+					axiomIdMap.put(a, index);
+					index++;
+				}
 			}
-
+			// Vector vec = new SequentialAccessSparseVector(ontology
+			// .getSignature().size());
+			//
+			// Text itemWritable = new Text();
 			Vector vec = new NamedVector();
-
+			// FeatureVectorEncoder vectorEncoder = new StaticWordValueEncoder(
+			// e.toString());
+			// vectorEncoder.setProbes(1);
 			System.out.println();
 		}
-
 	}
 }
