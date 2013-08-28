@@ -3,7 +3,7 @@ RIO
 
 The Regularity Inspector for Ontologies (RIO) is a framework for inspecting regularities in OWL ontologies. 
 
-RIO is open source and is available under the LGPL License. RIO is using [OWLAPI](http://owlapi.sourceforge.net/) for processing an ontology and [OPPL 2](http://oppl2.sourceforge.net/) for expressing the regularities. A standalone Java tool is used for computing the regularities, which are saved in an XML file. The RIO plugin for Prot&eacute;g&eacute; 4 can be used for loading and viewing the regularities.
+RIO is open source and is available under the LGPL License. RIO is using the [OWLAPI](http://owlapi.sourceforge.net/) for processing an ontology and [OPPL 2](http://oppl2.sourceforge.net/) for expressing the regularities. A standalone Java tool is used for computing the regularities, which are saved in an XML file. The RIO plugin for Prot&eacute;g&eacute; 4 can be used for loading and viewing the regularities.
 
 
 ## Example Usage
