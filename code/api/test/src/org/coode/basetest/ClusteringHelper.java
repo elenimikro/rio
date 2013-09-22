@@ -14,6 +14,8 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
+import org.coode.utils.owl.ClusterCreator;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLAxiom;

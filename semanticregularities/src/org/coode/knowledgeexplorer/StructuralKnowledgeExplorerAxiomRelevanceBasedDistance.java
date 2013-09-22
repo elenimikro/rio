@@ -11,7 +11,7 @@
 /**
  *
  */
-package org.coode.distance.owl;
+package org.coode.knowledgeexplorer;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,7 +23,8 @@ import java.util.Set;
 import org.coode.distance.entityrelevance.CollectionBasedRelevantPolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
-import org.coode.knowledgeexplorer.KnowledgeExplorer;
+import org.coode.distance.owl.AbstractAxiomBasedDistanceImpl;
+import org.coode.distance.owl.AxiomRelevanceMapBase;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
 import org.coode.owl.generalise.AxiomGeneralisationTreeNode;

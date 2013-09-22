@@ -15,6 +15,7 @@ import org.coode.basetest.ClusteringHelper;
 import org.coode.owl.experiments.quality.assurance.LexicalAndAxiomaticPatternBasedQualityAssurance;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.SimpleMetric;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -24,7 +25,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import experiments.ExperimentHelper;
 import experiments.ExperimentUtils;
-import experiments.SimpleMetric;
 
 public class ChronicAndAcuteSnomedQualityTest {
 

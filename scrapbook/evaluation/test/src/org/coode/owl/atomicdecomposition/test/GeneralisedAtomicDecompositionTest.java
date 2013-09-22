@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.coode.basetest.ClusterCreator;
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
+import org.coode.utils.owl.ClusterCreator;
+import org.coode.utils.owl.DistanceCreator;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;

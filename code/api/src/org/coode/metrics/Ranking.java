@@ -12,24 +12,22 @@ package org.coode.metrics;
 
 import java.util.List;
 
-import org.semanticweb.owlapi.model.OWLEntity;
+public interface Ranking<O> {
+	double getTopValue();
 
-public interface Ranking {
-    double getTopValue();
+	double getBottomValue();
 
-    double getBottomValue();
+	O[] getTop();
 
-    OWLEntity[] getTop();
+	O[] getBottom();
 
-    OWLEntity[] getBottom();
-
-    double[] getValues();
+	double[] getValues();
 
 	boolean isAverageable();
 
-    double getAverageValue();
+	double getAverageValue();
 
-    List<RankingSlot<OWLEntity>> getSortedRanking();
+	List<RankingSlot<O>> getSortedRanking();
 
-    List<RankingSlot<OWLEntity>> getUnorderedRanking();
+	List<RankingSlot<O>> getUnorderedRanking();
 }

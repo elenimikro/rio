@@ -10,13 +10,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersImpl;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
+import org.coode.utils.SimpleMetric;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -31,7 +32,6 @@ import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 import experiments.ClusteringWithADEvaluationExperimentBase;
 import experiments.ExperimentHelper;
-import experiments.SimpleMetric;
 
 public class SemanticClustering extends
 		ClusteringWithADEvaluationExperimentBase {

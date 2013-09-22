@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.coode.basetest.TestHelper;
 import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
 import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
+import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -45,7 +45,7 @@ public class ComputeAllDistances {
 		for (String string : args) {
 			iris.add(IRI.create(string));
 		}
-		TestHelper.loadIRIMappers(iris, manager);
+		IOUtils.loadIRIMappers(iris, manager);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {

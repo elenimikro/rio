@@ -15,7 +15,6 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.coode.basetest.ClusterCreator;
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.oppl.exceptions.OPPLException;
@@ -26,6 +25,8 @@ import org.coode.proximitymatrix.cluster.ClusterStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisationStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
+import org.coode.utils.SimpleMetric;
+import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;

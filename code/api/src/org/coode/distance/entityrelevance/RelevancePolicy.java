@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.coode.distance.entityrelevance;
 
-import org.semanticweb.owlapi.model.OWLEntity;
 
-public interface RelevancePolicy {
-    boolean isRelevant(OWLEntity object);
+public interface RelevancePolicy<T> {
+	boolean isRelevant(T object);
 }

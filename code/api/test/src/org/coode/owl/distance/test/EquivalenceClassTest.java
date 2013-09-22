@@ -27,6 +27,7 @@ import org.coode.distance.Utils;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
+import org.coode.utils.owl.IOUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -149,7 +150,7 @@ public class EquivalenceClassTest {
 		OWLOntologyManager ontologyManager = OWLManager
 				.createOWLOntologyManager();
 		File file = new File("code/test/resources/c16.rdf.owl");
-		TestHelper.loadIRIMappers(Collections.singleton(IRI.create(file)),
+		IOUtils.loadIRIMappers(Collections.singleton(IRI.create(file)),
 				ontologyManager);
 		ontologyManager.loadOntologyFromOntologyDocument(file);
 		Set<OWLOntology> ontologies = ontologyManager.getOntologies();

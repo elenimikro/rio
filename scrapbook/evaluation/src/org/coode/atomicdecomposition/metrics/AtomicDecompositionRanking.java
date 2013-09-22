@@ -23,29 +23,31 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /** @author Eleni Mikroyannidi */
-public class AtomicDecompositionRanking extends AbstractRanking {
-    /** @param metric
-     * @param objects */
-    public AtomicDecompositionRanking(final Set<? extends OWLEntity> objects,
-            final Collection<? extends OWLOntology> ontologies,
-            final OWLAtomicDecompositionMap map) {
-        super(new AtomicDecompositionMetric(ontologies, map), objects);
-    }
+public class AtomicDecompositionRanking extends AbstractRanking<OWLEntity> {
+	/**
+	 * @param metric
+	 * @param objects
+	 */
+	public AtomicDecompositionRanking(final Set<OWLEntity> objects,
+			final Collection<OWLOntology> ontologies,
+			final OWLAtomicDecompositionMap map) {
+		super(new AtomicDecompositionMetric(ontologies, map), objects,
+				OWLEntity.class);
+	}
 
-    /** @see org.coode.metrics.Ranking#isAverageable() */
-    @Override
-    public boolean isAverageable() {
-        return true;
-    }
+	/** @see org.coode.metrics.Ranking#isAverageable() */
+	@Override
+	public boolean isAverageable() {
+		return true;
+	}
 
-
-    public static AtomicDecompositionRanking buildRanking(
-            final Collection<? extends OWLOntology> ontologies,
-            final OWLAtomicDecompositionMap map) {
-        Set<OWLEntity> entities = new HashSet<OWLEntity>();
-        for (OWLOntology owlOntology : ontologies) {
-            entities.addAll(owlOntology.getSignature());
-        }
-        return new AtomicDecompositionRanking(entities, ontologies, map);
-    }
+	public static AtomicDecompositionRanking buildRanking(
+			final Collection<OWLOntology> ontologies,
+			final OWLAtomicDecompositionMap map) {
+		Set<OWLEntity> entities = new HashSet<OWLEntity>();
+		for (OWLOntology owlOntology : ontologies) {
+			entities.addAll(owlOntology.getSignature());
+		}
+		return new AtomicDecompositionRanking(entities, ontologies, map);
+	}
 }

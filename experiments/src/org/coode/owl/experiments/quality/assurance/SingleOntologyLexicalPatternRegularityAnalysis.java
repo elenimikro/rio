@@ -10,11 +10,11 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisationStatistics;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.SimpleMetric;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import experiments.ExperimentUtils;
-import experiments.SimpleMetric;
 
 public class SingleOntologyLexicalPatternRegularityAnalysis {
 

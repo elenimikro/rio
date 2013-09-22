@@ -2,7 +2,6 @@ package org.coode.basetest;
 
 import java.io.File;
 import java.net.URI;
-import java.util.Collection;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -27,23 +26,6 @@ public class TestHelper {
 
 	public static void main(final String[] args) {
 		System.out.println(getPizza());
-	}
-
-	public static void loadIRIMappers(final Collection<IRI> iris,
-			final OWLOntologyManager manager)
-			throws OWLOntologyCreationException {
-		for (IRI iri : iris) {
-			URI uri = iri.toURI();
-			System.out.println(uri);
-			if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-				File file = new File(uri);
-				File parentFile = file.getParentFile();
-				if (parentFile.isDirectory()) {
-					manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-				}
-			}
-			manager.loadOntology(iri);
-		}
 	}
 
 	public static OWLOntology loadIRIMappers(final IRI iri,

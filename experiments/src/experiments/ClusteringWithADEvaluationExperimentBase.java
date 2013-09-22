@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterStatistics;
+import org.coode.utils.SimpleMetric;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 

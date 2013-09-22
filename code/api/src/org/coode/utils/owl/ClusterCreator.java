@@ -1,4 +1,4 @@
-package org.coode.basetest;
+package org.coode.utils.owl;
 
 import java.util.Collection;
 import java.util.Collections;

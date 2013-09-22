@@ -5,11 +5,11 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.coode.basetest.ClusterCreator;
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
+import org.coode.utils.owl.ClusterCreator;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;

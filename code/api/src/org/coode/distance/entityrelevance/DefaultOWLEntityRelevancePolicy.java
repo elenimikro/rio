@@ -19,11 +19,12 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * @author Luigi Iannone
  * 
  */
-public final class DefaultOWLEntityRelevancePolicy implements RelevancePolicy {
+public final class DefaultOWLEntityRelevancePolicy implements
+		RelevancePolicy<OWLEntity> {
 	private final boolean relevant;
-    private final static RelevancePolicy ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
+	private final static RelevancePolicy ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
 			true);
-    private final static RelevancePolicy ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
+	private final static RelevancePolicy ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
 			true);
 
 	private DefaultOWLEntityRelevancePolicy(boolean relevant) {
@@ -31,15 +32,15 @@ public final class DefaultOWLEntityRelevancePolicy implements RelevancePolicy {
 	}
 
 	@Override
-    public boolean isRelevant(OWLEntity object) {
+	public boolean isRelevant(OWLEntity object) {
 		return relevant;
 	}
 
-    public static RelevancePolicy getAlwaysRelevantPolicy() {
+	public static RelevancePolicy getAlwaysRelevantPolicy() {
 		return ALWAYS_RELEVANT_POLICY;
 	}
 
-    public static RelevancePolicy getAlwaysIrrelevantPolicy() {
+	public static RelevancePolicy getAlwaysIrrelevantPolicy() {
 		return ALWAYS_IRRELEVANT_POLICY;
 	}
 }

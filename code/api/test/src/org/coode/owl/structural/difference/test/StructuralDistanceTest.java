@@ -1,13 +1,18 @@
 package org.coode.owl.structural.difference.test;
 
-import org.coode.basetest.DistanceCreator;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.coode.basetest.OntologyTestHelper;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
+import org.coode.utils.owl.DistanceCreator;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -18,8 +23,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.OPPLShortFormProvider;
 
 public class StructuralDistanceTest {
 
@@ -113,8 +120,13 @@ public class StructuralDistanceTest {
 						.getOWLOntologyManager());
 		// Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
 		ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-		// ToStringRenderer.getInstance().setRenderer(
-		// new ManchesterOWLSyntaxOWLObjectRendererImpl());
+		OPPLShortFormProvider shortFormProvider = new OPPLShortFormProvider(
+				new AnnotationValueShortFormProvider(Arrays.asList(o
+						.getOWLOntologyManager().getOWLDataFactory()
+						.getRDFSLabel()), Collections
+						.<OWLAnnotationProperty, List<String>> emptyMap(), o
+						.getOWLOntologyManager()));
+		renderer.setShortFormProvider(shortFormProvider);
 		for (OWLEntity e : o.getSignature()) {
 			System.out.println("Axioms of " + e);
 			for (OWLAxiom ax : distance.getAxioms(e)) {

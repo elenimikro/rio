@@ -107,6 +107,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.OPPLShortFormProvider;
+
+//import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
+
+//import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
 
 public class Utils {
 	private final static class OWLOntologyAnnotationClusterDetector extends
@@ -994,7 +999,8 @@ public class Utils {
 			TransformerFactoryConfigurationError, TransformerException {
 		List<C> clusterList = model.getClusterList();
 		ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-
+		renderer.setShortFormProvider(new OPPLShortFormProvider(
+				new SimpleShortFormProvider()));
 		Document document = toXML(model, clusterList, renderer);
 
 		Transformer t = TransformerFactory.newInstance().newTransformer();
@@ -1231,10 +1237,11 @@ public class Utils {
 	public static org.coode.utils.owl.ManchesterSyntaxRenderer enableLabelRendering(
 			OWLOntologyManager manager) {
 		OWLDataFactory dataFactory = manager.getOWLDataFactory();
-		ShortFormProvider shortFormProvider = new AnnotationValueShortFormProvider(
-				Arrays.asList(dataFactory.getRDFSLabel()),
-				Collections.<OWLAnnotationProperty, List<String>> emptyMap(),
-				manager);
+		ShortFormProvider shortFormProvider = new OPPLShortFormProvider(
+				new AnnotationValueShortFormProvider(Arrays.asList(dataFactory
+						.getRDFSLabel()), Collections
+						.<OWLAnnotationProperty, List<String>> emptyMap(),
+						manager));
 		org.coode.utils.owl.ManchesterSyntaxRenderer renderer = new org.coode.utils.owl.ManchesterSyntaxRenderer();
 		// ManchesterOWLSyntaxObjectRenderer renderer = new
 		// ManchesterOWLSyntaxObjectRenderer(
@@ -1243,7 +1250,7 @@ public class Utils {
 		// .getRDFSLabel()), Collections
 		// .<OWLAnnotationProperty, List<String>> emptyMap(),
 		// manager));
-		// //
+		//
 		// ToStringRenderer.getInstance().setRenderer(renderer);
 		renderer.setShortFormProvider(shortFormProvider);
 		return renderer;

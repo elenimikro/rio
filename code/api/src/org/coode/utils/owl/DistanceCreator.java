@@ -1,15 +1,15 @@
-package org.coode.basetest;
+package org.coode.utils.owl;
 
 import org.coode.distance.Distance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
-import org.coode.distance.owl.KnowledgeExplorerAxiomRelevanceAxiomBasedDistance;
-import org.coode.distance.owl.KnowledgeExplorerOWLEntityRelevanceBasedDistance;
 import org.coode.distance.owl.OWLEntityRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
-import org.coode.distance.owl.StructuralKnowledgeExplorerAxiomRelevanceBasedDistance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
+import org.coode.knowledgeexplorer.KnowledgeExplorerAxiomRelevanceAxiomBasedDistance;
+import org.coode.knowledgeexplorer.KnowledgeExplorerOWLEntityRelevanceBasedDistance;
+import org.coode.knowledgeexplorer.StructuralKnowledgeExplorerAxiomRelevanceBasedDistance;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;

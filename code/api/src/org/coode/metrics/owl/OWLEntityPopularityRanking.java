@@ -23,26 +23,25 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * @author Luigi Iannone
- *
+ * 
  */
-public class OWLEntityPopularityRanking extends AbstractRanking {
+public class OWLEntityPopularityRanking extends AbstractRanking<OWLEntity> {
 	/**
 	 * @param metric
 	 * @param objects
 	 */
-	public OWLEntityPopularityRanking(Set<? extends OWLEntity> objects,
-			Collection<? extends OWLOntology> ontologies) {
-		super(new OWLEntityPopularity(ontologies), objects);
+	public OWLEntityPopularityRanking(Set<OWLEntity> objects,
+			Collection<OWLOntology> ontologies) {
+		super(new OWLEntityPopularity(ontologies), objects, OWLEntity.class);
 	}
 
-    @Override
-    public boolean isAverageable() {
+	@Override
+	public boolean isAverageable() {
 		return true;
 	}
 
-
 	public static OWLEntityPopularityRanking buildRanking(
-			Collection<? extends OWLOntology> ontologies) {
+			Collection<OWLOntology> ontologies) {
 		Set<OWLEntity> entities = new HashSet<OWLEntity>();
 		for (OWLOntology owlOntology : ontologies) {
 			entities.addAll(owlOntology.getSignature());

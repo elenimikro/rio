@@ -9,12 +9,12 @@ import java.util.TreeSet;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.coode.aiontologygeneration.ClusteringUtils;
-import org.coode.basetest.ClusterCreator;
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.owl.ClusterCreator;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;

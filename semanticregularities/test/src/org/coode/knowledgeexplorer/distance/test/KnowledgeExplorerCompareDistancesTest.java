@@ -5,10 +5,10 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.Set;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
+import org.coode.utils.owl.DistanceCreator;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;

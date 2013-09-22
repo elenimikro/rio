@@ -1,4 +1,4 @@
-package experiments;
+package org.coode.utils;
 
 public class SimpleMetric<M> {
 

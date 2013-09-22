@@ -11,20 +11,22 @@
 /**
  *
  */
-package org.coode.distance.owl;
+package org.coode.knowledgeexplorer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.coode.distance.entityrelevance.DefaultOWLEntityTypeRelevancePolicy;
+import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
-import org.coode.distance.entityrelevance.owl.AxiomMap;
-import org.coode.distance.entityrelevance.owl.AxiomRelevancePolicy;
 import org.coode.distance.entityrelevance.owl.Utils;
-import org.coode.knowledgeexplorer.KnowledgeExplorer;
+import org.coode.distance.owl.AbstractAxiomBasedDistanceImpl;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
 import org.coode.owl.generalise.structural.RelevancePolicyOWLObjectGeneralisation;
@@ -38,33 +40,25 @@ import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.WeakIndexCache;
 
 /** @author Eleni Mikroyannidi */
-public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
-    static class EntityMap extends MultiMap<OWLEntity, OWLAxiom> {
-        public EntityMap() {
-            super(false, false);
-        }
-
-    }
-
+public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAxiomBasedDistanceImpl{
     private final KnowledgeExplorer ke;
-    private final EntityMap cache = new EntityMap();
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>(
-            false, false);
-    private final AxiomMap axiomMap;
+    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
     private final Set<OWLEntity> keSignature = new HashSet<OWLEntity>();
     private final OWLEntityProvider entityProvider;
-    private final OWLEntityReplacer replacer;
     private final OPPLFactory factory;
+    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
+    private final RelevancePolicy policy;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
         public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
                 throws OWLException {
-            KnowledgeExplorerAxiomRelevanceAxiomBasedDistance.this.buildSignature();
-            KnowledgeExplorerAxiomRelevanceAxiomBasedDistance.this.buildAxiomEntityMap();
+            KnowledgeExplorerOWLEntityRelevanceBasedDistance.this.buildSignature();
+            KnowledgeExplorerOWLEntityRelevanceBasedDistance.this.buildAxiomEntityMap();
         }
     };
     private final static List<AxiomType<?>> types = new ArrayList<AxiomType<?>>(
@@ -84,58 +78,44 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends AbstractA
     	}
     }
 
-    void buildSignature() {
+    private void buildSignature() {
         keSignature.clear();
         keSignature.addAll(ke.getEntities());
     }
 
-    private final WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
-    public KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
+ 
+    public KnowledgeExplorerOWLEntityRelevanceBasedDistance(
 OWLOntology ontology,
-            final OWLEntityReplacer replacer,
             KnowledgeExplorer explorer) {
-        if (replacer == null) {
-            throw new NullPointerException("The replacer cannot be null");
-        }
         ke = explorer;
-        this.replacer = replacer;
-        axiomMap = new AxiomMap(explorer.getAxioms(), replacer);
         buildSignature();
         buildAxiomEntityMap();
-
         entityProvider = new OntologyManagerBasedOWLEntityProvider(
                 ontology.getOWLOntologyManager());
         factory = new OPPLFactory(ontology.getOWLOntologyManager(), ontology,
                 null);
+        policy = DefaultOWLEntityTypeRelevancePolicy.getObjectPropertyAlwaysRelevantPolicy();
     }
     
 
     @Override
-    public Collection<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
-        if (cached.isEmpty()) {
-            cached = computeAxiomsForEntity(owlEntity);
-        }
-        return cached;
+        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
+ : CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
     /** @param owlEntity
      * @return */
-    protected Collection<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
-            // RelevancePolicyOWLObjectGeneralisation generalReplacer = new
-            // RelevancePolicyOWLObjectGeneralisation(
-            // Utils.toOWLObjectRelevancePolicy(new AxiomRelevancePolicy(
-            // (OWLAxiom) axiom.accept(replacer), axiomMap)),
-            // getEntityProvider(), factory.createConstraintSystem());
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
             if (generalReplacer == null) {
-                generalReplacer = replacers.cache(
-                        axiom,
-                        new RelevancePolicyOWLObjectGeneralisation(
-                        Utils.toOWLObjectRelevancePolicy(new AxiomRelevancePolicy(
-                                (OWLAxiom) axiom.accept(replacer), axiomMap)),
-                                getEntityProvider()));
+                generalReplacer = new RelevancePolicyOWLObjectGeneralisation(
+                        Utils.toOWLObjectRelevancePolicy(policy),
+                        getEntityProvider());
+                replacers.put(axiom, generalReplacer);
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer
                     .getVariableProvider()).setOWLObject(owlEntity);
@@ -147,9 +127,8 @@ OWLOntology ontology,
                 cache.put(owlEntity, replaced);
             }
         }
-        Collection<OWLAxiom> collection = new ArrayList<OWLAxiom>(cache.get(owlEntity));
-        cache.putAll(owlEntity, collection);
-        return collection;
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
+                .get(owlEntity));
     }
 
     protected boolean isRelevant(final OWLAxiom replaced) {
@@ -164,10 +143,6 @@ OWLOntology ontology,
             found = replaced.accept(AxiomGeneralityDetector.getInstance());
         }
         return found;
-    }
-
-    public void dispose() {
-        // ontologyManger.removeOntologyChangeListener(listener);
     }
 
 

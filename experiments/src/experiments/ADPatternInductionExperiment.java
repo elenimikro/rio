@@ -6,11 +6,11 @@ import java.util.Collection;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
+import org.coode.utils.owl.DistanceCreator;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.ToStringRenderer;

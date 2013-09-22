@@ -5,10 +5,11 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
+import org.coode.utils.SimpleMetric;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;

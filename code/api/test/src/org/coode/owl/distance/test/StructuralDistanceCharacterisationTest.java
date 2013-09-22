@@ -3,8 +3,8 @@ package org.coode.owl.distance.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
+import org.coode.utils.owl.DistanceCreator;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;

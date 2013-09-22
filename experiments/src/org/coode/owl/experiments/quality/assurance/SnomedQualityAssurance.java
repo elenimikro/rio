@@ -9,13 +9,13 @@ import java.util.Set;
 import org.coode.basetest.ClusteringHelper;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.SimpleMetric;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import experiments.ExperimentHelper;
 import experiments.ExperimentUtils;
-import experiments.SimpleMetric;
 
 public class SnomedQualityAssurance {
 

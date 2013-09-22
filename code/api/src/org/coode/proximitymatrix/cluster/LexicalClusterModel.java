@@ -9,10 +9,8 @@ import java.util.Set;
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
-import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
@@ -107,15 +105,15 @@ public class LexicalClusterModel implements
 
 	@Override
 	public String toString() {
-		ManchesterSyntaxRenderer renderer = Utils.enableLabelRendering(onto
-				.getOWLOntologyManager());
+		org.coode.utils.owl.ManchesterSyntaxRenderer renderer = Utils
+				.enableLabelRendering(onto.getOWLOntologyManager());
 		StringBuilder sb = new StringBuilder();
 		Set<String> keySet = this.lexicalClustersMap.keySet();
 		for (String s : keySet) {
 			sb.append("Lexical pattern " + s + "\n");
 			sb.append("Cluster size: " + lexicalClustersMap.get(s).size()
 					+ "\n" + "[");
-			for (OWLObject o : lexicalClustersMap.get(s)) {
+			for (OWLEntity o : lexicalClustersMap.get(s)) {
 				sb.append(renderer.render(o) + ",");
 			}
 			sb.append("]" + "\n");

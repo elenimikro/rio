@@ -20,6 +20,7 @@ import org.coode.oppl.exceptions.OPPLException;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.GeneralisationDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.SimpleMetric;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;

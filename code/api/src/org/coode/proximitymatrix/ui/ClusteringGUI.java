@@ -62,7 +62,6 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.SparseMatrix;
 import org.coode.distance.TableDistance;
@@ -87,6 +86,7 @@ import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.ui.GlassPane;
+import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -413,7 +413,7 @@ public class ClusteringGUI extends JFrame {
 		}
 		try {
 			Collection<IRI> collection = new ArrayList<IRI>(iris);
-			TestHelper.loadIRIMappers(collection, manager);
+			IOUtils.loadIRIMappers(collection, manager);
 		} catch (OWLOntologyCreationException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage(),
 					"Error in loading ontology", JOptionPane.ERROR_MESSAGE);

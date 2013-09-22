@@ -13,10 +13,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
+import org.coode.utils.SimpleMetric;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;

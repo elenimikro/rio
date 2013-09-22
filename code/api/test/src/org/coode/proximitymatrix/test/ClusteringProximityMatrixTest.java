@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.TableDistance;
 import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
@@ -35,6 +34,7 @@ import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
+import org.coode.utils.owl.IOUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -54,7 +54,7 @@ public class ClusteringProximityMatrixTest {
 		for (String string : args) {
 			iris.add(IRI.create(string));
 		}
-		TestHelper.loadIRIMappers(iris, manager);
+		IOUtils.loadIRIMappers(iris, manager);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
 				new Comparator<OWLEntity>() {

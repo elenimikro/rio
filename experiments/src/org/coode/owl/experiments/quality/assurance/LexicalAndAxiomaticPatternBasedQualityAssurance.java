@@ -9,6 +9,7 @@ import org.coode.basetest.ClusteringHelper;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
+import org.coode.utils.SimpleMetric;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
@@ -20,7 +21,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import experiments.ExperimentHelper;
-import experiments.SimpleMetric;
 
 public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEntity>> {
 

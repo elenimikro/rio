@@ -12,7 +12,6 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.coode.basetest.ClusteringHelper;
-import org.coode.basetest.DistanceCreator;
 import org.coode.basetest.OntologyTestHelper;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.oppl.ConstraintSystem;
@@ -24,6 +23,7 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisationDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.owl.DistanceCreator;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.ToStringRenderer;

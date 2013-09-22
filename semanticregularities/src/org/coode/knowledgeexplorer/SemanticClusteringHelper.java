@@ -4,12 +4,12 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.coode.basetest.ClusterCreator;
 import org.coode.basetest.ClusteringHelper;
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
+import org.coode.utils.owl.ClusterCreator;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;

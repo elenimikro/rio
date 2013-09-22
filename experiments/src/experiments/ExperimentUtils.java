@@ -33,6 +33,7 @@ import org.coode.owl.wrappers.OWLAxiomProvider;
 import org.coode.owl.wrappers.OWLOntologyManagerBasedOWLAxiomProvider;
 import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.SimpleMetric;
 import org.coode.utils.owl.LeastCommonSubsumer;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;

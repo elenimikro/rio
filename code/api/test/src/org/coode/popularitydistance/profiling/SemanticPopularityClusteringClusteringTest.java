@@ -12,14 +12,15 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.coode.basetest.ClusterCreator;
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
+import org.coode.utils.SimpleMetric;
+import org.coode.utils.owl.ClusterCreator;
+import org.coode.utils.owl.DistanceCreator;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -32,7 +33,6 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 import experiments.ClusteringWithADEvaluationExperimentBase;
-import experiments.SimpleMetric;
 
 public class SemanticPopularityClusteringClusteringTest {
 

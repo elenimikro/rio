@@ -11,7 +11,6 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.distance.Distance;
 import org.coode.justifications.GeneralisationBasedJustificationSimilarity;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
@@ -19,6 +18,8 @@ import org.coode.oppl.exceptions.OPPLException;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.SimpleMetric;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;

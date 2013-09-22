@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.distance.wrapping.DistanceThresholdBasedFilter;
@@ -34,6 +33,7 @@ import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -74,7 +74,7 @@ public abstract class AgglomeratorBase implements Agglomerator {
 	public void run(final File outfile, final List<IRI> iris)
 			throws OWLOntologyCreationException {
 		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		TestHelper.loadIRIMappers(iris, manager);
+		IOUtils.loadIRIMappers(iris, manager);
 		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
 		// Set the policy and the distance
 		final Distance<OWLEntity> distance = getDistance(manager);

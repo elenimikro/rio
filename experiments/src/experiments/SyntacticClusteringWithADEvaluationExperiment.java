@@ -12,7 +12,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
-import org.coode.basetest.DistanceCreator;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
@@ -21,6 +20,8 @@ import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.SimpleMetric;
+import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLEntity;
