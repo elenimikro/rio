@@ -46,6 +46,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
+import org.coode.oppl.OPPLShortFormProvider;
 import org.coode.oppl.PartialOWLObjectInstantiator;
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.Assignment;
@@ -107,7 +108,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.OPPLShortFormProvider;
 
 //import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 

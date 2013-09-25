@@ -7,6 +7,7 @@ import java.util.List;
 import org.coode.basetest.OntologyTestHelper;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
+import org.coode.oppl.OPPLShortFormProvider;
 import org.coode.utils.owl.DistanceCreator;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -26,7 +27,6 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.OPPLShortFormProvider;
 
 public class StructuralDistanceTest {
 
