@@ -19,15 +19,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.coode.atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
 import org.coode.metrics.Metric;
-import org.coode.owl.wrappers.OWLAtomicDecompositionMap;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
-import edu.arizona.bio5.onto.decomposition.Atom;
+import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
 /** @author Eleni Mikroyannidi */
 public class AtomicDecompositionMetric implements Metric<OWLEntity> {

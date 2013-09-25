@@ -15,16 +15,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.coode.atomicdecomposition.metrics.AtomicDecompositionRanking;
+import org.coode.atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.metrics.AbstractRanking;
-import org.coode.owl.wrappers.OWLAtomicDecompositionMap;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
-import edu.arizona.bio5.onto.decomposition.Atom;
+import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
 public class AtomicDecompositionRelevancePolicyNEW implements
 		RelevancePolicy<OWLEntity> {

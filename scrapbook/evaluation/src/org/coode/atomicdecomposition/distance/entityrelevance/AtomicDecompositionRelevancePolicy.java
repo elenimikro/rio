@@ -27,7 +27,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
-import edu.arizona.bio5.onto.decomposition.Atom;
+import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
 /** @author Luigi Iannone */
 public class AtomicDecompositionRelevancePolicy implements

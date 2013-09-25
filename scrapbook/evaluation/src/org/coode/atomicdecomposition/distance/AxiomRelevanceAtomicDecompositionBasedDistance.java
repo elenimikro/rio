@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.coode.atomicdecomposition.distance.entityrelevance.AtomicDecompositionRelevancePolicy;
@@ -43,172 +44,175 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
-import uk.ac.manchester.cs.demost.ui.adextension.ChiaraAtomicDecomposition;
-import uk.ac.manchester.cs.demost.ui.adextension.ChiaraDecompositionAlgorithm;
-import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
-import edu.arizona.bio5.onto.decomposition.Atom;
+import uk.ac.manchester.cs.atomicdecomposition.Atom;
+import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
+import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 
-/** @author Luigi Iannone */
+/** @author Eleni Mikroyanndi */
 public class AxiomRelevanceAtomicDecompositionBasedDistance extends
-        AbstractAxiomBasedDistanceImpl {
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-    private final OWLDataFactory dataFactory;
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
-    private final OWLOntologyManager ontologyManger;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
-    private final AxiomMap axiomMap;
-    private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
-    private ChiaraAtomicDecomposition atomicDecomposition;
-    private final OWLEntityProvider entityProvider;
-    MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
+		AbstractAxiomBasedDistanceImpl {
+	private final OWLOntology ontology;
+	private final OWLDataFactory dataFactory;
+	private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+	private final OWLOntologyManager ontologyManger;
+	private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
+	private final AxiomMap axiomMap;
+	private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
+	private final AtomicDecomposition atomicDecomposition;
+	private final OWLEntityProvider entityProvider;
+	MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
+	private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
 
-        @Override
-        public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
-                throws OWLException {
-            AxiomRelevanceAtomicDecompositionBasedDistance.this.buildOntologySignature();
-            AxiomRelevanceAtomicDecompositionBasedDistance.this
-                    .buildAxiomEntityMap(ontologies);
-        }
-    };
+		@Override
+		public void ontologiesChanged(
+				final List<? extends OWLOntologyChange> changes)
+				throws OWLException {
+			AxiomRelevanceAtomicDecompositionBasedDistance.this
+					.buildOntologySignature();
+			AxiomRelevanceAtomicDecompositionBasedDistance.this
+					.buildAxiomEntityMap();
+		}
+	};
 
-    private void buildAxiomEntityMap(final Collection<? extends OWLOntology> ontos) {
-        Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
-        types.remove(AxiomType.DECLARATION);
-        for (OWLOntology ontology : ontos) {
-            for (AxiomType<?> t : types) {
-                for (OWLAxiom ax : ontology.getAxioms(t)) {
-                    for (OWLEntity e : ax.getSignature()) {
-                        candidates.put(e, ax);
-                    }
-                }
-            }
-        }
-    }
+	private void buildAxiomEntityMap() {
+		Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(
+				AxiomType.AXIOM_TYPES);
+		types.remove(AxiomType.DECLARATION);
+		for (OWLOntology ontology : this.ontology.getImportsClosure()) {
+			for (AxiomType<?> t : types) {
+				for (OWLAxiom ax : ontology.getAxioms(t)) {
+					for (OWLEntity e : ax.getSignature()) {
+						candidates.put(e, ax);
+					}
+				}
+			}
+		}
+	}
 
-    private void buildOntologySignature() {
-        ontologySignature.clear();
-        for (OWLOntology ontology : ontologies) {
-            ontologySignature.addAll(ontology.getSignature());
-        }
-    }
+	private void buildOntologySignature() {
+		ontologySignature.clear();
+		for (OWLOntology ontology : this.ontology.getImportsClosure()) {
+			ontologySignature.addAll(ontology.getSignature());
+		}
+	}
 
-    private void buildOntologyAtomicDecomposition() {
-        ChiaraDecompositionAlgorithm chiaraDecompositionAlgorithm = new ChiaraDecompositionAlgorithm(
-                ModuleType.BOT);
-        atomicDecomposition = (ChiaraAtomicDecomposition) chiaraDecompositionAlgorithm
-                .decompose(ontologyManger, null, ontologies);
-    }
+	private void buildAtomDependenciesMap() {
+		for (OWLEntity entity : ontologySignature) {
+			Map<OWLEntity, Set<Atom>> termBasedIndex = atomicDecomposition
+					.getTermBasedIndex();
+			Set<Atom> atoms = termBasedIndex.get(entity);
+			if (atoms != null) {
+				Set<Atom> dependencies = new HashSet<Atom>();
+				for (Atom atom : atoms) {
+					dependencies.addAll(atomicDecomposition
+							.getDependencies(atom));
+				}
+				dependencies.removeAll(atoms);
+				entityAtomDependencies.setEntry(entity, dependencies);
+			}
+		}
+	}
 
-    private void buildAtomDependenciesMap() {
-        for (OWLEntity entity : ontologySignature) {
-            Collection<Atom> atoms = atomicDecomposition.getEntitiesToAtom().get(entity);
-            if (atoms != null) {
-                Set<Atom> dependencies = new HashSet<Atom>();
-                for (Atom atom : atoms) {
-                    dependencies.addAll(atomicDecomposition.getDependencies(atom));
-                }
-                dependencies.removeAll(atoms);
-                entityAtomDependencies.setEntry(entity, dependencies);
-            }
-        }
-    }
+	public AxiomRelevanceAtomicDecompositionBasedDistance(
+			final OWLOntology ontology, final OWLDataFactory dataFactory,
+			final OWLOntologyManager manager, final OWLEntityReplacer replacer) {
+		if (ontology == null) {
+			throw new NullPointerException("The ontolgies canont be null");
+		}
+		if (dataFactory == null) {
+			throw new NullPointerException("The data factory cannot be null");
+		}
+		if (manager == null) {
+			throw new NullPointerException("The ontolgy manager cannot be null");
+		}
+		axiomMap = new AxiomMap(ontology.getImportsClosure(), manager, replacer);
+		this.ontology = ontology;
+		ontologyManger = manager;
+		buildOntologySignature();
+		atomicDecomposition = new AtomicDecomposerOWLAPITOOLS(this.ontology);
+		buildAtomDependenciesMap();
+		buildAxiomEntityMap();
+		this.dataFactory = dataFactory;
+		entityProvider = new OntologyManagerBasedOWLEntityProvider(
+				getOntologyManger());
+	}
 
-    public AxiomRelevanceAtomicDecompositionBasedDistance(
-            final Collection<? extends OWLOntology> ontologies,
-            final OWLDataFactory dataFactory, final OWLOntologyManager manager,
-            final OWLEntityReplacer replacer) {
-        if (ontologies == null) {
-            throw new NullPointerException("The ontolgies canont be null");
-        }
-        if (dataFactory == null) {
-            throw new NullPointerException("The data factory cannot be null");
-        }
-        if (manager == null) {
-            throw new NullPointerException("The ontolgy manager cannot be null");
-        }
-        axiomMap = new AxiomMap(ontologies, manager, replacer);
-        this.ontologies.addAll(ontologies);
-        ontologyManger = manager;
-        buildOntologySignature();
-        buildOntologyAtomicDecomposition();
-        buildAtomDependenciesMap();
-        buildAxiomEntityMap(ontologies);
-        this.dataFactory = dataFactory;
-        entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
-    }
+	@Override
+	public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+		Collection<OWLAxiom> cached = cache.get(owlEntity);
+		return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
+				: CollectionFactory
+						.getCopyOnRequestSetFromImmutableCollection(cached);
+	}
 
-    @Override
-    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
-        Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
- : CollectionFactory
-                .getCopyOnRequestSetFromImmutableCollection(cached);
-    }
+	/**
+	 * @param owlEntity
+	 * @return
+	 */
+	protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+		// Set<AxiomType<?>> types = new
+		// HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
+		// types.remove(AxiomType.DECLARATION);
+		OPPLFactory factory = new OPPLFactory(getOntologyManger(), ontology,
+				null);
+		for (OWLAxiom axiom : candidates.get(owlEntity)) {
+			AtomicDecompositionRelevancePolicy policy = new AtomicDecompositionRelevancePolicy(
+					axiom, getOntologyManger().getOWLDataFactory(),
+					ontology.getImportsClosure(), axiomMap,
+					entityAtomDependencies);
+			RelevancePolicyOWLObjectGeneralisation genreplacer = new RelevancePolicyOWLObjectGeneralisation(
+					Utils.toOWLObjectRelevancePolicy(policy),
+					getEntityProvider());
+			final ConstraintSystem cs = factory.createConstraintSystem();
+			genreplacer.getVariableProvider().setConstraintSystem(cs);
+			genreplacer.getVariableProvider().setConstraintSystem(cs);
+			((SingleOWLEntityReplacementVariableProvider) genreplacer
+					.getVariableProvider()).setOWLObject(owlEntity);
+			OWLAxiom replaced = (OWLAxiom) axiom.accept(genreplacer);
+			if (isRelevant(replaced)) {
+				cache.put(owlEntity, replaced);
+			}
+		}
+		return CollectionFactory
+				.getCopyOnRequestSetFromImmutableCollection(cache
+						.get(owlEntity));
+	}
 
-    /** @param owlEntity
-     * @return */
-    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
-        // Set<AxiomType<?>> types = new
-        // HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
-        // types.remove(AxiomType.DECLARATION);
-        OPPLFactory factory = new OPPLFactory(getOntologyManger(), ontologies.iterator()
-                .next(), null);
-        for (OWLAxiom axiom : candidates.get(owlEntity)) {
-            AtomicDecompositionRelevancePolicy policy = new AtomicDecompositionRelevancePolicy(
-                    axiom, getOntologyManger().getOWLDataFactory(), ontologies,
-                    axiomMap, entityAtomDependencies);
-            RelevancePolicyOWLObjectGeneralisation genreplacer = new RelevancePolicyOWLObjectGeneralisation(
-                    Utils.toOWLObjectRelevancePolicy(policy), getEntityProvider());
-            final ConstraintSystem cs = factory.createConstraintSystem();
-            genreplacer.getVariableProvider().setConstraintSystem(cs);
-            genreplacer.getVariableProvider().setConstraintSystem(cs);
-            ((SingleOWLEntityReplacementVariableProvider) genreplacer
-                    .getVariableProvider()).setOWLObject(owlEntity);
-            OWLAxiom replaced = (OWLAxiom) axiom.accept(genreplacer);
-            if (isRelevant(replaced)) {
-                cache.put(owlEntity, replaced);
-            }
-        }
-        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
-                .get(owlEntity));
-    }
+	protected boolean isRelevant(final OWLAxiom replaced) {
+		Set<OWLEntity> signature = replaced.getSignature();
+		boolean found = false;
+		Iterator<OWLEntity> iterator = signature.iterator();
+		while (!found && iterator.hasNext()) {
+			OWLEntity owlEntity = iterator.next();
+			found = ontologySignature.contains(owlEntity);
+		}
+		if (!found) {
+			found = replaced.accept(AxiomGeneralityDetector.getInstance());
+		}
+		return found;
+	}
 
-    protected boolean isRelevant(final OWLAxiom replaced) {
-        Set<OWLEntity> signature = replaced.getSignature();
-        boolean found = false;
-        Iterator<OWLEntity> iterator = signature.iterator();
-        while (!found && iterator.hasNext()) {
-            OWLEntity owlEntity = iterator.next();
-            found = ontologySignature.contains(owlEntity);
-        }
-        if (!found) {
-            found = replaced.accept(AxiomGeneralityDetector.getInstance());
-        }
-        return found;
-    }
+	/** @return the ontology */
+	public OWLOntology getOntologies() {
+		return ontology;
+	}
 
-    /** @return the ontologies */
-    public Set<OWLOntology> getOntologies() {
-        return new HashSet<OWLOntology>(ontologies);
-    }
+	/** @return the dataFactory */
+	public OWLDataFactory getDataFactory() {
+		return dataFactory;
+	}
 
-    /** @return the dataFactory */
-    public OWLDataFactory getDataFactory() {
-        return dataFactory;
-    }
+	public void dispose() {
+		ontologyManger.removeOntologyChangeListener(listener);
+	}
 
-    public void dispose() {
-        ontologyManger.removeOntologyChangeListener(listener);
-    }
+	/** @return the ontologyManger */
+	public OWLOntologyManager getOntologyManger() {
+		return ontologyManger;
+	}
 
-    /** @return the ontologyManger */
-    public OWLOntologyManager getOntologyManger() {
-        return ontologyManger;
-    }
-
-    /** @return the entityProvider */
-    public OWLEntityProvider getEntityProvider() {
-        return entityProvider;
-    }
+	/** @return the entityProvider */
+	public OWLEntityProvider getEntityProvider() {
+		return entityProvider;
+	}
 }
