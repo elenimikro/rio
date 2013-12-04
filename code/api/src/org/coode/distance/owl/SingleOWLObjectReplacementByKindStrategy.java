@@ -30,154 +30,138 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStrategy {
-	private static final String IRI_PLACE_HOLDER = "iriPlaceHolder";
-	private final OWLEntity owlEntity;
-	private final ReplacementStrategy delegate;
-	private final OWLEntity replacement;
-	private final OWLDataFactory dataFactory;
+    private static final String IRI_PLACE_HOLDER = "iriPlaceHolder";
+    private final OWLEntity owlEntity;
+    private final ReplacementStrategy delegate;
+    private final OWLEntity replacement;
+    private final OWLDataFactory dataFactory;
     private final RelevancePolicy relevancePolicy;
-	private final static Properties properties = new Properties();
-	private final ReplacementStrategy defaultStrategy;
-	static {
-		try {
-			properties.load(ReplacementByKindStrategy.class
-					.getResourceAsStream(SingleOWLObjectReplacementByKindStrategy.class
-							.getName() + ".properties"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    private final static Properties properties = new Properties();
+    private final ReplacementStrategy defaultStrategy;
+    static {
+        try {
+            properties.load(ReplacementByKindStrategy.class
+                    .getResourceAsStream(SingleOWLObjectReplacementByKindStrategy.class
+                            .getName() + ".properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity,
+    public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity,
             OWLDataFactory dataFactory, RelevancePolicy relevancePolicy) {
-		if (dataFactory == null) {
-			throw new NullPointerException("The data factory cannot be null");
-		}
-		if (owlEntity == null) {
-			throw new NullPointerException("The owl Object cannot be null");
-		}
-		if (relevancePolicy == null) {
-			throw new NullPointerException("The relevance policy cannnot be null");
-		}
-		this.relevancePolicy = relevancePolicy;
-		this.owlEntity = owlEntity;
-		this.dataFactory = dataFactory;
-		defaultStrategy = new ReplacementByKindStrategy(getDataFactory());
-		delegate = new ReplacementStrategy() {
+        if (dataFactory == null) {
+            throw new NullPointerException("The data factory cannot be null");
+        }
+        if (owlEntity == null) {
+            throw new NullPointerException("The owl Object cannot be null");
+        }
+        if (relevancePolicy == null) {
+            throw new NullPointerException("The relevance policy cannnot be null");
+        }
+        this.relevancePolicy = relevancePolicy;
+        this.owlEntity = owlEntity;
+        this.dataFactory = dataFactory;
+        defaultStrategy = new ReplacementByKindStrategy(getDataFactory());
+        delegate = new ReplacementStrategy() {
             @Override
             public <O extends OWLObject> O replace(O owlObject) {
-				return owlObject.accept(Utils.getOWLEntityRecogniser())
-						&& SingleOWLObjectReplacementByKindStrategy.this
-								.getRelevancePolicy().isRelevant((OWLEntity) owlObject) ? owlObject
-						: defaultStrategy
-								.replace(owlObject);
-			}
-		};
-		replacement = owlEntity.accept(new OWLEntityVisitorEx<OWLEntity>() {
+                return owlObject.accept(Utils.getOWLEntityRecogniser())
+                        && SingleOWLObjectReplacementByKindStrategy.this
+                                .getRelevancePolicy().isRelevant(owlObject) ? owlObject
+                        : defaultStrategy.replace(owlObject);
+            }
+        };
+        replacement = owlEntity.accept(new OWLEntityVisitorEx<OWLEntity>() {
             @Override
             public OWLAnnotationProperty visit(OWLAnnotationProperty property) {
-				return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-						.getOWLAnnotationProperty(
-								SingleOWLObjectReplacementByKindStrategy.this
-										.getPlaceHolderIRI());
-			}
+                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
+                        .getOWLAnnotationProperty(
+                                SingleOWLObjectReplacementByKindStrategy.this
+                                        .getPlaceHolderIRI());
+            }
 
             @Override
             public OWLClass visit(OWLClass cls) {
-				return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-						.getOWLClass(
-								SingleOWLObjectReplacementByKindStrategy.this
-										.getPlaceHolderIRI());
-			}
+                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
+                        .getOWLClass(
+                                SingleOWLObjectReplacementByKindStrategy.this
+                                        .getPlaceHolderIRI());
+            }
 
             @Override
             public OWLDataProperty visit(OWLDataProperty property) {
-				return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-						.getOWLDataProperty(
-								SingleOWLObjectReplacementByKindStrategy.this
-										.getPlaceHolderIRI());
-			}
+                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
+                        .getOWLDataProperty(
+                                SingleOWLObjectReplacementByKindStrategy.this
+                                        .getPlaceHolderIRI());
+            }
 
             @Override
             public OWLObjectProperty visit(OWLObjectProperty property) {
-				return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-						.getOWLObjectProperty(
-								SingleOWLObjectReplacementByKindStrategy.this
-										.getPlaceHolderIRI());
-			}
+                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
+                        .getOWLObjectProperty(
+                                SingleOWLObjectReplacementByKindStrategy.this
+                                        .getPlaceHolderIRI());
+            }
 
             @Override
             public OWLDatatype visit(OWLDatatype datatype) {
-				return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-						.getOWLDatatype(
-								SingleOWLObjectReplacementByKindStrategy.this
-										.getPlaceHolderIRI());
-			}
+                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
+                        .getOWLDatatype(
+                                SingleOWLObjectReplacementByKindStrategy.this
+                                        .getPlaceHolderIRI());
+            }
 
             @Override
             public OWLNamedIndividual visit(OWLNamedIndividual individual) {
-				return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-						.getOWLNamedIndividual(
-								SingleOWLObjectReplacementByKindStrategy.this
-										.getPlaceHolderIRI());
-			}
-		});
-	}
+                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
+                        .getOWLNamedIndividual(
+                                SingleOWLObjectReplacementByKindStrategy.this
+                                        .getPlaceHolderIRI());
+            }
+        });
+    }
 
-	protected IRI getPlaceHolderIRI() {
-		return IRI.create(properties.getProperty(IRI_PLACE_HOLDER));
-	}
+    protected IRI getPlaceHolderIRI() {
+        return IRI.create(properties.getProperty(IRI_PLACE_HOLDER));
+    }
 
-	/**
-	 * @return the owlObject
-	 */
-	public OWLObject getOWLObject() {
-		return owlEntity;
-	}
+    /** @return the owlObject */
+    public OWLObject getOWLObject() {
+        return owlEntity;
+    }
 
-	/**
-	 * @param <O>
-	 * @param owlObject
-	 * @return
-	 * @see org.coode.distance.owl.ReplacementByKindStrategy#replace(org.semanticweb.owlapi.model.OWLObject)
-	 */
+    /** @param <O>
+     * @param owlObject
+     * @return
+     * @see org.coode.distance.owl.ReplacementByKindStrategy#replace(org.semanticweb.owlapi.model.OWLObject) */
     @Override
     @SuppressWarnings("unchecked")
-	public <O extends OWLObject> O replace(O owlObject) {
-		return (O) (owlObject.equals(owlEntity) ? getReplacement()
-				: delegate.replace(owlObject));
-	}
+    public <O extends OWLObject> O replace(O owlObject) {
+        return (O) (owlObject.equals(owlEntity) ? getReplacement() : delegate
+                .replace(owlObject));
+    }
 
-	/**
-	 * @return the replacement
-	 */
-	public OWLEntity getReplacement() {
-		return replacement;
-	}
+    /** @return the replacement */
+    public OWLEntity getReplacement() {
+        return replacement;
+    }
 
-	/**
-	 * @return the delegate
-	 */
-	public ReplacementStrategy getDelegate() {
-		return delegate;
-	}
+    /** @return the delegate */
+    public ReplacementStrategy getDelegate() {
+        return delegate;
+    }
 
-	/**
-	 * @return the dataFactory
-	 */
-	public OWLDataFactory getDataFactory() {
-		return dataFactory;
-	}
+    /** @return the dataFactory */
+    public OWLDataFactory getDataFactory() {
+        return dataFactory;
+    }
 
-	/**
-	 * @return the relevancePolicy
-	 */
+    /** @return the relevancePolicy */
     public RelevancePolicy getRelevancePolicy() {
-		return relevancePolicy;
-	}
+        return relevancePolicy;
+    }
 }

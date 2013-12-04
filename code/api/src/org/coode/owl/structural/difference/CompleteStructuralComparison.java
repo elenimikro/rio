@@ -185,13 +185,13 @@ final class CompleteStructuralComparison implements
     protected List<StructuralDifferenceReport> compare(
             final List<SimplePair<OWLObject>> pairs, int startIndex) {
         Iterator<SimplePair<OWLObject>> iterator = pairs.iterator();
-        StructuralDifference difference = new StructuralDifference(getPosition());
+        StructuralDifference structDifference = new StructuralDifference(getPosition());
         List<StructuralDifferenceReport> toReturn = new ArrayList<StructuralDifferenceReport>();
         while (iterator.hasNext()) {
             SimplePair<OWLObject> pair = iterator.next();
             OWLObject first = pair.getFirst();
             OWLObject second = pair.getSecond();
-            List<StructuralDifferenceReport> differenceReports = difference
+            List<StructuralDifferenceReport> differenceReports = structDifference
                     .getTopDifferences(first, second);
             startIndex++;
             if (!differenceReports.isEmpty()) {

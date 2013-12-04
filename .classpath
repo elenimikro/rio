@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="code/api/src"/>
+	<classpathentry kind="src" path="code/api/test/src"/>
+	<classpathentry kind="src" path="experiments/src"/>
+	<classpathentry kind="src" path="experiments/test/src"/>
+	<classpathentry kind="src" path="scrapbook/src"/>
+	<classpathentry kind="src" path="semanticregularities/src"/>
+	<classpathentry kind="src" path="semanticregularities/test/src"/>
+	<classpathentry kind="src" path="scrapbook/evaluation/src"/>
+	<classpathentry kind="src" path="scrapbook/evaluation/test/src"/>
+	<classpathentry kind="src" path="scrapbook/test/src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/owlapi"/>
+	<classpathentry kind="lib" path="code/api/lib/commons-math-2.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="code/api/lib/commons-math-2.1.jar"/>
+	<classpathentry kind="lib" path="code/api/lib/chainsaw.jar"/>
+	<classpathentry kind="lib" path="code/api/lib/elk-owlapi.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="code/api/lib/explanation-3.2.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/owlapitools"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jfact"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/factjavasvn"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/oppl2"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

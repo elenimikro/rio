@@ -149,7 +149,7 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     }
 
     @Override
-    public ProximityMatrix<O> reduce(final PairFilter<O> filter) {
+    public ProximityMatrix<O> reduce(final PairFilter<O> f) {
         Set<O> reducedObjects = new HashSet<O>();
         Iterator<O> iterator = this.getObjects().iterator();
         boolean found = false;
@@ -158,32 +158,32 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
             O object = iterator.next();
             while (!found && anotherIterator.hasNext()) {
                 O anotherObject = anotherIterator.next();
-                found = anotherObject != object && filter.accept(object, anotherObject);
+                found = anotherObject != object && f.accept(object, anotherObject);
             }
             if (found) {
                 reducedObjects.add(object);
             }
             found = false;
         }
-        if(!reducedObjects.isEmpty()){
-        	 SparseMatrix newDistances = SparseMatrixFactory.create(reducedObjects.size());
-             List<O> list = new ArrayList<O>(reducedObjects);
-             final int size = list.size();
-             for (int i = 0; i < size; i++) {
-                 O a = list.get(i);
-                 for (int j = i + 1; j < size; j++) {
-                     O b = list.get(j);
-                     newDistances.set(i, j, a == b ? 0 : this.getDistance(a, b));
-                 }
-             }
-             return new SimpleProximityMatrix<O>(reducedObjects, newDistances,
-                     this.getFilter(), comparator);
+        if (!reducedObjects.isEmpty()) {
+            SparseMatrix newDistances = SparseMatrixFactory.create(reducedObjects.size());
+            List<O> list = new ArrayList<O>(reducedObjects);
+            final int size = list.size();
+            for (int i = 0; i < size; i++) {
+                O a = list.get(i);
+                for (int j = i + 1; j < size; j++) {
+                    O b = list.get(j);
+                    newDistances.set(i, j, a == b ? 0 : this.getDistance(a, b));
+                }
+            }
+            return new SimpleProximityMatrix<O>(reducedObjects, newDistances,
+                    this.getFilter(), comparator);
         }
-      //the proximity matrix cannot be reduced any more so return the same instance
-        else{
-        	 return this;
+        // the proximity matrix cannot be reduced any more so return the same
+        // instance
+        else {
+            return this;
         }
-       
     }
 
     @Override

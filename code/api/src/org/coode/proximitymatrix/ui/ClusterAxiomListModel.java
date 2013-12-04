@@ -35,112 +35,98 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class ClusterAxiomListModel implements ListModel {
-	private final ListModel delegate;
-	private final int axiomCount;
+    private final ListModel delegate;
+    private final int axiomCount;
 
-	public ClusterAxiomListModel(Cluster<? extends OWLEntity> cluster,
-			Collection<? extends OWLOntology> ontologies,
-			OWLObjectGeneralisation generalisation,
-			RuntimeExceptionHandler runtimeExceptionHandler) {
-		if (cluster == null) {
-			throw new NullPointerException("The cluster cannot be null");
-		}
-		if (ontologies == null) {
-			throw new NullPointerException("The ontologies collection cannot be null");
-		}
-		if (ontologies.isEmpty()) {
-			throw new IllegalArgumentException(
-					"The colleciton of ontologies cannot be null");
-		}
-		DefaultListModel defaultListModel = new DefaultListModel();
-		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-		for(OWLOntology ont : ontologies){
-			axioms.addAll(ont.getAxioms());
-		}
-		final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
-				.buildGeneralisationMap(cluster, ontologies, axioms, generalisation,
-						runtimeExceptionHandler);
-		Comparator<OWLAxiom> comparator = new Comparator<OWLAxiom>() {
-			@Override
+    public ClusterAxiomListModel(Cluster<? extends OWLEntity> cluster,
+            Collection<? extends OWLOntology> ontologies,
+            OWLObjectGeneralisation generalisation,
+            RuntimeExceptionHandler runtimeExceptionHandler) {
+        if (cluster == null) {
+            throw new NullPointerException("The cluster cannot be null");
+        }
+        if (ontologies == null) {
+            throw new NullPointerException("The ontologies collection cannot be null");
+        }
+        if (ontologies.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "The colleciton of ontologies cannot be null");
+        }
+        DefaultListModel defaultListModel = new DefaultListModel();
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        for (OWLOntology ont : ontologies) {
+            axioms.addAll(ont.getAxioms());
+        }
+        final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
+                .buildGeneralisationMap(cluster, ontologies, axioms, generalisation,
+                        runtimeExceptionHandler);
+        Comparator<OWLAxiom> comparator = new Comparator<OWLAxiom>() {
+            @Override
             public int compare(OWLAxiom axiom, OWLAxiom anotherAxiom) {
-				int toReturn = axiom.hashCode() - anotherAxiom.hashCode();
-				Collection<OWLAxiomInstantiation> axioms = generalisationMap.get(axiom);
-				Collection<OWLAxiomInstantiation> otherAxioms = generalisationMap
-						.get(anotherAxiom);
-				if (axioms != otherAxioms) {
-					toReturn = axioms.size() - otherAxioms.size();
-					if (toReturn == 0) {
-						toReturn = axioms.hashCode() - otherAxioms.hashCode();
-					}
-				}
-				return toReturn;
-			}
-		};
-		SortedSet<OWLAxiom> sortedAxioms = new TreeSet<OWLAxiom>(
-				Collections.reverseOrder(comparator));
-		sortedAxioms.addAll(generalisationMap.keySet());
-		for (OWLAxiom axiom : sortedAxioms) {
-			Collection<OWLAxiomInstantiation> axiomInstantiations = generalisationMap
-					.get(axiom);
-			defaultListModel.addElement(new OWLAxiomListItem(axiom, axiomInstantiations));
-		}
-		this.axiomCount = defaultListModel.getSize();
-		this.delegate = defaultListModel;
-	}
+                int toReturn = axiom.hashCode() - anotherAxiom.hashCode();
+                Collection<OWLAxiomInstantiation> genAxioms = generalisationMap
+                        .get(axiom);
+                Collection<OWLAxiomInstantiation> otherAxioms = generalisationMap
+                        .get(anotherAxiom);
+                if (genAxioms != otherAxioms) {
+                    toReturn = genAxioms.size() - otherAxioms.size();
+                    if (toReturn == 0) {
+                        toReturn = genAxioms.hashCode() - otherAxioms.hashCode();
+                    }
+                }
+                return toReturn;
+            }
+        };
+        SortedSet<OWLAxiom> sortedAxioms = new TreeSet<OWLAxiom>(
+                Collections.reverseOrder(comparator));
+        sortedAxioms.addAll(generalisationMap.keySet());
+        for (OWLAxiom axiom : sortedAxioms) {
+            Collection<OWLAxiomInstantiation> axiomInstantiations = generalisationMap
+                    .get(axiom);
+            defaultListModel.addElement(new OWLAxiomListItem(axiom, axiomInstantiations));
+        }
+        axiomCount = defaultListModel.getSize();
+        delegate = defaultListModel;
+    }
 
-	/**
-	 * @return the delegate
-	 */
-	public ListModel getDelegate() {
-		return this.delegate;
-	}
+    /** @return the delegate */
+    public ListModel getDelegate() {
+        return delegate;
+    }
 
-	/**
-	 * @return
-	 * @see javax.swing.ListModel#getSize()
-	 */
-	@Override
+    /** @return
+     * @see javax.swing.ListModel#getSize() */
+    @Override
     public int getSize() {
-		return this.getDelegate().getSize();
-	}
+        return getDelegate().getSize();
+    }
 
-	/**
-	 * @param index
-	 * @return
-	 * @see javax.swing.ListModel#getElementAt(int)
-	 */
-	@Override
+    /** @param index
+     * @return
+     * @see javax.swing.ListModel#getElementAt(int) */
+    @Override
     public Object getElementAt(int index) {
-		return this.getDelegate().getElementAt(index);
-	}
+        return getDelegate().getElementAt(index);
+    }
 
-	/**
-	 * @param l
-	 * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
-	 */
-	@Override
+    /** @param l
+     * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener) */
+    @Override
     public void addListDataListener(ListDataListener l) {
-		this.getDelegate().addListDataListener(l);
-	}
+        getDelegate().addListDataListener(l);
+    }
 
-	/**
-	 * @param l
-	 * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
-	 */
-	@Override
+    /** @param l
+     * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener) */
+    @Override
     public void removeListDataListener(ListDataListener l) {
-		this.getDelegate().removeListDataListener(l);
-	}
+        getDelegate().removeListDataListener(l);
+    }
 
-	/**
-	 * @return the axiomCount
-	 */
-	public int getAxiomCount() {
-		return this.axiomCount;
-	}
+    /** @return the axiomCount */
+    public int getAxiomCount() {
+        return axiomCount;
+    }
 }

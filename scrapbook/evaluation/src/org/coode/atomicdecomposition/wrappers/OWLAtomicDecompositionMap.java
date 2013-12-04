@@ -24,86 +24,80 @@ import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 
 public class OWLAtomicDecompositionMap {
+    private final AtomicDecomposition atomicDecomposition;
+    private final OWLOntologyManager ontologyManger;
+    private final OWLOntology ontology;
+    private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
+    MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
+    MultiMap<OWLEntity, Atom> entityAtomInfluences = new MultiMap<OWLEntity, Atom>();
 
-	private final AtomicDecomposition atomicDecomposition;
-	private final OWLOntologyManager ontologyManger;
-	private final OWLOntology ontology;
-	private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
-	MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
-	MultiMap<OWLEntity, Atom> entityAtomInfluences = new MultiMap<OWLEntity, Atom>();
+    public OWLAtomicDecompositionMap(OWLOntology ontology, OWLOntologyManager manager) {
+        if (ontology == null) {
+            throw new NullPointerException("The ontolgies canont be null");
+        }
+        if (manager == null) {
+            throw new NullPointerException("The ontolgy manager cannot be null");
+        }
+        this.ontology = ontology;
+        ontologyManger = manager;
+        buildOntologySignature();
+        atomicDecomposition = new AtomicDecomposerOWLAPITOOLS(ontology);
+        buildAtomDependenciesMap();
+        buildInfluencesMap();
+    }
 
-	public OWLAtomicDecompositionMap(OWLOntology ontology,
-			OWLOntologyManager manager) {
-		if (ontology == null) {
-			throw new NullPointerException("The ontolgies canont be null");
-		}
-		if (manager == null) {
-			throw new NullPointerException("The ontolgy manager cannot be null");
-		}
-		this.ontology = ontology;
-		this.ontologyManger = manager;
-		this.buildOntologySignature();
-		this.atomicDecomposition = new AtomicDecomposerOWLAPITOOLS(ontology);
-		this.buildAtomDependenciesMap();
-		this.buildInfluencesMap();
-	}
+    private void buildInfluencesMap() {
+        for (OWLEntity entity : ontologySignature) {
+            Map<OWLEntity, Set<Atom>> termBasedIndex = atomicDecomposition
+                    .getTermBasedIndex();
+            Set<Atom> atoms = termBasedIndex.get(entity);
+            if (atoms != null) {
+                Set<Atom> influencies = new HashSet<Atom>();
+                for (Atom atom : atoms) {
+                    influencies.addAll(atomicDecomposition.getDependents(atom));
+                }
+                influencies.removeAll(atoms);
+                entityAtomInfluences.setEntry(entity, influencies);
+            }
+        }
+    }
 
-	private void buildInfluencesMap() {
-		for (OWLEntity entity : this.ontologySignature) {
-			Map<OWLEntity, Set<Atom>> termBasedIndex = this.atomicDecomposition
-					.getTermBasedIndex();
-			Set<Atom> atoms = termBasedIndex.get(entity);
-			if (atoms != null) {
-				Set<Atom> influencies = new HashSet<Atom>();
-				for (Atom atom : atoms) {
-					influencies.addAll(this.atomicDecomposition
-							.getDependents(atom));
-				}
-				influencies.removeAll(atoms);
-				entityAtomInfluences.setEntry(entity, influencies);
-			}
-		}
+    private void buildOntologySignature() {
+        ontologySignature.clear();
+        for (OWLOntology ont : ontology.getImportsClosure()) {
+            ontologySignature.addAll(ont.getSignature());
+        }
+    }
 
-	}
+    private void buildAtomDependenciesMap() {
+        for (OWLEntity entity : ontologySignature) {
+            Map<OWLEntity, Set<Atom>> termBasedIndex = atomicDecomposition
+                    .getTermBasedIndex();
+            Set<Atom> atoms = termBasedIndex.get(entity);
+            if (atoms != null) {
+                Set<Atom> dependencies = new HashSet<Atom>();
+                for (Atom atom : atoms) {
+                    dependencies.addAll(atomicDecomposition.getDependencies(atom));
+                }
+                dependencies.removeAll(atoms);
+                entityAtomDependencies.setEntry(entity, dependencies);
+            }
+        }
+    }
 
-	private void buildOntologySignature() {
-		this.ontologySignature.clear();
-		for (OWLOntology ontology : this.ontology.getImportsClosure()) {
-			this.ontologySignature.addAll(ontology.getSignature());
-		}
-	}
+    public AtomicDecomposition getAtomicDecomposition() {
+        return atomicDecomposition;
+    }
 
-	private void buildAtomDependenciesMap() {
-		for (OWLEntity entity : this.ontologySignature) {
-			Map<OWLEntity, Set<Atom>> termBasedIndex = this.atomicDecomposition
-					.getTermBasedIndex();
-			Set<Atom> atoms = termBasedIndex.get(entity);
-			if (atoms != null) {
-				Set<Atom> dependencies = new HashSet<Atom>();
-				for (Atom atom : atoms) {
-					dependencies.addAll(this.atomicDecomposition
-							.getDependencies(atom));
-				}
-				dependencies.removeAll(atoms);
-				entityAtomDependencies.setEntry(entity, dependencies);
-			}
-		}
+    public MultiMap<OWLEntity, Atom> getEntityAtomDependencies() {
+        return entityAtomDependencies;
+    }
 
-	}
+    public OWLOntologyManager getOntologyManger() {
+        return ontologyManger;
+    }
 
-	public AtomicDecomposition getAtomicDecomposition() {
-		return atomicDecomposition;
-	}
-
-	public MultiMap<OWLEntity, Atom> getEntityAtomDependencies() {
-		return entityAtomDependencies;
-	}
-
-	public OWLOntologyManager getOntologyManger() {
-		return ontologyManger;
-	}
-
-	public OWLOntology getOntologies() {
-		return ontology;
-	}
+    public OWLOntology getOntologies() {
+        return ontology;
+    }
 }

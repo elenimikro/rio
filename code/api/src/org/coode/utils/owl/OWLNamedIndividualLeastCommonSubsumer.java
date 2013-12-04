@@ -24,48 +24,45 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 public class OWLNamedIndividualLeastCommonSubsumer extends
-		LeastCommonSubsumer<OWLNamedIndividual, OWLClass> {
-	private final OWLClassLeastCommonSubsumer delegate;
+        LeastCommonSubsumer<OWLNamedIndividual, OWLClass> {
+    private final OWLClassLeastCommonSubsumer delegate;
 
-	public OWLNamedIndividualLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
-			OWLDataFactory dataFactory) {
-		super(axiomProvider, dataFactory.getOWLThing());
-		this.delegate = new OWLClassLeastCommonSubsumer(axiomProvider, dataFactory);
-	}
+    public OWLNamedIndividualLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
+            OWLDataFactory dataFactory) {
+        super(axiomProvider, dataFactory.getOWLThing());
+        delegate = new OWLClassLeastCommonSubsumer(axiomProvider, dataFactory);
+    }
 
-	@Override
-	protected void rebuild() {
-		for (OWLAxiom axiom : this.getAxiomProvider()) {
-			axiom.accept(new OWLAxiomVisitorAdapter() {
-				@Override
-				public void visit(OWLClassAssertionAxiom axiom) {
-					if (!axiom.getIndividual().isAnonymous()
-							&& !axiom.getClassExpression().isAnonymous()) {
-						OWLNamedIndividualLeastCommonSubsumer.this.addParent(axiom
-								.getIndividual().asOWLNamedIndividual(), axiom
-								.getClassExpression().asOWLClass());
-					}
-				}
-			});
-		}
-	}
+    @Override
+    protected void rebuild() {
+        for (OWLAxiom axiom : getAxiomProvider()) {
+            axiom.accept(new OWLAxiomVisitorAdapter() {
+                @Override
+                public void visit(OWLClassAssertionAxiom ax) {
+                    if (!ax.getIndividual().isAnonymous()
+                            && !ax.getClassExpression().isAnonymous()) {
+                        OWLNamedIndividualLeastCommonSubsumer.this.addParent(ax
+                                .getIndividual().asOWLNamedIndividual(), ax
+                                .getClassExpression().asOWLClass());
+                    }
+                }
+            });
+        }
+    }
 
-	@Override
-	public OWLClass get(Collection<? extends OWLNamedIndividual> c) {
-		List<OWLClass> results = new ArrayList<OWLClass>();
-		for (OWLNamedIndividual owlNamedIndividual : c) {
-			results.addAll(this.getParents(owlNamedIndividual));
-		}
-		results = new ArrayList<OWLClass>(new HashSet<OWLClass>(results));
-		
-		if(results.size() == 0)
-			return null;
-		
-		return 	results.size() > 1 ? results.size() == 2 ? this.delegate.get(
-				results.get(0), results.get(1)) : this.delegate.get(
-				results.get(0),
-				results.get(1),
-				results.subList(2, results.size()).toArray(
-						new OWLClass[results.size() - 2])) : results.get(0);
-	}
+    @Override
+    public OWLClass get(Collection<? extends OWLNamedIndividual> c) {
+        List<OWLClass> results = new ArrayList<OWLClass>();
+        for (OWLNamedIndividual owlNamedIndividual : c) {
+            results.addAll(getParents(owlNamedIndividual));
+        }
+        results = new ArrayList<OWLClass>(new HashSet<OWLClass>(results));
+        if (results.size() == 0) {
+            return null;
+        }
+        return results.size() > 1 ? results.size() == 2 ? delegate.get(results.get(0),
+                results.get(1)) : delegate.get(results.get(0), results.get(1), results
+                .subList(2, results.size()).toArray(new OWLClass[results.size() - 2]))
+                : results.get(0);
+    }
 }

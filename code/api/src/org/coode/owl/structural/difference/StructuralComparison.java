@@ -180,12 +180,12 @@ final class StructuralComparison implements
             int startIndex) {
         StructuralDifferenceReport toReturn = StructuralDifferenceReport.NO_DIFFERENCE;
         Iterator<SimplePair<OWLObject>> iterator = pairs.iterator();
-        StructuralDifference difference = new StructuralDifference(getPosition());
+        StructuralDifference structDifference = new StructuralDifference(getPosition());
         while (toReturn == StructuralDifferenceReport.NO_DIFFERENCE && iterator.hasNext()) {
             SimplePair<OWLObject> pair = iterator.next();
             OWLObject first = pair.getFirst();
             OWLObject second = pair.getSecond();
-            toReturn = difference.getTopDifference(first, second);
+            toReturn = structDifference.getTopDifference(first, second);
             startIndex++;
         }
         final List<Integer> newPositions = getPosition();

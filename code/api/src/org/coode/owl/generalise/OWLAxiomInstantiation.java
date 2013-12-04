@@ -28,135 +28,123 @@ import org.coode.oppl.variabletypes.InputVariable;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class OWLAxiomInstantiation {
-	private final OWLAxiom axiom;
-	private final AssignmentMap substitutions;
+    private final OWLAxiom axiom;
+    private final AssignmentMap substitutions;
 
-	/**
-	 * @param axiom
-	 * @param assignmentMap
-	 */
-	public OWLAxiomInstantiation(OWLAxiom axiom, AssignmentMap assignmentMap) {
-		if (axiom == null) {
-			throw new NullPointerException("The axiom cannot be null");
-		}
-		if (assignmentMap == null) {
-			throw new NullPointerException("The assignment map cannot be null");
-		}
-		this.axiom = axiom;
-		substitutions = new AssignmentMap(assignmentMap);
-	}
+    /** @param axiom
+     * @param assignmentMap */
+    public OWLAxiomInstantiation(OWLAxiom axiom, AssignmentMap assignmentMap) {
+        if (axiom == null) {
+            throw new NullPointerException("The axiom cannot be null");
+        }
+        if (assignmentMap == null) {
+            throw new NullPointerException("The assignment map cannot be null");
+        }
+        this.axiom = axiom;
+        substitutions = new AssignmentMap(assignmentMap);
+    }
 
-	/**
-	 * @return the axiom
-	 */
-	public OWLAxiom getAxiom() {
-		return axiom;
-	}
+    /** @return the axiom */
+    public OWLAxiom getAxiom() {
+        return axiom;
+    }
 
-	/**
-	 * @return the assignmentMap
-	 */
-	public AssignmentMap getSubstitutions() {
-		return new AssignmentMap(substitutions);
-	}
+    /** @return the assignmentMap */
+    public AssignmentMap getSubstitutions() {
+        return new AssignmentMap(substitutions);
+    }
 
-	public Set<InputVariable<?>> getInputVariables() {
-		final Set<InputVariable<?>> toReturn = new HashSet<InputVariable<?>>();
-		for (Variable<?> v : substitutions.keySet()) {
-			v.accept(new VariableVisitor() {
-				@Override
+    public Set<InputVariable<?>> getInputVariables() {
+        final Set<InputVariable<?>> toReturn = new HashSet<InputVariable<?>>();
+        for (Variable<?> v : substitutions.keySet()) {
+            v.accept(new VariableVisitor() {
+                @Override
                 public <P extends OWLObject> void visit(
-						RegexpGeneratedVariable<P> regExpGenerated) {}
+                        RegexpGeneratedVariable<P> regExpGenerated) {}
 
-				@Override
-                public <P extends OWLObject> void visit(GeneratedVariable<P> v) {}
+                @Override
+                public <P extends OWLObject> void visit(GeneratedVariable<P> gv) {}
 
-				@Override
-                public <P extends OWLObject> void visit(InputVariable<P> v) {
-					toReturn.add(v);
-				}
-			});
-		}
-		return toReturn;
-	}
+                @Override
+                public <P extends OWLObject> void visit(InputVariable<P> iv) {
+                    toReturn.add(iv);
+                }
+            });
+        }
+        return toReturn;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ (substitutions == null ? 0 : substitutions.hashCode());
-		result = prime * result + (axiom == null ? 0 : axiom.hashCode());
-		return result;
-	}
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (substitutions == null ? 0 : substitutions.hashCode());
+        result = prime * result + (axiom == null ? 0 : axiom.hashCode());
+        return result;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		OWLAxiomInstantiation other = (OWLAxiomInstantiation) obj;
-		if (substitutions == null) {
-			if (other.substitutions != null) {
-				return false;
-			}
-		} else if (!substitutions.equals(other.substitutions)) {
-			return false;
-		}
-		if (axiom == null) {
-			if (other.axiom != null) {
-				return false;
-			}
-		} else if (!axiom.equals(other.axiom)) {
-			return false;
-		}
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        OWLAxiomInstantiation other = (OWLAxiomInstantiation) obj;
+        if (substitutions == null) {
+            if (other.substitutions != null) {
+                return false;
+            }
+        } else if (!substitutions.equals(other.substitutions)) {
+            return false;
+        }
+        if (axiom == null) {
+            if (other.axiom != null) {
+                return false;
+            }
+        } else if (!axiom.equals(other.axiom)) {
+            return false;
+        }
+        return true;
+    }
 
-	public boolean agreesWith(BindingNode bindingNode,
-			ValueComputationParameters parameters) {
-		if (bindingNode == null) {
-			throw new NullPointerException("The binding node cannot be null");
-		}
-		if (parameters == null) {
-			throw new NullPointerException(
-					"The value computation parameters cannot be null");
-		}
-		boolean found = false;
-		Iterator<Variable<?>> iterator = bindingNode.getAssignedVariables().iterator();
-		while (!found && iterator.hasNext()) {
-			Variable<?> variable = iterator.next();
-			OWLObject assignmentValue = bindingNode.getAssignmentValue(variable,
-					parameters);
+    public boolean agreesWith(BindingNode bindingNode,
+            ValueComputationParameters parameters) {
+        if (bindingNode == null) {
+            throw new NullPointerException("The binding node cannot be null");
+        }
+        if (parameters == null) {
+            throw new NullPointerException(
+                    "The value computation parameters cannot be null");
+        }
+        boolean found = false;
+        Iterator<Variable<?>> iterator = bindingNode.getAssignedVariables().iterator();
+        while (!found && iterator.hasNext()) {
+            Variable<?> variable = iterator.next();
+            OWLObject assignmentValue = bindingNode.getAssignmentValue(variable,
+                    parameters);
             Set<OWLObject> set = substitutions.get(variable);
-			found = set == null || set.size() > 1 || !set.contains(assignmentValue);//iterator().next().equals(assignmentValue);
-		}
-		return !found;
-	}
+            found = set == null || set.size() > 1 || !set.contains(assignmentValue);// iterator().next().equals(assignmentValue);
+        }
+        return !found;
+    }
 
-	@Override
-	public String toString() {
-		return String.format("%s : %s", getAxiom(), substitutions);
-	}
+    @Override
+    public String toString() {
+        return String.format("%s : %s", getAxiom(), substitutions);
+    }
 }

@@ -24,43 +24,43 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 public class OWLAnnotationPropertyLeastCommonSubsumer extends
-		LeastCommonSubsumer<OWLAnnotationProperty, OWLAnnotationProperty> {
-	public static final IRI TOP_ANNOTATION_PROPERTY_IRI = IRI
-			.create("http://www.coode.org#topAnnotationProperty");
+        LeastCommonSubsumer<OWLAnnotationProperty, OWLAnnotationProperty> {
+    public static final IRI TOP_ANNOTATION_PROPERTY_IRI = IRI
+            .create("http://www.coode.org#topAnnotationProperty");
 
-	public OWLAnnotationPropertyLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
-			OWLDataFactory dataFactory) {
-		super(axiomProvider, dataFactory
-				.getOWLAnnotationProperty(TOP_ANNOTATION_PROPERTY_IRI));
-	}
+    public OWLAnnotationPropertyLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
+            OWLDataFactory dataFactory) {
+        super(axiomProvider, dataFactory
+                .getOWLAnnotationProperty(TOP_ANNOTATION_PROPERTY_IRI));
+    }
 
-	@Override
-	protected void rebuild() {
-		for (OWLAxiom axiom : this.getAxiomProvider()) {
-			axiom.accept(new OWLAxiomVisitorAdapter() {
-				@Override
-				public void visit(OWLSubAnnotationPropertyOfAxiom axiom) {
-					OWLAnnotationPropertyLeastCommonSubsumer.this.addParent(
-							axiom.getSubProperty(), axiom.getSuperProperty());
-				}
-			});
-		}
-	}
+    @Override
+    protected void rebuild() {
+        for (OWLAxiom axiom : getAxiomProvider()) {
+            axiom.accept(new OWLAxiomVisitorAdapter() {
+                @Override
+                public void visit(OWLSubAnnotationPropertyOfAxiom ax) {
+                    OWLAnnotationPropertyLeastCommonSubsumer.this.addParent(
+                            ax.getSubProperty(), ax.getSuperProperty());
+                }
+            });
+        }
+    }
 
-	@Override
-	public OWLAnnotationProperty get(Collection<? extends OWLAnnotationProperty> c) {
-		List<OWLAnnotationProperty> results = new ArrayList<OWLAnnotationProperty>(c);
-		while (results.size() > 1) {
-			OWLAnnotationProperty OWLDataProperty = results.get(0);
-			results.remove(OWLDataProperty);
-			Set<OWLAnnotationProperty> parents = this.getParents(OWLDataProperty);
-			for (OWLAnnotationProperty parent : parents) {
-				this.removeDescendants(parent, results);
-				if (!results.contains(parent)) {
-					results.add(parent);
-				}
-			}
-		}
-		return results.get(0);
-	}
+    @Override
+    public OWLAnnotationProperty get(Collection<? extends OWLAnnotationProperty> c) {
+        List<OWLAnnotationProperty> results = new ArrayList<OWLAnnotationProperty>(c);
+        while (results.size() > 1) {
+            OWLAnnotationProperty OWLDataProperty = results.get(0);
+            results.remove(OWLDataProperty);
+            Set<OWLAnnotationProperty> parents = getParents(OWLDataProperty);
+            for (OWLAnnotationProperty parent : parents) {
+                removeDescendants(parent, results);
+                if (!results.contains(parent)) {
+                    results.add(parent);
+                }
+            }
+        }
+        return results.get(0);
+    }
 }

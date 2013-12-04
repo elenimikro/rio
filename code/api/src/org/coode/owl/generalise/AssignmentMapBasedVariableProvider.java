@@ -32,35 +32,32 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
 
     @Override
     protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
-        Variable<?> toReturn = owlObject
-                .accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
-                    @Override
-                    protected Variable<?> getDefaultReturnValue(final OWLObject object) {
-                        boolean found = false;
-                        // AssignmentMap anAssignmentMap =
-                        // AssignmentMapBasedVariableProvider.this.getAssignmentMap();
-                        Iterator<Variable<?>> it = assignmentMap.getVariables()
-                                .iterator();
-                        Variable<?> toReturn = null;
-                        Variable<?> aVariable = null;
-                        while (!found && it.hasNext()) {
-                            aVariable = it.next();
-                            found = assignmentMap.get(aVariable).contains(object);
-                        }
-                        if (found) {
-                            toReturn = aVariable;
-                        }
-                        return toReturn;
-                    }
+        return owlObject.accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
+            @Override
+            protected Variable<?> getDefaultReturnValue(final OWLObject object) {
+                boolean found = false;
+                // AssignmentMap anAssignmentMap =
+                // AssignmentMapBasedVariableProvider.this.getAssignmentMap();
+                Iterator<Variable<?>> it = assignmentMap.getVariables().iterator();
+                Variable<?> toReturn = null;
+                Variable<?> aVariable = null;
+                while (!found && it.hasNext()) {
+                    aVariable = it.next();
+                    found = assignmentMap.get(aVariable).contains(object);
+                }
+                if (found) {
+                    toReturn = aVariable;
+                }
+                return toReturn;
+            }
 
-                    @Override
-                    public Variable<?> visit(final IRI iri) {
-                        OWLObject owlEntity = AssignmentMapBasedVariableProvider.this
-                                .getOWLEntity(iri);
-                        return owlEntity != null ? owlEntity.accept(this) : null;
-                    }
-                });
-        return toReturn;
+            @Override
+            public Variable<?> visit(final IRI iri) {
+                OWLObject owlEntity = AssignmentMapBasedVariableProvider.this
+                        .getOWLEntity(iri);
+                return owlEntity != null ? owlEntity.accept(this) : null;
+            }
+        });
     }
 
     /** @return the assignmentMap */

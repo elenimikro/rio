@@ -22,47 +22,45 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
-public class OWLClassLeastCommonSubsumer extends
-		LeastCommonSubsumer<OWLClass, OWLClass> {
-	public OWLClassLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
-			OWLDataFactory dataFactory) {
-		super(axiomProvider, dataFactory.getOWLThing());
-	}
+public class OWLClassLeastCommonSubsumer extends LeastCommonSubsumer<OWLClass, OWLClass> {
+    public OWLClassLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
+            OWLDataFactory dataFactory) {
+        super(axiomProvider, dataFactory.getOWLThing());
+    }
 
-	@Override
-	protected void rebuild() {
-		for (OWLAxiom axiom : this.getAxiomProvider()) {
-			axiom.accept(new OWLAxiomVisitorAdapter() {
-				@Override
-				public void visit(OWLSubClassOfAxiom axiom) {
-					if (!axiom.getSubClass().isAnonymous()
-							&& !axiom.getSuperClass().isAnonymous()) {
-						OWLClassLeastCommonSubsumer.this.addParent(axiom
-								.getSubClass().asOWLClass(), axiom
-								.getSuperClass().asOWLClass());
-					}
-				}
-			});
-		}
-	}
+    @Override
+    protected void rebuild() {
+        for (OWLAxiom axiom : getAxiomProvider()) {
+            axiom.accept(new OWLAxiomVisitorAdapter() {
+                @Override
+                public void visit(OWLSubClassOfAxiom ax) {
+                    if (!ax.getSubClass().isAnonymous()
+                            && !ax.getSuperClass().isAnonymous()) {
+                        OWLClassLeastCommonSubsumer.this.addParent(ax.getSubClass()
+                                .asOWLClass(), ax.getSuperClass().asOWLClass());
+                    }
+                }
+            });
+        }
+    }
 
-	@Override
-	public OWLClass get(Collection<? extends OWLClass> c) {
-		List<OWLClass> results = new ArrayList<OWLClass>(c);
-		while (results.size() > 1) {
-			OWLClass owlClass = results.get(0);
-			results.remove(owlClass);
-			Set<OWLClass> parents = this.getParents(owlClass);
-			// System.out.println(String.format("Child: %s Parents %s",
-			// owlClass, parents));
-			for (OWLClass parent : parents) {
-				this.removeDescendants(parent, results);
-				if (!results.contains(parent)) {
-					results.add(parent);
-				}
-			}
-			// System.out.println(results);
-		}
-		return results.get(0);
-	}
+    @Override
+    public OWLClass get(Collection<? extends OWLClass> c) {
+        List<OWLClass> results = new ArrayList<OWLClass>(c);
+        while (results.size() > 1) {
+            OWLClass owlClass = results.get(0);
+            results.remove(owlClass);
+            Set<OWLClass> parents = getParents(owlClass);
+            // System.out.println(String.format("Child: %s Parents %s",
+            // owlClass, parents));
+            for (OWLClass parent : parents) {
+                removeDescendants(parent, results);
+                if (!results.contains(parent)) {
+                    results.add(parent);
+                }
+            }
+            // System.out.println(results);
+        }
+        return results.get(0);
+    }
 }

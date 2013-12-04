@@ -56,6 +56,19 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 public class TestGeneralisation extends TestCase {
+    private class UnionFinder extends OWLObjectVisitorExAdapter<Boolean> {
+        private UnionFinder(Boolean defaultReturnValue) {
+            super(defaultReturnValue);
+        }
+
+        @Override
+        public
+                Boolean
+                visit(final OWLObjectUnionOf desc) {
+            return true;
+        }
+    }
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -63,8 +76,7 @@ public class TestGeneralisation extends TestCase {
                 new ManchesterOWLSyntaxOWLObjectRendererImpl());
     }
 
-    public void testMultipleStructuralGeneralisationWholeOntology()
- {
+    public void testMultipleStructuralGeneralisationWholeOntology() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         int generalisationCount = 0;
@@ -89,8 +101,7 @@ public class TestGeneralisation extends TestCase {
         }
     }
 
-    public void testMultipleStructuralGeneralisation()
- {
+    public void testMultipleStructuralGeneralisation() {
         int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
@@ -104,25 +115,17 @@ public class TestGeneralisation extends TestCase {
                     constraintSystem);
             boolean doIt = axiom.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
                 @Override
-                public Boolean visit(final OWLSubClassOfAxiom axiom) {
-                    boolean isRightSuperClass = axiom.getSuperClass().accept(
+                public Boolean visit(final OWLSubClassOfAxiom ax) {
+                    boolean isRightSuperClass = ax.getSuperClass().accept(
                             new OWLObjectVisitorExAdapter<Boolean>(false) {
                                 @Override
                                 public Boolean visit(final OWLObjectAllValuesFrom desc) {
                                     return !desc.getProperty().isAnonymous()
                                             && desc.getFiller()
-                                                    .accept(new OWLObjectVisitorExAdapter<Boolean>(
-                                                            false) {
-                                                        @Override
-                                                        public
-                                                                Boolean
-                                                                visit(final OWLObjectUnionOf desc) {
-                                                            return true;
-                                                        }
-                                                    });
+                                                    .accept(new UnionFinder(false));
                                 }
                             });
-                    return !axiom.getSubClass().isAnonymous() && isRightSuperClass;
+                    return !ax.getSubClass().isAnonymous() && isRightSuperClass;
                 }
             });
             if (doIt) {

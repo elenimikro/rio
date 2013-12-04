@@ -40,7 +40,6 @@ public class AxiomMap {
     // AxiomMap.this.buildMaps(axioms);
     // }
     // };
-
     public AxiomMap(final Collection<? extends OWLOntology> ontologies,
             final OWLOntologyManager ontologyManager, final OWLEntityReplacer replacer) {
         if (ontologies == null) {
@@ -51,15 +50,13 @@ public class AxiomMap {
         }
         this.replacer = replacer;
         // ontologyManager.addOntologyChangeListener(listener);
-        for(OWLOntology o : ontologies){
-        	axioms.addAll(o.getAxioms());
+        for (OWLOntology o : ontologies) {
+            axioms.addAll(o.getAxioms());
         }
         buildMaps(axioms);
     }
-    
-    
-    public AxiomMap(Set<OWLAxiom> axioms,
- final OWLEntityReplacer replacer) {
+
+    public AxiomMap(Set<OWLAxiom> axioms, final OWLEntityReplacer replacer) {
         if (axioms == null) {
             throw new NullPointerException("The set of axioms cannot be null");
         }
@@ -68,35 +65,34 @@ public class AxiomMap {
         buildMaps(axioms);
     }
 
-    void buildMaps(final Set<OWLAxiom> axioms) {
+    void buildMaps(final Set<OWLAxiom> axs) {
         delegate.clear();
         axiomCountMap.clear();
-		for (OWLAxiom axiom : axioms) {
-			if (axiom.getAxiomType() != AxiomType.DECLARATION) {
-				OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
-				Map<OWLEntity, AtomicInteger> entityMap = delegate
-						.get(replaced);
-				AtomicInteger d = axiomCountMap.get(replaced);
-				if (d == null) {
-					d = new AtomicInteger();
-					axiomCountMap.put(replaced, d);
-				}
-				d.incrementAndGet();
-				if (entityMap == null) {
-					entityMap = new HashMap<OWLEntity, AtomicInteger>();
-					delegate.put(replaced, entityMap);
-				}
-				Set<OWLEntity> signature = axiom.getSignature();
-				for (OWLEntity owlEntity : signature) {
-					AtomicInteger integer = entityMap.get(owlEntity);
-					if (integer == null) {
-						integer = new AtomicInteger();
-						entityMap.put(owlEntity, integer);
-					}
-					integer.incrementAndGet();
-				}
-			}
-		}
+        for (OWLAxiom axiom : axs) {
+            if (axiom.getAxiomType() != AxiomType.DECLARATION) {
+                OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
+                Map<OWLEntity, AtomicInteger> entityMap = delegate.get(replaced);
+                AtomicInteger d = axiomCountMap.get(replaced);
+                if (d == null) {
+                    d = new AtomicInteger();
+                    axiomCountMap.put(replaced, d);
+                }
+                d.incrementAndGet();
+                if (entityMap == null) {
+                    entityMap = new HashMap<OWLEntity, AtomicInteger>();
+                    delegate.put(replaced, entityMap);
+                }
+                Set<OWLEntity> signature = axiom.getSignature();
+                for (OWLEntity owlEntity : signature) {
+                    AtomicInteger integer = entityMap.get(owlEntity);
+                    if (integer == null) {
+                        integer = new AtomicInteger();
+                        entityMap.put(owlEntity, integer);
+                    }
+                    integer.incrementAndGet();
+                }
+            }
+        }
     }
 
     public Map<OWLEntity, AtomicInteger> get(final OWLAxiom object) {
@@ -130,8 +126,7 @@ public class AxiomMap {
         // ontologyManager.removeOntologyChangeListener(listener);
     }
 
-
-	public Set<OWLAxiom> getAxioms() {
-		return axioms;
-	}
+    public Set<OWLAxiom> getAxioms() {
+        return axioms;
+    }
 }

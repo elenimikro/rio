@@ -88,21 +88,21 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
 
 	}
 
-	private void buildGeneralisationMap(OWLOntology ontology) {
+	private void buildGeneralisationMap(OWLOntology ont) {
 		try {
 			OPPLFactory opplFactory = new OPPLFactory(
-					ontology.getOWLOntologyManager(), ontology, null);
+					ont.getOWLOntologyManager(), ont, null);
 			constraintSystem = opplFactory.createConstraintSystem();
 			OWLObjectGeneralisation generalisation = Utils
 					.getOWLObjectGeneralisation(sortedClusters,
-							ontology.getImportsClosure(), constraintSystem);
+							ont.getImportsClosure(), constraintSystem);
 			RuntimeExceptionHandler runtimeExceptionHandler = new QuickFailRuntimeExceptionHandler();
 			// MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new
 			// MultiMap<OWLAxiom, OWLAxiomInstantiation>();
 			for (Set<P> cluster : sortedClusters) {
 				MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils
 						.buildGeneralisationMap(cluster,
-								ontology.getImportsClosure(), generalisation,
+								ont.getImportsClosure(), generalisation,
 								runtimeExceptionHandler);
 				// Utils.pruneGeneralisationMap(constraintSystem,
 				// runtimeExceptionHandler, map);

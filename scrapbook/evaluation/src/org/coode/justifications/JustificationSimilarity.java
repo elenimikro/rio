@@ -28,112 +28,97 @@ import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 //import uk.ac.manchester.cs.owl.explanation.ordering.DefaultExplanationOrderer;
 //import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 
-/**
- * @author eleni mikroyannidi
- * 
- *         Class for checking isomorphic justifications between entailments that
- *         are abstracted by the same generalisation.
- * 
- */
+/** @author eleni mikroyannidi Class for checking isomorphic justifications
+ *         between entailments that are abstracted by the same generalisation. */
 public class JustificationSimilarity {
+    private final OWLOntology ontology;
+    private final OWLReasonerFactory rfactory;
+    private final MultiMap<OWLAxiom, Explanation<OWLAxiom>> justificationMap = new MultiMap<OWLAxiom, Explanation<OWLAxiom>>();
+    private final MultiMap<Set<OWLAxiom>, OWLAxiom> isomorphicJustifications = new MultiMap<Set<OWLAxiom>, OWLAxiom>();
+    private final Set<OWLAxiom> entailments = new HashSet<OWLAxiom>();
 
-	private final OWLOntology ontology;
-	private final OWLReasonerFactory rfactory;
-	private final MultiMap<OWLAxiom, Explanation<OWLAxiom>> justificationMap = new MultiMap<OWLAxiom, Explanation<OWLAxiom>>();
-	private final MultiMap<Set<OWLAxiom>, OWLAxiom> isomorphicJustifications = new MultiMap<Set<OWLAxiom>, OWLAxiom>();
-
-	private final Set<OWLAxiom> entailments = new HashSet<OWLAxiom>();
-
-	/**
+    /**
 	 * 
 	 */
-	public JustificationSimilarity(Set<OWLAxiom> entailments,
-			OWLReasonerFactory rfactory, OWLOntology ontology) {
-		this.ontology = ontology;
-		this.rfactory = rfactory;
-		this.entailments.addAll(entailments);
-		computeJustifications(entailments, 1);
-		computeIsomorphicJustifications();
-	}
+    public JustificationSimilarity(Set<OWLAxiom> entailments,
+            OWLReasonerFactory rfactory, OWLOntology ontology) {
+        this.ontology = ontology;
+        this.rfactory = rfactory;
+        this.entailments.addAll(entailments);
+        computeJustifications(entailments, 1);
+        computeIsomorphicJustifications();
+    }
 
-	private void computeIsomorphicJustifications() {
-		OWLOntologyManager manager = ontology.getOWLOntologyManager();
-		OPPLFactory factory = new OPPLFactory(manager, ontology, null);
-		ConstraintSystem constraintSystem = factory.createConstraintSystem();
+    private void computeIsomorphicJustifications() {
+        OWLOntologyManager manager = ontology.getOWLOntologyManager();
+        OPPLFactory factory = new OPPLFactory(manager, ontology, null);
+        ConstraintSystem constraintSystem = factory.createConstraintSystem();
+        for (OWLAxiom entailment : justificationMap.keySet()) {
+            Collection<Explanation<OWLAxiom>> collection = justificationMap
+                    .get(entailment);
+            StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
+                    new OntologyManagerBasedOWLEntityProvider(manager), constraintSystem);
+            for (Explanation<OWLAxiom> expl : collection) {
+                Set<OWLAxiom> generalisedAxioms = new LinkedHashSet<OWLAxiom>();
+                Collection<OWLAxiom> axioms;
+                ExplanationOrdererImpl orderer = new ExplanationOrdererImpl(manager);
+                List<OWLAxiom> axs = new ArrayList<OWLAxiom>(orderer
+                        .getOrderedExplanation(entailment, expl.getAxioms())
+                        .fillDepthFirst());
+                axs.remove(0);
+                axioms = axs;
+                for (OWLAxiom ax : axioms) {
+                    OWLAxiom generalised = (OWLAxiom) ax.accept(generalisation);
+                    generalisedAxioms.add(generalised);
+                }
+                isomorphicJustifications.put(generalisedAxioms, entailment);
+            }
+        }
+    }
 
-		for (OWLAxiom entailment : justificationMap.keySet()) {
-			Collection<Explanation<OWLAxiom>> collection = justificationMap
-					.get(entailment);
-			StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
-					new OntologyManagerBasedOWLEntityProvider(manager),
-					constraintSystem);
-			for (Explanation<OWLAxiom> expl : collection) {
-				Set<OWLAxiom> generalisedAxioms = new LinkedHashSet<OWLAxiom>();
-				Collection<OWLAxiom> axioms;
+    /** Implements Jaccard's index and returns the justification similarity
+     * 
+     * @return */
+    public double getJustificationSimilarity() {
+        // computeJustifications(entailments, 1);
+        // computeIsomorphicJustifications();
+        if (isomorphicJustifications.keySet().equals(justificationMap.size())) {
+            return 0;
+        } else {
+            double intersection = 0;
+            double union = isomorphicJustifications.size();
+            for (Set<OWLAxiom> just : isomorphicJustifications.keySet()) {
+                // if a generalised justification covers more than one
+                // entailment then I should
+                // increment the intersection
+                if (isomorphicJustifications.get(just).size() > 1) {
+                    intersection += isomorphicJustifications.get(just).size();
+                }
+            }
+            return intersection / union;
+        }
+    }
 
-				ExplanationOrdererImpl orderer = new ExplanationOrdererImpl(
-						manager);
-				List<OWLAxiom> axs = new ArrayList<OWLAxiom>(orderer
-						.getOrderedExplanation(entailment, expl.getAxioms())
-						.fillDepthFirst());
-				axs.remove(0);
-				axioms = axs;
-				for (OWLAxiom ax : axioms) {
-					OWLAxiom generalised = (OWLAxiom) ax.accept(generalisation);
-					generalisedAxioms.add(generalised);
-				}
-				isomorphicJustifications.put(generalisedAxioms, entailment);
-			}
-		}
-	}
+    private void computeJustifications(Set<OWLAxiom> entailedAxioms, int upperLimit) {
+        // create the explanation factory
+        ExplanationGeneratorFactory<OWLAxiom> expfactory = ExplanationManager
+                .createExplanationGeneratorFactory(rfactory);
+        ExplanationGenerator<OWLAxiom> gen = expfactory
+                .createExplanationGenerator(ontology);
+        for (OWLAxiom ax : entailedAxioms) {
+            justificationMap.putAll(ax, gen.getExplanations(ax, upperLimit));
+        }
+    }
 
-	/**
-	 * Implements Jaccard's index and returns the justification similarity
-	 * 
-	 * @return
-	 */
-	public double getJustificationSimilarity() {
-		// computeJustifications(entailments, 1);
-		// computeIsomorphicJustifications();
-		if (isomorphicJustifications.keySet().equals(justificationMap.size())) {
-			return 0;
-		} else {
-			double intersection = 0;
-			double union = isomorphicJustifications.size();
-			for (Set<OWLAxiom> just : isomorphicJustifications.keySet()) {
-				// if a generalised justification covers more than one
-				// entailment then I should
-				// increment the intersection
-				if (isomorphicJustifications.get(just).size() > 1) {
-					intersection += isomorphicJustifications.get(just).size();
-				}
-			}
-			return intersection / union;
-		}
-	}
+    public Collection<Explanation<OWLAxiom>> getJustification(OWLAxiom entailment) {
+        return justificationMap.get(entailment);
+    }
 
-	private void computeJustifications(Set<OWLAxiom> entailments, int upperLimit) {
-		// create the explanation factory
-		ExplanationGeneratorFactory<OWLAxiom> expfactory = ExplanationManager
-				.createExplanationGeneratorFactory(rfactory);
-		ExplanationGenerator<OWLAxiom> gen = expfactory
-				.createExplanationGenerator(ontology);
-		for (OWLAxiom ax : entailments) {
-			justificationMap.putAll(ax, gen.getExplanations(ax, upperLimit));
-		}
-	}
+    public Set<Set<OWLAxiom>> getIsomorphicJustifications() {
+        return isomorphicJustifications.keySet();
+    }
 
-	public Collection<Explanation<OWLAxiom>> getJustification(
-			OWLAxiom entailment) {
-		return justificationMap.get(entailment);
-	}
-
-	public Set<Set<OWLAxiom>> getIsomorphicJustifications() {
-		return isomorphicJustifications.keySet();
-	}
-
-	public MultiMap<OWLAxiom, Explanation<OWLAxiom>> getJustificationMap() {
-		return justificationMap;
-	}
-
+    public MultiMap<OWLAxiom, Explanation<OWLAxiom>> getJustificationMap() {
+        return justificationMap;
+    }
 }

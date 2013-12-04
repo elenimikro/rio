@@ -37,177 +37,159 @@ import experiments.ExperimentHelper;
 import experiments.ExperimentUtils;
 
 public class GeneralisationMetaprocessing<C extends Set<OWLEntity>> {
+    public static void main(String[] args) {
+        try {
+            // ontology
+            File ontoFile = new File(args[0]);
+            // xml with regularities
+            File xmlReg = new File(args[1]);
+            System.out.println("Loading ontology... " + args[0]);
+            OWLOntology ontology = ExperimentUtils.loadOntology(ontoFile);
+            System.out.println("Loading regularities..." + args[1]);
+            Set<Set<OWLEntity>> clusters = Utils.readFromXML(new FileInputStream(xmlReg),
+                    ontology.getOWLOntologyManager());
+            OPPLFactory opplfactory = new OPPLFactory(ontology.getOWLOntologyManager(),
+                    ontology, null);
+            ConstraintSystem constraintSystem = opplfactory.createConstraintSystem();
+            OWLObjectGeneralisation unwrappedOWLObjectGeneralisation = ExperimentUtils
+                    .getUnwrappedOWLObjectGeneralisation(clusters, ontology
+                            .getImportsClosure(), constraintSystem, ExperimentHelper
+                            .setManchesterSyntaxWithLabelRendering(ontology
+                                    .getOWLOntologyManager()));
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+            for (Set<OWLEntity> cluster : clusters) {
+                generalisationMap.putAll(Utils.buildGeneralisationMap(cluster,
+                        ontology.getImportsClosure(), unwrappedOWLObjectGeneralisation,
+                        new QuickFailRuntimeExceptionHandler()));
+            }
+            GeneralisationMetaprocessing<Set<OWLEntity>> metaprocessor = new GeneralisationMetaprocessing<Set<OWLEntity>>(
+                    generalisationMap, constraintSystem);
+            // System.out.println("Processing generalisation Map...");
+            // MultiMap<OWLAxiom, OWLAxiomInstantiation>
+            // processedGeneralisationMap = metaprocessor
+            // .getProcessedGeneralisationMap();
+            GeneralisationDecompositionModel<OWLEntity> model = new GeneralisationDecompositionModel<OWLEntity>(
+                    clusters, ontology);
+            model.setGeneralisationMap(generalisationMap);
+            ExperimentUtils.saveToTXT(model, ontology,
+                    new File(args[1].replaceAll(".xml", "_readable.txt")));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SAXException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (UnknownOWLOntologyException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (OPPLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
-	public static void main(String[] args) {
-		try {
-			// ontology
-			File ontoFile = new File(args[0]);
-			// xml with regularities
-			File xmlReg = new File(args[1]);
-			System.out.println("Loading ontology... " + args[0]);
-			OWLOntology ontology = ExperimentUtils.loadOntology(ontoFile);
-			System.out.println("Loading regularities..." + args[1]);
-			Set<Set<OWLEntity>> clusters = Utils.readFromXML(
-					new FileInputStream(xmlReg),
-					ontology.getOWLOntologyManager());
-			OPPLFactory opplfactory = new OPPLFactory(
-					ontology.getOWLOntologyManager(), ontology, null);
-			ConstraintSystem constraintSystem = opplfactory
-					.createConstraintSystem();
-			OWLObjectGeneralisation unwrappedOWLObjectGeneralisation = ExperimentUtils
-					.getUnwrappedOWLObjectGeneralisation(
-							clusters,
-							ontology.getImportsClosure(),
-							constraintSystem,
-							ExperimentHelper
-									.setManchesterSyntaxWithLabelRendering(ontology
-											.getOWLOntologyManager()));
-			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-			for (Set<OWLEntity> cluster : clusters) {
-				generalisationMap.putAll(Utils.buildGeneralisationMap(cluster,
-						ontology.getImportsClosure(),
-						unwrappedOWLObjectGeneralisation,
-						new QuickFailRuntimeExceptionHandler()));
-			}
-			GeneralisationMetaprocessing<Set<OWLEntity>> metaprocessor = new GeneralisationMetaprocessing<Set<OWLEntity>>(
-					generalisationMap, constraintSystem);
+    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> map = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+    private final ConstraintSystem constraintSystem;
 
-			// System.out.println("Processing generalisation Map...");
-			// MultiMap<OWLAxiom, OWLAxiomInstantiation>
-			// processedGeneralisationMap = metaprocessor
-			// .getProcessedGeneralisationMap();
+    public GeneralisationMetaprocessing(
+            RegularitiesDecompositionModel<C, OWLEntity> model,
+            ConstraintSystem constraintSystem) {
+        this.map.putAll(Utils.extractGeneralisationMap(model));
+        this.constraintSystem = constraintSystem;
+    }
 
-			GeneralisationDecompositionModel<OWLEntity> model = new GeneralisationDecompositionModel<OWLEntity>(
-					clusters, ontology);
-			model.setGeneralisationMap(generalisationMap);
-			ExperimentUtils.saveToTXT(model, ontology,
-					new File(args[1].replaceAll(".xml", "_readable.txt")));
+    public GeneralisationMetaprocessing(
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap,
+            ConstraintSystem constraintSystem) {
+        this.map.putAll(generalisationMap);
+        this.constraintSystem = constraintSystem;
+    }
 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownOWLOntologyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OPPLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public MultiMap<OWLAxiom, OWLAxiomInstantiation> getProcessedGeneralisationMap()
+            throws OPPLException {
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        Set<OWLAxiom> generalisations = map.keySet();
+        ManchesterSyntaxRenderer renderer = constraintSystem.getOPPLFactory()
+                .getManchesterSyntaxRenderer(constraintSystem);
+        for (OWLAxiom g : generalisations) {
+            MultiMap<Variable<?>, OWLObject> variableMap = extractVariableMap(map, g);
+            Set<BindingNode> newVariableBindings = getNewVariableBindings(variableMap,
+                    renderer);
+            if (!newVariableBindings.isEmpty()) {
+                OWLObjectGeneralisation owlObjectGeneralisation = new OWLObjectGeneralisation(
+                        newVariableBindings, constraintSystem);
+                for (OWLAxiomInstantiation inst : map.get(g)) {
+                    OWLAxiom axiom = inst.getAxiom();
+                    OWLAxiom generalised = (OWLAxiom) axiom
+                            .accept(owlObjectGeneralisation);
+                    toReturn.put(generalised, new OWLAxiomInstantiation(axiom,
+                            owlObjectGeneralisation.getSubstitutions()));
+                }
+            }
+        }
+        return toReturn;
+    }
 
-	private final MultiMap<OWLAxiom, OWLAxiomInstantiation> map = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-	private final ConstraintSystem constraintSystem;
+    private MultiMap<Variable<?>, OWLObject> extractVariableMap(
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> m, OWLAxiom generalisation) {
+        MultiMap<Variable<?>, OWLObject> variableMap = new MultiMap<Variable<?>, OWLObject>();
+        Collection<OWLAxiomInstantiation> insts = m.get(generalisation);
+        for (OWLAxiomInstantiation inst : insts) {
+            AssignmentMap substitutions = inst.getSubstitutions();
+            for (Variable<?> v : substitutions.keySet()) {
+                Set<OWLObject> set = substitutions.get(v);
+                variableMap.putAll(v, set);
+            }
+        }
+        return variableMap;
+    }
 
-	public GeneralisationMetaprocessing(
-			RegularitiesDecompositionModel<C, OWLEntity> model,
-			ConstraintSystem constraintSystem) {
-		this.map.putAll(Utils.extractGeneralisationMap(model));
-		this.constraintSystem = constraintSystem;
-	}
+    private Set<BindingNode> getNewVariableBindings(
+            MultiMap<Variable<?>, OWLObject> variableMap,
+            ManchesterSyntaxRenderer renderer) throws OPPLException {
+        Set<Variable<?>> toRemove = new HashSet<Variable<?>>();
+        Set<BindingNode> bindings = new HashSet<BindingNode>();
+        checkValuesWithSingleVariables(variableMap, renderer, toRemove, bindings);
+        if (!bindings.isEmpty()) {
+            for (Variable<?> v : variableMap.keySet()) {
+                BindingNode bindingNode = BindingNode.createNewEmptyBindingNode();
+                if (!toRemove.contains(v)) {
+                    for (OWLObject o : variableMap.get(v)) {
+                        bindingNode.addAssignment(new Assignment(v, o));
+                        bindings.add(bindingNode);
+                    }
+                }
+            }
+        }
+        return bindings;
+    }
 
-	public GeneralisationMetaprocessing(
-			MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap,
-			ConstraintSystem constraintSystem) {
-		this.map.putAll(generalisationMap);
-		this.constraintSystem = constraintSystem;
-	}
-
-	public MultiMap<OWLAxiom, OWLAxiomInstantiation> getProcessedGeneralisationMap()
-			throws OPPLException {
-		MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-		Set<OWLAxiom> generalisations = map.keySet();
-		ManchesterSyntaxRenderer renderer = constraintSystem.getOPPLFactory()
-				.getManchesterSyntaxRenderer(constraintSystem);
-		for (OWLAxiom g : generalisations) {
-			MultiMap<Variable<?>, OWLObject> variableMap = extractVariableMap(
-					map, g);
-			Set<BindingNode> newVariableBindings = getNewVariableBindings(
-					variableMap, renderer);
-			if (!newVariableBindings.isEmpty()) {
-				OWLObjectGeneralisation owlObjectGeneralisation = new OWLObjectGeneralisation(
-						newVariableBindings, constraintSystem);
-				for (OWLAxiomInstantiation inst : map.get(g)) {
-					OWLAxiom axiom = inst.getAxiom();
-					OWLAxiom generalised = (OWLAxiom) axiom
-							.accept(owlObjectGeneralisation);
-					toReturn.put(generalised, new OWLAxiomInstantiation(axiom,
-							owlObjectGeneralisation.getSubstitutions()));
-				}
-			}
-		}
-		return toReturn;
-	}
-
-	private MultiMap<Variable<?>, OWLObject> extractVariableMap(
-			MultiMap<OWLAxiom, OWLAxiomInstantiation> map,
-			OWLAxiom generalisation) {
-		MultiMap<Variable<?>, OWLObject> variableMap = new MultiMap<Variable<?>, OWLObject>();
-		Collection<OWLAxiomInstantiation> insts = map.get(generalisation);
-		for (OWLAxiomInstantiation inst : insts) {
-			AssignmentMap substitutions = inst.getSubstitutions();
-			for (Variable<?> v : substitutions.keySet()) {
-				Set<OWLObject> set = substitutions.get(v);
-				variableMap.putAll(v, set);
-			}
-		}
-		return variableMap;
-	}
-
-	private Set<BindingNode> getNewVariableBindings(
-			MultiMap<Variable<?>, OWLObject> variableMap,
-			ManchesterSyntaxRenderer renderer) throws OPPLException {
-		Set<Variable<?>> toRemove = new HashSet<Variable<?>>();
-		Set<BindingNode> bindings = new HashSet<BindingNode>();
-
-		checkValuesWithSingleVariables(variableMap, renderer, toRemove,
-				bindings);
-
-		if (!bindings.isEmpty()) {
-			for (Variable<?> v : variableMap.keySet()) {
-				BindingNode bindingNode = BindingNode
-						.createNewEmptyBindingNode();
-				if (!toRemove.contains(v)) {
-					for (OWLObject o : variableMap.get(v)) {
-						bindingNode.addAssignment(new Assignment(v, o));
-						bindings.add(bindingNode);
-					}
-				}
-			}
-		}
-		return bindings;
-	}
-
-	private void checkValuesWithSingleVariables(
-			MultiMap<Variable<?>, OWLObject> variableMap,
-			ManchesterSyntaxRenderer renderer, Set<Variable<?>> toRemove,
-			Set<BindingNode> bindings) throws OPPLException {
-		for (Variable<?> v : variableMap.keySet()) {
-			if (variableMap.get(v).size() == 1) {
-				BindingNode bindingNode = BindingNode
-						.createNewEmptyBindingNode();
-				variableMap.get(v).iterator().next().accept(renderer);
-				String name = renderer.toString().replaceAll("\\?", "_");
-				String newVariableName = String
-						.format("%s_%s", v.getName(), name)
-						.replaceAll(
-								ConstraintSystem.VARIABLE_NAME_INVALID_CHARACTERS_REGEXP,
-								"_");
-				InputVariable<?> newVariable = constraintSystem.createVariable(
-						newVariableName, v.getType(), null);
-				toRemove.add(v);
-				bindingNode.addAssignment(new Assignment(newVariable,
-						variableMap.get(v).iterator().next()));
-				bindings.add(bindingNode);
-			}
-		}
-	}
+    private void checkValuesWithSingleVariables(
+            MultiMap<Variable<?>, OWLObject> variableMap,
+            ManchesterSyntaxRenderer renderer, Set<Variable<?>> toRemove,
+            Set<BindingNode> bindings) throws OPPLException {
+        for (Variable<?> v : variableMap.keySet()) {
+            if (variableMap.get(v).size() == 1) {
+                BindingNode bindingNode = BindingNode.createNewEmptyBindingNode();
+                variableMap.get(v).iterator().next().accept(renderer);
+                String name = renderer.toString().replaceAll("\\?", "_");
+                String newVariableName = String.format("%s_%s", v.getName(), name)
+                        .replaceAll(
+                                ConstraintSystem.VARIABLE_NAME_INVALID_CHARACTERS_REGEXP,
+                                "_");
+                InputVariable<?> newVariable = constraintSystem.createVariable(
+                        newVariableName, v.getType(), null);
+                toRemove.add(v);
+                bindingNode.addAssignment(new Assignment(newVariable, variableMap.get(v)
+                        .iterator().next()));
+                bindings.add(bindingNode);
+            }
+        }
+    }
 }
