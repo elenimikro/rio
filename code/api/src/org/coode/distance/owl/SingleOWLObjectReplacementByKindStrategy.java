@@ -37,7 +37,7 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     private final ReplacementStrategy delegate;
     private final OWLEntity replacement;
     private final OWLDataFactory dataFactory;
-    private final RelevancePolicy relevancePolicy;
+    private final RelevancePolicy<OWLEntity> relevancePolicy;
     private final static Properties properties = new Properties();
     private final ReplacementStrategy defaultStrategy;
     static {
@@ -51,7 +51,7 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     }
 
     public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity,
-            OWLDataFactory dataFactory, RelevancePolicy relevancePolicy) {
+            OWLDataFactory dataFactory, RelevancePolicy<OWLEntity> relevancePolicy) {
         if (dataFactory == null) {
             throw new NullPointerException("The data factory cannot be null");
         }
@@ -70,7 +70,7 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
             public <O extends OWLObject> O replace(O owlObject) {
                 return owlObject.accept(Utils.getOWLEntityRecogniser())
                         && SingleOWLObjectReplacementByKindStrategy.this
-                                .getRelevancePolicy().isRelevant(owlObject) ? owlObject
+                                .getRelevancePolicy().isRelevant((OWLEntity) owlObject) ? owlObject
                         : defaultStrategy.replace(owlObject);
             }
         };
@@ -134,10 +134,6 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
         return owlEntity;
     }
 
-    /** @param <O>
-     * @param owlObject
-     * @return
-     * @see org.coode.distance.owl.ReplacementByKindStrategy#replace(org.semanticweb.owlapi.model.OWLObject) */
     @Override
     @SuppressWarnings("unchecked")
     public <O extends OWLObject> O replace(O owlObject) {
@@ -161,7 +157,7 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     }
 
     /** @return the relevancePolicy */
-    public RelevancePolicy getRelevancePolicy() {
+    public RelevancePolicy<OWLEntity> getRelevancePolicy() {
         return relevancePolicy;
     }
 }

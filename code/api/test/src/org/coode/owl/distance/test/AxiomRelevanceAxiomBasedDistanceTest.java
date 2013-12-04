@@ -17,53 +17,49 @@ import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
-	@Override
-	protected DistanceBuilder getDistanceBuilder() {
-		return new DistanceBuilder() {
-			@Override
-			public AbstractAxiomBasedDistance getDistance(final OWLOntology o) {
-				final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-						o.getOWLOntologyManager().getOWLDataFactory(),
-						new ReplacementByKindStrategy(o.getOWLOntologyManager()
-								.getOWLDataFactory()));
-				return new AxiomRelevanceAxiomBasedDistance(
-						o.getImportsClosure(), owlEntityReplacer,
-						o.getOWLOntologyManager());
-			}
+    @Override
+    protected DistanceBuilder getDistanceBuilder() {
+        return new DistanceBuilder() {
+            @Override
+            public AbstractAxiomBasedDistance getDistance(OWLOntology o) {
+                final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(o
+                        .getOWLOntologyManager().getOWLDataFactory(),
+                        new ReplacementByKindStrategy(o.getOWLOntologyManager()
+                                .getOWLDataFactory()));
+                return new AxiomRelevanceAxiomBasedDistance(o.getImportsClosure(),
+                        owlEntityReplacer, o.getOWLOntologyManager());
+            }
 
-			@Override
-			public AbstractAxiomBasedDistance getDistance(final OWLOntology o,
-					final RelevancePolicy rp) {
-				return null;
-			}
-		};
-	}
+            @Override
+            public AbstractAxiomBasedDistance getDistance(OWLOntology o,
+                    RelevancePolicy<OWLEntity> rp) {
+                return null;
+            }
+        };
+    }
 
-	public void testGetAxiomsMozzarellaTopping() {
-		OWLOntology o = TestHelper.getPizza();
-		AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(
-				o);
-		OWLClass[] classes = getClasses(pizza_ns + "MozzarellaTopping");
-		properTest(distance, classes);
-	}
+    public void testGetAxiomsMozzarellaTopping() {
+        OWLOntology o = TestHelper.getPizza();
+        AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
+        OWLClass[] classes = getClasses(pizza_ns + "MozzarellaTopping");
+        properTest(distance, classes);
+    }
 
-	public void testGetAxiomsPepperTopping() {
-		OWLOntology o = TestHelper.getPizza();
-		AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(
-				o);
-		OWLClass[] classes = getClasses(pizza_ns + "PepperTopping");
-		properTest(distance, classes);
-	}
+    public void testGetAxiomsPepperTopping() {
+        OWLOntology o = TestHelper.getPizza();
+        AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
+        OWLClass[] classes = getClasses(pizza_ns + "PepperTopping");
+        properTest(distance, classes);
+    }
 
-	public void testDistanceGarlicToppingPizza() {
-		OWLOntology o = TestHelper.getPizza();
-		AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(
-				o);
-		OWLClass[] classes = getClasses(pizza_ns + "GarlicTopping", pizza_ns
-				+ "Pizza");
-		properTest(distance, classes);
-	}
+    public void testDistanceGarlicToppingPizza() {
+        OWLOntology o = TestHelper.getPizza();
+        AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o);
+        OWLClass[] classes = getClasses(pizza_ns + "GarlicTopping", pizza_ns + "Pizza");
+        properTest(distance, classes);
+    }
 }

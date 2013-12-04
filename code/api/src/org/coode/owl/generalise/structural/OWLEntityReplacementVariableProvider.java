@@ -24,9 +24,8 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 public class OWLEntityReplacementVariableProvider extends
         SingleOWLEntityReplacementVariableProvider {
     public OWLEntityReplacementVariableProvider(
-final RelevancePolicy relevancePolicy,
-            final OWLEntityProvider entityProvider,
-            final ConstraintSystem constraintSystem) {
+            RelevancePolicy<OWLEntity> relevancePolicy, OWLEntityProvider entityProvider,
+            ConstraintSystem constraintSystem) {
         super(relevancePolicy, entityProvider);
         setConstraintSystem(constraintSystem);
     }

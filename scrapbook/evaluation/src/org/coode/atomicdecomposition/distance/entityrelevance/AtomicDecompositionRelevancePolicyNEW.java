@@ -26,67 +26,65 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
-public class AtomicDecompositionRelevancePolicyNEW implements
-		RelevancePolicy<OWLEntity> {
-	private final OWLAxiom axiom;
-	private final OWLDataFactory dataFactory;
-	private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-	// private final OWLEntityReplacer replacer;
-	private final AbstractRanking ranking;
-	private final RelevancePolicy relevance;
-	MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
+public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OWLEntity> {
+    private final OWLAxiom axiom;
+    private final OWLDataFactory dataFactory;
+    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    // private final OWLEntityReplacer replacer;
+    private final AbstractRanking<OWLEntity> ranking;
+    private final RelevancePolicy<OWLEntity> relevance;
+    MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
 
-	/** @param axiom */
-	public AtomicDecompositionRelevancePolicyNEW(final OWLAxiom axiom,
-			final OWLDataFactory dataFactory,
-			final Collection<OWLOntology> ontologies,
-			final OWLAtomicDecompositionMap map) {
-		if (axiom == null) {
-			throw new NullPointerException("The axiom cannot be null");
-		}
-		if (dataFactory == null) {
-			throw new NullPointerException("The dataFactory cannot be null");
-		}
-		if (ontologies == null) {
-			throw new NullPointerException(
-					"The ontolgy collection cannot be null");
-		}
-		if (entityAtomDependencies == null) {
-			throw new NullPointerException("The axiom map cannot be null");
-		}
-		this.dataFactory = dataFactory;
-		this.ontologies.addAll(ontologies);
-		// this.replacer = new OWLEntityReplacer(dataFactory,
-		// new ReplacementByKindStrategy(this.getDataFactory()));
-		this.axiom = axiom;
-		entityAtomDependencies.putAll(map.getEntityAtomDependencies());
-		ranking = AtomicDecompositionRanking.buildRanking(ontologies, map);
-		// change relevance
-		relevance = AtomicDecompositionRankingRelevancePolicy
-				.getAbstractRankingRelevancePolicy(ranking);
-	}
+    /** @param axiom
+     * @param dataFactory
+     * @param ontologies
+     * @param map */
+    public AtomicDecompositionRelevancePolicyNEW(final OWLAxiom axiom,
+            final OWLDataFactory dataFactory, final Collection<OWLOntology> ontologies,
+            final OWLAtomicDecompositionMap map) {
+        if (axiom == null) {
+            throw new NullPointerException("The axiom cannot be null");
+        }
+        if (dataFactory == null) {
+            throw new NullPointerException("The dataFactory cannot be null");
+        }
+        if (ontologies == null) {
+            throw new NullPointerException("The ontolgy collection cannot be null");
+        }
+        if (entityAtomDependencies == null) {
+            throw new NullPointerException("The axiom map cannot be null");
+        }
+        this.dataFactory = dataFactory;
+        this.ontologies.addAll(ontologies);
+        // this.replacer = new OWLEntityReplacer(dataFactory,
+        // new ReplacementByKindStrategy(this.getDataFactory()));
+        this.axiom = axiom;
+        entityAtomDependencies.putAll(map.getEntityAtomDependencies());
+        ranking = AtomicDecompositionRanking.buildRanking(ontologies, map);
+        // change relevance
+        relevance = AtomicDecompositionRankingRelevancePolicy
+                .getAbstractRankingRelevancePolicy(ranking);
+    }
 
-	/**
-	 * @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
-	 *      .Object)
-	 */
-	@Override
-	public boolean isRelevant(final OWLEntity object) {
-		return relevance.isRelevant(object);
-	}
+    /** @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
+     *      .Object) */
+    @Override
+    public boolean isRelevant(final OWLEntity object) {
+        return relevance.isRelevant(object);
+    }
 
-	/** @return the axiom */
-	public OWLAxiom getAxiom() {
-		return axiom;
-	}
+    /** @return the axiom */
+    public OWLAxiom getAxiom() {
+        return axiom;
+    }
 
-	/** @return the ontologies */
-	public Set<OWLOntology> getOntologies() {
-		return new HashSet<OWLOntology>(ontologies);
-	}
+    /** @return the ontologies */
+    public Set<OWLOntology> getOntologies() {
+        return new HashSet<OWLOntology>(ontologies);
+    }
 
-	/** @return the dataFactory */
-	public OWLDataFactory getDataFactory() {
-		return dataFactory;
-	}
+    /** @return the dataFactory */
+    public OWLDataFactory getDataFactory() {
+        return dataFactory;
+    }
 }

@@ -29,13 +29,12 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+@SuppressWarnings("javadoc")
 public class PopularityDistanceSlice {
     /** This program takes an ontology as an input, computes pairwise distances
      * between all entities in the signature of the ontology, and build the
      * proximity matrix. The distance is computed with the use of popularity
-     * ranking of an entity.
-     * 
-     * @param args */
+     * ranking of an entity. */
     // XXX: Change path!
     // private final static String nci_iri =
     // "file:/eclipse-workspace/similarity/profiling_ontologies/nci-2012.owl.xml";

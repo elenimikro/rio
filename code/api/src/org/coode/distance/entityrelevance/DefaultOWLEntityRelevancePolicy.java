@@ -15,32 +15,28 @@ package org.coode.distance.entityrelevance;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 
-/**
- * @author Luigi Iannone
- * 
- */
-public final class DefaultOWLEntityRelevancePolicy implements
-		RelevancePolicy<OWLEntity> {
-	private final boolean relevant;
-	private final static RelevancePolicy ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
-			true);
-	private final static RelevancePolicy ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
-			true);
+/** @author Luigi Iannone */
+public final class DefaultOWLEntityRelevancePolicy implements RelevancePolicy<OWLEntity> {
+    private final boolean relevant;
+    private final static RelevancePolicy<OWLEntity> ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
+            true);
+    private final static RelevancePolicy<OWLEntity> ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
+            true);
 
-	private DefaultOWLEntityRelevancePolicy(boolean relevant) {
-		this.relevant = relevant;
-	}
+    private DefaultOWLEntityRelevancePolicy(boolean relevant) {
+        this.relevant = relevant;
+    }
 
-	@Override
-	public boolean isRelevant(OWLEntity object) {
-		return relevant;
-	}
+    @Override
+    public boolean isRelevant(OWLEntity object) {
+        return relevant;
+    }
 
-	public static RelevancePolicy getAlwaysRelevantPolicy() {
-		return ALWAYS_RELEVANT_POLICY;
-	}
+    public static RelevancePolicy<OWLEntity> getAlwaysRelevantPolicy() {
+        return ALWAYS_RELEVANT_POLICY;
+    }
 
-	public static RelevancePolicy getAlwaysIrrelevantPolicy() {
-		return ALWAYS_IRRELEVANT_POLICY;
-	}
+    public static RelevancePolicy<OWLEntity> getAlwaysIrrelevantPolicy() {
+        return ALWAYS_IRRELEVANT_POLICY;
+    }
 }

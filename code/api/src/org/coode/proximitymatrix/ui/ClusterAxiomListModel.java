@@ -35,10 +35,13 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
-public class ClusterAxiomListModel implements ListModel {
-    private final ListModel delegate;
+public class ClusterAxiomListModel implements ListModel<OWLAxiomListItem> {
+    private final ListModel<OWLAxiomListItem> delegate;
     private final int axiomCount;
 
+    /** @param cluster
+     * @param ontologies
+     * @param generalisation */
     public ClusterAxiomListModel(Cluster<? extends OWLEntity> cluster,
             Collection<? extends OWLOntology> ontologies,
             OWLObjectGeneralisation generalisation) {
@@ -52,7 +55,7 @@ public class ClusterAxiomListModel implements ListModel {
             throw new IllegalArgumentException(
                     "The colleciton of ontologies cannot be null");
         }
-        DefaultListModel defaultListModel = new DefaultListModel();
+        DefaultListModel<OWLAxiomListItem> defaultListModel = new DefaultListModel<OWLAxiomListItem>();
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         for (OWLOntology ont : ontologies) {
             axioms.addAll(ont.getAxioms());
@@ -89,22 +92,17 @@ public class ClusterAxiomListModel implements ListModel {
     }
 
     /** @return the delegate */
-    public ListModel getDelegate() {
+    public ListModel<OWLAxiomListItem> getDelegate() {
         return delegate;
     }
 
-    /** @return
-     * @see javax.swing.ListModel#getSize() */
     @Override
     public int getSize() {
         return getDelegate().getSize();
     }
 
-    /** @param index
-     * @return
-     * @see javax.swing.ListModel#getElementAt(int) */
     @Override
-    public Object getElementAt(int index) {
+    public OWLAxiomListItem getElementAt(int index) {
         return getDelegate().getElementAt(index);
     }
 

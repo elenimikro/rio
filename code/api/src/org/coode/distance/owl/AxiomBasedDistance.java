@@ -43,7 +43,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final OWLDataFactory dataFactory;
-    private final RelevancePolicy relevancePolicy;
+    private final RelevancePolicy<OWLEntity> relevancePolicy;
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
@@ -73,10 +73,13 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
         }
     }
 
-    public AxiomBasedDistance(final Collection<? extends OWLOntology> ontologies,
-            final OWLDataFactory dataFactory,
- final RelevancePolicy relevancePolicy,
-            final OWLOntologyManager manager) {
+    /** @param ontologies
+     * @param dataFactory
+     * @param relevancePolicy
+     * @param manager */
+    public AxiomBasedDistance(Collection<? extends OWLOntology> ontologies,
+            OWLDataFactory dataFactory, RelevancePolicy<OWLEntity> relevancePolicy,
+            OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
@@ -184,7 +187,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     }
 
     /** @return the relevancePolicy */
-    public RelevancePolicy getRelevancePolicy() {
+    public RelevancePolicy<OWLEntity> getRelevancePolicy() {
         return relevancePolicy;
     }
 

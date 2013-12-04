@@ -24,13 +24,13 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import experiments.ExperimentUtils;
 
+@SuppressWarnings("javadoc")
 public class SnomedSyntacticLexicalPatternAndRegularityAnalysis {
     private final Set<String> lexicalPatterns = new HashSet<String>();
     public static final String VARIABLE_NAME_INVALID_CHARACTERS_REGEXP = "[[^\\?]&&[^\\p{Alnum}]&&[^-_]]";
     public static final String RESULTS_BASE = "/Volumes/Passport-mac/Expeiments/";
 
-    /** @param <C>
-     * @param args
+    /** @param args
      *            [0]:Ontology path, args[1]:xmlPatternsFile */
     public static void main(String[] args) {
         String timeStamp = new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance()

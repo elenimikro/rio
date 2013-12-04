@@ -24,9 +24,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+@SuppressWarnings("javadoc")
 public class SyntacticClusteringTasksRunner extends
         SyntacticClusteringWithADEvaluationExperiment {
-    /** @param args */
     private final static String RESULTS_BASE = "similarity/experiment-results/syntactic/extra/";
 
     public static void main(String[] args) throws OWLOntologyCreationException,

@@ -50,7 +50,7 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
-    private final RelevancePolicy policy;
+    private final RelevancePolicy<OWLEntity> policy;
     private final static List<AxiomType<?>> types = new ArrayList<AxiomType<?>>(
             AxiomType.AXIOM_TYPES);
     static {
@@ -73,6 +73,8 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
         keSignature.addAll(ke.getEntities());
     }
 
+    /** @param ontology
+     * @param explorer */
     public KnowledgeExplorerOWLEntityRelevanceBasedDistance(OWLOntology ontology,
             KnowledgeExplorer explorer) {
         ke = explorer;

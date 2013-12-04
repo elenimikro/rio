@@ -112,8 +112,11 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
         }
     }
 
+    /** @param ontology
+     * @param dataFactory
+     * @param manager */
     public AtomicDecompositionGeneralisationTreeBasedDistance(OWLOntology ontology,
-            final OWLDataFactory dataFactory, final OWLOntologyManager manager) {
+            OWLDataFactory dataFactory, OWLOntologyManager manager) {
         if (ontology == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
@@ -190,7 +193,7 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
         types.remove(AxiomType.DECLARATION);
         OPPLFactory factory = new OPPLFactory(getOntologyManger(), ontology, null);
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
-            RelevancePolicy policy = CollectionBasedRelevantPolicy
+            RelevancePolicy<OWLEntity> policy = CollectionBasedRelevantPolicy
                     .allOf(getRelevantEntities(axiom));
             final ConstraintSystem cs = factory.createConstraintSystem();
             RelevancePolicyOWLObjectGeneralisation replacer = new RelevancePolicyOWLObjectGeneralisation(

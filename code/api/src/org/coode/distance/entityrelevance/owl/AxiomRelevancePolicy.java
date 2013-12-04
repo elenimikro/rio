@@ -25,49 +25,45 @@ import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author Luigi Iannone */
 public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
-	private final RelevancePolicy relevance;
+    private final RelevancePolicy<OWLEntity> relevance;
 
-	/** @param axiom */
-	public AxiomRelevancePolicy(final OWLAxiom replacedAxiom,
-			final AxiomMap axiomMap) {
-		relevance = AbstractRankingRelevancePolicy
-				.getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom,
-						axiomMap));
-	}
+    /** @param replacedAxiom
+     * @param axiomMap */
+    public AxiomRelevancePolicy(final OWLAxiom replacedAxiom, final AxiomMap axiomMap) {
+        relevance = AbstractRankingRelevancePolicy
+                .getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom, axiomMap));
+    }
 
-	public static AbstractRanking buildRanking(final OWLAxiom replacedAxiom,
-			final AxiomMap axiomMap) {
-		final Map<OWLEntity, AtomicInteger> entityMap = axiomMap
-				.get(replacedAxiom);
-		Metric<OWLEntity> m = new Metric<OWLEntity>() {
-			@Override
-			public double getValue(final OWLEntity object) {
-				AtomicInteger value = entityMap.get(object);
-				double d = 0;
-				if (value != null) {
-					d = value.doubleValue();
-				}
-				double total = axiomMap.getAxiomCount(replacedAxiom);
-				return d / total;
-			}
-		};
-		AbstractRanking<OWLEntity> ranking = new AbstractRanking<OWLEntity>(m,
-				entityMap.keySet(), OWLEntity.class) {
-			@Override
-			public boolean isAverageable() {
-				return true;
-			}
+    /** @param replacedAxiom
+     * @param axiomMap
+     * @return */
+    public static AbstractRanking<OWLEntity> buildRanking(final OWLAxiom replacedAxiom,
+            final AxiomMap axiomMap) {
+        final Map<OWLEntity, AtomicInteger> entityMap = axiomMap.get(replacedAxiom);
+        Metric<OWLEntity> m = new Metric<OWLEntity>() {
+            @Override
+            public double getValue(final OWLEntity object) {
+                AtomicInteger value = entityMap.get(object);
+                double d = 0;
+                if (value != null) {
+                    d = value.doubleValue();
+                }
+                double total = axiomMap.getAxiomCount(replacedAxiom);
+                return d / total;
+            }
+        };
+        AbstractRanking<OWLEntity> ranking = new AbstractRanking<OWLEntity>(m,
+                entityMap.keySet(), OWLEntity.class) {
+            @Override
+            public boolean isAverageable() {
+                return true;
+            }
+        };
+        return ranking;
+    }
 
-		};
-		return ranking;
-	}
-
-	/**
-	 * @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
-	 *      .Object)
-	 */
-	@Override
-	public boolean isRelevant(final OWLEntity object) {
-		return relevance.isRelevant(object);
-	}
+    @Override
+    public boolean isRelevant(final OWLEntity object) {
+        return relevance.isRelevant(object);
+    }
 }

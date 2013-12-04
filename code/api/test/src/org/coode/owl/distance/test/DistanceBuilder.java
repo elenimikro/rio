@@ -12,10 +12,11 @@ package org.coode.owl.distance.test;
 
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public interface DistanceBuilder {
-	AbstractAxiomBasedDistance getDistance(OWLOntology o);
+    AbstractAxiomBasedDistance getDistance(OWLOntology o);
 
-    AbstractAxiomBasedDistance getDistance(OWLOntology o, RelevancePolicy rp);
+    AbstractAxiomBasedDistance getDistance(OWLOntology o, RelevancePolicy<OWLEntity> rp);
 }

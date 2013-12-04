@@ -43,160 +43,149 @@ import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
-public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends AbstractAxiomBasedDistanceImpl {
-	protected final class AxiomRelevanceMap extends AxiomRelevanceMapBase {
-		public AxiomRelevanceMap(final Collection<? extends OWLAxiom> axioms,
-				final OWLEntityProvider entityProvider,
-				final ConstraintSystem constraintSystem) {
-			if (axioms == null) {
-				throw new NullPointerException(
-						"The axiom collection cannot be null");
-			}
-			for (OWLAxiom axiom : axioms) {
-				StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
-						entityProvider, constraintSystem);
-				OWLAxiom generalisedAxiom = (OWLAxiom) axiom
-						.accept(generalisation);
-				generalisationMap.put(axiom, generalisedAxiom);
-				instantionMap.put(generalisedAxiom, new OWLAxiomInstantiation(
-						axiom, generalisation.getSubstitutions()));
-			}
-			Set<OWLAxiom> generalisedAxioms = instantionMap.keySet();
-			for (OWLAxiom generalisedAxiom : generalisedAxioms) {
-				AxiomGeneralisationTreeNode generalisationTreeNode = new AxiomGeneralisationTreeNode(
-						generalisedAxiom, instantionMap.get(generalisedAxiom),
-						constraintSystem);
-				relevanceMap.setEntry(generalisedAxiom,
-						extractValues(generalisationTreeNode));
-			}
-		}
-	}
-	
-	private final KnowledgeExplorer ke;
-	private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
-	private final OWLOntologyManager ontologyManger;
-	private final OWLEntityProvider entityProvider;
-	private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
-	private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
-	private final AxiomRelevanceMap axiomRelevanceMap;
-	private final OPPLFactory opplfactory;
+public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
+        AbstractAxiomBasedDistanceImpl {
+    protected final class AxiomRelevanceMap extends AxiomRelevanceMapBase {
+        public AxiomRelevanceMap(final Collection<? extends OWLAxiom> axioms,
+                final OWLEntityProvider entityProvider,
+                final ConstraintSystem constraintSystem) {
+            if (axioms == null) {
+                throw new NullPointerException("The axiom collection cannot be null");
+            }
+            for (OWLAxiom axiom : axioms) {
+                StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
+                        entityProvider, constraintSystem);
+                OWLAxiom generalisedAxiom = (OWLAxiom) axiom.accept(generalisation);
+                generalisationMap.put(axiom, generalisedAxiom);
+                instantionMap.put(generalisedAxiom, new OWLAxiomInstantiation(axiom,
+                        generalisation.getSubstitutions()));
+            }
+            Set<OWLAxiom> generalisedAxioms = instantionMap.keySet();
+            for (OWLAxiom generalisedAxiom : generalisedAxioms) {
+                AxiomGeneralisationTreeNode generalisationTreeNode = new AxiomGeneralisationTreeNode(
+                        generalisedAxiom, instantionMap.get(generalisedAxiom),
+                        constraintSystem);
+                relevanceMap.setEntry(generalisedAxiom,
+                        extractValues(generalisationTreeNode));
+            }
+        }
+    }
 
-	private void buildAxiomEntityMap(
-			final Set<OWLAxiom> set) {
-		for(OWLAxiom ax : set){
-			if(!ax.isOfType(AxiomType.DECLARATION)){
-				for (OWLEntity e : ax.getSignature()) {
-					candidates.put(e, ax);
-				}
-			}
-		}
-	}
+    private final KnowledgeExplorer ke;
+    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+    private final OWLOntologyManager ontologyManger;
+    private final OWLEntityProvider entityProvider;
+    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
+    private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
+    private final AxiomRelevanceMap axiomRelevanceMap;
+    private final OPPLFactory opplfactory;
 
-	private void buildSignature() {
-		ontologySignature.clear();
-		ontologySignature.addAll(ke.getEntities());
-	}
+    private void buildAxiomEntityMap(final Set<OWLAxiom> set) {
+        for (OWLAxiom ax : set) {
+            if (!ax.isOfType(AxiomType.DECLARATION)) {
+                for (OWLEntity e : ax.getSignature()) {
+                    candidates.put(e, ax);
+                }
+            }
+        }
+    }
 
-	private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
+    private void buildSignature() {
+        ontologySignature.clear();
+        ontologySignature.addAll(ke.getEntities());
+    }
 
-	public StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
-			final OWLOntology ontology,
-			final KnowledgeExplorer knowledgeExplorer) {
-		if (ontology == null) {
-			throw new NullPointerException("The ontolgy canont be null");
-		}
-		if (knowledgeExplorer == null) {
-			throw new NullPointerException("The knowledge explorer cannot be null");
-		}
-		ke = knowledgeExplorer;
-		ontologyManger = ontology.getOWLOntologyManager();
-		buildSignature();
-		buildAxiomEntityMap(ke.getAxioms());
-		axiomRelevanceMap = buildAxiomRelevanceMap();
-		entityProvider = new OntologyManagerBasedOWLEntityProvider(
-				getOntologyManger());
-		opplfactory = new OPPLFactory(getOntologyManger(), ontology, null);
-	}
+    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
 
-	protected AxiomRelevanceMap buildAxiomRelevanceMap() {
-		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-		for (OWLAxiom axiom : ke.getAxioms()) {
-			if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
-				axioms.add(axiom);
-			}
-		}
-		OPPLFactory factory = new OPPLFactory(getOntologyManger(),
-				getOntologyManger().getOntologies().iterator().next(), null);
-		ConstraintSystem constraintSystem = factory.createConstraintSystem();
-		return new AxiomRelevanceMap(axioms,
-				new OntologyManagerBasedOWLEntityProvider(getOntologyManger()),
-				constraintSystem);
-	}
+    public StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
+            final OWLOntology ontology, final KnowledgeExplorer knowledgeExplorer) {
+        if (ontology == null) {
+            throw new NullPointerException("The ontolgy canont be null");
+        }
+        if (knowledgeExplorer == null) {
+            throw new NullPointerException("The knowledge explorer cannot be null");
+        }
+        ke = knowledgeExplorer;
+        ontologyManger = ontology.getOWLOntologyManager();
+        buildSignature();
+        buildAxiomEntityMap(ke.getAxioms());
+        axiomRelevanceMap = buildAxiomRelevanceMap();
+        entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
+        opplfactory = new OPPLFactory(getOntologyManger(), ontology, null);
+    }
 
-	@Override
+    protected AxiomRelevanceMap buildAxiomRelevanceMap() {
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        for (OWLAxiom axiom : ke.getAxioms()) {
+            if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
+                axioms.add(axiom);
+            }
+        }
+        OPPLFactory factory = new OPPLFactory(getOntologyManger(), getOntologyManger()
+                .getOntologies().iterator().next(), null);
+        ConstraintSystem constraintSystem = factory.createConstraintSystem();
+        return new AxiomRelevanceMap(axioms, new OntologyManagerBasedOWLEntityProvider(
+                getOntologyManger()), constraintSystem);
+    }
+
+    @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
-		Collection<OWLAxiom> cached = cache.get(owlEntity);
-		return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
- : CollectionFactory
+        Collection<OWLAxiom> cached = cache.get(owlEntity);
+        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cached);
-	}
+    }
 
-	/**
-	 * @param owlEntity
-	 * @return
-	 */
-	protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
-		for (OWLAxiom axiom : candidates.get(owlEntity)) {
-            RelevancePolicy policy = CollectionBasedRelevantPolicy
+    /** @param owlEntity
+     * @return */
+    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+        for (OWLAxiom axiom : candidates.get(owlEntity)) {
+            RelevancePolicy<OWLEntity> policy = CollectionBasedRelevantPolicy
                     .allOf(getRelevantEntities(axiom));
-			RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers
-					.get(axiom);
-			if (generalReplacer == null) {
-				generalReplacer = new RelevancePolicyOWLObjectGeneralisation(
-						policy, getEntityProvider());
-				replacers.put(axiom, generalReplacer);
-			}
-
-			((SingleOWLEntityReplacementVariableProvider) generalReplacer
-					.getVariableProvider()).setOWLObject(owlEntity);
-			final ConstraintSystem cs = opplfactory.createConstraintSystem();
-			generalReplacer.getVariableProvider().setConstraintSystem(cs);
-			generalReplacer.setConstraintSystem(cs);
-			OWLAxiom replaced = (OWLAxiom) axiom.accept(generalReplacer);
-			if (isRelevant(replaced)) {
-				cache.put(owlEntity, replaced);
-			}
-		}
+            RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
+            if (generalReplacer == null) {
+                generalReplacer = new RelevancePolicyOWLObjectGeneralisation(policy,
+                        getEntityProvider());
+                replacers.put(axiom, generalReplacer);
+            }
+            ((SingleOWLEntityReplacementVariableProvider) generalReplacer
+                    .getVariableProvider()).setOWLObject(owlEntity);
+            final ConstraintSystem cs = opplfactory.createConstraintSystem();
+            generalReplacer.getVariableProvider().setConstraintSystem(cs);
+            generalReplacer.setConstraintSystem(cs);
+            OWLAxiom replaced = (OWLAxiom) axiom.accept(generalReplacer);
+            if (isRelevant(replaced)) {
+                cache.put(owlEntity, replaced);
+            }
+        }
         return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
                 .get(owlEntity));
-	}
+    }
 
     private Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
-		return axiomRelevanceMap.getRelevantEntities(axiom);
-	}
+        return axiomRelevanceMap.getRelevantEntities(axiom);
+    }
 
-	protected boolean isRelevant(final OWLAxiom replaced) {
-		Set<OWLEntity> signature = replaced.getSignature();
-		boolean found = false;
-		Iterator<OWLEntity> iterator = signature.iterator();
-		while (!found && iterator.hasNext()) {
-			OWLEntity owlEntity = iterator.next();
-			found = ontologySignature.contains(owlEntity);
-		}
-		if (!found) {
-			found = replaced.accept(AxiomGeneralityDetector.getInstance());
-		}
-		return found;
-	}
+    protected boolean isRelevant(final OWLAxiom replaced) {
+        Set<OWLEntity> signature = replaced.getSignature();
+        boolean found = false;
+        Iterator<OWLEntity> iterator = signature.iterator();
+        while (!found && iterator.hasNext()) {
+            OWLEntity owlEntity = iterator.next();
+            found = ontologySignature.contains(owlEntity);
+        }
+        if (!found) {
+            found = replaced.accept(AxiomGeneralityDetector.getInstance());
+        }
+        return found;
+    }
 
+    /** @return the ontologyManger */
+    public OWLOntologyManager getOntologyManger() {
+        return ontologyManger;
+    }
 
-	/** @return the ontologyManger */
-	public OWLOntologyManager getOntologyManger() {
-		return ontologyManger;
-	}
-
-	/** @return the entityProvider */
-	public OWLEntityProvider getEntityProvider() {
-		return entityProvider;
-	}
+    /** @return the entityProvider */
+    public OWLEntityProvider getEntityProvider() {
+        return entityProvider;
+    }
 }

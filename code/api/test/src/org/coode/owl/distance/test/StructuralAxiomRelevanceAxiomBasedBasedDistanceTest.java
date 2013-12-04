@@ -17,6 +17,7 @@ import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public class StructuralAxiomRelevanceAxiomBasedBasedDistanceTest extends DistanceTestCase {
@@ -24,15 +25,15 @@ public class StructuralAxiomRelevanceAxiomBasedBasedDistanceTest extends Distanc
     protected DistanceBuilder getDistanceBuilder() {
         return new DistanceBuilder() {
             @Override
-            public AbstractAxiomBasedDistance getDistance(final OWLOntology o) {
+            public AbstractAxiomBasedDistance getDistance(OWLOntology o) {
                 return new StructuralAxiomRelevanceAxiomBasedDistance(
                         o.getImportsClosure(), o.getOWLOntologyManager()
                                 .getOWLDataFactory(), o.getOWLOntologyManager());
             }
 
             @Override
-            public AbstractAxiomBasedDistance getDistance(final OWLOntology o,
-                    final RelevancePolicy rp) {
+            public AbstractAxiomBasedDistance getDistance(OWLOntology o,
+                    RelevancePolicy<OWLEntity> rp) {
                 return null;
             }
         };

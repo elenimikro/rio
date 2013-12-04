@@ -44,7 +44,7 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
                 return _this.getStar(_object);
             }
             if (_object instanceof OWLEntity
-                    && _this.getRelevancePolicy().isRelevant(_object)) {
+                    && _this.getRelevancePolicy().isRelevant((OWLEntity) _object)) {
                 return null;
             } else {
                 return _this.getVariable(_object);
@@ -59,14 +59,14 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
     }
 
     private OWLObject owlObject;
-    private final RelevancePolicy relevancePolicy;
+    private final RelevancePolicy<OWLEntity> relevancePolicy;
     private final AbstractingVisitor abstracter;
 
-    /** @param entityProvider
-     * @param constraintSystem
-     * @param owlObject */
+    /** @param relevancePolicy
+     * @param entityProvider */
     public SingleOWLEntityReplacementVariableProvider(
-            final RelevancePolicy relevancePolicy, final OWLEntityProvider entityProvider) {
+            final RelevancePolicy<OWLEntity> relevancePolicy,
+            final OWLEntityProvider entityProvider) {
         super(entityProvider);
         if (relevancePolicy == null) {
             throw new NullPointerException("The relevance policy cannot be null");
@@ -166,12 +166,12 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         return owlObject;
     }
 
-    public void setOWLObject(final OWLObject o) {
+    public void setOWLObject(OWLObject o) {
         owlObject = o;
     }
 
     /** @return the relevancePolicy */
-    public RelevancePolicy getRelevancePolicy() {
+    public RelevancePolicy<OWLEntity> getRelevancePolicy() {
         return relevancePolicy;
     }
 }

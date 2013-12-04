@@ -20,39 +20,38 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 public class Utils {
-	public static RelevancePolicy toOWLObjectRelevancePolicy(
-			final RelevancePolicy policy) {
-		return new RelevancePolicy<OWLEntity>() {
-			@Override
-			public boolean isRelevant(final OWLEntity object) {
-				return object.accept(new OWLObjectVisitorExAdapter<Boolean>(
-						false) {
-					@Override
-					public Boolean visit(final OWLClass desc) {
-						return policy.isRelevant(desc);
-					}
+    public static RelevancePolicy<OWLEntity> toOWLObjectRelevancePolicy(
+            final RelevancePolicy<OWLEntity> policy) {
+        return new RelevancePolicy<OWLEntity>() {
+            @Override
+            public boolean isRelevant(final OWLEntity object) {
+                return object.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
+                    @Override
+                    public Boolean visit(final OWLClass desc) {
+                        return policy.isRelevant(desc);
+                    }
 
-					@Override
-					public Boolean visit(final OWLAnnotationProperty property) {
-						return policy.isRelevant(property);
-					}
+                    @Override
+                    public Boolean visit(final OWLAnnotationProperty property) {
+                        return policy.isRelevant(property);
+                    }
 
-					@Override
-					public Boolean visit(final OWLDataProperty property) {
-						return policy.isRelevant(property);
-					}
+                    @Override
+                    public Boolean visit(final OWLDataProperty property) {
+                        return policy.isRelevant(property);
+                    }
 
-					@Override
-					public Boolean visit(final OWLObjectProperty property) {
-						return policy.isRelevant(property);
-					}
+                    @Override
+                    public Boolean visit(final OWLObjectProperty property) {
+                        return policy.isRelevant(property);
+                    }
 
-					@Override
-					public Boolean visit(final OWLNamedIndividual individual) {
-						return policy.isRelevant(individual);
-					}
-				});
-			}
-		};
-	}
+                    @Override
+                    public Boolean visit(final OWLNamedIndividual individual) {
+                        return policy.isRelevant(individual);
+                    }
+                });
+            }
+        };
+    }
 }

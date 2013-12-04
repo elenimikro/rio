@@ -49,7 +49,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
-  //  private final AxiomMap axiomMap;
+    // private final AxiomMap axiomMap;
     private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
@@ -87,8 +87,10 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     }
 
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
-    private RelevancePolicy policy;
+    private RelevancePolicy<OWLEntity> policy;
 
+    /** @param ontologies
+     * @param manager */
     public OWLEntityRelevanceAxiomBasedDistance(
             final Collection<? extends OWLOntology> ontologies,
             final OWLOntologyManager manager) {
@@ -98,7 +100,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
         if (manager == null) {
             throw new NullPointerException("The ontolgy manager cannot be null");
         }
-       // axiomMap = new AxiomMap(ontologies, manager, replacer);
+        // axiomMap = new AxiomMap(ontologies, manager, replacer);
         this.ontologies.addAll(ontologies);
         ontologyManger = manager;
         buildOntologySignature();
@@ -112,8 +114,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
- : CollectionFactory
+        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
@@ -124,8 +125,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
             if (generalReplacer == null) {
                 generalReplacer = new RelevancePolicyOWLObjectGeneralisation(
-                        Utils.toOWLObjectRelevancePolicy(policy),
-                        getEntityProvider());
+                        Utils.toOWLObjectRelevancePolicy(policy), getEntityProvider());
                 replacers.put(axiom, generalReplacer);
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer

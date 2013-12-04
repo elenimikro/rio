@@ -19,64 +19,44 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-/**
- * @author Luigi Iannone
- * 
- */
-@SuppressWarnings("rawtypes")
-public class ClusterListModel<O> implements ListModel {
-	private final ListModel delegate;
+/** @author Luigi Iannone */
+public class ClusterListModel<O> implements ListModel<Collection<? extends O>> {
+    private final ListModel<Collection<? extends O>> delegate;
 
-	public ClusterListModel(Collection<? extends Collection<? extends O>> clusters) {
-		if (clusters == null) {
-			throw new NullPointerException("The clusters collection cannot be null");
-		}
-		DefaultListModel defaultListModel = new DefaultListModel();
-		for (Collection<? extends O> collection : clusters) {
-			defaultListModel.addElement(collection);
-		}
-		this.delegate = defaultListModel;
-	}
+    /** @param clusters */
+    public ClusterListModel(Collection<? extends Collection<? extends O>> clusters) {
+        if (clusters == null) {
+            throw new NullPointerException("The clusters collection cannot be null");
+        }
+        DefaultListModel<Collection<? extends O>> defaultListModel = new DefaultListModel<Collection<? extends O>>();
+        for (Collection<? extends O> collection : clusters) {
+            defaultListModel.addElement(collection);
+        }
+        this.delegate = defaultListModel;
+    }
 
-	/**
-	 * @param l
-	 * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
-	 */
     @Override
     public void addListDataListener(ListDataListener l) {
-		this.delegate.addListDataListener(l);
-	}
+        this.delegate.addListDataListener(l);
+    }
 
-	/**
-	 * @param index
-	 * @return
-	 * @see javax.swing.ListModel#getElementAt(int)
-	 */
     @Override
-    public Object getElementAt(int index) {
-		return this.delegate.getElementAt(index);
-	}
+    public Collection<? extends O> getElementAt(int index) {
+        return this.delegate.getElementAt(index);
+    }
 
-	/**
-	 * @return
-	 * @see javax.swing.ListModel#getSize()
-	 */
     @Override
     public int getSize() {
-		return this.delegate.getSize();
-	}
+        return this.delegate.getSize();
+    }
 
-	/**
-	 * @param l
-	 * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
-	 */
     @Override
     public void removeListDataListener(ListDataListener l) {
-		this.delegate.removeListDataListener(l);
-	}
+        this.delegate.removeListDataListener(l);
+    }
 
-	public static <P> ClusterListModel<P> build(
-			Collection<? extends Collection<? extends P>> clusters) {
-		return new ClusterListModel<P>(clusters);
-	}
+    public static <P> ClusterListModel<P> build(
+            Collection<? extends Collection<? extends P>> clusters) {
+        return new ClusterListModel<P>(clusters);
+    }
 }

@@ -33,69 +33,62 @@ import org.coode.metrics.Ranking;
 import org.coode.metrics.RankingSlot;
 import org.semanticweb.owlapi.model.OWLEntity;
 
-/**
- * @author Luigi Iannone
- *
- */
-public abstract class RelevancePolicyPanel<O> extends JPanel {
-	/**
+/** @author Luigi Iannone */
+public abstract class RelevancePolicyPanel extends JPanel {
+    /**
 	 *
 	 */
-	private static final long serialVersionUID = 8159023598180517334L;
-	private final JList rankingList = new JList();
-    private final RelevancePolicy policy;
-	private final JLabel summaryLabel = new JLabel();
+    private static final long serialVersionUID = 8159023598180517334L;
+    private final JList<RankingSlot<OWLEntity>> rankingList = new JList<RankingSlot<OWLEntity>>();
+    protected final RelevancePolicy<OWLEntity> policy;
+    private final JLabel summaryLabel = new JLabel();
 
-    public RelevancePolicyPanel(RelevancePolicy policy) {
-		if (policy == null) {
-			throw new NullPointerException("The policy cannot be null");
-		}
-		this.policy = policy;
-		this.initGUI();
-	}
+    public RelevancePolicyPanel(RelevancePolicy<OWLEntity> policy) {
+        if (policy == null) {
+            throw new NullPointerException("The policy cannot be null");
+        }
+        this.policy = policy;
+        initGUI();
+    }
 
-	private void initGUI() {
-		setLayout(new BorderLayout());
-		this.add(this.summaryLabel, BorderLayout.NORTH);
-		this.add(new JScrollPane(this.rankingList), BorderLayout.CENTER);
-		this.rankingList.setCellRenderer(new ListCellRenderer() {
-			@Override
-            public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
-				DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    private void initGUI() {
+        setLayout(new BorderLayout());
+        this.add(summaryLabel, BorderLayout.NORTH);
+        this.add(new JScrollPane(rankingList), BorderLayout.CENTER);
+        rankingList.setCellRenderer(new ListCellRenderer<RankingSlot<OWLEntity>>() {
+            @Override
+            public Component getListCellRendererComponent(
+                    JList<? extends RankingSlot<OWLEntity>> list,
+                    RankingSlot<OWLEntity> value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
+                DefaultListCellRenderer renderer = new DefaultListCellRenderer();
                 final HashSet<OWLEntity> members = new HashSet<OWLEntity>(Arrays
-                        .asList(((RankingSlot<OWLEntity>) value).getMembers()));
-                Object toRender = value instanceof RankingSlot<?> ? String.format(
-						"%s [%s] relevant? %b",
-                        RelevancePolicyPanel.this.render(members),
-                        ((RankingSlot<?>) value).getValue(),
-						RelevancePolicyPanel.this.getPolicy().isRelevant(
-                                ((RankingSlot<OWLEntity>) value).getMembers()[0]))
-                        : value;
-				Component toReturn = renderer.getListCellRendererComponent(list,
-						String.format("%d) %s ", index + 1, toRender), index, isSelected,
-						cellHasFocus);
-				return toReturn;
-			}
-		});
-		this.summaryLabel.setText(this.getPolicy().toString());
-	}
+                        .asList(value.getMembers()));
+                Object toRender = String.format("%s [%s] relevant? %b",
+                        RelevancePolicyPanel.this.render(members), value.getValue(),
+                        policy.isRelevant(value.getMembers()[0]));
+                Component toReturn = renderer.getListCellRendererComponent(list,
+                        String.format("%d) %s ", index + 1, toRender), index, isSelected,
+                        cellHasFocus);
+                return toReturn;
+            }
+        });
+        summaryLabel.setText(policy.toString());
+    }
 
-	protected abstract Object render(Set<?> members);
+    protected abstract Object render(Set<?> members);
 
-    public <P> void reset(Ranking ranking) {
+    public <P> void reset(Ranking<OWLEntity> ranking) {
         List<? extends RankingSlot<OWLEntity>> list = ranking.getSortedRanking();
-		DefaultListModel model = new DefaultListModel();
+        DefaultListModel<RankingSlot<OWLEntity>> model = new DefaultListModel<RankingSlot<OWLEntity>>();
         for (RankingSlot<OWLEntity> rankingSlot : list) {
-			model.addElement(rankingSlot);
-		}
-		this.rankingList.setModel(model);
-	}
+            model.addElement(rankingSlot);
+        }
+        rankingList.setModel(model);
+    }
 
-	/**
-	 * @return the policy
-	 */
-    public RelevancePolicy getPolicy() {
-		return this.policy;
-	}
+    /** @return the policy */
+    public RelevancePolicy<OWLEntity> getPolicy() {
+        return policy;
+    }
 }
