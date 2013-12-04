@@ -24,7 +24,6 @@ import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.pair.filter.PairFilter;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.ProximityMatrix;
-import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.WardsProximityMeasureFactory;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
@@ -85,8 +84,7 @@ public class TestProximityMatrix extends TestCase {
         ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
                 .build(distanceMatrix, new WardsProximityMeasureFactory(), pairFilter,
                         PairFilterBasedComparator.build(pairFilter, newObjects,
-                                singletonDistance),
-                        new SimpleHistoryItemFactory<Collection<? extends OWLEntity>>());
+                                singletonDistance));
         for (OWLEntity owlEntity : ontology.getSignature()) {
             for (OWLEntity anotherOWLEntity : ontology.getSignature()) {
                 double distance = axiomBasedDistance.getDistance(owlEntity,

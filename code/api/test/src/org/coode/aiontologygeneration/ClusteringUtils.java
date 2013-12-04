@@ -14,8 +14,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
 import org.coode.oppl.exceptions.OPPLException;
-import org.coode.oppl.exceptions.QuickFailRuntimeExceptionHandler;
-import org.coode.oppl.exceptions.RuntimeExceptionHandler;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.proximitymatrix.cluster.Utils;
@@ -29,7 +27,6 @@ import org.semanticweb.owlapi.util.MultiMap;
 import org.xml.sax.SAXException;
 
 public class ClusteringUtils {
-
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap(
             final OWLOntology onto, final Set<Set<OWLEntity>> clusters) {
         OWLOntologyManager ontologyManager = onto.getOWLOntologyManager();
@@ -39,11 +36,10 @@ public class ClusteringUtils {
             ConstraintSystem constraintSystem = opplFactory.createConstraintSystem();
             OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
                     clusters, ontologyManager.getOntologies(), constraintSystem);
-            RuntimeExceptionHandler runtimeExceptionHandler = new QuickFailRuntimeExceptionHandler();
             for (Set<OWLEntity> cluster : clusters) {
                 MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils
-                        .buildGeneralisationMap(cluster, onto.getImportsClosure(), onto.getAxioms(),
-                                generalisation, runtimeExceptionHandler);
+                        .buildGeneralisationMap(cluster, onto.getImportsClosure(),
+                                onto.getAxioms(), generalisation);
                 generalisationMap.putAll(map);
             }
         } catch (OPPLException e) {

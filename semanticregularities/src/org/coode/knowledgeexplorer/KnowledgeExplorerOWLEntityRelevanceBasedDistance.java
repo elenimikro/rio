@@ -36,15 +36,13 @@ import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Eleni Mikroyannidi */
-public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAxiomBasedDistanceImpl{
+public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
+        AbstractAxiomBasedDistanceImpl {
     private final KnowledgeExplorer ke;
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
@@ -53,14 +51,6 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
     private final OPPLFactory factory;
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
     private final RelevancePolicy policy;
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
-                throws OWLException {
-            KnowledgeExplorerOWLEntityRelevanceBasedDistance.this.buildSignature();
-            KnowledgeExplorerOWLEntityRelevanceBasedDistance.this.buildAxiomEntityMap();
-        }
-    };
     private final static List<AxiomType<?>> types = new ArrayList<AxiomType<?>>(
             AxiomType.AXIOM_TYPES);
     static {
@@ -68,14 +58,14 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
     }
 
     private void buildAxiomEntityMap() {
-    	Set<OWLAxiom> axioms = ke.getAxioms();
-    	for(OWLAxiom ax : axioms){
-    		if(!ax.isOfType(AxiomType.DECLARATION)){
-    			for(OWLEntity e : ax.getSignature()){
-    				 candidates.put(e, ax);
-    			}
-    		}
-    	}
+        Set<OWLAxiom> axioms = ke.getAxioms();
+        for (OWLAxiom ax : axioms) {
+            if (!ax.isOfType(AxiomType.DECLARATION)) {
+                for (OWLEntity e : ax.getSignature()) {
+                    candidates.put(e, ax);
+                }
+            }
+        }
     }
 
     private void buildSignature() {
@@ -83,26 +73,22 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends AbstractAx
         keSignature.addAll(ke.getEntities());
     }
 
- 
-    public KnowledgeExplorerOWLEntityRelevanceBasedDistance(
-OWLOntology ontology,
+    public KnowledgeExplorerOWLEntityRelevanceBasedDistance(OWLOntology ontology,
             KnowledgeExplorer explorer) {
         ke = explorer;
         buildSignature();
         buildAxiomEntityMap();
         entityProvider = new OntologyManagerBasedOWLEntityProvider(
                 ontology.getOWLOntologyManager());
-        factory = new OPPLFactory(ontology.getOWLOntologyManager(), ontology,
-                null);
-        policy = DefaultOWLEntityTypeRelevancePolicy.getObjectPropertyAlwaysRelevantPolicy();
+        factory = new OPPLFactory(ontology.getOWLOntologyManager(), ontology, null);
+        policy = DefaultOWLEntityTypeRelevancePolicy
+                .getObjectPropertyAlwaysRelevantPolicy();
     }
-    
 
     @Override
     public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
- : CollectionFactory
+        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
@@ -113,8 +99,7 @@ OWLOntology ontology,
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
             if (generalReplacer == null) {
                 generalReplacer = new RelevancePolicyOWLObjectGeneralisation(
-                        Utils.toOWLObjectRelevancePolicy(policy),
-                        getEntityProvider());
+                        Utils.toOWLObjectRelevancePolicy(policy), getEntityProvider());
                 replacers.put(axiom, generalReplacer);
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer
@@ -144,7 +129,6 @@ OWLOntology ontology,
         }
         return found;
     }
-
 
     /** @return the entityProvider */
     public OWLEntityProvider getEntityProvider() {

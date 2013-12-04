@@ -17,7 +17,6 @@ import org.coode.oppl.bindingtree.Assignment;
 import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.oppl.bindingtree.BindingNode;
 import org.coode.oppl.exceptions.OPPLException;
-import org.coode.oppl.exceptions.QuickFailRuntimeExceptionHandler;
 import org.coode.oppl.rendering.ManchesterSyntaxRenderer;
 import org.coode.oppl.variabletypes.InputVariable;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
@@ -59,15 +58,8 @@ public class GeneralisationMetaprocessing<C extends Set<OWLEntity>> {
             MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
             for (Set<OWLEntity> cluster : clusters) {
                 generalisationMap.putAll(Utils.buildGeneralisationMap(cluster,
-                        ontology.getImportsClosure(), unwrappedOWLObjectGeneralisation,
-                        new QuickFailRuntimeExceptionHandler()));
+                        ontology.getImportsClosure(), unwrappedOWLObjectGeneralisation));
             }
-            GeneralisationMetaprocessing<Set<OWLEntity>> metaprocessor = new GeneralisationMetaprocessing<Set<OWLEntity>>(
-                    generalisationMap, constraintSystem);
-            // System.out.println("Processing generalisation Map...");
-            // MultiMap<OWLAxiom, OWLAxiomInstantiation>
-            // processedGeneralisationMap = metaprocessor
-            // .getProcessedGeneralisationMap();
             GeneralisationDecompositionModel<OWLEntity> model = new GeneralisationDecompositionModel<OWLEntity>(
                     clusters, ontology);
             model.setGeneralisationMap(generalisationMap);

@@ -7,20 +7,16 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.distance.wrapping.DistanceThresholdBasedFilter;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
 import org.coode.oppl.exceptions.OPPLException;
-import org.coode.oppl.exceptions.QuickFailRuntimeExceptionHandler;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.pair.filter.PairFilter;
 import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
-import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
@@ -36,9 +32,8 @@ import org.semanticweb.owlapi.util.MultiMap;
 public class ClusterCreator {
     private ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix;
 
-    public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(OWLOntology o,
-            Distance<OWLEntity> distance, Set<OWLEntity> entities) throws OPPLException,
-            ParserConfigurationException {
+    public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(
+            Distance<OWLEntity> distance, Set<OWLEntity> entities) {
         SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                 entities, distance);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses = org.coode.distance.Utils
@@ -96,13 +91,9 @@ public class ClusterCreator {
                     SimpleProximityMatrix<OWLEntity> baseDistanceMatrix) {
         // OWLOntologyManager manager = o.getOWLOntologyManager();
         System.out.println("Building clustering matrix....");
-        clusteringMatrix = ClusteringProximityMatrix
-                .build(wrappedMatrix,
-                        new CentroidProximityMeasureFactory(),
-                        filter,
-                        PairFilterBasedComparator.build(filter, newObjects,
-                                singletonDistance),
-                        new SimpleHistoryItemFactory<Collection<? extends DistanceTableObject<OWLEntity>>>());
+        clusteringMatrix = ClusteringProximityMatrix.build(wrappedMatrix,
+                new CentroidProximityMeasureFactory(), filter,
+                PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
         System.out.println("Start clustering");
         int i = 1;
         Set<Collection<? extends DistanceTableObject<OWLEntity>>> leftOvers = new HashSet<Collection<? extends DistanceTableObject<OWLEntity>>>(
@@ -151,7 +142,7 @@ public class ClusterCreator {
                 clusters, o.getImportsClosure(), constraintSystem);
         ClusterDecompositionModel<P> clusterModel = (ClusterDecompositionModel<P>) Utils
                 .toClusterDecompositionModel(clusters, o.getImportsClosure(),
-                        generalisation, new QuickFailRuntimeExceptionHandler());
+                        generalisation);
         return clusterModel;
     }
 
@@ -165,8 +156,7 @@ public class ClusterCreator {
                 clusters, o.getImportsClosure(), constraintSystem);
         ClusterDecompositionModel<P> clusterModel = (ClusterDecompositionModel<P>) Utils
                 .toKnowledgeExplorerClusterDecompositionModel(clusters,
-                        o.getImportsClosure(), entailements, generalisation,
-                        new QuickFailRuntimeExceptionHandler());
+                        o.getImportsClosure(), entailements, generalisation);
         return clusterModel;
     }
 

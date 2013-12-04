@@ -1,10 +1,7 @@
 package experiments;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Collection;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.coode.distance.Distance;
 import org.coode.oppl.exceptions.OPPLException;
@@ -24,69 +21,56 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
 public class ADPatternInductionExperiment {
+    public ADPatternInductionExperiment() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public ADPatternInductionExperiment() {
-		// TODO Auto-generated constructor stub
-	}
+    /** @param args
+     * @throws OPPLException
+     * @throws OWLOntologyCreationException */
+    public static void main(String[] args) throws OWLOntologyCreationException,
+            OPPLException {
+        run(args[0]);
+    }
 
-	/**
-	 * @param args
-	 * @throws ParserConfigurationException
-	 * @throws OPPLException
-	 * @throws OWLOntologyCreationException
-	 * @throws FileNotFoundException
-	 */
-	public static void main(String[] args) throws OWLOntologyCreationException,
-			OPPLException, ParserConfigurationException, FileNotFoundException {
-		run(args[0], "structural");
-	}
+    public static ClusterDecompositionModel<OWLEntity> run(String filename)
+            throws OWLOntologyCreationException, OPPLException {
+        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        OWLOntology o = m.loadOntologyFromOntologyDocument(new File(filename));
+        ClusterDecompositionModel<OWLEntity> model = getSyntacticClusteringModel(o);
+        GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
+                model, o);
+        printMergedAtomPatterns(gad);
+        return model;
+    }
 
-	public static ClusterDecompositionModel<OWLEntity> run(String filename,
-			String clustering_type) throws OWLOntologyCreationException,
-			OPPLException, ParserConfigurationException, FileNotFoundException {
-		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-		OWLOntology o = m.loadOntologyFromOntologyDocument(new File(filename));
-		ClusterDecompositionModel<OWLEntity> model = getSyntacticClusteringModel(
-				o, clustering_type);
-		GeneralisedAtomicDecomposition<OWLEntity> gad = new GeneralisedAtomicDecomposition<OWLEntity>(
-				model, o);
+    private static ClusterDecompositionModel<OWLEntity> getSyntacticClusteringModel(
+            OWLOntology o) throws OPPLException {
+        OWLOntologyManager m = o.getOWLOntologyManager();
+        System.out
+                .println("ADPatternInductionExperiment.getSyntacticClusteringModel() ontology "
+                        + o.toString());
+        Distance<OWLEntity> distance = DistanceCreator
+                .createStructuralAxiomRelevanceAxiomBasedDistance(m);
+        ClusterDecompositionModel<OWLEntity> model = ExperimentHelper
+                .startSyntacticClustering(o, distance, null);
+        return model;
+    }
 
-		printMergedAtomPatterns(gad);
-		return model;
-	}
-
-	private static ClusterDecompositionModel<OWLEntity> getSyntacticClusteringModel(
-			OWLOntology o, String clustering_type) throws OPPLException,
-			ParserConfigurationException, OWLOntologyCreationException {
-		OWLOntologyManager m = o.getOWLOntologyManager();
-		System.out
-				.println("ADPatternInductionExperiment.getSyntacticClusteringModel() ontology "
-						+ o.toString());
-		Distance<OWLEntity> distance = DistanceCreator
-				.createStructuralAxiomRelevanceAxiomBasedDistance(m);
-		ClusterDecompositionModel<OWLEntity> model = ExperimentHelper
-				.startSyntacticClustering(o, distance, null);
-
-		return model;
-	}
-
-	private static void printMergedAtomPatterns(
-			GeneralisedAtomicDecomposition<OWLEntity> gad) {
-		MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad.getMergedAtoms();
-		ToStringRenderer.getInstance().setRenderer(
-				new ManchesterSyntaxRenderer());
-		System.out.println("Number of atom patterns: "
-				+ mergedAtoms.keySet().size());
-		int count = 1;
-		for (Collection<OWLAxiom> col : mergedAtoms.keySet()) {
-			System.out.println("Atom Pattern " + count + " :");
-			for (OWLAxiom ax : col) {
-				System.out.println(" \t" + ax);
-			}
-			System.out.println("Merged Atoms: " + "("
-					+ mergedAtoms.get(col).size() + ")" + mergedAtoms.get(col));
-			count++;
-		}
-	}
-
+    private static void printMergedAtomPatterns(
+            GeneralisedAtomicDecomposition<OWLEntity> gad) {
+        MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad.getMergedAtoms();
+        ToStringRenderer.getInstance().setRenderer(new ManchesterSyntaxRenderer());
+        System.out.println("Number of atom patterns: " + mergedAtoms.keySet().size());
+        int count = 1;
+        for (Collection<OWLAxiom> col : mergedAtoms.keySet()) {
+            System.out.println("Atom Pattern " + count + " :");
+            for (OWLAxiom ax : col) {
+                System.out.println(" \t" + ax);
+            }
+            System.out.println("Merged Atoms: " + "(" + mergedAtoms.get(col).size() + ")"
+                    + mergedAtoms.get(col));
+            count++;
+        }
+    }
 }

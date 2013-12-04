@@ -25,7 +25,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-import org.coode.oppl.exceptions.RuntimeExceptionHandler;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.proximitymatrix.cluster.Cluster;
@@ -42,8 +41,7 @@ public class ClusterAxiomListModel implements ListModel {
 
     public ClusterAxiomListModel(Cluster<? extends OWLEntity> cluster,
             Collection<? extends OWLOntology> ontologies,
-            OWLObjectGeneralisation generalisation,
-            RuntimeExceptionHandler runtimeExceptionHandler) {
+            OWLObjectGeneralisation generalisation) {
         if (cluster == null) {
             throw new NullPointerException("The cluster cannot be null");
         }
@@ -60,8 +58,7 @@ public class ClusterAxiomListModel implements ListModel {
             axioms.addAll(ont.getAxioms());
         }
         final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
-                .buildGeneralisationMap(cluster, ontologies, axioms, generalisation,
-                        runtimeExceptionHandler);
+                .buildGeneralisationMap(cluster, ontologies, axioms, generalisation);
         Comparator<OWLAxiom> comparator = new Comparator<OWLAxiom>() {
             @Override
             public int compare(OWLAxiom axiom, OWLAxiom anotherAxiom) {

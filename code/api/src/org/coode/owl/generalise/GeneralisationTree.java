@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-import java.util.Collection;
-
 import org.coode.utils.DefaultTree;
 import org.coode.utils.DefaultTreeNode;
 import org.coode.utils.Tree;
@@ -19,15 +17,13 @@ import org.coode.utils.TreeNode;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
 public class GeneralisationTree extends DefaultTree implements Tree {
-	public GeneralisationTree(OWLAxiom rootAxiom,
-			Collection<? extends OWLAxiomInstantiation> instantiations) {
-		super(buildNode(rootAxiom, instantiations));
-	}
+    public GeneralisationTree(OWLAxiom rootAxiom) {
+        super(buildNode(rootAxiom));
+    }
 
-	public static TreeNode<OWLAxiom> buildNode(OWLAxiom axiom,
-			Collection<? extends OWLAxiomInstantiation> instantiations) {
-		TreeNode<OWLAxiom> toReturn = new DefaultTreeNode<OWLAxiom>(axiom);
+    public static TreeNode<OWLAxiom> buildNode(OWLAxiom axiom) {
+        TreeNode<OWLAxiom> toReturn = new DefaultTreeNode<OWLAxiom>(axiom);
         // for (OWLAxiomInstantiation axiomInstantiation : instantiations) {}
-		return toReturn;
-	}
+        return toReturn;
+    }
 }

@@ -90,7 +90,6 @@ public class JustificationInjectiveRenamingIsomorphism {
                     OWLEntity generalised = (OWLEntity) e.accept(generalisation);
                     cache.put(e, generalised);
                 }
-                for (OWLAxiom ax : axioms) {}
                 isomorphicJustifications.put(generalisedAxioms, entailment);
             }
         }

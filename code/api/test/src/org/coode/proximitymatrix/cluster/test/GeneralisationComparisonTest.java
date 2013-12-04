@@ -13,7 +13,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.coode.basetest.ClusteringHelper;
 import org.coode.basetest.OntologyTestHelper;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
-import org.coode.oppl.exceptions.OPPLException;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
@@ -157,9 +156,6 @@ public class GeneralisationComparisonTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (UnknownOWLOntologyException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (OPPLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

@@ -31,7 +31,6 @@ import org.coode.pair.filter.PairFilter;
 import org.coode.pair.filter.commons.DistanceThresholdBasedFilter;
 import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
-import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -40,8 +39,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 public class TableDistanceTest extends TestCase {
-    public void testSimpleDistanceMatrixVSCollectionSingleton()
- {
+    public void testSimpleDistanceMatrixVSCollectionSingleton() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
@@ -87,8 +85,7 @@ public class TableDistanceTest extends TestCase {
         distance.dispose();
     }
 
-    public void testSimpleDistanceMatrixVSTableDistance()
- {
+    public void testSimpleDistanceMatrixVSTableDistance() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
@@ -165,8 +162,7 @@ public class TableDistanceTest extends TestCase {
         ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
                 .build(distanceMatrix, new CentroidProximityMeasureFactory(), filter,
                         PairFilterBasedComparator.build(filter, newObjects,
-                                singletonDistance),
-                        new SimpleHistoryItemFactory<Collection<? extends OWLEntity>>());
+                                singletonDistance));
         for (OWLEntity owlEntity : entities) {
             for (OWLEntity otherEntity : entities) {
                 assertTrue(String.format("Mismatch between %s and %s", owlEntity,
@@ -180,8 +176,7 @@ public class TableDistanceTest extends TestCase {
         distance.dispose();
     }
 
-    public void testClusteringMatrixVSTableDistanceAfterAgglomeration()
- {
+    public void testClusteringMatrixVSTableDistanceAfterAgglomeration() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
@@ -222,8 +217,7 @@ public class TableDistanceTest extends TestCase {
         ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
                 .build(distanceMatrix, new CentroidProximityMeasureFactory(), filter,
                         PairFilterBasedComparator.build(filter, newObjects,
-                                singletonDistance),
-                        new SimpleHistoryItemFactory<Collection<? extends OWLEntity>>());
+                                singletonDistance));
         Pair<Collection<? extends OWLEntity>> minimumDistancePair = clusteringMatrix
                 .getMinimumDistancePair();
         int i = 1;

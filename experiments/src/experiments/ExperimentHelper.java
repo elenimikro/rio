@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
 import org.coode.oppl.exceptions.OPPLException;
@@ -45,13 +43,12 @@ public class ExperimentHelper {
 
     public static ClusterDecompositionModel<OWLEntity> startSyntacticClustering(
             OWLOntology o, Distance<OWLEntity> distance,
-            Set<OWLEntity> clusteringSignature) throws OPPLException,
-            ParserConfigurationException {
+            Set<OWLEntity> clusteringSignature) throws OPPLException {
         OWLOntologyManager m = o.getOWLOntologyManager();
         // remove annotations
         clusterer = new ClusterCreator();
-        Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
-                clusteringSignature, m, clusterer);
+        Set<Cluster<OWLEntity>> clusters = runClustering(distance, clusteringSignature,
+                m, clusterer);
         // put annotations back in
         // m.addAxioms(o, annotationAssertions);
         ClusterDecompositionModel<OWLEntity> model = clusterer
@@ -61,22 +58,20 @@ public class ExperimentHelper {
 
     public static ClusterDecompositionModel<OWLEntity> startSemanticClustering(
             OWLOntology o, Set<OWLAxiom> entailments, Distance<OWLEntity> distance,
-            Set<OWLEntity> clusteringSignature) throws OPPLException,
-            ParserConfigurationException {
+            Set<OWLEntity> clusteringSignature) throws OPPLException {
         OWLOntologyManager m = o.getOWLOntologyManager();
         clusterer = new ClusterCreator();
-        Set<Cluster<OWLEntity>> clusters = runClustering(o, distance,
-                clusteringSignature, m, clusterer);
+        Set<Cluster<OWLEntity>> clusters = runClustering(distance, clusteringSignature,
+                m, clusterer);
         ClusterDecompositionModel<OWLEntity> model = clusterer
                 .buildKnowledgeExplorerClusterDecompositionModel(o, entailments, m,
                         clusters);
         return model;
     }
 
-    private static Set<Cluster<OWLEntity>> runClustering(OWLOntology o,
-            Distance<OWLEntity> distance, Set<OWLEntity> clusteringSignature,
-            OWLOntologyManager m, ClusterCreator clusterCreator) throws OPPLException,
-            ParserConfigurationException {
+    private static Set<Cluster<OWLEntity>> runClustering(Distance<OWLEntity> distance,
+            Set<OWLEntity> clusteringSignature, OWLOntologyManager m,
+            ClusterCreator clusterCreator) {
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
             @Override
@@ -92,7 +87,7 @@ public class ExperimentHelper {
         } else {
             entities.addAll(clusteringSignature);
         }
-        Set<Cluster<OWLEntity>> clusters = clusterCreator.agglomerateAll(o, distance,
+        Set<Cluster<OWLEntity>> clusters = clusterCreator.agglomerateAll(distance,
                 entities);
         return clusters;
     }

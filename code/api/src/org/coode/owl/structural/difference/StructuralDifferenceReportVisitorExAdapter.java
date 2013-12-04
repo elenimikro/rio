@@ -11,39 +11,44 @@
 package org.coode.owl.structural.difference;
 
 public class StructuralDifferenceReportVisitorExAdapter<O> implements
-		StructuralDifferenceReportVisitorEx<O> {
-	private O defaultValue;
+        StructuralDifferenceReportVisitorEx<O> {
+    private O defaultValue;
 
-	public StructuralDifferenceReportVisitorExAdapter() {
-		this(null);
-	}
+    public StructuralDifferenceReportVisitorExAdapter() {
+        this(null);
+    }
 
-	/**
-	 * @param defaultValue
-	 */
-	public StructuralDifferenceReportVisitorExAdapter(O defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+    /** @param defaultValue */
+    public StructuralDifferenceReportVisitorExAdapter(O defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
-	@Override
-    public O visitNoDifferenceStructuralDifferenceReport(
-			NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
-		return this.getDefaultValue(noDifferenceStructuralDifferenceReport);
-	}
+    @Override
+    public
+            O
+            visitNoDifferenceStructuralDifferenceReport(
+                    NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
+        return this.getDefaultValue(noDifferenceStructuralDifferenceReport);
+    }
 
-	@Override
-    public O visitIncomparableObjectsStructuralDifferenceReport(
-			IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
-		return this.getDefaultValue(incomparableObjectsStructuralDifferenceReport);
-	}
+    @Override
+    public
+            O
+            visitIncomparableObjectsStructuralDifferenceReport(
+                    IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
+        return this.getDefaultValue(incomparableObjectsStructuralDifferenceReport);
+    }
 
-	@Override
-    public O visitSomeDifferenceStructuralDifferenceReport(
-			SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-		return this.getDefaultValue(someDifferenceStructuralDifferenceReport);
-	}
+    @Override
+    public
+            O
+            visitSomeDifferenceStructuralDifferenceReport(
+                    SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
+        return this.getDefaultValue(someDifferenceStructuralDifferenceReport);
+    }
 
-	protected O getDefaultValue(StructuralDifferenceReport structuralDifferenceReport) {
-		return this.defaultValue;
-	}
+    @SuppressWarnings("unused")
+    protected O getDefaultValue(StructuralDifferenceReport structuralDifferenceReport) {
+        return this.defaultValue;
+    }
 }

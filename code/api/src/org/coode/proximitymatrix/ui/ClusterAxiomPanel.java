@@ -38,142 +38,131 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-/**
- * @author Luigi Iannone
- * 
- */
-
+/** @author Luigi Iannone */
 public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -8706696433509939648L;
-	private final JList axiomList = new JList();
-	private final JList variableList = new JList();
-	private final JLabel summaryLabel = new JLabel();
-	private OWLObjectGeneralisation generalisation;
+    private static final long serialVersionUID = -8706696433509939648L;
+    private final JList axiomList = new JList();
+    private final JList variableList = new JList();
+    private final JLabel summaryLabel = new JLabel();
+    private OWLObjectGeneralisation generalisation;
 
-	public ClusterAxiomPanel() {
-		this.initGUI();
-		this.reset(null, Collections.<OWLOntology> emptySet());
-	}
+    public ClusterAxiomPanel() {
+        this.initGUI();
+        this.reset(null, Collections.<OWLOntology> emptySet());
+    }
 
-	private void reset(Cluster<O> cluster, Collection<? extends OWLOntology> ontologies) {
-		if (cluster != null) {
-			ClusterAxiomListModel model = new ClusterAxiomListModel(cluster, ontologies,
-					this.getGeneralisation(),
-					new ShowMessageRuntimeExceptionHandler(this));
-			this.axiomList.setModel(model);
-			String string = String.format("Axiom count: %d", model.getAxiomCount());
-			if (this.getGeneralisation() != null) {
-				Comparator<Variable<?>> comparator = new Comparator<Variable<?>>() {
-					@Override
+    private void reset(Cluster<O> cluster, Collection<? extends OWLOntology> ontologies) {
+        if (cluster != null) {
+            ClusterAxiomListModel model = new ClusterAxiomListModel(cluster, ontologies,
+                    this.getGeneralisation());
+            this.axiomList.setModel(model);
+            String string = String.format("Axiom count: %d", model.getAxiomCount());
+            if (this.getGeneralisation() != null) {
+                Comparator<Variable<?>> comparator = new Comparator<Variable<?>>() {
+                    @Override
                     public int compare(Variable<?> o1, Variable<?> o2) {
-						return o1.getName().compareTo(o2.getName());
-					}
-				};
-				Set<Variable<?>> variables = new TreeSet<Variable<?>>(comparator);
-				variables.addAll(this.getGeneralisation().getConstraintSystem()
-						.getInputVariables());
-				DefaultListModel defaultListModel = new DefaultListModel();
-				for (Variable<?> variable : variables) {
-					defaultListModel.addElement(variable);
-				}
-				variables.clear();
-				variables.addAll(this.getGeneralisation().getConstraintSystem()
-						.getGeneratedVariables());
-				for (Variable<?> variable : variables) {
-					defaultListModel.addElement(variable);
-				}
-				this.variableList.setModel(defaultListModel);
-			}
-			this.summaryLabel.setText(string);
-		} else {
-			this.axiomList.setModel(new DefaultListModel());
-			this.summaryLabel.setText("Axiom count:");
-		}
-	}
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                };
+                Set<Variable<?>> variables = new TreeSet<Variable<?>>(comparator);
+                variables.addAll(this.getGeneralisation().getConstraintSystem()
+                        .getInputVariables());
+                DefaultListModel defaultListModel = new DefaultListModel();
+                for (Variable<?> variable : variables) {
+                    defaultListModel.addElement(variable);
+                }
+                variables.clear();
+                variables.addAll(this.getGeneralisation().getConstraintSystem()
+                        .getGeneratedVariables());
+                for (Variable<?> variable : variables) {
+                    defaultListModel.addElement(variable);
+                }
+                this.variableList.setModel(defaultListModel);
+            }
+            this.summaryLabel.setText(string);
+        } else {
+            this.axiomList.setModel(new DefaultListModel());
+            this.summaryLabel.setText("Axiom count:");
+        }
+    }
 
-	private void initGUI() {
-		setLayout(new BorderLayout());
-		this.add(this.summaryLabel, BorderLayout.NORTH);
-		this.add(new JScrollPane(this.variableList), BorderLayout.WEST);
-		this.add(new JScrollPane(this.axiomList), BorderLayout.CENTER);
-		this.axiomList.setCellRenderer(new ListCellRenderer() {
-			@Override
+    private void initGUI() {
+        setLayout(new BorderLayout());
+        this.add(this.summaryLabel, BorderLayout.NORTH);
+        this.add(new JScrollPane(this.variableList), BorderLayout.WEST);
+        this.add(new JScrollPane(this.axiomList), BorderLayout.CENTER);
+        this.axiomList.setCellRenderer(new ListCellRenderer() {
+            @Override
             public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
-				DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
-				OWLAxiomListItem owlAxiomListItem = (OWLAxiomListItem) value;
-				Object toRender = value instanceof OWLAxiomListItem ? String.format(
-						"%s [%d] %s", ClusterAxiomPanel.this.render(owlAxiomListItem
-								.getAxiom()), owlAxiomListItem.getCount(), Utils
-								.renderInstantiationsStats(Utils
-										.buildAssignmentMap(owlAxiomListItem
-												.getInstantiations()))) : value;
-				return defaultListCellRenderer.getListCellRendererComponent(list,
-						toRender, index, isSelected, cellHasFocus);
-			}
-		});
-		this.variableList.setCellRenderer(new ListCellRenderer() {
-			@Override
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
+                OWLAxiomListItem owlAxiomListItem = (OWLAxiomListItem) value;
+                Object toRender = value instanceof OWLAxiomListItem ? String.format(
+                        "%s [%d] %s", ClusterAxiomPanel.this.render(owlAxiomListItem
+                                .getAxiom()), owlAxiomListItem.getCount(), Utils
+                                .renderInstantiationsStats(Utils
+                                        .buildAssignmentMap(owlAxiomListItem
+                                                .getInstantiations()))) : value;
+                return defaultListCellRenderer.getListCellRendererComponent(list,
+                        toRender, index, isSelected, cellHasFocus);
+            }
+        });
+        this.variableList.setCellRenderer(new ListCellRenderer() {
+            @Override
             public Component getListCellRendererComponent(JList list, Object value,
-					int index, boolean isSelected, boolean cellHasFocus) {
-				DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
-				Object toRender = value instanceof Variable<?>
-						&& ClusterAxiomPanel.this.getGeneralisation() != null ? ((Variable<?>) value)
-						.render(ClusterAxiomPanel.this.getGeneralisation()
-								.getConstraintSystem()) : value;
-				return defaultListCellRenderer.getListCellRendererComponent(list,
-						toRender, index, isSelected, cellHasFocus);
-			}
-		});
-	}
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
+                Object toRender = value instanceof Variable<?>
+                        && ClusterAxiomPanel.this.getGeneralisation() != null ? ((Variable<?>) value)
+                        .render(ClusterAxiomPanel.this.getGeneralisation()
+                                .getConstraintSystem()) : value;
+                return defaultListCellRenderer.getListCellRendererComponent(list,
+                        toRender, index, isSelected, cellHasFocus);
+            }
+        });
+    }
 
-	protected String render(OWLAxiom axiom) {
-		String toReturn = axiom.toString();
-		return toReturn;
-	}
+    protected String render(OWLAxiom axiom) {
+        String toReturn = axiom.toString();
+        return toReturn;
+    }
 
-	/**
-	 * @param cluster
-	 *            the cluster to set
-	 */
-	public void setCluster(Cluster<O> cluster,
-			Collection<? extends OWLOntology> ontologies,
-			OWLObjectGeneralisation generalisation) {
-		this.setGeneralisation(generalisation);
-		this.reset(cluster, ontologies);
-	}
+    /** @param cluster
+     *            the cluster to set */
+    public void setCluster(Cluster<O> cluster,
+            Collection<? extends OWLOntology> ontologies,
+            OWLObjectGeneralisation generalisation) {
+        this.setGeneralisation(generalisation);
+        this.reset(cluster, ontologies);
+    }
 
-	public static <P extends OWLEntity> ClusterAxiomPanel<P> build(
-			final OWLObjectRenderer renderer) {
-		return new ClusterAxiomPanel<P>() {
-			/**
+    public static <P extends OWLEntity> ClusterAxiomPanel<P> build(
+            final OWLObjectRenderer renderer) {
+        return new ClusterAxiomPanel<P>() {
+            /**
 			 * 
 			 */
-			private static final long serialVersionUID = 5936336750441629116L;
+            private static final long serialVersionUID = 5936336750441629116L;
 
-			@Override
-			protected String render(OWLAxiom axiom) {
-				String toReturn = renderer.render(axiom);
-				return toReturn;
-			}
-		};
-	}
+            @Override
+            protected String render(OWLAxiom axiom) {
+                String toReturn = renderer.render(axiom);
+                return toReturn;
+            }
+        };
+    }
 
-	/**
-	 * @return the generalisation
-	 */
-	public OWLObjectGeneralisation getGeneralisation() {
-		return this.generalisation;
-	}
+    /** @return the generalisation */
+    public OWLObjectGeneralisation getGeneralisation() {
+        return this.generalisation;
+    }
 
-	/**
-	 * @param generalisation
-	 *            the generalisation to set
-	 */
-	public void setGeneralisation(OWLObjectGeneralisation generalisation) {
-		this.generalisation = generalisation;
-	}
+    /** @param generalisation
+     *            the generalisation to set */
+    public void setGeneralisation(OWLObjectGeneralisation generalisation) {
+        this.generalisation = generalisation;
+    }
 }

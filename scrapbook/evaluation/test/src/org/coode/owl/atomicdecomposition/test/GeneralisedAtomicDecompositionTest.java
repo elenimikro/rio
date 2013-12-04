@@ -90,8 +90,7 @@ public class GeneralisedAtomicDecompositionTest {
         for (OWLOntology ontology : m.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
-        Set<Cluster<OWLEntity>> clusters = clusterer
-                .agglomerateAll(o, distance, entities);
+        Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(distance, entities);
         model = clusterer.buildClusterDecompositionModel(o, clusters);
         List<Cluster<OWLEntity>> clusterList = model.getClusterList();
         for (int counter = 0; counter < clusterList.size(); counter++) {

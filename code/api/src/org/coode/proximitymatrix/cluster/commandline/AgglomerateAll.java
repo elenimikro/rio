@@ -32,7 +32,6 @@ import org.coode.pair.filter.commons.DistanceThresholdBasedFilter;
 import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.ProximityMatrix;
-import org.coode.proximitymatrix.SimpleHistoryItemFactory;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
@@ -50,128 +49,114 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
 public class AgglomerateAll extends AgglomeratorBase {
-	/**
-	 * @param args
-	 * @throws OWLOntologyCreationException
-	 */
-	public static void main(final String[] args)
-			throws OWLOntologyCreationException {
-		AgglomerateAll agglomerator = new AgglomerateAll();
-		agglomerator.checkArgumentsAndRun(args);
-	}
+    /** @param args
+     * @throws OWLOntologyCreationException */
+    public static void main(final String[] args) throws OWLOntologyCreationException {
+        AgglomerateAll agglomerator = new AgglomerateAll();
+        agglomerator.checkArgumentsAndRun(args);
+    }
 
-	@Override
-	public void run(final File outfile, final List<IRI> iris)
-			throws OWLOntologyCreationException {
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-		IOUtils.loadIRIMappers(iris, manager);
-		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
-				new Comparator<OWLEntity>() {
-					@Override
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
-						return shortFormProvider.getShortForm(o1).compareTo(
-								shortFormProvider.getShortForm(o2));
-					}
-				});
-		for (OWLOntology ontology : manager.getOntologies()) {
-			entities.addAll(ontology.getSignature());
-		}
-		final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-				manager.getOWLDataFactory(), new ReplacementByKindStrategy(
-						manager.getOWLDataFactory()));
-		final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-				manager.getOntologies(), owlEntityReplacer, manager);
-		final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-				entities, distance);
-		System.out.println(String.format(
-				"Finished computing distance between %d entities",
-				distanceMatrix.getObjects().size()));
-		Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
-		for (OWLEntity object : distanceMatrix.getObjects()) {
-			newObjects.add(Collections.singletonList(object));
-		}
-		Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
-			@Override
-			public double getDistance(final Collection<? extends OWLEntity> a,
-					final Collection<? extends OWLEntity> b) {
-				return distance.getDistance(a.iterator().next(), b.iterator()
-						.next());
-			}
-		};
-		PairFilter<Collection<? extends OWLEntity>> filter = DistanceThresholdBasedFilter
-				.build(new TableDistance<OWLEntity>(entities, distanceMatrix
-						.getData()), 1);
-		System.out.println("Building clustering matrix....");
-		ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
-				.build(distanceMatrix,
-						new CentroidProximityMeasureFactory(),
-						filter,
-						PairFilterBasedComparator.build(filter, newObjects,
-								singletonDistance),
-						new SimpleHistoryItemFactory<Collection<? extends OWLEntity>>());
-		System.out.println("Start clustering");
-		int i = 1;
-		clusteringMatrix = clusteringMatrix.reduce(filter);
-		while (clusteringMatrix.getMinimumDistancePair() != null
-				&& filter.accept(clusteringMatrix.getMinimumDistancePair()
-						.getFirst(), clusteringMatrix.getMinimumDistancePair()
-						.getSecond())) {
-			clusteringMatrix = clusteringMatrix.agglomerate(filter);
-			Utility.printAgglomeration(clusteringMatrix, i);
-			i++;
-			if (clusteringMatrix.getMinimumDistancePair() != null) {
-				print(clusteringMatrix);
-			}
-		}
-		Set<Cluster<OWLEntity>> clusters = buildClusters(clusteringMatrix,
-				distanceMatrix);
-		System.out
-				.println(String
-						.format("Finished clustering after %d agglomerations no of clusters %d",
-								i, clusters.size()));
-		Utils.save(clusters, manager, outfile);
-	}
+    @Override
+    public void run(final File outfile, final List<IRI> iris)
+            throws OWLOntologyCreationException {
+        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        IOUtils.loadIRIMappers(iris, manager);
+        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
+            public int compare(final OWLEntity o1, final OWLEntity o2) {
+                return shortFormProvider.getShortForm(o1).compareTo(
+                        shortFormProvider.getShortForm(o2));
+            }
+        });
+        for (OWLOntology ontology : manager.getOntologies()) {
+            entities.addAll(ontology.getSignature());
+        }
+        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+                manager.getOWLDataFactory(), new ReplacementByKindStrategy(
+                        manager.getOWLDataFactory()));
+        final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
+                manager.getOntologies(), owlEntityReplacer, manager);
+        final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
+                entities, distance);
+        System.out.println(String.format(
+                "Finished computing distance between %d entities", distanceMatrix
+                        .getObjects().size()));
+        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
+        for (OWLEntity object : distanceMatrix.getObjects()) {
+            newObjects.add(Collections.singletonList(object));
+        }
+        Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
+            @Override
+            public double getDistance(final Collection<? extends OWLEntity> a,
+                    final Collection<? extends OWLEntity> b) {
+                return distance.getDistance(a.iterator().next(), b.iterator().next());
+            }
+        };
+        PairFilter<Collection<? extends OWLEntity>> filter = DistanceThresholdBasedFilter
+                .build(new TableDistance<OWLEntity>(entities, distanceMatrix.getData()),
+                        1);
+        System.out.println("Building clustering matrix....");
+        ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
+                .build(distanceMatrix, new CentroidProximityMeasureFactory(), filter,
+                        PairFilterBasedComparator.build(filter, newObjects,
+                                singletonDistance));
+        System.out.println("Start clustering");
+        int i = 1;
+        clusteringMatrix = clusteringMatrix.reduce(filter);
+        while (clusteringMatrix.getMinimumDistancePair() != null
+                && filter.accept(clusteringMatrix.getMinimumDistancePair().getFirst(),
+                        clusteringMatrix.getMinimumDistancePair().getSecond())) {
+            clusteringMatrix = clusteringMatrix.agglomerate(filter);
+            Utility.printAgglomeration(clusteringMatrix, i);
+            i++;
+            if (clusteringMatrix.getMinimumDistancePair() != null) {
+                print(clusteringMatrix);
+            }
+        }
+        Set<Cluster<OWLEntity>> clusters = buildClusters(clusteringMatrix, distanceMatrix);
+        System.out.println(String.format(
+                "Finished clustering after %d agglomerations no of clusters %d", i,
+                clusters.size()));
+        Utils.save(clusters, manager, outfile);
+    }
 
-	@Override
-	public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
-		System.out.println(String.format("Next Pair %s %s %f",
-				render((Collection<? extends OWLEntity>) clusteringMatrix
-						.getMinimumDistancePair().getFirst()),
-				render((Collection<? extends OWLEntity>) clusteringMatrix
-						.getMinimumDistancePair().getSecond()),
-				clusteringMatrix.getMinimumDistance()));
-	}
+    @Override
+    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+        System.out.println(String.format("Next Pair %s %s %f",
+                render((Collection<? extends OWLEntity>) clusteringMatrix
+                        .getMinimumDistancePair().getFirst()),
+                render((Collection<? extends OWLEntity>) clusteringMatrix
+                        .getMinimumDistancePair().getSecond()), clusteringMatrix
+                        .getMinimumDistance()));
+    }
 
-	private static String render(final Collection<? extends OWLEntity> cluster) {
-		Formatter out = new Formatter();
-		Iterator<? extends OWLEntity> iterator = cluster.iterator();
-		while (iterator.hasNext()) {
-			ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-			OWLEntity owlEntity = iterator.next();
-			out.format("%s%s", renderer.render(owlEntity),
-					iterator.hasNext() ? ", " : "");
-		}
-		return out.toString();
-	}
+    private static String render(final Collection<? extends OWLEntity> cluster) {
+        Formatter out = new Formatter();
+        Iterator<? extends OWLEntity> iterator = cluster.iterator();
+        while (iterator.hasNext()) {
+            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
+            OWLEntity owlEntity = iterator.next();
+            out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
+        }
+        return out.toString();
+    }
 
-	private static Set<Cluster<OWLEntity>> buildClusters(
-			final ClusteringProximityMatrix<OWLEntity> clusteringMatrix,
-			final ProximityMatrix<OWLEntity> distanceMatrix) {
-		Collection<Collection<? extends OWLEntity>> objects = clusteringMatrix
-				.getObjects();
-		Set<Cluster<OWLEntity>> toReturn = new HashSet<Cluster<OWLEntity>>(
-				objects.size());
-		for (Collection<? extends OWLEntity> collection : objects) {
-			toReturn.add(new SimpleCluster<OWLEntity>(collection,
-					distanceMatrix));
-		}
-		return toReturn;
-	}
+    private static Set<Cluster<OWLEntity>> buildClusters(
+            final ClusteringProximityMatrix<OWLEntity> clusteringMatrix,
+            final ProximityMatrix<OWLEntity> distanceMatrix) {
+        Collection<Collection<? extends OWLEntity>> objects = clusteringMatrix
+                .getObjects();
+        Set<Cluster<OWLEntity>> toReturn = new HashSet<Cluster<OWLEntity>>(objects.size());
+        for (Collection<? extends OWLEntity> collection : objects) {
+            toReturn.add(new SimpleCluster<OWLEntity>(collection, distanceMatrix));
+        }
+        return toReturn;
+    }
 }

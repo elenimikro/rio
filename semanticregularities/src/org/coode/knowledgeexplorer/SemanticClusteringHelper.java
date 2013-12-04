@@ -23,46 +23,38 @@ import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 
 public class SemanticClusteringHelper {
-	public static ClusterDecompositionModel<OWLEntity> getSemanticPopularityClusterModel(
-			OWLOntology o) throws Exception {
+    public static ClusterDecompositionModel<OWLEntity> getSemanticPopularityClusterModel(
+            OWLOntology o) throws Exception {
+        OWLOntologyManager m = o.getOWLOntologyManager();
+        KnowledgeExplorer ke = runFactplusplusKnowledgeExplorerReasoner(o);
+        Distance<OWLEntity> distance = DistanceCreator
+                .createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(o, ke);
+        ClusterCreator clusterer = new ClusterCreator();
+        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
+            public int compare(final OWLEntity o1, final OWLEntity o2) {
+                return shortFormProvider.getShortForm(o1).compareTo(
+                        shortFormProvider.getShortForm(o2));
+            }
+        });
+        entities.addAll(ke.getEntities());
+        Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(distance, entities);
+        ClusterDecompositionModel<OWLEntity> model = clusterer
+                .buildKnowledgeExplorerClusterDecompositionModel(o, ke.getAxioms(), m,
+                        clusters);
+        ClusteringHelper.extractGeneralisationMap(model);
+        return model;
+    }
 
-		OWLOntologyManager m = o.getOWLOntologyManager();
-		KnowledgeExplorer ke = runFactplusplusKnowledgeExplorerReasoner(o);
-		Distance<OWLEntity> distance = DistanceCreator
-				.createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(o, ke);
-		ClusterCreator clusterer = new ClusterCreator();
-
-		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
-				new Comparator<OWLEntity>() {
-					@Override
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
-						return shortFormProvider.getShortForm(o1).compareTo(
-								shortFormProvider.getShortForm(o2));
-					}
-				});
-
-		entities.addAll(ke.getEntities());
-		Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
-				distance, entities);
-		ClusterDecompositionModel<OWLEntity> model = clusterer
-				.buildKnowledgeExplorerClusterDecompositionModel(o,
-						ke.getAxioms(), m, clusters);
-
-		ClusteringHelper.extractGeneralisationMap(model);
-		return model;
-	}
-
-	private static KnowledgeExplorer runFactplusplusKnowledgeExplorerReasoner(
-			OWLOntology o) {
-		OWLReasoner reasoner = new FaCTPlusPlusReasoner(o,
-				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-		reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
-				new OWLKnowledgeExplorationReasonerWrapper(
-						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
-								BufferingMode.NON_BUFFERING)));
-		return ke;
-	}
+    private static KnowledgeExplorer runFactplusplusKnowledgeExplorerReasoner(
+            OWLOntology o) {
+        OWLReasoner reasoner = new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
+                BufferingMode.NON_BUFFERING);
+        reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
+                new OWLKnowledgeExplorationReasonerWrapper(new FaCTPlusPlusReasoner(o,
+                        new SimpleConfiguration(), BufferingMode.NON_BUFFERING)));
+        return ke;
+    }
 }
