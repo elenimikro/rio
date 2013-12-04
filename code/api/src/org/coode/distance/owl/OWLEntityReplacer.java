@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.coode.distance.ReplacementStrategy;
+import org.coode.oppl.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.*;
 
 public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {

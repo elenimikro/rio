@@ -16,6 +16,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.coode.basetest.TestHelper;
+import org.coode.oppl.utils.Position;
 import org.coode.owl.structural.difference.IncomparableObjectsStructuralDifferenceReport;
 import org.coode.owl.structural.difference.NoDifferenceStructuralDifferenceReport;
 import org.coode.owl.structural.difference.SomeDifferenceStructuralDifferenceReport;
@@ -23,7 +24,6 @@ import org.coode.owl.structural.difference.StructuralDifference;
 import org.coode.owl.structural.difference.StructuralDifferenceReport;
 import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorAdapter;
 import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorExAdapter;
-import org.coode.owl.structural.position.Position;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.IRI;
