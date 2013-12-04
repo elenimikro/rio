@@ -23,10 +23,13 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
+/** @author Eleni Mikroyannidi */
 public class OWLNamedIndividualLeastCommonSubsumer extends
         LeastCommonSubsumer<OWLNamedIndividual, OWLClass> {
     private final OWLClassLeastCommonSubsumer delegate;
 
+    /** @param axiomProvider
+     * @param dataFactory */
     public OWLNamedIndividualLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
             OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory.getOWLThing());

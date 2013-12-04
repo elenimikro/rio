@@ -30,12 +30,17 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author Eleni Mikroyannidi
+ * @param <O>
+ * @param <R> */
 public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObject> {
     private final OWLAxiomProvider axiomProvider;
     private final MultiMap<O, R> nodeParentIndex = new MultiMap<O, R>();
     private final R defaultRoot;
     private final Set<OWLEntity> signature = new HashSet<OWLEntity>();
 
+    /** @param axiomProvider
+     * @param defaultRoot */
     public LeastCommonSubsumer(final OWLAxiomProvider axiomProvider, final R defaultRoot) {
         if (axiomProvider == null) {
             throw new NullPointerException("The axiom provider cannot be null");

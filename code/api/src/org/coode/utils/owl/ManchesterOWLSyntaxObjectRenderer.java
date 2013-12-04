@@ -34,6 +34,8 @@ public class ManchesterOWLSyntaxObjectRenderer extends AbstractRenderer implemen
         OWLObjectVisitor {
     public static final int LINE_LENGTH = 70;
 
+    /** @param writer
+     * @param entityShortFormProvider */
     public ManchesterOWLSyntaxObjectRenderer(Writer writer,
             ShortFormProvider entityShortFormProvider) {
         super(writer, entityShortFormProvider);

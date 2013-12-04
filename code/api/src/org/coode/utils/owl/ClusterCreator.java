@@ -29,6 +29,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 
+/** @author Eleni Mikroyannidi */
 public class ClusterCreator {
     private ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix;
 

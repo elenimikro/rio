@@ -9,23 +9,21 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.AutoIRIMapper;
 
+/** @author Eleni Mikroyannidi */
 public class IOUtils {
-
-	public static void loadIRIMappers(final Collection<IRI> iris,
-			final OWLOntologyManager manager)
-			throws OWLOntologyCreationException {
-		for (IRI iri : iris) {
-			URI uri = iri.toURI();
-			System.out.println(uri);
-			if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
-				File file = new File(uri);
-				File parentFile = file.getParentFile();
-				if (parentFile.isDirectory()) {
-					manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
-				}
-			}
-			manager.loadOntology(iri);
-		}
-	}
-
+    public static void loadIRIMappers(final Collection<IRI> iris,
+            final OWLOntologyManager manager) throws OWLOntologyCreationException {
+        for (IRI iri : iris) {
+            URI uri = iri.toURI();
+            System.out.println(uri);
+            if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
+                File file = new File(uri);
+                File parentFile = file.getParentFile();
+                if (parentFile.isDirectory()) {
+                    manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
+                }
+            }
+            manager.loadOntology(iri);
+        }
+    }
 }
