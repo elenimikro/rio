@@ -34,6 +34,8 @@ public class OrPairFilter<O> extends BooleanExpressionFilter<O> {
 
     /** @param filters
      *            filters
+     * @param <P>
+     *            type
      * @return filter */
     public static <P> OrPairFilter<P> build(PairFilter<P>... filters) {
         return new OrPairFilter<P>(filters);

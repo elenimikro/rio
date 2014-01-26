@@ -209,7 +209,9 @@ public class ExperimentHelper {
      * @param f
      *            f
      * @param sortedClusters
-     *            sortedClusters */
+     *            sortedClusters
+     * @param <P>
+     *            type */
     public static <P> void printClusteringStats(PrintStream out, File f,
             Collection<Cluster<P>> sortedClusters) {
         try {

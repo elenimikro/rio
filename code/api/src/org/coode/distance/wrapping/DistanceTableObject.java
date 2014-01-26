@@ -61,6 +61,8 @@ public class DistanceTableObject<O> {
      *            distance
      * @param objects
      *            objects
+     * @param <P>
+     *            type
      * @return distance table */
     public static <P> Set<DistanceTableObject<P>> createDistanceTableObjectSet(
             Distance<P> distance, Collection<? extends P> objects) {

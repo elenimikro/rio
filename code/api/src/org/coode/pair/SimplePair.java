@@ -50,6 +50,8 @@ public class SimplePair<O> implements Pair<O> {
      *            object
      * @param anotherObject
      *            anotherObject
+     * @param <P>
+     *            type
      * @return pair */
     public static <P> SimplePair<P> build(P object, P anotherObject) {
         return new SimplePair<P>(object, anotherObject);

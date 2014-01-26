@@ -126,6 +126,8 @@ public class Utility {
 
     /** @param wrappedObjects
      *            wrappedObjects
+     * @param <P>
+     *            type
      * @return unwrapped objects */
     public static <P> Set<P> unwrapObjects(
             Collection<? extends DistanceTableObject<P>> wrappedObjects) {
@@ -136,6 +138,8 @@ public class Utility {
      *            wrappedObjects
      * @param equivalenceClass
      *            equivalenceClass
+     * @param <P>
+     *            type
      * @return unwrapped objects */
     public static <P> Set<P> unwrapObjects(
             Collection<? extends DistanceTableObject<P>> wrappedObjects,

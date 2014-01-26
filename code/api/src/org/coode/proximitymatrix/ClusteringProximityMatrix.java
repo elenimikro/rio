@@ -42,6 +42,8 @@ public class ClusteringProximityMatrix<O> implements
      *            filter
      * @param comparator
      *            comparator
+     * @param <P>
+     *            type
      * @return clustering proximity matrix */
     public static <P> ClusteringProximityMatrix<P> build(
             ProximityMatrix<P> initialMatrix,

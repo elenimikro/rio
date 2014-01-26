@@ -165,7 +165,9 @@ public class ExperimentUtils {
      * @param o
      *            o
      * @param txtFile
-     *            txtFile */
+     *            txtFile
+     * @param <C>
+     *            type */
     public static <C extends Set<OWLEntity>> void saveToTXT(
             RegularitiesDecompositionModel<C, OWLEntity> model, OWLOntology o,
             File txtFile) {
@@ -192,7 +194,9 @@ public class ExperimentUtils {
      * @param map
      *            map
      * @param renderer
-     *            renderer */
+     *            renderer
+     * @param <C>
+     *            type */
     public static <C extends Set<OWLEntity>> void writeClusters(List<C> list,
             PrintStream out, MultiMap<OWLAxiom, OWLAxiomInstantiation> map,
             ManchesterSyntaxRenderer renderer) {
@@ -235,6 +239,8 @@ public class ExperimentUtils {
      *            constraintSystem
      * @param renderer
      *            renderer
+     * @param <O>
+     *            type
      * @return generalization
      * @throws OPPLException
      *             OPPLException */

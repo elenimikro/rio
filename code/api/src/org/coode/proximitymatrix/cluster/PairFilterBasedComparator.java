@@ -91,6 +91,8 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
      *            objects
      * @param distance
      *            distance
+     * @param <P>
+     *            type
      * @return comparator */
     public static <P> PairFilterBasedComparator<P> build(PairFilter<P> filter,
             Collection<? extends P> objects, Distance<P> distance) {

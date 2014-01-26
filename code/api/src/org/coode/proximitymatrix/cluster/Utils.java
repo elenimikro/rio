@@ -264,6 +264,8 @@ public class Utils {
      *            ontologies
      * @param constraintSystem
      *            constraintSystem
+     * @param <O>
+     *            type
      * @return generalisation
      * @throws OPPLException
      *             OPPLException */
@@ -374,7 +376,9 @@ public class Utils {
     }
 
     /** @param cluster
-     *            cluster */
+     *            cluster
+     * @param <O>
+     *            type */
     public static <O extends OWLObject> void
             checkForPuns(Collection<? extends O> cluster) {
         // String name = cluster.iterator().next().getClass().getName();
@@ -395,6 +399,8 @@ public class Utils {
      *            renderer
      * @param generalisation
      *            generalisation
+     * @param <O>
+     *            type
      * @return document
      * @throws ParserConfigurationException
      *             ParserConfigurationException */
@@ -440,48 +446,6 @@ public class Utils {
             }
             clusterNode.appendChild(generalisations);
         }
-        // Element historyElement = document.createElement("History");
-        // Iterator<HistoryItem<Collection<? extends O>>> iterator =
-        // history.iterator();
-        // while (iterator.hasNext()) {
-        // HistoryItem<Collection<? extends O>> historyItem = iterator.next();
-        // Element historyItemElement = document.createElement("HistoryItem");
-        // Element mergedPairElement = document.createElement("MergedPair");
-        // Collection<? extends O> first = historyItem.getPair().getFirst();
-        // Element firstElement = document.createElement("First");
-        // for (O o : first) {
-        // Element itemNode = document.createElement("PairItem");
-        // itemNode.setAttribute("iri", o.getIRI().toString());
-        // firstElement.appendChild(itemNode);
-        // }
-        // mergedPairElement.appendChild(firstElement);
-        // Collection<? extends O> second = historyItem.getPair().getSecond();
-        // Element secondElement = document.createElement("Second");
-        // for (O o : second) {
-        // Element itemNode = document.createElement("PairItem");
-        // itemNode.setAttribute("iri", o.getIRI().toString());
-        // secondElement.appendChild(itemNode);
-        // }
-        // mergedPairElement.appendChild(secondElement);
-        // historyItemElement.appendChild(mergedPairElement);
-        // Element historyItemClustersElement =
-        // document.createElement("HistoryItemClusters");
-        // Set<Collection<? extends O>> items = historyItem.getItems();
-        // for (Collection<? extends O> collection : items) {
-        // Element historyItemClusterElement =
-        // document.createElement("HistoryItemCluster");
-        // for (O o : collection) {
-        // Element historyItemClusterItem =
-        // document.createElement("HistoryItemClusterItem");
-        // historyItemClusterItem.setAttribute("iri", o.getIRI().toString());
-        // historyItemClusterElement.appendChild(historyItemClusterItem);
-        // }
-        // historyItemClustersElement.appendChild(historyItemClusterElement);
-        // }
-        // historyItemElement.appendChild(historyItemClustersElement);
-        // historyElement.appendChild(historyItemElement);
-        // }
-        // root.appendChild(historyElement);
         return document;
     }
 
@@ -947,6 +911,8 @@ public class Utils {
 
     /** @param model
      *            model
+     * @param <C>
+     *            type
      * @return generalisation map */
     public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation>
             extractGeneralisationMap(RegularitiesDecompositionModel<C, OWLEntity> model) {
@@ -1027,6 +993,8 @@ public class Utils {
      *            distanceMatrix
      * @param equivalenceClasses
      *            equivalenceClasses
+     * @param <P>
+     *            type
      * @return clusters */
     public static <P> Set<Cluster<P>> buildClusters(
             ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
@@ -1065,6 +1033,10 @@ public class Utils {
      *            model
      * @param file
      *            file
+     * @param <P>
+     *            type
+     * @param <C>
+     *            set
      * @throws ParserConfigurationException
      *             ParserConfigurationException
      * @throws TransformerFactoryConfigurationError
@@ -1141,7 +1113,9 @@ public class Utils {
      * @param manager
      *            manager
      * @param file
-     *            file */
+     *            file
+     * @param <P>
+     *            type */
     public static <P extends OWLEntity> void save(
             Collection<? extends Cluster<P>> _clusters, OWLOntologyManager manager,
             File file) {
@@ -1184,7 +1158,9 @@ public class Utils {
     /** @param file
      *            file
      * @param sortedClusters
-     *            sortedClusters */
+     *            sortedClusters
+     * @param <P>
+     *            type */
     public static <P> void printExtraStats(File file,
             Collection<Cluster<P>> sortedClusters) {
         try {
@@ -1225,6 +1201,8 @@ public class Utils {
      *            ontologies
      * @param generalisation
      *            generalisation
+     * @param <P>
+     *            type
      * @return cluster decomposition model */
     public static <P extends OWLEntity> ClusterDecompositionModel<P>
             toClusterDecompositionModel(Collection<? extends Cluster<P>> _clusters,
@@ -1248,6 +1226,8 @@ public class Utils {
      *            axioms
      * @param generalisation
      *            generalisation
+     * @param <P>
+     *            type
      * @return cluster decomposition model */
     public static <P extends OWLEntity> ClusterDecompositionModel<P>
             toKnowledgeExplorerClusterDecompositionModel(

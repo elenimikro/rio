@@ -21,6 +21,8 @@ public class Utils {
      *            objects
      * @param distance
      *            distance
+     * @param <P>
+     *            type
      * @return equivalence classes */
     public static <P> MultiMap<P, P> getEquivalenceClasses(
             Collection<? extends P> objects, Distance<P> distance) {

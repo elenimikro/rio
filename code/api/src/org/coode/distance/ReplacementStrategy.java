@@ -16,6 +16,8 @@ import org.semanticweb.owlapi.model.OWLObject;
 public interface ReplacementStrategy {
     /** @param owlObject
      *            owlObject
+     * @param <O>
+     *            type
      * @return replaced object */
     <O extends OWLObject> O replace(O owlObject);
 }

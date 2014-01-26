@@ -225,6 +225,8 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      *            axiomProvider
      * @param dataFactory
      *            dataFactory
+     * @param <T>
+     *            type
      * @return lcs */
     @SuppressWarnings("unchecked")
     public static <T extends OWLObject> LeastCommonSubsumer<T, ?> build(

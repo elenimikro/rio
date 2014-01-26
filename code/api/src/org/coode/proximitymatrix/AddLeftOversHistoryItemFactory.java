@@ -45,6 +45,8 @@ public class AddLeftOversHistoryItemFactory<O> implements HistoryItemFactory<O> 
 
     /** @param leftOvers
      *            leftOvers
+     * @param <P>
+     *            type
      * @return leftovers */
     public static <P> AddLeftOversHistoryItemFactory<P> build(
             Collection<? extends P> leftOvers) {

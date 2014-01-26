@@ -145,6 +145,8 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
 
     /** @param renderer
      *            renderer
+     * @param <P>
+     *            type
      * @return cluster axiom panel */
     public static <P extends OWLEntity> ClusterAxiomPanel<P> build(
             final OWLObjectRenderer renderer) {

@@ -78,7 +78,9 @@ public abstract class RelevancePolicyPanel extends JPanel {
     protected abstract Object render(Set<?> members);
 
     /** @param ranking
-     *            ranking */
+     *            ranking
+     * @param <P>
+     *            type */
     public <P> void reset(Ranking<OWLEntity> ranking) {
         List<? extends RankingSlot<OWLEntity>> list = ranking.getSortedRanking();
         DefaultListModel<RankingSlot<OWLEntity>> model = new DefaultListModel<RankingSlot<OWLEntity>>();

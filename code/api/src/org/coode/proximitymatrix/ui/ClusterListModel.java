@@ -60,6 +60,8 @@ public class ClusterListModel<O> implements ListModel<Collection<? extends O>> {
 
     /** @param clusters
      *            clusters
+     * @param <P>
+     *            type
      * @return cluster list model */
     public static <P> ClusterListModel<P> build(
             Collection<? extends Collection<? extends P>> clusters) {

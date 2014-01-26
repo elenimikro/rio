@@ -17,7 +17,8 @@ public class SnomedVersionComparisonTest {
         // TODO Auto-generated constructor stub
     }
 
-    /** @param args */
+    /** @param args
+     *            args */
     public static void main(String[] args) {
         String snomed_2010 = "snomed/chronic_inferred_usage_2010.owl";
         String snomed_2013 = "snomed/chronic_inferred_usage_2013.owl";

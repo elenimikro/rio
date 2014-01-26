@@ -22,6 +22,8 @@ public interface GeneralisationTreeNode<O> extends TreeNode<O> {
 
     /** @param visitor
      *            visitor
+     * @param <P>
+     *            type
      * @return visitor value */
     <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor);
 }

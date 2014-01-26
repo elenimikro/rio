@@ -203,8 +203,7 @@ public class History<O> implements Cloneable {
         return this.list.subList(fromIndex, toIndex);
     }
 
-    /** @return as array
-     * @see java.util.List#toArray() */
+    /** @return as array */
     public Object[] toArray() {
         return this.list.toArray();
     }
@@ -213,8 +212,7 @@ public class History<O> implements Cloneable {
      *            type
      * @param a
      *            a
-     * @return as array
-     * @see java.util.List#toArray(T[]) */
+     * @return as array */
     public <T> T[] toArray(T[] a) {
         return this.list.toArray(a);
     }

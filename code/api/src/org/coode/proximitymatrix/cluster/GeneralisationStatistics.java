@@ -145,6 +145,10 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
 
     /** @param model
      *            model
+     * @param <P>
+     *            type
+     * @param <C>
+     *            set of type
      * @return generalisation stats */
     public static <C extends Set<P>, P extends OWLEntity> GeneralisationStatistics<C, P>
             buildStatistics(RegularitiesDecompositionModel<C, P> model) {

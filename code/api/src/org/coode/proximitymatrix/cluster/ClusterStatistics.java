@@ -142,6 +142,8 @@ public class ClusterStatistics<O> {
 
     /** @param cluster
      *            cluster
+     * @param <P>
+     *            type
      * @return ststistics */
     public static <P> ClusterStatistics<P> buildStatistics(Cluster<P> cluster) {
         return new ClusterStatistics<P>(cluster);

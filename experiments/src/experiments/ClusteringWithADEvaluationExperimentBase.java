@@ -88,6 +88,8 @@ public class ClusteringWithADEvaluationExperimentBase {
      *            out
      * @param sortedClusters
      *            sortedClusters
+     * @param <P>
+     *            type
      * @return clustering stats */
     public static <P> Collection<? extends SimpleMetric<?>> getClusteringStats(
             PrintStream out, Collection<Cluster<P>> sortedClusters) {

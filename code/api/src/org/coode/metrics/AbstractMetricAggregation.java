@@ -51,6 +51,10 @@ public abstract class AbstractMetricAggregation<O> implements Metric<O> {
 
     /** @param metrics
      *            metrics
+     * @param <S>
+     *            type
+     * @param <T>
+     *            value
      * @return sum */
     public static <S, T extends Number> Metric<S> getSum(
             Collection<? extends Metric<S>> metrics) {
@@ -68,6 +72,10 @@ public abstract class AbstractMetricAggregation<O> implements Metric<O> {
 
     /** @param metrics
      *            metrics
+     * @param <S>
+     *            type
+     * @param <T>
+     *            value
      * @return product */
     public static <S, T extends Number> Metric<S> getProduct(
             Collection<? extends Metric<S>> metrics) {

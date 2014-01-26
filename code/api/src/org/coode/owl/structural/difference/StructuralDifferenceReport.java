@@ -25,6 +25,8 @@ public interface StructuralDifferenceReport {
 
     /** @param visitor
      *            visitor
+     * @param <O>
+     *            type
      * @return visitor value */
     <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor);
 }

@@ -118,6 +118,8 @@ public class ClusteringHelper {
 
     /** @param model
      *            model
+     * @param <C>
+     *            type
      * @return generalisation map */
     public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation>
             extractGeneralisationMap(RegularitiesDecompositionModel<C, OWLEntity> model) {

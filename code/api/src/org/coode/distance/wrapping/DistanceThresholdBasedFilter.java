@@ -84,6 +84,8 @@ public class DistanceThresholdBasedFilter<O> implements
      *            distance
      * @param threshold
      *            threshold
+     * @param <P>
+     *            type
      * @return distance filter */
     public static <P> DistanceThresholdBasedFilter<P> build(SparseMatrix distance,
             double threshold) {

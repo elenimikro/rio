@@ -41,6 +41,8 @@ public class MetricComparator<O> implements Comparator<O> {
 
     /** @param metric
      *            metric
+     * @param <R>
+     *            type
      * @return metric comparator */
     public static <R> MetricComparator<R> build(Metric<R> metric) {
         return new MetricComparator<R>(metric);

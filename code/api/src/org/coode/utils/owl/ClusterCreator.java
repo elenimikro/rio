@@ -37,6 +37,8 @@ public class ClusterCreator {
      *            distance
      * @param entities
      *            entities
+     * @param <P>
+     *            type
      * @return clusters */
     public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(
             Distance<OWLEntity> distance, Set<OWLEntity> entities) {
@@ -140,6 +142,8 @@ public class ClusterCreator {
      * @param clusters
      *            clusters
      * @return cluster decomposition model
+     * @param <P>
+     *            type
      * @throws OPPLException
      *             OPPLException */
     public
@@ -168,6 +172,8 @@ public class ClusterCreator {
      * @param clusters
      *            clusters
      * @return cluster decomposition model
+     * @param <P>
+     *            type
      * @throws OPPLException
      *             OPPLException */
     public <P extends OWLEntity> ClusterDecompositionModel<P>
@@ -188,6 +194,8 @@ public class ClusterCreator {
      *            distance
      * @param entities
      *            entities
+     * @param <P>
+     *            type
      * @return clusters */
     public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateZeros(
             Distance<OWLEntity> distance, Set<OWLEntity> entities) {

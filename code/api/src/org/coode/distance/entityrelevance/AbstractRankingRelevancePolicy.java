@@ -134,6 +134,8 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
 
     /** @param ranking
      *            ranking
+     * @param <T>
+     *            type
      * @return ranking relevance policy */
     public static <T> AbstractRankingRelevancePolicy<T>
             getAbstractRankingRelevancePolicy(AbstractRanking<T> ranking) {
