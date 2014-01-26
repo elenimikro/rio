@@ -30,8 +30,8 @@ public class OWLObjectPropertyLeastCommonSubsumer extends
      *            axiomProvider
      * @param dataFactory
      *            dataFactory */
-    public OWLObjectPropertyLeastCommonSubsumer(final OWLAxiomProvider axiomProvider,
-            final OWLDataFactory dataFactory) {
+    public OWLObjectPropertyLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
+            OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory.getOWLTopObjectProperty());
     }
 
@@ -40,7 +40,7 @@ public class OWLObjectPropertyLeastCommonSubsumer extends
         for (OWLAxiom ax : getAxiomProvider()) {
             ax.accept(new OWLAxiomVisitorAdapter() {
                 @Override
-                public void visit(final OWLSubObjectPropertyOfAxiom axiom) {
+                public void visit(OWLSubObjectPropertyOfAxiom axiom) {
                     if (!axiom.getSubProperty().isAnonymous()
                             && !axiom.getSuperProperty().isAnonymous()) {
                         OWLObjectPropertyLeastCommonSubsumer.this.addParent(axiom
@@ -53,7 +53,7 @@ public class OWLObjectPropertyLeastCommonSubsumer extends
     }
 
     @Override
-    public OWLObjectProperty get(final Collection<? extends OWLObjectProperty> c) {
+    public OWLObjectProperty get(Collection<? extends OWLObjectProperty> c) {
         List<OWLObjectProperty> results = new ArrayList<OWLObjectProperty>(c);
         while (results.size() > 1) {
             OWLObject obj = results.get(0);

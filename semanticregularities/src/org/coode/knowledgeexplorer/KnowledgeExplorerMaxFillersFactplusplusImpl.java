@@ -195,14 +195,14 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
                     prop, properyFiller);
             OWLSubClassOfAxiom existentialRestriction = dataFactory
                     .getOWLSubClassOfAxiom(c, somePClass);
-            final boolean containsEntity = reasoner.isEntailed(existentialRestriction);
+            boolean containsEntity = reasoner.isEntailed(existentialRestriction);
             if (containsEntity) {
                 axioms.add(existentialRestriction);
             }
             // equivalent
             OWLEquivalentClassesAxiom equivalentRestr = dataFactory
                     .getOWLEquivalentClassesAxiom(c, somePClass);
-            final boolean containsEntityEq1 = reasoner.isEntailed(equivalentRestr);
+            boolean containsEntityEq1 = reasoner.isEntailed(equivalentRestr);
             if (containsEntityEq1) {
                 axioms.add(equivalentRestr);
             }
@@ -211,14 +211,14 @@ public class KnowledgeExplorerMaxFillersFactplusplusImpl implements KnowledgeExp
                         prop, properyFiller);
                 OWLSubClassOfAxiom universalRestriction = dataFactory
                         .getOWLSubClassOfAxiom(c, allPClass);
-                final boolean containsEntity2 = reasoner.isEntailed(universalRestriction);
+                boolean containsEntity2 = reasoner.isEntailed(universalRestriction);
                 if (containsEntity2) {
                     axioms.add(universalRestriction);
                 }
                 // equivalent classes
                 OWLEquivalentClassesAxiom equivUniversalRestriction = dataFactory
                         .getOWLEquivalentClassesAxiom(c, allPClass);
-                final boolean containsEntityEq2 = reasoner
+                boolean containsEntityEq2 = reasoner
                         .isEntailed(equivUniversalRestriction);
                 if (containsEntityEq2) {
                     axioms.add(equivUniversalRestriction);

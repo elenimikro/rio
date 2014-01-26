@@ -28,7 +28,7 @@ public class ClusterStatistics<O> {
 
     /** @param cluster
      *            cluster */
-    private ClusterStatistics(final Cluster<O> cluster) {
+    private ClusterStatistics(Cluster<O> cluster) {
         if (cluster == null) {
             throw new NullPointerException("The cluster cannot be null");
         }
@@ -143,7 +143,7 @@ public class ClusterStatistics<O> {
     /** @param cluster
      *            cluster
      * @return ststistics */
-    public static <P> ClusterStatistics<P> buildStatistics(final Cluster<P> cluster) {
+    public static <P> ClusterStatistics<P> buildStatistics(Cluster<P> cluster) {
         return new ClusterStatistics<P>(cluster);
     }
 }

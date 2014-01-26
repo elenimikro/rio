@@ -24,7 +24,7 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
         implements OWLEntityProvider {
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             clear();
             OntologyManagerBasedOWLEntityProvider.this.loadDelegate();
@@ -33,9 +33,8 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
 
     /** @param ontologyManager
      *            ontologyManager */
-    public OntologyManagerBasedOWLEntityProvider(final OWLOntologyManager ontologyManager) {
+    public OntologyManagerBasedOWLEntityProvider(OWLOntologyManager ontologyManager) {
         super(ontologyManager);
-        // getOntologyManager().addOntologyChangeListener(listener);
         loadDelegate();
     }
 
@@ -47,7 +46,5 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
     }
 
     /** dispose */
-    public void dispose() {
-        getOntologyManager().removeOntologyChangeListener(listener);
-    }
+    public void dispose() {}
 }

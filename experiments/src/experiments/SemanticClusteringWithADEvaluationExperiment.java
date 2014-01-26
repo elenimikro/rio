@@ -207,8 +207,6 @@ public class SemanticClusteringWithADEvaluationExperiment extends
      *            ke
      * @return signature */
     public static Set<OWLEntity> getSignatureWithoutProperties(KnowledgeExplorer ke) {
-        // final SimpleShortFormProvider shortFormProvider = new
-        // SimpleShortFormProvider();
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
         // exclude all properties
         for (OWLEntity e : ke.getEntities()) {

@@ -30,8 +30,8 @@ public class AtomicDecompositionRanking extends AbstractRanking<OWLEntity> {
      *            ontologies
      * @param map
      *            map */
-    public AtomicDecompositionRanking(final Set<OWLEntity> objects,
-            final Collection<OWLOntology> ontologies, final OWLAtomicDecompositionMap map) {
+    public AtomicDecompositionRanking(Set<OWLEntity> objects,
+            Collection<OWLOntology> ontologies, OWLAtomicDecompositionMap map) {
         super(new AtomicDecompositionMetric(ontologies, map), objects, OWLEntity.class);
     }
 
@@ -45,9 +45,8 @@ public class AtomicDecompositionRanking extends AbstractRanking<OWLEntity> {
      * @param map
      *            map
      * @return atomic decomposition ranking */
-    public static AtomicDecompositionRanking
-            buildRanking(final Collection<OWLOntology> ontologies,
-                    final OWLAtomicDecompositionMap map) {
+    public static AtomicDecompositionRanking buildRanking(
+            Collection<OWLOntology> ontologies, OWLAtomicDecompositionMap map) {
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
         for (OWLOntology owlOntology : ontologies) {
             entities.addAll(owlOntology.getSignature());

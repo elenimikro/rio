@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -32,6 +31,7 @@ import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -40,13 +40,11 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author eleni */
 public abstract class AgglomeratorBase implements Agglomerator {
     @Override
-    public void checkArgumentsAndRun(final String[] args)
-            throws OWLOntologyCreationException {
+    public void checkArgumentsAndRun(String[] args) throws OWLOntologyCreationException {
         if (args.length >= 2) {
             List<IRI> iris = new ArrayList<IRI>(args.length);
             File outfile = new File(args[0]);
@@ -67,20 +65,12 @@ public abstract class AgglomeratorBase implements Agglomerator {
     }
 
     @Override
-    public void run(final File outfile, final List<IRI> iris)
-            throws OWLOntologyCreationException {
+    public void run(File outfile, List<IRI> iris) throws OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         IOUtils.loadIRIMappers(iris, manager);
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         // Set the policy and the distance
-        final Distance<OWLEntity> distance = getDistance(manager);
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Distance<OWLEntity> distance = getDistance(manager);
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology ontology : manager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
@@ -99,8 +89,8 @@ public abstract class AgglomeratorBase implements Agglomerator {
                         distanceMatrix.getObjects()),
                 new Distance<DistanceTableObject<OWLEntity>>() {
                     @Override
-                    public double getDistance(final DistanceTableObject<OWLEntity> a,
-                            final DistanceTableObject<OWLEntity> b) {
+                    public double getDistance(DistanceTableObject<OWLEntity> a,
+                            DistanceTableObject<OWLEntity> b) {
                         return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
                     }
                 });
@@ -111,8 +101,8 @@ public abstract class AgglomeratorBase implements Agglomerator {
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
             @Override
             public double getDistance(
-                    final Collection<? extends DistanceTableObject<OWLEntity>> a,
-                    final Collection<? extends DistanceTableObject<OWLEntity>> b) {
+                    Collection<? extends DistanceTableObject<OWLEntity>> a,
+                    Collection<? extends DistanceTableObject<OWLEntity>> b) {
                 return wrappedMatrix
                         .getDistance(a.iterator().next(), b.iterator().next());
             }

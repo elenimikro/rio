@@ -33,7 +33,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
 
     /** @param assignmentMap
      *            assignmentMap */
-    public AssignmentMapBasedOWLEntityProvider(final AssignmentMap assignmentMap) {
+    public AssignmentMapBasedOWLEntityProvider(AssignmentMap assignmentMap) {
         if (assignmentMap == null) {
             throw new NullPointerException("The assignment map cannot be null");
         }
@@ -48,31 +48,31 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
             for (OWLObject owlObject : set) {
                 owlObject.accept(new OWLObjectVisitorAdapter() {
                     @Override
-                    public void visit(final OWLClass desc) {
+                    public void visit(OWLClass desc) {
                         addEntity(desc);
                     }
 
                     @Override
-                    public void visit(final OWLAnnotationProperty property) {
+                    public void visit(OWLAnnotationProperty property) {
                         addEntity(property);
                     }
 
                     @Override
-                    public void visit(final OWLDataProperty property) {
+                    public void visit(OWLDataProperty property) {
                         addEntity(property);
                     }
 
                     @Override
-                    public void visit(final OWLObjectProperty property) {
+                    public void visit(OWLObjectProperty property) {
                         addEntity(property);
                     }
 
                     @Override
-                    public void visit(final OWLNamedIndividual individual) {
+                    public void visit(OWLNamedIndividual individual) {
                         addEntity(individual);
                     }
 
-                    private void addEntity(final OWLEntity desc) {
+                    private void addEntity(OWLEntity desc) {
                         delegate.add(desc);
                     }
                 });
@@ -81,12 +81,12 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     }
 
     @Override
-    public boolean add(final OWLEntity e) {
+    public boolean add(OWLEntity e) {
         return delegate.add(e);
     }
 
     @Override
-    public boolean addAll(final Collection<? extends OWLEntity> c) {
+    public boolean addAll(Collection<? extends OWLEntity> c) {
         return delegate.addAll(c);
     }
 
@@ -96,17 +96,17 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     }
 
     @Override
-    public boolean contains(final Object o) {
+    public boolean contains(Object o) {
         return delegate.contains(o);
     }
 
     @Override
-    public boolean containsAll(final Collection<?> c) {
+    public boolean containsAll(Collection<?> c) {
         return delegate.containsAll(c);
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         return delegate.equals(o);
     }
 
@@ -126,17 +126,17 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     }
 
     @Override
-    public boolean remove(final Object o) {
+    public boolean remove(Object o) {
         return delegate.remove(o);
     }
 
     @Override
-    public boolean removeAll(final Collection<?> c) {
+    public boolean removeAll(Collection<?> c) {
         return delegate.removeAll(c);
     }
 
     @Override
-    public boolean retainAll(final Collection<?> c) {
+    public boolean retainAll(Collection<?> c) {
         return delegate.retainAll(c);
     }
 
@@ -151,7 +151,7 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     }
 
     @Override
-    public <T> T[] toArray(final T[] a) {
+    public <T> T[] toArray(T[] a) {
         return delegate.toArray(a);
     }
 

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +22,7 @@ import org.coode.proximitymatrix.cluster.ClusterStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisationStatistics;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.SimpleMetric;
 import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
@@ -36,7 +36,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author eleni */
 public class ExperimentHelper {
@@ -93,14 +92,7 @@ public class ExperimentHelper {
     private static Set<Cluster<OWLEntity>> runClustering(Distance<OWLEntity> distance,
             Set<OWLEntity> clusteringSignature, OWLOntologyManager m,
             ClusterCreator clusterCreator) {
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         if (clusteringSignature == null || clusteringSignature.isEmpty()) {
             for (OWLOntology ontology : m.getOntologies()) {
                 entities.addAll(ontology.getSignature());
@@ -113,19 +105,6 @@ public class ExperimentHelper {
         return clusters;
     }
 
-    // public static ClusterDecompositionModel<OWLEntity>
-    // startSyntacticClustering(
-    // OWLOntology o, Distance<OWLEntity> distance, Set<OWLEntity> entities)
-    // throws OPPLException, ParserConfigurationException {
-    //
-    // ClusterCreator clusterer = new ClusterCreator();
-    // Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(o,
-    // distance, entities);
-    // ClusterDecompositionModel<OWLEntity> model = clusterer
-    // .buildClusterDecompositionModel(o, o.getOWLOntologyManager(),
-    // clusters);
-    // return model;
-    // }
     /** @param model
      *            model
      * @return clustering metrics */

@@ -51,15 +51,14 @@ public abstract class DistanceTestCase {
     }
 
     @Test
-    protected void properTest(final AbstractAxiomBasedDistance distance,
-            final OWLEntity... entities) {
+    protected void properTest(AbstractAxiomBasedDistance distance, OWLEntity... entities) {
         for (OWLEntity c : entities) {
             System.out.println(c.toString());
             System.out.println(distance.getAxioms(c));
         }
         for (int i = 0; i < entities.length; i++) {
             for (int j = 0; j < entities.length; j++) {
-                final double d = distance.getDistance(entities[i], entities[j]);
+                double d = distance.getDistance(entities[i], entities[j]);
                 if (i == j) {
                     assertTrue(Double.compare(d, 0D) == 0);
                     assertTrue(Double.compare(
@@ -100,7 +99,7 @@ public abstract class DistanceTestCase {
         }
     }
 
-    protected OWLOntology getOntology(final File f) {
+    protected OWLOntology getOntology(File f) {
         ontologyManager = OWLManager.createOWLOntologyManager();
         try {
             return ontologyManager.loadOntologyFromOntologyDocument(f);
@@ -111,7 +110,7 @@ public abstract class DistanceTestCase {
         }
     }
 
-    protected OWLOntology getOntology(final String iri) {
+    protected OWLOntology getOntology(String iri) {
         ontologyManager = OWLManager.createOWLOntologyManager();
         try {
             return ontologyManager.loadOntology(IRI.create(iri));
@@ -122,8 +121,8 @@ public abstract class DistanceTestCase {
         }
     }
 
-    protected OWLClass[] getClasses(final String... strings) {
-        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+    protected OWLClass[] getClasses(String... strings) {
+        OWLDataFactory f = OWLManager.getOWLDataFactory();
         OWLClass[] toReturn = new OWLClass[strings.length];
         for (int i = 0; i < strings.length; i++) {
             toReturn[i] = f.getOWLClass(IRI.create(strings[i]));
@@ -131,8 +130,8 @@ public abstract class DistanceTestCase {
         return toReturn;
     }
 
-    protected OWLObjectProperty[] getObjectProperties(final String... strings) {
-        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+    protected OWLObjectProperty[] getObjectProperties(String... strings) {
+        OWLDataFactory f = OWLManager.getOWLDataFactory();
         OWLObjectProperty[] toReturn = new OWLObjectProperty[strings.length];
         for (int i = 0; i < strings.length; i++) {
             toReturn[i] = f.getOWLObjectProperty(IRI.create(strings[i]));
@@ -140,8 +139,8 @@ public abstract class DistanceTestCase {
         return toReturn;
     }
 
-    protected OWLDataProperty[] getDataProperties(final String... strings) {
-        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+    protected OWLDataProperty[] getDataProperties(String... strings) {
+        OWLDataFactory f = OWLManager.getOWLDataFactory();
         OWLDataProperty[] toReturn = new OWLDataProperty[strings.length];
         for (int i = 0; i < strings.length; i++) {
             toReturn[i] = f.getOWLDataProperty(IRI.create(strings[i]));
@@ -149,8 +148,8 @@ public abstract class DistanceTestCase {
         return toReturn;
     }
 
-    protected OWLNamedIndividual[] getNamedIndividuals(final String... strings) {
-        final OWLDataFactory f = OWLManager.getOWLDataFactory();
+    protected OWLNamedIndividual[] getNamedIndividuals(String... strings) {
+        OWLDataFactory f = OWLManager.getOWLDataFactory();
         OWLNamedIndividual[] toReturn = new OWLNamedIndividual[strings.length];
         for (int i = 0; i < strings.length; i++) {
             toReturn[i] = f.getOWLNamedIndividual(IRI.create(strings[i]));

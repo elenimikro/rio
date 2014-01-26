@@ -64,7 +64,7 @@ public class TestGeneralisation extends TestCase {
         }
 
         @Override
-        public Boolean visit(final OWLObjectUnionOf desc) {
+        public Boolean visit(OWLObjectUnionOf desc) {
             return true;
         }
     }
@@ -115,11 +115,11 @@ public class TestGeneralisation extends TestCase {
                     constraintSystem);
             boolean doIt = axiom.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
                 @Override
-                public Boolean visit(final OWLSubClassOfAxiom ax) {
+                public Boolean visit(OWLSubClassOfAxiom ax) {
                     boolean isRightSuperClass = ax.getSuperClass().accept(
                             new OWLObjectVisitorExAdapter<Boolean>(false) {
                                 @Override
-                                public Boolean visit(final OWLObjectAllValuesFrom desc) {
+                                public Boolean visit(OWLObjectAllValuesFrom desc) {
                                     return !desc.getProperty().isAnonymous()
                                             && desc.getFiller().accept(
                                                     new UnionFinder(false));
@@ -178,15 +178,15 @@ public class TestGeneralisation extends TestCase {
             variable.accept(new VariableVisitor() {
                 @Override
                 public <P extends OWLObject> void visit(
-                        final RegexpGeneratedVariable<P> regExpGenerated) {}
+                        RegexpGeneratedVariable<P> regExpGenerated) {}
 
                 @Override
-                public <P extends OWLObject> void visit(final GeneratedVariable<P> v) {
+                public <P extends OWLObject> void visit(GeneratedVariable<P> v) {
                     generatedVariables.add(v);
                 }
 
                 @Override
-                public <P extends OWLObject> void visit(final InputVariable<P> v) {
+                public <P extends OWLObject> void visit(InputVariable<P> v) {
                     inputVariables.add(v);
                 }
             });
@@ -275,7 +275,7 @@ public class TestGeneralisation extends TestCase {
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
         InputVariable<OWLClassExpression> x = constraintSystem.createVariable("?x",
                 VariableTypeFactory.getCLASSVariableType(), null);
-        final OWLDataFactory df = ontologyManager.getOWLDataFactory();
+        OWLDataFactory df = ontologyManager.getOWLDataFactory();
         OWLClass a = df.getOWLClass(IRI.create("blah#a"));
         OWLClass b = df.getOWLClass(IRI.create("blah#b"));
         aBindingNode.addAssignment(new Assignment(x, a));

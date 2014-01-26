@@ -24,32 +24,32 @@ public class Utils {
     private final static OWLObjectVisitorEx<Boolean> ENTITY_RECOGNISER = new OWLObjectVisitorExAdapter<Boolean>(
             false) {
         @Override
-        public Boolean visit(final OWLClass desc) {
+        public Boolean visit(OWLClass desc) {
             return true;
         }
 
         @Override
-        public Boolean visit(final OWLAnnotationProperty property) {
+        public Boolean visit(OWLAnnotationProperty property) {
             return true;
         }
 
         @Override
-        public Boolean visit(final OWLDataProperty property) {
+        public Boolean visit(OWLDataProperty property) {
             return true;
         }
 
         @Override
-        public Boolean visit(final OWLObjectProperty property) {
+        public Boolean visit(OWLObjectProperty property) {
             return true;
         }
 
         @Override
-        public Boolean visit(final OWLDatatype node) {
+        public Boolean visit(OWLDatatype node) {
             return true;
         }
 
         @Override
-        public Boolean visit(final OWLNamedIndividual individual) {
+        public Boolean visit(OWLNamedIndividual individual) {
             return true;
         }
     };

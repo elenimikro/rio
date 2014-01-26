@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -33,6 +32,7 @@ import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.IOUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -41,7 +41,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author eleni */
 @SuppressWarnings("javadoc")
@@ -55,21 +54,14 @@ public class ClusteringProximityMatrixTest {
             iris.add(IRI.create(string));
         }
         IOUtils.loadIRIMappers(iris, manager);
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology ontology : manager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
         final AxiomBasedDistance distance = new AxiomBasedDistance(
                 manager.getOntologies(), manager.getOWLDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
-        final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
+        SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                 entities, distance);
         System.out.println(String.format(
                 "Finished computing distance between %d entities", distanceMatrix
@@ -80,8 +72,8 @@ public class ClusteringProximityMatrixTest {
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
             @Override
-            public double getDistance(final Collection<? extends OWLEntity> a,
-                    final Collection<? extends OWLEntity> b) {
+            public double getDistance(Collection<? extends OWLEntity> a,
+                    Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
             }
         };
@@ -99,9 +91,8 @@ public class ClusteringProximityMatrixTest {
                 .reduce(OrPairFilter.build(
                         new PairFilter<Collection<? extends OWLEntity>>() {
                             @Override
-                            public boolean accept(
-                                    final Collection<? extends OWLEntity> first,
-                                    final Collection<? extends OWLEntity> second) {
+                            public boolean accept(Collection<? extends OWLEntity> first,
+                                    Collection<? extends OWLEntity> second) {
                                 return first.size() > 1;
                             }
                         }, filter));

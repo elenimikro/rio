@@ -66,8 +66,8 @@ public class TestProximityMatrix extends TestCase {
                 ontology.getSignature(), axiomBasedDistance);
         PairFilter<Collection<? extends OWLEntity>> pairFilter = new PairFilter<Collection<? extends OWLEntity>>() {
             @Override
-            public boolean accept(final Collection<? extends OWLEntity> first,
-                    final Collection<? extends OWLEntity> second) {
+            public boolean accept(Collection<? extends OWLEntity> first,
+                    Collection<? extends OWLEntity> second) {
                 return true;
             }
         };
@@ -77,8 +77,8 @@ public class TestProximityMatrix extends TestCase {
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
             @Override
-            public double getDistance(final Collection<? extends OWLEntity> a,
-                    final Collection<? extends OWLEntity> b) {
+            public double getDistance(Collection<? extends OWLEntity> a,
+                    Collection<? extends OWLEntity> b) {
                 return axiomBasedDistance.getDistance(a.iterator().next(), b.iterator()
                         .next());
             }
@@ -111,7 +111,7 @@ public class TestProximityMatrix extends TestCase {
         ProximityMatrix<OWLEntity> reduced = distanceMatrix
                 .reduce(new PairFilter<OWLEntity>() {
                     @Override
-                    public boolean accept(final OWLEntity first, final OWLEntity second) {
+                    public boolean accept(OWLEntity first, OWLEntity second) {
                         return true;
                     }
                 });

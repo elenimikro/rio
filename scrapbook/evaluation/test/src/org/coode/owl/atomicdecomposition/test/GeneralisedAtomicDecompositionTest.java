@@ -3,7 +3,6 @@ package org.coode.owl.atomicdecomposition.test;
 import static org.junit.Assert.*;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -14,6 +13,7 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecomposition;
 import org.coode.proximitymatrix.cluster.GeneralisedAtomicDecompositionMetrics;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.DistanceCreator;
 import org.junit.Before;
@@ -28,7 +28,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
@@ -81,14 +80,7 @@ public class GeneralisedAtomicDecompositionTest {
                 .println("GeneralisationAtomicDecompositionTest.testGeneralisationAtomicDecomposition()"
                         + distance.getAxioms(a));
         ClusterCreator clusterer = new ClusterCreator();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology ontology : m.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }

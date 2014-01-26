@@ -26,7 +26,7 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase 
     private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             clear();
             GeneralisationBasedOWLEntityProvider.this.loadDelegate();
@@ -37,8 +37,8 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase 
      *            ontologyManager
      * @param generalisations
      *            generalisations */
-    public GeneralisationBasedOWLEntityProvider(final OWLOntologyManager ontologyManager,
-            final Set<OWLAxiom> generalisations) {
+    public GeneralisationBasedOWLEntityProvider(OWLOntologyManager ontologyManager,
+            Set<OWLAxiom> generalisations) {
         super(ontologyManager);
         axioms.addAll(generalisations);
         getOntologyManager().addOntologyChangeListener(listener);

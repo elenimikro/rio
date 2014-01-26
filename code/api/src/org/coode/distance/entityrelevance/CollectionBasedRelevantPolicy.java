@@ -32,8 +32,7 @@ public abstract class CollectionBasedRelevantPolicy implements RelevancePolicy<O
     /** @param c
      *            c
      * @return relevance policy */
-    public static final CollectionBasedRelevantPolicy allOf(
-            Collection<? extends OWLEntity> c) {
+    public static CollectionBasedRelevantPolicy allOf(Collection<? extends OWLEntity> c) {
         return new CollectionBasedRelevantPolicy(c) {
             @Override
             public boolean isRelevant(OWLEntity object) {
@@ -45,8 +44,7 @@ public abstract class CollectionBasedRelevantPolicy implements RelevancePolicy<O
     /** @param c
      *            c
      * @return relevance policy */
-    public static final CollectionBasedRelevantPolicy noneOf(
-            Collection<? extends OWLEntity> c) {
+    public static CollectionBasedRelevantPolicy noneOf(Collection<? extends OWLEntity> c) {
         return new CollectionBasedRelevantPolicy(c) {
             @Override
             public boolean isRelevant(OWLEntity object) {

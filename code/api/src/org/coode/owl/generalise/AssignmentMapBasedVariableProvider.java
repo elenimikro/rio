@@ -28,8 +28,8 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
      *            assignmentMap
      * @param constraintSystem
      *            constraintSystem */
-    public AssignmentMapBasedVariableProvider(final AssignmentMap assignmentMap,
-            final ConstraintSystem constraintSystem) {
+    public AssignmentMapBasedVariableProvider(AssignmentMap assignmentMap,
+            ConstraintSystem constraintSystem) {
         super(new AssignmentMapBasedOWLEntityProvider(assignmentMap));
         setConstraintSystem(constraintSystem);
         this.assignmentMap = new AssignmentMap(assignmentMap);
@@ -39,7 +39,7 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
     protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
         return owlObject.accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
             @Override
-            protected Variable<?> getDefaultReturnValue(final OWLObject object) {
+            protected Variable<?> getDefaultReturnValue(OWLObject object) {
                 boolean found = false;
                 // AssignmentMap anAssignmentMap =
                 // AssignmentMapBasedVariableProvider.this.getAssignmentMap();
@@ -57,7 +57,7 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
             }
 
             @Override
-            public Variable<?> visit(final IRI iri) {
+            public Variable<?> visit(IRI iri) {
                 OWLObject owlEntity = AssignmentMapBasedVariableProvider.this
                         .getOWLEntity(iri);
                 return owlEntity != null ? owlEntity.accept(this) : null;

@@ -24,20 +24,20 @@ public class StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll extend
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void main(final String[] args) throws OWLOntologyCreationException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
         StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll agglomerator = new StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
-    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-        final Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
+    public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
+        Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
                 manager.getOntologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
 
     @Override
-    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
         Utility.print1(clusteringMatrix);
     }
 }

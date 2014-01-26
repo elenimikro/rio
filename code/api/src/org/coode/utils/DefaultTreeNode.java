@@ -42,13 +42,13 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
 
     /** @return the userObject */
     @Override
-    public final O getUserObject() {
+    public O getUserObject() {
         return this.userObject;
     }
 
     /** @return the children */
     @Override
-    public final List<TreeNode<?>> getChildren() {
+    public List<TreeNode<?>> getChildren() {
         return new ArrayList<TreeNode<?>>(this.children);
     }
 
@@ -76,7 +76,7 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
      *            The child TreeNode to add. cannot be <code>null</code>.
      * @throws NullPointerException
      *             if the input child is <code>null</code>. */
-    public final void addChild(TreeNode<?> child) {
+    public void addChild(TreeNode<?> child) {
         if (child == null) {
             throw new NullPointerException("The child node cannot be null");
         }
@@ -96,7 +96,7 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
      * @throws IllegalArgumentException
      *             if {@literal i<0 || i>getChildren().size()}.
      * @see TreeNode#getChildren() */
-    public final void addChild(int i, TreeNode<?> child) {
+    public void addChild(int i, TreeNode<?> child) {
         if (child == null) {
             throw new NullPointerException("The child node cannot be null");
         }
@@ -115,7 +115,7 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
      *            The TreeNode to remove.
      * @return <code>true</code> if the removed node was in fact a child of this
      *         TreeNode. <code>false</code> otherwise. */
-    public final boolean removeChild(TreeNode<?> child) {
+    public boolean removeChild(TreeNode<?> child) {
         return this.children.remove(child);
     }
 

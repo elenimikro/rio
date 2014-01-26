@@ -169,7 +169,7 @@ public class AxiomAtomicDecompositionGeneralisationTreeNode extends
         }
     }
 
-    private boolean haveEqualDependencies(final Set<BindingNode> agreeingBindingNodes) {
+    private boolean haveEqualDependencies(Set<BindingNode> agreeingBindingNodes) {
         // if (entitiesToAtoms.isEmpty()) buildSignatureForAtoms();
         Set<OWLObject> assignmentSet = new HashSet<OWLObject>();
         for (BindingNode node : agreeingBindingNodes) {
@@ -205,55 +205,13 @@ public class AxiomAtomicDecompositionGeneralisationTreeNode extends
         return true;
     }
 
-    // private boolean haveEqualDependenciesEx(final Map<BindingNode,
-    // AssignmentMap> map,
-    // final Set<Variable<?>> otherVariables) {
-    // Collection<AssignmentMap> assignmentMaps = map.values();
-    // for (AssignmentMap assignmentMap : assignmentMaps) {
-    // for (Variable<?> variable : otherVariables) {
-    // Set<OWLObject> assignments = assignmentMap.get(variable);
-    // if (assignments.size() > 1) {
-    // // find dependencies for every assignment
-    // MultiMap<OWLObject, Atom> assignmentAtomDependencies = new
-    // MultiMap<OWLObject, Atom>();
-    // for (OWLObject assignment : assignments) {
-    // if (assignment instanceof OWLEntity) {
-    // Collection<Atom> atoms = atomicDecomposition
-    // .getEntitiesToAtom().get((OWLEntity) assignment);
-    // if (atoms != null) {
-    // Set<Atom> dependencies = new HashSet<Atom>();
-    // for (Atom atom : atoms) {
-    // if (atomicDecomposition != null) {
-    // Set<Atom> set = atomicDecomposition
-    // .getDependencies(atom);
-    // if (set.size() > 0) {
-    // dependencies.addAll(set);
-    // }
-    // }
-    // }
-    // dependencies.removeAll(atoms);
-    // assignmentAtomDependencies.setEntry(assignment,
-    // dependencies);
-    // }
-    // }
-    // }
-    // // check if all the objects have the same dependencies
-    // boolean equal = assignmentAtomDependencies.isValueSetsEqual();
-    // if (!equal) {
-    // return false;
-    // }
-    // }
-    // }
-    // }
-    // return true;
-    // }
     @Override
-    public void accept(final GeneralisationTreeNodeVisitor visitor) {
+    public void accept(GeneralisationTreeNodeVisitor visitor) {
         visitor.visitAxiomAtomicDecompositionGeneralisationTreeNode(this);
     }
 
     @Override
-    public <P> P accept(final GeneralisationTreeNodeVisitorEx<P> visitor) {
+    public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
         return visitor.visitAxiomAtomicDecompositionGeneralisationTreeNode(this);
     }
 
@@ -272,7 +230,7 @@ public class AxiomAtomicDecompositionGeneralisationTreeNode extends
         return getUserObject().toString();
     }
 
-    private boolean areDifferencesWorthIt(final Collection<? extends OWLAxiom> axioms) {
+    private boolean areDifferencesWorthIt(Collection<? extends OWLAxiom> axioms) {
         if (axioms == null) {
             throw new NullPointerException("The collection cannot be null");
         }

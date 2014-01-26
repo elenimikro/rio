@@ -20,8 +20,8 @@ public class StructuralOWLObjectGeneralisation extends AbstractOWLObjectGenerali
      *            entityProvider
      * @param constraintSystem
      *            constraintSystem */
-    public StructuralOWLObjectGeneralisation(final OWLEntityProvider entityProvider,
-            final ConstraintSystem constraintSystem) {
+    public StructuralOWLObjectGeneralisation(OWLEntityProvider entityProvider,
+            ConstraintSystem constraintSystem) {
         super(new StructuralVariableProvider(entityProvider, constraintSystem));
         setConstraintSystem(constraintSystem);
         getVariableProvider().setConstraintSystem(constraintSystem);

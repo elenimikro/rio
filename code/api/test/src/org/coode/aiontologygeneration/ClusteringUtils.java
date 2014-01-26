@@ -34,7 +34,7 @@ public class ClusteringUtils {
      *            clusters
      * @return generalisation map */
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap(
-            final OWLOntology onto, final Set<Set<OWLEntity>> clusters) {
+            OWLOntology onto, Set<Set<OWLEntity>> clusters) {
         OWLOntologyManager ontologyManager = onto.getOWLOntologyManager();
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
         try {
@@ -67,8 +67,8 @@ public class ClusteringUtils {
      *             SAXException
      * @throws IOException
      *             IOException */
-    public static Set<Set<OWLEntity>> loadClustersFromFile(final String filename,
-            final OWLOntologyManager ontologyManager) throws FileNotFoundException,
+    public static Set<Set<OWLEntity>> loadClustersFromFile(String filename,
+            OWLOntologyManager ontologyManager) throws FileNotFoundException,
             ParserConfigurationException, SAXException, IOException {
         Set<Set<OWLEntity>> clusters = Utils.readFromXML(new FileInputStream(filename),
                 ontologyManager);
@@ -79,7 +79,7 @@ public class ClusteringUtils {
      *            args
      * @throws Exception
      *             Exception */
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(
                 new File("comparison.txt"))));
         String line = r.readLine();
@@ -113,8 +113,8 @@ public class ClusteringUtils {
      * @return true if checked
      * @throws Exception
      *             Exception */
-    public static boolean check(final String onto, final String input1,
-            final String input2) throws Exception {
+    public static boolean check(String onto, String input1, String input2)
+            throws Exception {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = manager.loadOntology(IRI.create(new File(onto)));
         return check(ontology, input1, input2);
@@ -129,8 +129,8 @@ public class ClusteringUtils {
      * @return true if checked
      * @throws Exception
      *             Exception */
-    public static boolean check(final OWLOntology onto, final String input1,
-            final String input2) throws Exception {
+    public static boolean check(OWLOntology onto, String input1, String input2)
+            throws Exception {
         // the clusters are sorted
         boolean toReturn = true;
         Set<Set<OWLEntity>> loadClustersFromFile1 = ClusteringUtils.loadClustersFromFile(

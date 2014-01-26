@@ -25,8 +25,7 @@ public class DistanceThresholdBasedFilter<O> implements
     private final SparseMatrix distance;
     private final double threshold;
 
-    private DistanceThresholdBasedFilter(final SparseMatrix distance,
-            final double threshold) {
+    private DistanceThresholdBasedFilter(SparseMatrix distance, double threshold) {
         if (distance == null) {
             throw new NullPointerException("The distance cannot be null");
         }
@@ -39,8 +38,8 @@ public class DistanceThresholdBasedFilter<O> implements
     boolean lastResult;
 
     @Override
-    public boolean accept(final Collection<? extends DistanceTableObject<O>> first,
-            final Collection<? extends DistanceTableObject<O>> second) {
+    public boolean accept(Collection<? extends DistanceTableObject<O>> first,
+            Collection<? extends DistanceTableObject<O>> second) {
         if (lastfirst == first && lastsecond == second) {
             return lastResult;
         }
@@ -67,13 +66,13 @@ public class DistanceThresholdBasedFilter<O> implements
         return lastResult;
     }
 
-    private boolean listAccept(final List<? extends DistanceTableObject<O>> first,
-            final List<? extends DistanceTableObject<O>> second) {
+    private boolean listAccept(List<? extends DistanceTableObject<O>> first,
+            List<? extends DistanceTableObject<O>> second) {
         boolean found = false;
-        final int size = first.size();
+        int size = first.size();
         for (int i = 0; i < size && !found; i++) {
             DistanceTableObject<O> object = first.get(i);
-            final int secondSize = second.size();
+            int secondSize = second.size();
             for (int j = 0; j < secondSize && !found; j++) {
                 found = this.distance.get(object.getIndex(), second.get(j).getIndex()) >= this.threshold;
             }
@@ -86,8 +85,8 @@ public class DistanceThresholdBasedFilter<O> implements
      * @param threshold
      *            threshold
      * @return distance filter */
-    public static <P> DistanceThresholdBasedFilter<P> build(final SparseMatrix distance,
-            final double threshold) {
+    public static <P> DistanceThresholdBasedFilter<P> build(SparseMatrix distance,
+            double threshold) {
         return new DistanceThresholdBasedFilter<P>(distance, threshold);
     }
 }

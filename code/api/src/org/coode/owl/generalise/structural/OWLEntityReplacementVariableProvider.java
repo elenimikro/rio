@@ -38,7 +38,7 @@ public class OWLEntityReplacementVariableProvider extends
     }
 
     @Override
-    protected Variable<?> getAbstractingVariable(final OWLObject owlObject) {
+    protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
         if (owlObject == null) {
             throw new NullPointerException("The owlObject cannot be null");
         }
@@ -55,7 +55,7 @@ public class OWLEntityReplacementVariableProvider extends
             }
 
             @Override
-            public Variable<?> visit(final IRI iri) {
+            public Variable<?> visit(IRI iri) {
                 OWLObject owlEntity = OWLEntityReplacementVariableProvider.this
                         .getOWLEntity(iri);
                 return owlEntity != null ? owlEntity.accept(this) : null;
@@ -64,12 +64,12 @@ public class OWLEntityReplacementVariableProvider extends
     }
 
     @Override
-    public Variable<?> getVariable(final OWLObject owlObject) {
+    public Variable<?> getVariable(OWLObject owlObject) {
         VariableType<?> type = owlObject
                 .accept(new OWLObjectVisitorExAdapter<VariableType<?>>(
                         VariableTypeFactory.getVariableType(owlObject)) {
                     @Override
-                    public VariableType<?> visit(final IRI iri) {
+                    public VariableType<?> visit(IRI iri) {
                         OWLObject owlEntity = OWLEntityReplacementVariableProvider.this
                                 .getOWLEntity(iri);
                         return owlEntity != null ? VariableTypeFactory

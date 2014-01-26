@@ -38,8 +38,8 @@ public class AxiomMap {
      *            ontologyManager
      * @param replacer
      *            replacer */
-    public AxiomMap(final Collection<? extends OWLOntology> ontologies,
-            final OWLOntologyManager ontologyManager, final OWLEntityReplacer replacer) {
+    public AxiomMap(Collection<? extends OWLOntology> ontologies,
+            OWLOntologyManager ontologyManager, OWLEntityReplacer replacer) {
         if (ontologies == null) {
             throw new NullPointerException("The ontology colleciton cannot be null");
         }
@@ -58,7 +58,7 @@ public class AxiomMap {
      *            axioms
      * @param replacer
      *            replacer */
-    public AxiomMap(Set<OWLAxiom> axioms, final OWLEntityReplacer replacer) {
+    public AxiomMap(Set<OWLAxiom> axioms, OWLEntityReplacer replacer) {
         if (axioms == null) {
             throw new NullPointerException("The set of axioms cannot be null");
         }
@@ -67,7 +67,7 @@ public class AxiomMap {
         buildMaps(axioms);
     }
 
-    void buildMaps(final Set<OWLAxiom> axs) {
+    void buildMaps(Set<OWLAxiom> axs) {
         delegate.clear();
         axiomCountMap.clear();
         for (OWLAxiom axiom : axs) {
@@ -100,7 +100,7 @@ public class AxiomMap {
     /** @param object
      *            object
      * @return map */
-    public Map<OWLEntity, AtomicInteger> get(final OWLAxiom object) {
+    public Map<OWLEntity, AtomicInteger> get(OWLAxiom object) {
         Map<OWLEntity, AtomicInteger> map = delegate.get(object);
         if (map == null) {
             return Collections.emptyMap();
@@ -115,7 +115,7 @@ public class AxiomMap {
     /** @param object
      *            object
      * @return count */
-    public int getAxiomCount(final OWLAxiom object) {
+    public int getAxiomCount(OWLAxiom object) {
         if (object == lastRequest) {
             return lastElement;
         }

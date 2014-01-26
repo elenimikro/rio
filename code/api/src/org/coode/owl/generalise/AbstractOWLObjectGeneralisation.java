@@ -139,7 +139,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                         new VariableTypeVisitorEx<OWLClassExpression>() {
                             @Override
                             public OWLClassExpression visitCLASSVariableType(
-                                    final CLASSVariableType classVariableType) {
+                                    CLASSVariableType classVariableType) {
                                 @SuppressWarnings("unchecked")
                                 Variable<OWLClassExpression> v = (Variable<OWLClassExpression>) variable;
                                 final ValuesVariableAtttribute<OWLClassExpression> values = ValuesVariableAtttribute
@@ -157,20 +157,18 @@ public abstract class AbstractOWLObjectGeneralisation extends
 
                                             @Override
                                             public boolean isCompatible(
-                                                    final VariableType<?> variableType) {
+                                                    VariableType<?> variableType) {
                                                 return values.getVariable().getType() == variableType;
                                             }
 
                                             @Override
-                                            public String
-                                                    render(final ConstraintSystem c) {
+                                            public String render(ConstraintSystem c) {
                                                 return values.render(c);
                                             }
 
                                             @Override
-                                            public
-                                                    String
-                                                    render(final ShortFormProvider shortFormProvider) {
+                                            public String render(
+                                                    ShortFormProvider shortFormProvider) {
                                                 return values.render(shortFormProvider);
                                             }
                                         });
@@ -184,27 +182,25 @@ public abstract class AbstractOWLObjectGeneralisation extends
                             public
                                     OWLClassExpression
                                     visitOBJECTPROPERTYVariableType(
-                                            final OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                                            OBJECTPROPERTYVariableType objectpropertyVariableType) {
                                 return ce;
                             }
 
                             @Override
-                            public
-                                    OWLClassExpression
-                                    visitDATAPROPERTYVariableType(
-                                            final DATAPROPERTYVariableType datapropertyVariableType) {
+                            public OWLClassExpression visitDATAPROPERTYVariableType(
+                                    DATAPROPERTYVariableType datapropertyVariableType) {
                                 return ce;
                             }
 
                             @Override
                             public OWLClassExpression visitINDIVIDUALVariableType(
-                                    final INDIVIDUALVariableType individualVariableType) {
+                                    INDIVIDUALVariableType individualVariableType) {
                                 return ce;
                             }
 
                             @Override
                             public OWLClassExpression visitCONSTANTVariableType(
-                                    final CONSTANTVariableType constantVariableType) {
+                                    CONSTANTVariableType constantVariableType) {
                                 return ce;
                             }
 
@@ -212,7 +208,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                             public
                                     OWLClassExpression
                                     visitANNOTATIONPROPERTYVariableType(
-                                            final ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                                            ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
                                 return ce;
                             }
                         });
@@ -221,74 +217,74 @@ public abstract class AbstractOWLObjectGeneralisation extends
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectIntersectionOf ce) {
+        public OWLClassExpression visit(OWLObjectIntersectionOf ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectUnionOf ce) {
+        public OWLClassExpression visit(OWLObjectUnionOf ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectComplementOf ce) {
+        public OWLClassExpression visit(OWLObjectComplementOf ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectSomeValuesFrom ce) {
+        public OWLClassExpression visit(OWLObjectSomeValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectAllValuesFrom ce) {
+        public OWLClassExpression visit(OWLObjectAllValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectHasValue ce) {
+        public OWLClassExpression visit(OWLObjectHasValue ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectMinCardinality ce) {
+        public OWLClassExpression visit(OWLObjectMinCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectExactCardinality ce) {
+        public OWLClassExpression visit(OWLObjectExactCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectMaxCardinality ce) {
+        public OWLClassExpression visit(OWLObjectMaxCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectHasSelf ce) {
+        public OWLClassExpression visit(OWLObjectHasSelf ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLObjectOneOf ce) {
+        public OWLClassExpression visit(OWLObjectOneOf ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLDataSomeValuesFrom ce) {
+        public OWLClassExpression visit(OWLDataSomeValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLDataAllValuesFrom ce) {
+        public OWLClassExpression visit(OWLDataAllValuesFrom ce) {
             return generaliseClassExpression(ce);
         }
 
         /** @param ce
          *            ce
          * @return generalised class expression */
-        private OWLClassExpression generaliseClassExpression(final OWLClassExpression ce) {
+        private OWLClassExpression generaliseClassExpression(OWLClassExpression ce) {
             String name = "?expression";
             Variable<?> variable = getConstraintSystem().getVariable(name);
             int i = 1;
@@ -314,27 +310,27 @@ public abstract class AbstractOWLObjectGeneralisation extends
                     OPPLFunction<Collection<? extends OWLClassExpression>> opplFunction = new OPPLFunction<Collection<? extends OWLClassExpression>>() {
                         @Override
                         public Collection<? extends OWLClassExpression> compute(
-                                final ValueComputationParameters params) {
+                                ValueComputationParameters params) {
                             return values.compute(params);
                         }
 
                         @Override
-                        public <P> P accept(final OPPLFunctionVisitorEx<P> visitor) {
+                        public <P> P accept(OPPLFunctionVisitorEx<P> visitor) {
                             return visitor.visitValuesVariableAtttribute(values);
                         }
 
                         @Override
-                        public void accept(final OPPLFunctionVisitor visitor) {
+                        public void accept(OPPLFunctionVisitor visitor) {
                             visitor.visitValuesVariableAtttribute(values);
                         }
 
                         @Override
-                        public String render(final ConstraintSystem c) {
+                        public String render(ConstraintSystem c) {
                             return values.render(c);
                         }
 
                         @Override
-                        public String render(final ShortFormProvider shortFormProvider) {
+                        public String render(ShortFormProvider shortFormProvider) {
                             return values.render(shortFormProvider);
                         }
                     };
@@ -342,17 +338,17 @@ public abstract class AbstractOWLObjectGeneralisation extends
                 }
 
                 @Override
-                public boolean isCompatible(final VariableType<?> variableType) {
+                public boolean isCompatible(VariableType<?> variableType) {
                     return values.getVariable().getType() == variableType;
                 }
 
                 @Override
-                public String render(final ConstraintSystem c) {
+                public String render(ConstraintSystem c) {
                     return values.render(c);
                 }
 
                 @Override
-                public String render(final ShortFormProvider shortFormProvider) {
+                public String render(ShortFormProvider shortFormProvider) {
                     return values.render(shortFormProvider);
                 }
             };
@@ -373,22 +369,22 @@ public abstract class AbstractOWLObjectGeneralisation extends
                         Collection<? extends Aggregandum<Collection<? extends OWLClassExpression>>> a);
 
         @Override
-        public OWLClassExpression visit(final OWLDataHasValue ce) {
+        public OWLClassExpression visit(OWLDataHasValue ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLDataMinCardinality ce) {
+        public OWLClassExpression visit(OWLDataMinCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLDataExactCardinality ce) {
+        public OWLClassExpression visit(OWLDataExactCardinality ce) {
             return generaliseClassExpression(ce);
         }
 
         @Override
-        public OWLClassExpression visit(final OWLDataMaxCardinality ce) {
+        public OWLClassExpression visit(OWLDataMaxCardinality ce) {
             return generaliseClassExpression(ce);
         }
     }
@@ -412,12 +408,12 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    protected OWLObject getDefaultReturnValue(final OWLObject object) {
+    protected OWLObject getDefaultReturnValue(OWLObject object) {
         return object;
     }
 
     @Override
-    public OWLObject visit(final IRI iri) {
+    public OWLObject visit(IRI iri) {
         IRI toReturn = iri;
         Variable<?> v = getVariableProvider().getAbstractingVariable(iri);
         if (v != null) {
@@ -428,7 +424,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLAnnotation annotation) {
+    public OWLObject visit(OWLAnnotation annotation) {
         OWLAnnotationProperty property = (OWLAnnotationProperty) annotation.getProperty()
                 .accept(this);
         OWLAnnotationValue value = (OWLAnnotationValue) annotation.getValue()
@@ -437,7 +433,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLAnnotationAssertionAxiom axiom) {
+    public OWLObject visit(OWLAnnotationAssertionAxiom axiom) {
         OWLAnnotationSubject generalisedSubject = (OWLAnnotationSubject) axiom
                 .getSubject().accept(this);
         OWLAnnotation generalisedAnnotation = (OWLAnnotation) axiom.getAnnotation()
@@ -447,7 +443,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLAnnotationProperty property) {
+    public OWLObject visit(OWLAnnotationProperty property) {
         OWLAnnotationProperty toReturn = property;
         Variable<?> v = getVariableProvider().getAbstractingVariable(property);
         if (v != null) {
@@ -458,7 +454,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLAsymmetricObjectPropertyAxiom axiom) {
+    public OWLObject visit(OWLAsymmetricObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLAsymmetricObjectPropertyAxiom((OWLObjectPropertyExpression) property
@@ -466,7 +462,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLClassExpression visit(final OWLClass desc) {
+    public OWLClassExpression visit(OWLClass desc) {
         OWLClassExpression toReturn = null;
         Variable<?> v = getVariableProvider().getAbstractingVariable(desc);
         if (v != null) {
@@ -479,7 +475,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLClassAssertionAxiom axiom) {
+    public OWLObject visit(OWLClassAssertionAxiom axiom) {
         OWLClassExpression description = axiom.getClassExpression();
         OWLIndividual individual = axiom.getIndividual();
         return factory.getOWLClassAssertionAxiom(
@@ -488,7 +484,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataAllValuesFrom desc) {
+    public OWLObject visit(OWLDataAllValuesFrom desc) {
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
         return factory.getOWLDataAllValuesFrom(
@@ -497,13 +493,13 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataComplementOf node) {
+    public OWLObject visit(OWLDataComplementOf node) {
         OWLDataRange dataRange = node.getDataRange();
         return factory.getOWLDataComplementOf((OWLDataRange) dataRange.accept(this));
     }
 
     @Override
-    public OWLObject visit(final OWLDataExactCardinality desc) {
+    public OWLObject visit(OWLDataExactCardinality desc) {
         int cardinality = desc.getCardinality();
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
@@ -513,7 +509,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataHasValue desc) {
+    public OWLObject visit(OWLDataHasValue desc) {
         OWLDataPropertyExpression property = desc.getProperty();
         OWLLiteral value = desc.getValue();
         return factory.getOWLDataHasValue(
@@ -522,7 +518,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataMaxCardinality desc) {
+    public OWLObject visit(OWLDataMaxCardinality desc) {
         int cardinality = desc.getCardinality();
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
@@ -532,7 +528,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataMinCardinality desc) {
+    public OWLObject visit(OWLDataMinCardinality desc) {
         int cardinality = desc.getCardinality();
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
@@ -542,7 +538,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataOneOf node) {
+    public OWLObject visit(OWLDataOneOf node) {
         Set<OWLLiteral> values = node.getValues();
         Set<OWLLiteral> instantiatedValues = new HashSet<OWLLiteral>();
         for (OWLLiteral constant : values) {
@@ -552,7 +548,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataProperty property) {
+    public OWLObject visit(OWLDataProperty property) {
         OWLDataProperty toReturn = property;
         Variable<?> v = getVariableProvider().getAbstractingVariable(property);
         if (v != null) {
@@ -563,7 +559,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataPropertyAssertionAxiom axiom) {
+    public OWLObject visit(OWLDataPropertyAssertionAxiom axiom) {
         OWLIndividual subject = axiom.getSubject();
         OWLDataPropertyExpression property = axiom.getProperty();
         OWLLiteral object = axiom.getObject();
@@ -573,7 +569,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataPropertyDomainAxiom axiom) {
+    public OWLObject visit(OWLDataPropertyDomainAxiom axiom) {
         OWLClassExpression domain = axiom.getDomain();
         OWLDataPropertyExpression property = axiom.getProperty();
         return factory.getOWLDataPropertyDomainAxiom(
@@ -582,7 +578,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataPropertyRangeAxiom axiom) {
+    public OWLObject visit(OWLDataPropertyRangeAxiom axiom) {
         OWLDataPropertyExpression property = axiom.getProperty();
         OWLDataRange range = axiom.getRange();
         return factory.getOWLDataPropertyRangeAxiom(
@@ -591,7 +587,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDataSomeValuesFrom desc) {
+    public OWLObject visit(OWLDataSomeValuesFrom desc) {
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
         return factory.getOWLDataSomeValuesFrom(
@@ -600,7 +596,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDatatypeRestriction node) {
+    public OWLObject visit(OWLDatatypeRestriction node) {
         OWLDataRange dataRange = node.getDatatype();
         Set<OWLFacetRestriction> facetRestrictions = node.getFacetRestrictions();
         return factory.getOWLDatatypeRestriction((OWLDatatype) dataRange.accept(this),
@@ -608,7 +604,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDifferentIndividualsAxiom axiom) {
+    public OWLObject visit(OWLDifferentIndividualsAxiom axiom) {
         Set<OWLIndividual> individuals = axiom.getIndividuals();
         Set<OWLIndividual> instatiatedDescriptions = new HashSet<OWLIndividual>();
         MultiMap<OWLIndividual, OWLIndividual> generalisationMap = new MultiMap<OWLIndividual, OWLIndividual>();
@@ -645,7 +641,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDisjointClassesAxiom axiom) {
+    public OWLObject visit(OWLDisjointClassesAxiom axiom) {
         Set<OWLClassExpression> descriptions = axiom.getClassExpressions();
         Set<OWLClassExpression> instatiatedDescriptions = new HashSet<OWLClassExpression>();
         MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<OWLClassExpression, OWLClassExpression>();
@@ -683,7 +679,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDisjointDataPropertiesAxiom axiom) {
+    public OWLObject visit(OWLDisjointDataPropertiesAxiom axiom) {
         Set<OWLDataPropertyExpression> properties = axiom.getProperties();
         Set<OWLDataPropertyExpression> instatiatedProperties = new HashSet<OWLDataPropertyExpression>();
         MultiMap<OWLDataPropertyExpression, OWLDataProperty> generalisationMap = new MultiMap<OWLDataPropertyExpression, OWLDataProperty>();
@@ -723,7 +719,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDisjointObjectPropertiesAxiom axiom) {
+    public OWLObject visit(OWLDisjointObjectPropertiesAxiom axiom) {
         Set<OWLObjectPropertyExpression> properties = axiom.getProperties();
         Set<OWLObjectPropertyExpression> instatiatedProperties = new HashSet<OWLObjectPropertyExpression>();
         MultiMap<OWLObjectPropertyExpression, OWLObjectPropertyExpression> generalisationMap = new MultiMap<OWLObjectPropertyExpression, OWLObjectPropertyExpression>();
@@ -768,7 +764,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLDisjointUnionAxiom axiom) {
+    public OWLObject visit(OWLDisjointUnionAxiom axiom) {
         Set<OWLClassExpression> descriptions = axiom.getClassExpressions();
         OWLClass owlClass = axiom.getOWLClass();
         Set<OWLClassExpression> instantiatedDescriptions = axiom.getClassExpressions();
@@ -780,7 +776,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLEquivalentClassesAxiom axiom) {
+    public OWLObject visit(OWLEquivalentClassesAxiom axiom) {
         Set<OWLClassExpression> descriptions = axiom.getClassExpressions();
         Set<OWLClassExpression> instantiatedDescriptions = new HashSet<OWLClassExpression>();
         for (OWLClassExpression description : descriptions) {
@@ -790,7 +786,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLEquivalentDataPropertiesAxiom axiom) {
+    public OWLObject visit(OWLEquivalentDataPropertiesAxiom axiom) {
         Set<OWLDataPropertyExpression> properties = axiom.getProperties();
         Set<OWLDataPropertyExpression> instantiatedProperties = new HashSet<OWLDataPropertyExpression>();
         for (OWLDataPropertyExpression dataPropertyExpression : properties) {
@@ -801,7 +797,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLEquivalentObjectPropertiesAxiom axiom) {
+    public OWLObject visit(OWLEquivalentObjectPropertiesAxiom axiom) {
         Set<OWLObjectPropertyExpression> properties = axiom.getProperties();
         Set<OWLObjectPropertyExpression> instantiatedProperties = new HashSet<OWLObjectPropertyExpression>();
         for (OWLObjectPropertyExpression objectPropertyExpression : properties) {
@@ -813,7 +809,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLFunctionalDataPropertyAxiom axiom) {
+    public OWLObject visit(OWLFunctionalDataPropertyAxiom axiom) {
         OWLDataPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLFunctionalDataPropertyAxiom((OWLDataPropertyExpression) property
@@ -821,7 +817,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLFunctionalObjectPropertyAxiom axiom) {
+    public OWLObject visit(OWLFunctionalObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLFunctionalObjectPropertyAxiom((OWLObjectPropertyExpression) property
@@ -829,7 +825,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLInverseFunctionalObjectPropertyAxiom axiom) {
+    public OWLObject visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLInverseFunctionalObjectPropertyAxiom((OWLObjectPropertyExpression) property
@@ -837,7 +833,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLInverseObjectPropertiesAxiom axiom) {
+    public OWLObject visit(OWLInverseObjectPropertiesAxiom axiom) {
         OWLObjectPropertyExpression firstProperty = axiom.getFirstProperty();
         OWLObjectPropertyExpression secondProperty = axiom.getSecondProperty();
         return factory.getOWLInverseObjectPropertiesAxiom(
@@ -846,7 +842,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLIrreflexiveObjectPropertyAxiom axiom) {
+    public OWLObject visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLIrreflexiveObjectPropertyAxiom((OWLObjectPropertyExpression) property
@@ -854,7 +850,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLLiteral node) {
+    public OWLObject visit(OWLLiteral node) {
         OWLLiteral toReturn = null;
         Variable<?> v = getVariableProvider().getAbstractingVariable(node);
         if (v != null) {
@@ -867,7 +863,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLNamedIndividual individual) {
+    public OWLObject visit(OWLNamedIndividual individual) {
         OWLIndividual toReturn = individual;
         Variable<?> v = getVariableProvider().getAbstractingVariable(individual);
         if (v != null) {
@@ -878,7 +874,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLNegativeDataPropertyAssertionAxiom axiom) {
+    public OWLObject visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
         OWLDataPropertyExpression property = axiom.getProperty();
         OWLIndividual subject = axiom.getSubject();
         OWLLiteral object = axiom.getObject();
@@ -888,7 +884,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLNegativeObjectPropertyAssertionAxiom axiom) {
+    public OWLObject visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         OWLIndividual subject = axiom.getSubject();
         OWLIndividual object = axiom.getObject();
@@ -901,7 +897,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLClassExpression visit(final OWLObjectAllValuesFrom desc) {
+    public OWLClassExpression visit(OWLObjectAllValuesFrom desc) {
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
         return factory.getOWLObjectAllValuesFrom(
@@ -910,14 +906,14 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLClassExpression visit(final OWLObjectComplementOf desc) {
+    public OWLClassExpression visit(OWLObjectComplementOf desc) {
         OWLClassExpression operand = desc.getOperand();
         return factory
                 .getOWLObjectComplementOf((OWLClassExpression) operand.accept(this));
     }
 
     @Override
-    public OWLObject visit(final OWLObjectExactCardinality desc) {
+    public OWLObject visit(OWLObjectExactCardinality desc) {
         int cardinality = desc.getCardinality();
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
@@ -927,14 +923,14 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLObjectHasSelf desc) {
+    public OWLObject visit(OWLObjectHasSelf desc) {
         OWLObjectPropertyExpression property = desc.getProperty();
         return factory.getOWLObjectHasSelf((OWLObjectPropertyExpression) property
                 .accept(this));
     }
 
     @Override
-    public OWLClassExpression visit(final OWLObjectHasValue desc) {
+    public OWLClassExpression visit(OWLObjectHasValue desc) {
         OWLObjectPropertyExpression property = desc.getProperty();
         OWLIndividual value = desc.getValue();
         return factory.getOWLObjectHasValue(
@@ -943,7 +939,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLClassExpression visit(final OWLObjectIntersectionOf desc) {
+    public OWLClassExpression visit(OWLObjectIntersectionOf desc) {
         Set<OWLClassExpression> operands = desc.getOperands();
         Set<OWLClassExpression> newOperands = new HashSet<OWLClassExpression>(
                 operands.size());
@@ -960,8 +956,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
                     protected
                             GeneratedVariable<OWLClassExpression>
                             aggregate(
-                                    final Variable<?> expressionGeneratedVariable,
-                                    final Collection<? extends Aggregandum<Collection<? extends OWLClassExpression>>> a) {
+                                    Variable<?> expressionGeneratedVariable,
+                                    Collection<? extends Aggregandum<Collection<? extends OWLClassExpression>>> a) {
                         GeneratedVariable<OWLClassExpression> toReturn = (GeneratedVariable<OWLClassExpression>) generatedVariableAggregations
                                 .get(a);
                         if (toReturn == null) {
@@ -985,14 +981,14 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLObjectInverseOf property) {
+    public OWLObject visit(OWLObjectInverseOf property) {
         OWLObjectPropertyExpression inverse = property.getInverse();
         return factory.getOWLObjectInverseOf((OWLObjectPropertyExpression) inverse
                 .accept(this));
     }
 
     @Override
-    public OWLObject visit(final OWLObjectMaxCardinality desc) {
+    public OWLObject visit(OWLObjectMaxCardinality desc) {
         int cardinality = desc.getCardinality();
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
@@ -1002,7 +998,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLObjectMinCardinality desc) {
+    public OWLObject visit(OWLObjectMinCardinality desc) {
         int cardinality = desc.getCardinality();
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
@@ -1012,14 +1008,14 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLObjectOneOf desc) {
+    public OWLObject visit(OWLObjectOneOf desc) {
         Set<OWLIndividual> instantiatedIndividuals = new HashSet<OWLIndividual>(
                 this.generaliseCollection(desc.getIndividuals()));
         return factory.getOWLObjectOneOf(instantiatedIndividuals);
     }
 
     @Override
-    public OWLObject visit(final OWLObjectProperty property) {
+    public OWLObject visit(OWLObjectProperty property) {
         OWLObjectProperty toReturn = property;
         Variable<?> v = getVariableProvider().getAbstractingVariable(property);
         if (v != null) {
@@ -1030,7 +1026,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLObjectPropertyAssertionAxiom axiom) {
+    public OWLObject visit(OWLObjectPropertyAssertionAxiom axiom) {
         OWLIndividual subject = axiom.getSubject();
         OWLObjectPropertyExpression property = axiom.getProperty();
         OWLIndividual object = axiom.getObject();
@@ -1042,7 +1038,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLObjectPropertyDomainAxiom axiom) {
+    public OWLObject visit(OWLObjectPropertyDomainAxiom axiom) {
         OWLClassExpression domain = axiom.getDomain();
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory.getOWLObjectPropertyDomainAxiom(
@@ -1051,7 +1047,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLObjectPropertyRangeAxiom axiom) {
+    public OWLObject visit(OWLObjectPropertyRangeAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         OWLClassExpression range = axiom.getRange();
         return factory.getOWLObjectPropertyRangeAxiom(
@@ -1060,7 +1056,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLClassExpression visit(final OWLObjectSomeValuesFrom desc) {
+    public OWLClassExpression visit(OWLObjectSomeValuesFrom desc) {
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
         return factory.getOWLObjectSomeValuesFrom(
@@ -1069,7 +1065,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLReflexiveObjectPropertyAxiom axiom) {
+    public OWLObject visit(OWLReflexiveObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLReflexiveObjectPropertyAxiom((OWLObjectPropertyExpression) property
@@ -1077,7 +1073,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLSameIndividualAxiom axiom) {
+    public OWLObject visit(OWLSameIndividualAxiom axiom) {
         Set<OWLIndividual> individuals = axiom.getIndividuals();
         Set<OWLIndividual> instatiatedDescriptions = new HashSet<OWLIndividual>();
         MultiMap<OWLIndividual, OWLIndividual> generalisationMap = new MultiMap<OWLIndividual, OWLIndividual>();
@@ -1114,7 +1110,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLSubClassOfAxiom axiom) {
+    public OWLObject visit(OWLSubClassOfAxiom axiom) {
         OWLClassExpression superClass = (OWLClassExpression) axiom.getSuperClass()
                 .accept(this);
         OWLClassExpression subClass = (OWLClassExpression) axiom.getSubClass().accept(
@@ -1123,7 +1119,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLSubDataPropertyOfAxiom axiom) {
+    public OWLObject visit(OWLSubDataPropertyOfAxiom axiom) {
         OWLDataPropertyExpression subProperty = axiom.getSubProperty();
         OWLDataPropertyExpression superProperty = axiom.getSuperProperty();
         OWLDataPropertyExpression generalisedSubProperty = (OWLDataPropertyExpression) subProperty
@@ -1135,7 +1131,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLSubObjectPropertyOfAxiom axiom) {
+    public OWLObject visit(OWLSubObjectPropertyOfAxiom axiom) {
         OWLObjectPropertyExpression subProperty = axiom.getSubProperty();
         OWLObjectPropertyExpression superProperty = axiom.getSuperProperty();
         OWLObjectPropertyExpression generalisedSubProperty = (OWLObjectPropertyExpression) subProperty
@@ -1145,7 +1141,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLSubPropertyChainOfAxiom axiom) {
+    public OWLObject visit(OWLSubPropertyChainOfAxiom axiom) {
         OWLObjectPropertyExpression superProperty = axiom.getSuperProperty();
         List<? extends OWLObjectPropertyExpression> instantiatedPropertyChain = new ArrayList<OWLObjectPropertyExpression>(
                 this.generaliseCollection(axiom.getPropertyChain()));
@@ -1154,7 +1150,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLSymmetricObjectPropertyAxiom axiom) {
+    public OWLObject visit(OWLSymmetricObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLSymmetricObjectPropertyAxiom((OWLObjectPropertyExpression) property
@@ -1162,7 +1158,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLObject visit(final OWLTransitiveObjectPropertyAxiom axiom) {
+    public OWLObject visit(OWLTransitiveObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         return factory
                 .getOWLTransitiveObjectPropertyAxiom((OWLObjectPropertyExpression) property
@@ -1175,8 +1171,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @SuppressWarnings("unchecked")
-    protected final <O extends OWLObject> Collection<? extends O> generaliseCollection(
-            final Collection<? extends O> collection) {
+    protected <O extends OWLObject> Collection<? extends O> generaliseCollection(
+            Collection<? extends O> collection) {
         Set<O> toReturn = new HashSet<O>();
         for (O o : collection) {
             toReturn.add((O) o.accept(this));
@@ -1194,7 +1190,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
 
     /** @param cs
      *            cs */
-    public void setConstraintSystem(final ConstraintSystem cs) {
+    public void setConstraintSystem(ConstraintSystem cs) {
         constraintSystem = cs;
     }
 
@@ -1204,7 +1200,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
     }
 
     @Override
-    public OWLClassExpression visit(final OWLObjectUnionOf desc) {
+    public OWLClassExpression visit(OWLObjectUnionOf desc) {
         Set<OWLClassExpression> operands = desc.getOperands();
         Set<OWLClassExpression> newOperands = new HashSet<OWLClassExpression>(
                 operands.size());
@@ -1221,8 +1217,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
                     protected
                             GeneratedVariable<OWLClassExpression>
                             aggregate(
-                                    final Variable<?> expressionGeneratedVariable,
-                                    final Collection<? extends Aggregandum<Collection<? extends OWLClassExpression>>> a) {
+                                    Variable<?> expressionGeneratedVariable,
+                                    Collection<? extends Aggregandum<Collection<? extends OWLClassExpression>>> a) {
                         GeneratedVariable<OWLClassExpression> toReturn = (GeneratedVariable<OWLClassExpression>) generatedVariableAggregations
                                 .get(a);
                         if (toReturn == null) {
@@ -1244,7 +1240,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
         return factory.getOWLObjectUnionOf(new HashSet<OWLClassExpression>(newOperands));
     }
 
-    private void storeSubstitution(final Variable<?> variable, final OWLObject owlObject) {
+    private void storeSubstitution(Variable<?> variable, OWLObject owlObject) {
         Set<OWLObject> assignments = substitutions.get(variable);
         if (assignments == null) {
             assignments = new HashSet<OWLObject>();

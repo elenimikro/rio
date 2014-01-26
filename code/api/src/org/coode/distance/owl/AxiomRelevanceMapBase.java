@@ -35,7 +35,7 @@ public class AxiomRelevanceMapBase {
     /** @param axiom
      *            axiom
      * @return entities */
-    public Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
+    public Collection<OWLEntity> getRelevantEntities(OWLAxiom axiom) {
         OWLAxiom generalisedOWLAxiom = generalisationMap.get(axiom);
         if (generalisedOWLAxiom != null) {
             return relevanceMap.get(generalisedOWLAxiom);
@@ -45,14 +45,12 @@ public class AxiomRelevanceMapBase {
     }
 
     protected Set<OWLEntity> extractValues(
-            final GeneralisationTreeNode<?> generalisationTreeNode) {
+            GeneralisationTreeNode<?> generalisationTreeNode) {
         final Set<OWLEntity> toReturn = new HashSet<OWLEntity>();
         generalisationTreeNode.accept(new GeneralisationTreeNodeVisitorAdapter() {
             @Override
-            public
-                    void
-                    visitBindingNodeGeneralisationTreeNode(
-                            final BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {
+            public void visitBindingNodeGeneralisationTreeNode(
+                    BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {
                 BindingNode bindingNode = bindingNodeGeneralisationTreeNode
                         .getUserObject();
                 Collection<Assignment> assignments = bindingNode.getAssignments();
@@ -60,27 +58,27 @@ public class AxiomRelevanceMapBase {
                     OWLObject assignmentValue = assignment.getAssignment();
                     assignmentValue.accept(new OWLObjectVisitorAdapter() {
                         @Override
-                        public void visit(final OWLClass desc) {
+                        public void visit(OWLClass desc) {
                             toReturn.add(desc);
                         }
 
                         @Override
-                        public void visit(final OWLAnnotationProperty property) {
+                        public void visit(OWLAnnotationProperty property) {
                             toReturn.add(property);
                         }
 
                         @Override
-                        public void visit(final OWLDataProperty property) {
+                        public void visit(OWLDataProperty property) {
                             toReturn.add(property);
                         }
 
                         @Override
-                        public void visit(final OWLObjectProperty property) {
+                        public void visit(OWLObjectProperty property) {
                             toReturn.add(property);
                         }
 
                         @Override
-                        public void visit(final OWLNamedIndividual individual) {
+                        public void visit(OWLNamedIndividual individual) {
                             toReturn.add(individual);
                         }
                     });

@@ -53,8 +53,8 @@ public class OWLObjectGeneralisation extends AbstractOWLObjectGeneralisation imp
      *            bindingNodes
      * @param constraintSystem
      *            constraintSystem */
-    public OWLObjectGeneralisation(final Collection<? extends BindingNode> bindingNodes,
-            final ConstraintSystem constraintSystem) {
+    public OWLObjectGeneralisation(Collection<? extends BindingNode> bindingNodes,
+            ConstraintSystem constraintSystem) {
         super(new AssignmentMapBasedVariableProvider(new AssignmentMap(bindingNodes),
                 constraintSystem));
         setConstraintSystem(constraintSystem);

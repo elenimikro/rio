@@ -80,98 +80,98 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLClass desc) {
+    public Boolean visit(OWLClass desc) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLDataProperty property) {
+    public Boolean visit(OWLDataProperty property) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLObjectProperty property) {
+    public Boolean visit(OWLObjectProperty property) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLAnnotationProperty property) {
+    public Boolean visit(OWLAnnotationProperty property) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLNamedIndividual individual) {
+    public Boolean visit(OWLNamedIndividual individual) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLLiteral literal) {
+    public Boolean visit(OWLLiteral literal) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLSubClassOfAxiom axiom) {
+    public Boolean visit(OWLSubClassOfAxiom axiom) {
         return axiom.getSubClass().accept(this) || axiom.getSuperClass().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLAnnotationAssertionAxiom axiom) {
+    public Boolean visit(OWLAnnotationAssertionAxiom axiom) {
         return axiom.getAnnotation().getValue().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLAnnotationPropertyDomainAxiom axiom) {
+    public Boolean visit(OWLAnnotationPropertyDomainAxiom axiom) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLAnnotationPropertyRangeAxiom axiom) {
+    public Boolean visit(OWLAnnotationPropertyRangeAxiom axiom) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLDatatype node) {
+    public Boolean visit(OWLDatatype node) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLAsymmetricObjectPropertyAxiom axiom) {
+    public Boolean visit(OWLAsymmetricObjectPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLClassAssertionAxiom axiom) {
+    public Boolean visit(OWLClassAssertionAxiom axiom) {
         return axiom.getClassExpression().accept(this)
                 || axiom.getIndividual().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLDataPropertyAssertionAxiom axiom) {
+    public Boolean visit(OWLDataPropertyAssertionAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getObject().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLDataPropertyDomainAxiom axiom) {
+    public Boolean visit(OWLDataPropertyDomainAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getDomain().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLDataPropertyRangeAxiom axiom) {
+    public Boolean visit(OWLDataPropertyRangeAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getRange().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLDatatypeDefinitionAxiom axiom) {
+    public Boolean visit(OWLDatatypeDefinitionAxiom axiom) {
         return axiom.getDatatype().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLDeclarationAxiom axiom) {
+    public Boolean visit(OWLDeclarationAxiom axiom) {
         return false;
     }
 
     @Override
-    public Boolean visit(final OWLDifferentIndividualsAxiom axiom) {
+    public Boolean visit(OWLDifferentIndividualsAxiom axiom) {
         Iterator<OWLIndividual> iterator = axiom.getIndividuals().iterator();
         boolean found = false;
         while (!found && iterator.hasNext()) {
@@ -182,7 +182,7 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLDisjointClassesAxiom axiom) {
+    public Boolean visit(OWLDisjointClassesAxiom axiom) {
         Iterator<OWLClassExpression> iterator = axiom.getClassExpressions().iterator();
         boolean found = false;
         while (!found && iterator.hasNext()) {
@@ -193,7 +193,7 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLDisjointDataPropertiesAxiom axiom) {
+    public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
         Iterator<OWLDataPropertyExpression> iterator = axiom.getProperties().iterator();
         boolean found = false;
         while (!found && iterator.hasNext()) {
@@ -204,7 +204,7 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLDisjointObjectPropertiesAxiom axiom) {
+    public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
         Iterator<OWLObjectPropertyExpression> iterator = axiom.getProperties().iterator();
         boolean found = false;
         while (!found && iterator.hasNext()) {
@@ -215,7 +215,7 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLDisjointUnionAxiom axiom) {
+    public Boolean visit(OWLDisjointUnionAxiom axiom) {
         boolean found = false;
         Iterator<OWLClassExpression> iterator = axiom.getClassExpressions().iterator();
         while (!found && iterator.hasNext()) {
@@ -226,7 +226,7 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLEquivalentClassesAxiom axiom) {
+    public Boolean visit(OWLEquivalentClassesAxiom axiom) {
         boolean found = false;
         Iterator<OWLClassExpression> iterator = axiom.getClassExpressions().iterator();
         while (!found && iterator.hasNext()) {
@@ -237,7 +237,7 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLEquivalentDataPropertiesAxiom axiom) {
+    public Boolean visit(OWLEquivalentDataPropertiesAxiom axiom) {
         Iterator<OWLDataPropertyExpression> iterator = axiom.getProperties().iterator();
         boolean found = false;
         while (!found && iterator.hasNext()) {
@@ -248,7 +248,7 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLEquivalentObjectPropertiesAxiom axiom) {
+    public Boolean visit(OWLEquivalentObjectPropertiesAxiom axiom) {
         Iterator<OWLObjectPropertyExpression> iterator = axiom.getProperties().iterator();
         boolean found = false;
         while (!found && iterator.hasNext()) {
@@ -259,17 +259,17 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLFunctionalDataPropertyAxiom axiom) {
+    public Boolean visit(OWLFunctionalDataPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLFunctionalObjectPropertyAxiom axiom) {
+    public Boolean visit(OWLFunctionalObjectPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLHasKeyAxiom axiom) {
+    public Boolean visit(OWLHasKeyAxiom axiom) {
         Iterator<OWLPropertyExpression<?, ?>> iterator = axiom.getPropertyExpressions()
                 .iterator();
         boolean found = false;
@@ -284,56 +284,56 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLInverseFunctionalObjectPropertyAxiom axiom) {
+    public Boolean visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLInverseObjectPropertiesAxiom axiom) {
+    public Boolean visit(OWLInverseObjectPropertiesAxiom axiom) {
         return axiom.getFirstProperty().accept(this)
                 || axiom.getSecondProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLIrreflexiveObjectPropertyAxiom axiom) {
+    public Boolean visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLNegativeDataPropertyAssertionAxiom axiom) {
+    public Boolean visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getSubject().accept(this)
                 || axiom.getObject().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLNegativeObjectPropertyAssertionAxiom axiom) {
+    public Boolean visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getSubject().accept(this)
                 || axiom.getObject().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLObjectPropertyAssertionAxiom axiom) {
+    public Boolean visit(OWLObjectPropertyAssertionAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getSubject().accept(this)
                 || axiom.getObject().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLObjectPropertyDomainAxiom axiom) {
+    public Boolean visit(OWLObjectPropertyDomainAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getDomain().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLObjectPropertyRangeAxiom axiom) {
+    public Boolean visit(OWLObjectPropertyRangeAxiom axiom) {
         return axiom.getProperty().accept(this) || axiom.getRange().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLReflexiveObjectPropertyAxiom axiom) {
+    public Boolean visit(OWLReflexiveObjectPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLSameIndividualAxiom axiom) {
+    public Boolean visit(OWLSameIndividualAxiom axiom) {
         Iterator<OWLIndividual> iterator = axiom.getIndividuals().iterator();
         boolean found = false;
         while (!found && iterator.hasNext()) {
@@ -344,25 +344,25 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLSubAnnotationPropertyOfAxiom axiom) {
+    public Boolean visit(OWLSubAnnotationPropertyOfAxiom axiom) {
         return axiom.getSubProperty().accept(this)
                 || axiom.getSuperProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLSubDataPropertyOfAxiom axiom) {
+    public Boolean visit(OWLSubDataPropertyOfAxiom axiom) {
         return axiom.getSubProperty().accept(this)
                 || axiom.getSuperProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLSubObjectPropertyOfAxiom axiom) {
+    public Boolean visit(OWLSubObjectPropertyOfAxiom axiom) {
         return axiom.getSubProperty().accept(this)
                 || axiom.getSuperProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLSubPropertyChainOfAxiom axiom) {
+    public Boolean visit(OWLSubPropertyChainOfAxiom axiom) {
         Iterator<OWLObjectPropertyExpression> iterator = axiom.getPropertyChain()
                 .iterator();
         boolean found = false;
@@ -374,17 +374,17 @@ public class AxiomGeneralityDetector extends OWLObjectVisitorExAdapter<Boolean> 
     }
 
     @Override
-    public Boolean visit(final OWLSymmetricObjectPropertyAxiom axiom) {
+    public Boolean visit(OWLSymmetricObjectPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final OWLTransitiveObjectPropertyAxiom axiom) {
+    public Boolean visit(OWLTransitiveObjectPropertyAxiom axiom) {
         return axiom.getProperty().accept(this);
     }
 
     @Override
-    public Boolean visit(final SWRLRule rule) {
+    public Boolean visit(SWRLRule rule) {
         return false;
     }
 

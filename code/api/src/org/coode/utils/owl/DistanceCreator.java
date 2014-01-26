@@ -21,10 +21,10 @@ public class DistanceCreator {
      * @return distance */
     public static Distance<OWLEntity> createAxiomRelevanceAxiomBasedDistance(
             OWLOntologyManager manager) {
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 manager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         manager.getOWLDataFactory()));
-        final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
+        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
                 manager.getOntologies(), owlEntityReplacer, manager);
         return distance;
     }
@@ -33,8 +33,8 @@ public class DistanceCreator {
      *            manager
      * @return distance */
     public static Distance<OWLEntity> createOWLEntityRelevanceAxiomBasedDistance(
-            final OWLOntologyManager manager) {
-        final Distance<OWLEntity> distance = new OWLEntityRelevanceAxiomBasedDistance(
+            OWLOntologyManager manager) {
+        Distance<OWLEntity> distance = new OWLEntityRelevanceAxiomBasedDistance(
                 manager.getOntologies(), manager);
         return distance;
     }
@@ -43,8 +43,8 @@ public class DistanceCreator {
      *            manager
      * @return distance */
     public static Distance<OWLEntity> createStructuralAxiomRelevanceAxiomBasedDistance(
-            final OWLOntologyManager manager) {
-        final Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
+            OWLOntologyManager manager) {
+        Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
                 manager.getOntologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
@@ -57,11 +57,11 @@ public class DistanceCreator {
     public static Distance<OWLEntity>
             createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(OWLOntology o,
                     KnowledgeExplorer ke) {
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(o
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(o
                 .getOWLOntologyManager().getOWLDataFactory(),
                 new ReplacementByKindStrategy(o.getOWLOntologyManager()
                         .getOWLDataFactory()));
-        final Distance<OWLEntity> distance = new KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
+        Distance<OWLEntity> distance = new KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(
                 o, owlEntityReplacer, ke);
         return distance;
     }
@@ -74,7 +74,7 @@ public class DistanceCreator {
     public static Distance<OWLEntity>
             createKnowledgeExplorerOWLEntityRelevanceBasedDistance(OWLOntology o,
                     KnowledgeExplorer ke) {
-        final Distance<OWLEntity> distance = new KnowledgeExplorerOWLEntityRelevanceBasedDistance(
+        Distance<OWLEntity> distance = new KnowledgeExplorerOWLEntityRelevanceBasedDistance(
                 o, ke);
         return distance;
     }
@@ -86,8 +86,8 @@ public class DistanceCreator {
      * @return distance */
     public static Distance<OWLEntity>
             createStructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
-                    final OWLOntology ontology, KnowledgeExplorer ke) {
-        final Distance<OWLEntity> distance = new StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
+                    OWLOntology ontology, KnowledgeExplorer ke) {
+        Distance<OWLEntity> distance = new StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
                 ontology, ke);
         return distance;
     }

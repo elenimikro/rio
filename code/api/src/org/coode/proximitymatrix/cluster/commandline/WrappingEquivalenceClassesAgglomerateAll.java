@@ -28,23 +28,23 @@ public class WrappingEquivalenceClassesAgglomerateAll extends AgglomeratorBase {
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void main(final String[] args) throws OWLOntologyCreationException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
         WrappingEquivalenceClassesAgglomerateAll agglomerator = new WrappingEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
-    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+    public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 manager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         manager.getOWLDataFactory()));
-        final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
+        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
                 manager.getOntologies(), owlEntityReplacer, manager);
         return distance;
     }
 
     @Override
-    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
         Utility.print(clusteringMatrix);
     }
 }

@@ -16,7 +16,7 @@ package org.coode.distance.entityrelevance;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author Luigi Iannone */
-public final class DefaultOWLEntityRelevancePolicy implements RelevancePolicy<OWLEntity> {
+public class DefaultOWLEntityRelevancePolicy implements RelevancePolicy<OWLEntity> {
     private final boolean relevant;
     private final static RelevancePolicy<OWLEntity> ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityRelevancePolicy(
             true);

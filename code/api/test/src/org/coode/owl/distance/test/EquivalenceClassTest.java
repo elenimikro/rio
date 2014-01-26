@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,6 +26,7 @@ import org.coode.distance.Utils;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.IOUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -35,7 +35,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
@@ -47,21 +46,14 @@ public class EquivalenceClassTest {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
-        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
                 ontologies, owlEntityReplacer, ontologyManager);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils.getEquivalenceClasses(
                 entities, distance);
@@ -103,21 +95,14 @@ public class EquivalenceClassTest {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
-        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
                 ontologies, owlEntityReplacer, ontologyManager);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils.getEquivalenceClasses(
                 entities, distance);
@@ -148,21 +133,14 @@ public class EquivalenceClassTest {
         IOUtils.loadIRIMappers(Collections.singleton(IRI.create(file)), ontologyManager);
         ontologyManager.loadOntologyFromOntologyDocument(file);
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology ontology : ontologyManager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
-        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
                 ontologies, owlEntityReplacer, ontologyManager);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils.getEquivalenceClasses(
                 entities, distance);
@@ -186,7 +164,7 @@ public class EquivalenceClassTest {
         distance.dispose();
     }
 
-    private static String render(final Collection<? extends OWLEntity> cluster) {
+    private static String render(Collection<? extends OWLEntity> cluster) {
         Formatter out = new Formatter();
         Iterator<? extends OWLEntity> iterator = cluster.iterator();
         while (iterator.hasNext()) {

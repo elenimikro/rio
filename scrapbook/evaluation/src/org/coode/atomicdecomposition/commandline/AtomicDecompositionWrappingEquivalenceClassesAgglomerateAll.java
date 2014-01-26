@@ -28,24 +28,24 @@ public class AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll extends
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void main(final String[] args) throws OWLOntologyCreationException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
         AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll agglomerator = new AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
-    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+    public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 manager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         manager.getOWLDataFactory()));
-        final Distance<OWLEntity> distance = new AxiomRelevanceAtomicDecompositionBasedDistance(
+        Distance<OWLEntity> distance = new AxiomRelevanceAtomicDecompositionBasedDistance(
                 manager.getOntologies().iterator().next(), manager.getOWLDataFactory(),
                 manager, owlEntityReplacer);
         return distance;
     }
 
     @Override
-    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
         Utility.print1(clusteringMatrix);
     }
 }

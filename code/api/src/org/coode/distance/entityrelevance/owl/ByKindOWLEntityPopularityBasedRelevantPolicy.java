@@ -227,12 +227,12 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
         }
     }
 
-    final AbstractRankingRelevancePolicy<OWLEntity> owlClassesPopularityRanking;
-    final AbstractRankingRelevancePolicy<OWLEntity> owlObjectPropertiesPopularityRanking;
-    final AbstractRankingRelevancePolicy<OWLEntity> owlDataPropertiesPopularityRanking;
-    final AbstractRankingRelevancePolicy<OWLEntity> owlAnnotationPropertiesPopularityRanking;
-    final AbstractRankingRelevancePolicy<OWLEntity> owlNamedIndividualsPopularityRanking;
-    final AbstractRankingRelevancePolicy<OWLEntity> owlDatatypesPopularityRanking;
+    protected final AbstractRankingRelevancePolicy<OWLEntity> owlClassesPopularityRanking;
+    protected final AbstractRankingRelevancePolicy<OWLEntity> owlObjectPropertiesPopularityRanking;
+    protected final AbstractRankingRelevancePolicy<OWLEntity> owlDataPropertiesPopularityRanking;
+    protected final AbstractRankingRelevancePolicy<OWLEntity> owlAnnotationPropertiesPopularityRanking;
+    protected final AbstractRankingRelevancePolicy<OWLEntity> owlNamedIndividualsPopularityRanking;
+    protected final AbstractRankingRelevancePolicy<OWLEntity> owlDatatypesPopularityRanking;
 
     /** @param objects
      *            objects

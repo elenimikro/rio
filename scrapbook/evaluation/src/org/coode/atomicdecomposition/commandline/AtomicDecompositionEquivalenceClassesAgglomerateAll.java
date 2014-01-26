@@ -25,18 +25,18 @@ public class AtomicDecompositionEquivalenceClassesAgglomerateAll extends Agglome
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void main(final String[] args) throws OWLOntologyCreationException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
         AtomicDecompositionEquivalenceClassesAgglomerateAll agglomerator = new AtomicDecompositionEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
-    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
         Utility.print1(clusteringMatrix);
     }
 
     @Override
-    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
+    public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
         return new AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance(
                 manager.getOntologies(), manager.getOWLDataFactory(), manager);
     }

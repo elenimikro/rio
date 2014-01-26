@@ -43,9 +43,9 @@ public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OW
      *            ontologies
      * @param map
      *            map */
-    public AtomicDecompositionRelevancePolicyNEW(final OWLAxiom axiom,
-            final OWLDataFactory dataFactory, final Collection<OWLOntology> ontologies,
-            final OWLAtomicDecompositionMap map) {
+    public AtomicDecompositionRelevancePolicyNEW(OWLAxiom axiom,
+            OWLDataFactory dataFactory, Collection<OWLOntology> ontologies,
+            OWLAtomicDecompositionMap map) {
         if (axiom == null) {
             throw new NullPointerException("The axiom cannot be null");
         }
@@ -69,7 +69,7 @@ public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OW
     }
 
     @Override
-    public boolean isRelevant(final OWLEntity object) {
+    public boolean isRelevant(OWLEntity object) {
         return relevance.isRelevant(object);
     }
 

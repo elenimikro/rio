@@ -134,8 +134,8 @@ public class ClusteringGUI extends JFrame {
          *            start
          * @param filter
          *            filter */
-        public Agglomerator(final ClusteringProximityMatrix<OWLEntity> start,
-                final PairFilter<Collection<? extends OWLEntity>> filter) {
+        public Agglomerator(ClusteringProximityMatrix<OWLEntity> start,
+                PairFilter<Collection<? extends OWLEntity>> filter) {
             if (start == null) {
                 throw new NullPointerException("The start cannot be null");
             }
@@ -198,7 +198,7 @@ public class ClusteringGUI extends JFrame {
         }
     }
 
-    private final class SaveClustering extends AbstractAction {
+    private class SaveClustering extends AbstractAction {
         private static final long serialVersionUID = 7419620562572349981L;
 
         /** default constructor */
@@ -207,7 +207,7 @@ public class ClusteringGUI extends JFrame {
         }
 
         @Override
-        public void actionPerformed(final ActionEvent arg0) {
+        public void actionPerformed(ActionEvent arg0) {
             FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save",
                     FileDialog.SAVE);
             dialog.setVisible(true);
@@ -252,7 +252,7 @@ public class ClusteringGUI extends JFrame {
         }
     }
 
-    private final class SaveAction extends AbstractAction {
+    private class SaveAction extends AbstractAction {
         public SaveAction() {
             super("Save");
         }
@@ -260,7 +260,7 @@ public class ClusteringGUI extends JFrame {
         private static final long serialVersionUID = -6759993806728785589L;
 
         @Override
-        public void actionPerformed(final ActionEvent arg0) {
+        public void actionPerformed(ActionEvent arg0) {
             FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save",
                     FileDialog.SAVE);
             dialog.setVisible(true);
@@ -284,13 +284,12 @@ public class ClusteringGUI extends JFrame {
         }
     }
 
-    private final class ClusteringTableCellRenderer implements TableCellRenderer {
+    private class ClusteringTableCellRenderer implements TableCellRenderer {
         public ClusteringTableCellRenderer() {}
 
         @Override
-        public Component getTableCellRendererComponent(final JTable table,
-                final Object value, final boolean isSelected, final boolean hasFocus,
-                final int row, final int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
             DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
             Pair<Collection<? extends OWLEntity>> minimumDistancePair = clusteringMatrix
                     .getMinimumDistancePair();
@@ -316,7 +315,7 @@ public class ClusteringGUI extends JFrame {
             return toReturn;
         }
 
-        protected String render(final Object object) {
+        protected String render(Object object) {
             String toReturn = object.toString();
             if (object instanceof OWLEntity) {
                 toReturn = shortFormProvider.getShortForm((OWLEntity) object);
@@ -348,7 +347,7 @@ public class ClusteringGUI extends JFrame {
 
     /** @param iris
      *            iris */
-    public ClusteringGUI(final Collection<? extends IRI> iris) {
+    public ClusteringGUI(Collection<? extends IRI> iris) {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
         }
@@ -369,7 +368,7 @@ public class ClusteringGUI extends JFrame {
     private void reset() {
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
             @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
+            public int compare(OWLEntity o1, OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
             }
@@ -382,7 +381,7 @@ public class ClusteringGUI extends JFrame {
         // ByKindOWLEntityPopularityBasedRelevantPolicy policy = new
         // ByKindOWLEntityPopularityBasedRelevantPolicy(
         // entities, this.manager.getOntologies());
-        // final Distance<OWLEntity> distance = new AxiomBasedDistance(
+        // Distance<OWLEntity> distance = new AxiomBasedDistance(
         // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
         // policy, this.manager);
         final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
@@ -402,8 +401,8 @@ public class ClusteringGUI extends JFrame {
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
             @Override
-            public double getDistance(final Collection<? extends OWLEntity> a,
-                    final Collection<? extends OWLEntity> b) {
+            public double getDistance(Collection<? extends OWLEntity> a,
+                    Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
             }
         };
@@ -415,7 +414,7 @@ public class ClusteringGUI extends JFrame {
         updateGUI();
         reduceButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(final ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 Reducer reducer = new Reducer();
                 glassPane.setMessage("Reducing...");
                 glassPane.setVisible(true);
@@ -424,11 +423,10 @@ public class ClusteringGUI extends JFrame {
         });
         agglomerateButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(final ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
                     @Override
-                    protected boolean stop(
-                            final ClusteringProximityMatrix<OWLEntity> matrix) {
+                    protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
                         return true;
                     }
                 };
@@ -439,11 +437,10 @@ public class ClusteringGUI extends JFrame {
         });
         agglomerateAllZerosButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(final ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
                     @Override
-                    protected boolean stop(
-                            final ClusteringProximityMatrix<OWLEntity> matrix) {
+                    protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
                         return matrix.getMinimumDistancePair() == null
                                 || matrix.getMinimumDistance() > 0;
                     }
@@ -455,11 +452,10 @@ public class ClusteringGUI extends JFrame {
         });
         agglomerateAllButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(final ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
                     @Override
-                    protected boolean stop(
-                            final ClusteringProximityMatrix<OWLEntity> matrix) {
+                    protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
                         return matrix.getMinimumDistancePair() == null
                                 || !getFilter().accept(
                                         matrix.getMinimumDistancePair().getFirst(),
@@ -544,7 +540,7 @@ public class ClusteringGUI extends JFrame {
                 new ListSelectionListener() {
                     @Override
                     @SuppressWarnings("unchecked")
-                    public void valueChanged(final ListSelectionEvent e) {
+                    public void valueChanged(ListSelectionEvent e) {
                         int selectedRow = clusterStatisticsTable.getSelectedRow();
                         Object valueAt = selectedRow == -1 ? null
                                 : clusterStatisticsTable.getModel().getValueAt(
@@ -582,7 +578,7 @@ public class ClusteringGUI extends JFrame {
      *            objects
      * @return column names */
     public List<String> getColumnNames(
-            final Collection<? extends Collection<? extends OWLEntity>> objects) {
+            Collection<? extends Collection<? extends OWLEntity>> objects) {
         List<String> columnNames = new ArrayList<String>(objects.size());
         columnNames.add("*");
         for (Collection<? extends OWLEntity> entities : objects) {
@@ -598,7 +594,7 @@ public class ClusteringGUI extends JFrame {
 
     /** @param args
      *            args */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         List<IRI> iris = new ArrayList<IRI>(args.length);
         for (String string : args) {
             if (string.startsWith("http")) {

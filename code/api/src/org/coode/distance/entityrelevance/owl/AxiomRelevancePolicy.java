@@ -31,7 +31,7 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
      *            replacedAxiom
      * @param axiomMap
      *            axiomMap */
-    public AxiomRelevancePolicy(final OWLAxiom replacedAxiom, final AxiomMap axiomMap) {
+    public AxiomRelevancePolicy(OWLAxiom replacedAxiom, AxiomMap axiomMap) {
         relevance = AbstractRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom, axiomMap));
     }
@@ -46,7 +46,7 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
         final Map<OWLEntity, AtomicInteger> entityMap = axiomMap.get(replacedAxiom);
         Metric<OWLEntity> m = new Metric<OWLEntity>() {
             @Override
-            public double getValue(final OWLEntity object) {
+            public double getValue(OWLEntity object) {
                 AtomicInteger value = entityMap.get(object);
                 double d = 0;
                 if (value != null) {
@@ -67,7 +67,7 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
     }
 
     @Override
-    public boolean isRelevant(final OWLEntity object) {
+    public boolean isRelevant(OWLEntity object) {
         return relevance.isRelevant(object);
     }
 }

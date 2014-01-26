@@ -14,7 +14,7 @@
 package org.coode.proximitymatrix;
 
 /** @author Luigi Iannone */
-public final class LanceWilliamsFormula {
+public class LanceWilliamsFormula {
     private final double alphaA;
     private final double alphaB;
     private final double beta;

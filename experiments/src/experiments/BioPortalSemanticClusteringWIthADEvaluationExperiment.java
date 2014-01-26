@@ -100,7 +100,7 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends
             System.out
                     .println("\n PopularityClusteringWithADEvaluationExperiment.main() \t "
                             + s);
-            final String substring = s.substring(s.lastIndexOf("/") + 1);
+            String substring = s.substring(s.lastIndexOf("/") + 1);
             String filename = RESULTS_BASE + substring.replaceAll(".owl", ".csv");
             System.out
                     .println("BioPortalSyntacticClusteringWIthADEvaluationExperiment.setupClusteringExperiment() "

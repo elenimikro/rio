@@ -5,7 +5,7 @@ public class SparseMatrixFactory {
     /** @param size
      *            size
      * @return sparse matrix */
-    public static SparseMatrix create(final int size) {
+    public static SparseMatrix create(int size) {
         // if (size > 2000) {
         // return new SparseMatrixImpl(size);
         // }
@@ -15,7 +15,7 @@ public class SparseMatrixFactory {
     /** @param m
      *            m
      * @return sparse matrix */
-    public static SparseMatrix create(final SparseMatrix m) {
+    public static SparseMatrix create(SparseMatrix m) {
         // if (m.length() > 2000) {
         // return new SparseMatrixImpl((SparseMatrixImpl) m);
         // }

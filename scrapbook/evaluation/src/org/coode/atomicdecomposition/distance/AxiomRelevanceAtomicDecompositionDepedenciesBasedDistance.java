@@ -55,7 +55,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
     protected OWLAtomicDecompositionMap atomicMap;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance.this
                     .buildOntologySignature();
@@ -66,7 +66,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
         }
     };
 
-    protected void buildAxiomEntityMap(final Collection<? extends OWLOntology> ontos) {
+    protected void buildAxiomEntityMap(Collection<? extends OWLOntology> ontos) {
         Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         for (OWLOntology ontology : ontos) {
@@ -94,8 +94,8 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
      * @param manager
      *            manager */
     public AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance(
-            final Collection<? extends OWLOntology> ontologies,
-            final OWLDataFactory dataFactory, final OWLOntologyManager manager) {
+            Collection<? extends OWLOntology> ontologies, OWLDataFactory dataFactory,
+            OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
@@ -116,7 +116,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
     }
 
     @Override
-    public double getDistance(final OWLEntity a, final OWLEntity b) {
+    public double getDistance(OWLEntity a, OWLEntity b) {
         double toReturn = a.equals(b) ? 0 : 1;
         if (toReturn == 1) {
             Set<OWLAxiom> axiomsForA = getAxioms(a);
@@ -140,7 +140,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
     }
 
     @Override
-    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cached);
@@ -149,7 +149,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
     /** @param owlEntity
      *            owlEntity
      * @return axioms */
-    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+    protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         OPPLFactory factory = new OPPLFactory(getOntologyManger(), ontologies.iterator()
@@ -159,7 +159,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
                     axiom, getDataFactory(), ontologies, atomicMap);
             RelevancePolicyOWLObjectGeneralisation replacer = new RelevancePolicyOWLObjectGeneralisation(
                     Utils.toOWLObjectRelevancePolicy(policy), getEntityProvider());
-            final ConstraintSystem cs = factory.createConstraintSystem();
+            ConstraintSystem cs = factory.createConstraintSystem();
             replacer.setConstraintSystem(cs);
             replacer.getVariableProvider().setConstraintSystem(cs);
             ((SingleOWLEntityReplacementVariableProvider) replacer.getVariableProvider())
@@ -173,7 +173,7 @@ public class AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance implement
                 .get(owlEntity));
     }
 
-    protected boolean isRelevant(final OWLAxiom replaced) {
+    protected boolean isRelevant(OWLAxiom replaced) {
         Set<OWLEntity> signature = replaced.getSignature();
         boolean found = false;
         Iterator<OWLEntity> iterator = signature.iterator();

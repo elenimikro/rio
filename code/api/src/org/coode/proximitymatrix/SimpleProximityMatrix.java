@@ -31,7 +31,7 @@ import org.coode.pair.filter.PairFilter;
 /** @author eleni
  * @param <O>
  *            type */
-public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
+public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     private final SparseMatrix delegate;
     private final List<O> objects = new ArrayList<O>();
     private final Comparator<? super Pair<O>> comparator;
@@ -48,9 +48,8 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
      *            filter
      * @param comparator
      *            comparator */
-    public SimpleProximityMatrix(final Collection<? extends O> objects,
-            final SparseMatrix distances, final PairFilter<O> filter,
-            final Comparator<? super Pair<O>> comparator) {
+    public SimpleProximityMatrix(Collection<? extends O> objects, SparseMatrix distances,
+            PairFilter<O> filter, Comparator<? super Pair<O>> comparator) {
         if (objects == null) {
             throw new NullPointerException("The object colleciton cannot be null");
         }
@@ -75,7 +74,7 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         this.objects.addAll(objects);
         this.filter = filter;
         this.objectIndex = new HashMap<O, Integer>();
-        final int size = this.objects.size();
+        int size = this.objects.size();
         for (int i = 0; i < size; i++) {
             O object = this.objects.get(i);
             this.objectIndex.put(object, i);
@@ -101,16 +100,15 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
      *            objects
      * @param distance
      *            distance */
-    public SimpleProximityMatrix(final Collection<? extends O> objects,
-            final Distance<O> distance) {
+    public SimpleProximityMatrix(Collection<? extends O> objects, Distance<O> distance) {
         this(objects, distance, new PairFilter<O>() {
             @Override
-            public boolean accept(final O first, final O second) {
+            public boolean accept(O first, O second) {
                 return true;
             }
         }, new Comparator<Pair<O>>() {
             @Override
-            public int compare(final Pair<O> arg0, final Pair<O> arg1) {
+            public int compare(Pair<O> arg0, Pair<O> arg1) {
                 return arg0.hashCode() - arg1.hashCode();
             }
         });
@@ -124,9 +122,8 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
      *            filter
      * @param comparator
      *            comparator */
-    public SimpleProximityMatrix(final Collection<? extends O> objects,
-            final Distance<O> distance, final PairFilter<O> filter,
-            final Comparator<? super Pair<O>> comparator) {
+    public SimpleProximityMatrix(Collection<? extends O> objects, Distance<O> distance,
+            PairFilter<O> filter, Comparator<? super Pair<O>> comparator) {
         if (objects == null) {
             throw new NullPointerException("The object colleciton cannot be null");
         }
@@ -172,7 +169,7 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     }
 
     @Override
-    public ProximityMatrix<O> reduce(final PairFilter<O> f) {
+    public ProximityMatrix<O> reduce(PairFilter<O> f) {
         Set<O> reducedObjects = new HashSet<O>();
         Iterator<O> iterator = this.getObjects().iterator();
         boolean found = false;
@@ -191,7 +188,7 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         if (!reducedObjects.isEmpty()) {
             SparseMatrix newDistances = SparseMatrixFactory.create(reducedObjects.size());
             List<O> list = new ArrayList<O>(reducedObjects);
-            final int size = list.size();
+            int size = list.size();
             for (int i = 0; i < size; i++) {
                 O a = list.get(i);
                 for (int j = i + 1; j < size; j++) {
@@ -210,13 +207,13 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     }
 
     @Override
-    public final int getRowIndex(final O o) {
+    public int getRowIndex(O o) {
         Integer index = this.objectIndex.get(o);
         return index == null ? -1 : index;
     }
 
     @Override
-    public final int getColumnIndex(final O o) {
+    public int getColumnIndex(O o) {
         Integer index = this.objectIndex.get(o);
         return index == null ? -1 : index;
     }
@@ -228,7 +225,7 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     }
 
     @Override
-    public double getDistance(final O anObject, final O anotherObject) {
+    public double getDistance(O anObject, O anotherObject) {
         int row = this.getRowIndex(anObject);
         if (row == -1) {
             throw new IllegalArgumentException(String.format(
@@ -248,14 +245,14 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     }
 
     @Override
-    public int[] getColumns(final Pair<O> pair) {
+    public int[] getColumns(Pair<O> pair) {
         int[] cols = new int[] { getColumnIndex(pair.getFirst()),
                 getColumnIndex(pair.getSecond()) };
         return cols;
     }
 
     @Override
-    public int[] getRows(final Pair<O> pair) {
+    public int[] getRows(Pair<O> pair) {
         int[] rows = new int[] { getRowIndex(pair.getFirst()),
                 getRowIndex(pair.getSecond()) };
         return rows;
@@ -267,8 +264,7 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     }
 
     @Override
-    public double getDistance(final int row, final int column)
-            throws MatrixIndexException {
+    public double getDistance(int row, int column) throws MatrixIndexException {
         return this.delegate.get(row, column);
     }
 

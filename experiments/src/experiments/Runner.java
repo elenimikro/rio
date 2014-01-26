@@ -22,8 +22,8 @@ public class Runner {
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void main(final String[] args) throws OWLOntologyCreationException {
-        final String uri = "file://";
+    public static void main(String[] args) throws OWLOntologyCreationException {
+        String uri = "file://";
         String atomic1 = "atomic1";
         String atomic2 = "atomic2";
         // String wrapping = "popularity";
@@ -35,7 +35,7 @@ public class Runner {
         String current = atomic2;
         for (String s : input) {
             System.out.println("Runner.main() " + current + "\t" + s);
-            final String[] args2 = args(uri, baseFolder, current, s);
+            String[] args2 = args(uri, baseFolder, current, s);
             File f = new File(args2[0]);
             if (!f.exists()) {
                 AtomicDecompositionEquivalenceClassesAgglomerateAll.main(args2);
@@ -44,7 +44,7 @@ public class Runner {
         current = atomic1;
         for (String s : input) {
             System.out.println("Runner.main() " + current + "\t" + s);
-            final String[] args2 = args(uri, baseFolder, current, s);
+            String[] args2 = args(uri, baseFolder, current, s);
             File f = new File(args2[0]);
             if (!f.exists()) {
                 AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll
@@ -54,7 +54,7 @@ public class Runner {
         // current = structural;
         // for (String s : input) {
         // System.out.println("Runner.main() " + current + "\t" + s);
-        // final String[] args2 = args(uri, baseFolder, current, s);
+        // String[] args2 = args(uri, baseFolder, current, s);
         // File f = new File(args2[0]);
         // if (!f.exists()) {
         // StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll.main(args2);
@@ -63,7 +63,7 @@ public class Runner {
         // current = wrapping;
         // for (String s : input) {
         // System.out.println("Runner.main() " + current + "\t" + s);
-        // final String[] args2 = args(uri, baseFolder, current, s);
+        // String[] args2 = args(uri, baseFolder, current, s);
         // File f = new File(args2[0]);
         // if (!f.exists()) {
         // WrappingEquivalenceClassesAgglomerateAll.main(args2);
@@ -80,8 +80,7 @@ public class Runner {
      * @param s
      *            s
      * @return arguments */
-    public static String[] args(final String uri, final String base,
-            final String current, final String s) {
+    public static String[] args(String uri, String base, String current, String s) {
         return new String[] {
                 base + s.replace("/", "_").replace(".owl", "") + "_" + current
                         + "_results.xml", uri + base + s };

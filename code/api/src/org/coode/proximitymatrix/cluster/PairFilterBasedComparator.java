@@ -35,8 +35,8 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
      *            objects
      * @param distance
      *            distance */
-    private PairFilterBasedComparator(final PairFilter<O> filter,
-            final Collection<? extends O> objects, final Distance<O> distance) {
+    private PairFilterBasedComparator(PairFilter<O> filter,
+            Collection<? extends O> objects, Distance<O> distance) {
         if (filter == null) {
             throw new NullPointerException("The filter cannot be null");
         }
@@ -52,7 +52,7 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
     }
 
     @Override
-    public int compare(final Pair<O> o1, final Pair<O> o2) {
+    public int compare(Pair<O> o1, Pair<O> o2) {
         // System.out.println(new Exception().getStackTrace()[0] + "\t" + o1 +
         // "\t" + o2);
         double firstPairDistance = distance.getDistance(o1.getFirst(), o1.getSecond());
@@ -61,7 +61,7 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
         return difference != 0 ? difference : this.getScore(o1) - this.getScore(o2);
     }
 
-    private int getScore(final Pair<O> pair) {
+    private int getScore(Pair<O> pair) {
         Integer cached = scores.get(pair);
         if (cached == null) {
             O first = pair.getFirst();
@@ -92,8 +92,8 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
      * @param distance
      *            distance
      * @return comparator */
-    public static <P> PairFilterBasedComparator<P> build(final PairFilter<P> filter,
-            final Collection<? extends P> objects, final Distance<P> distance) {
+    public static <P> PairFilterBasedComparator<P> build(PairFilter<P> filter,
+            Collection<? extends P> objects, Distance<P> distance) {
         return new PairFilterBasedComparator<P>(filter, objects, distance);
     }
 }

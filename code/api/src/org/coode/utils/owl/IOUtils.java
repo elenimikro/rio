@@ -17,8 +17,8 @@ public class IOUtils {
      *            manager
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void loadIRIMappers(final Collection<IRI> iris,
-            final OWLOntologyManager manager) throws OWLOntologyCreationException {
+    public static void loadIRIMappers(Collection<IRI> iris, OWLOntologyManager manager)
+            throws OWLOntologyCreationException {
         for (IRI iri : iris) {
             URI uri = iri.toURI();
             System.out.println(uri);

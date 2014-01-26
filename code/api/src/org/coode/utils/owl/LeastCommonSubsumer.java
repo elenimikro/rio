@@ -45,7 +45,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      *            axiomProvider
      * @param defaultRoot
      *            defaultRoot */
-    public LeastCommonSubsumer(final OWLAxiomProvider axiomProvider, final R defaultRoot) {
+    public LeastCommonSubsumer(OWLAxiomProvider axiomProvider, R defaultRoot) {
         if (axiomProvider == null) {
             throw new NullPointerException("The axiom provider cannot be null");
         }
@@ -67,7 +67,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      * @param others
      *            others
      * @return subsumer */
-    public R get(final O anObject, final O anotherObject, final O... others) {
+    public R get(O anObject, O anotherObject, O... others) {
         List<O> list = new ArrayList<O>();
         list.add(anObject);
         list.add(anotherObject);
@@ -90,7 +90,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
     /** @param node
      *            node
      * @return parents */
-    public Set<R> getParents(final O node) {
+    public Set<R> getParents(O node) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
         }
@@ -119,7 +119,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      *            node
      * @param parent
      *            parent */
-    public void addParent(final O node, final R parent) {
+    public void addParent(O node, R parent) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
         }
@@ -131,7 +131,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      * @param parent
      *            parent
      * @return true if parent */
-    public boolean isParent(final O node, final R parent) {
+    public boolean isParent(O node, R parent) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
         }
@@ -147,7 +147,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      * @param parent
      *            parent
      * @return true if ancestor */
-    public boolean isAncestor(final O node, final R parent) {
+    public boolean isAncestor(O node, R parent) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
         }
@@ -191,7 +191,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      *            ancestor
      * @param c
      *            c */
-    public void removeDescendants(final R ancestor, final Collection<? extends O> c) {
+    public void removeDescendants(R ancestor, Collection<? extends O> c) {
         Iterator<? extends O> iterator = c.iterator();
         while (iterator.hasNext()) {
             O o = iterator.next();
@@ -205,7 +205,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      *            node
      * @param parents
      *            parents */
-    public void addAllParents(final O node, final Collection<? extends R> parents) {
+    public void addAllParents(O node, Collection<? extends R> parents) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
         }
@@ -228,7 +228,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      * @return lcs */
     @SuppressWarnings("unchecked")
     public static <T extends OWLObject> LeastCommonSubsumer<T, ?> build(
-            final Collection<? extends T> set, final OWLAxiomProvider axiomProvider,
+            Collection<? extends T> set, final OWLAxiomProvider axiomProvider,
             final OWLDataFactory dataFactory) {
         if (set == null) {
             throw new NullPointerException("The set cannot be null");
@@ -236,31 +236,31 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         T t = set.iterator().next();
         return t.accept(new OWLObjectVisitorExAdapter<LeastCommonSubsumer<T, ?>>(null) {
             @Override
-            public LeastCommonSubsumer<T, ?> visit(final OWLClass cls) {
+            public LeastCommonSubsumer<T, ?> visit(OWLClass cls) {
                 return (LeastCommonSubsumer<T, ?>) new OWLClassLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            public LeastCommonSubsumer<T, ?> visit(final OWLObjectProperty property) {
+            public LeastCommonSubsumer<T, ?> visit(OWLObjectProperty property) {
                 return (LeastCommonSubsumer<T, ?>) new OWLObjectPropertyLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            public LeastCommonSubsumer<T, ?> visit(final OWLDataProperty property) {
+            public LeastCommonSubsumer<T, ?> visit(OWLDataProperty property) {
                 return (LeastCommonSubsumer<T, ?>) new OWLDataPropertyLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            public LeastCommonSubsumer<T, ?> visit(final OWLNamedIndividual individual) {
+            public LeastCommonSubsumer<T, ?> visit(OWLNamedIndividual individual) {
                 return (LeastCommonSubsumer<T, ?>) new OWLNamedIndividualLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }
 
             @Override
-            public LeastCommonSubsumer<T, ?> visit(final OWLAnnotationProperty property) {
+            public LeastCommonSubsumer<T, ?> visit(OWLAnnotationProperty property) {
                 return (LeastCommonSubsumer<T, ?>) new OWLAnnotationPropertyLeastCommonSubsumer(
                         axiomProvider, dataFactory);
             }

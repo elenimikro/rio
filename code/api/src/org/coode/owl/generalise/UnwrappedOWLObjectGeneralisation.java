@@ -58,11 +58,10 @@ public class UnwrappedOWLObjectGeneralisation extends OWLObjectGeneralisation im
             Collection<? extends BindingNode> bindingNodes,
             ConstraintSystem constraintSystem) {
         super(bindingNodes, constraintSystem);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
-    public OWLClassExpression visit(final OWLObjectIntersectionOf desc) {
+    public OWLClassExpression visit(OWLObjectIntersectionOf desc) {
         Set<OWLClassExpression> operands = desc.getOperands();
         Set<OWLClassExpression> newOperands = new HashSet<OWLClassExpression>(
                 operands.size());

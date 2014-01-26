@@ -169,8 +169,6 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
     }
 
     protected static Set<OWLEntity> getSignatureWithoutProperties(OWLOntology o) {
-        // final SimpleShortFormProvider shortFormProvider = new
-        // SimpleShortFormProvider();
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
         // exclude all properties
         for (OWLOntology ontology : o.getImportsClosure()) {

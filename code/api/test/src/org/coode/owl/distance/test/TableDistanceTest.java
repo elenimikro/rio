@@ -12,7 +12,6 @@ package org.coode.owl.distance.test;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -33,10 +32,10 @@ import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
+import org.coode.utils.EntityComparator;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author eleni */
 @SuppressWarnings("javadoc")
@@ -45,18 +44,11 @@ public class TableDistanceTest extends TestCase {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
         final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
@@ -69,8 +61,8 @@ public class TableDistanceTest extends TestCase {
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
             @Override
-            public double getDistance(final Collection<? extends OWLEntity> a,
-                    final Collection<? extends OWLEntity> b) {
+            public double getDistance(Collection<? extends OWLEntity> a,
+                    Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
             }
         };
@@ -91,21 +83,14 @@ public class TableDistanceTest extends TestCase {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
-        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
                 ontologies, owlEntityReplacer, ontologyManager);
         SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                 entities, distance);
@@ -127,18 +112,11 @@ public class TableDistanceTest extends TestCase {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
         final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
@@ -153,8 +131,8 @@ public class TableDistanceTest extends TestCase {
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
             @Override
-            public double getDistance(final Collection<? extends OWLEntity> a,
-                    final Collection<? extends OWLEntity> b) {
+            public double getDistance(Collection<? extends OWLEntity> a,
+                    Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
             }
         };
@@ -182,18 +160,11 @@ public class TableDistanceTest extends TestCase {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         ontologyManager.getOWLDataFactory()));
         final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
@@ -208,8 +179,8 @@ public class TableDistanceTest extends TestCase {
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
             @Override
-            public double getDistance(final Collection<? extends OWLEntity> a,
-                    final Collection<? extends OWLEntity> b) {
+            public double getDistance(Collection<? extends OWLEntity> a,
+                    Collection<? extends OWLEntity> b) {
                 return distance.getDistance(a.iterator().next(), b.iterator().next());
             }
         };

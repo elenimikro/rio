@@ -12,25 +12,26 @@ package org.coode.owl.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /** @author eleni */
 public abstract class AbstractOWLAxiomProvider implements OWLAxiomProvider {
-	private final List<OWLAxiomsChangedListener> listeners = new ArrayList<OWLAxiomsChangedListener>();
+    private final List<OWLAxiomsChangedListener> listeners = new ArrayList<OWLAxiomsChangedListener>();
 
-	@Override
+    @Override
     public void addOWLAxiomsChangedListener(OWLAxiomsChangedListener l) {
-		if (l != null) {
-			this.listeners.add(l);
-		}
-	}
+        if (l != null) {
+            listeners.add(l);
+        }
+    }
 
-	@Override
+    @Override
     public void removeOWLAxiomsChangedListener(OWLAxiomsChangedListener l) {
-		this.listeners.remove(l);
-	}
+        listeners.remove(l);
+    }
 
-	protected final void notifyListeners() {
-		for (OWLAxiomsChangedListener l : this.listeners) {
-			l.axiomsChanged();
-		}
-	}
+    protected void notifyListeners() {
+        for (OWLAxiomsChangedListener l : listeners) {
+            l.axiomsChanged();
+        }
+    }
 }

@@ -90,7 +90,7 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
     }
 
     @Override
-    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cached);
@@ -99,7 +99,7 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
     /** @param owlEntity
      *            owlEntity
      * @return axioms */
-    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+    protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
             if (generalReplacer == null) {
@@ -109,7 +109,7 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer
                     .getVariableProvider()).setOWLObject(owlEntity);
-            final ConstraintSystem cs = factory.createConstraintSystem();
+            ConstraintSystem cs = factory.createConstraintSystem();
             generalReplacer.getVariableProvider().setConstraintSystem(cs);
             generalReplacer.setConstraintSystem(cs);
             OWLAxiom replaced = (OWLAxiom) axiom.accept(generalReplacer);
@@ -121,7 +121,7 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
                 .get(owlEntity));
     }
 
-    protected boolean isRelevant(final OWLAxiom replaced) {
+    protected boolean isRelevant(OWLAxiom replaced) {
         Set<OWLEntity> signature = replaced.getSignature();
         boolean found = false;
         Iterator<OWLEntity> iterator = signature.iterator();

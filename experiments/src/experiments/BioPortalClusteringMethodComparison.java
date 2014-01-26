@@ -80,10 +80,10 @@ public class BioPortalClusteringMethodComparison {
             ParserConfigurationException, SAXException, IOException,
             UnknownOWLOntologyException {
         File fout = new File(RESULTS_BASE + "bioportal_cluster_similarity_total.csv");
-        for (final String s : input) {
+        for (String s : input) {
             metrics.clear();
             List<SimpleMetric<?>> indi_metrics = new ArrayList<SimpleMetric<?>>();
-            final String substring = s.substring(s.lastIndexOf("/") + 1);
+            String substring = s.substring(s.lastIndexOf("/") + 1);
             File indi_file = new File(RESULTS_BASE + substring.replaceAll(".owl", ".txt"));
             String xmlname = RESULTS_BASE + "_popularity_" + "-"
                     + substring.replaceAll(".owl", ".xml");

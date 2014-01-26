@@ -35,12 +35,12 @@ public class DefaultTree implements Tree {
     }
 
     @Override
-    public final List<TreeNode<?>> findDepthFirst(final Object o) {
+    public List<TreeNode<?>> findDepthFirst(Object o) {
         return this.findDepthFirst(getRoot(), Utils.getUserObjectSearch(o));
     }
 
     @Override
-    public final List<TreeNode<?>> findDepthFirst(Tree.Search search) {
+    public List<TreeNode<?>> findDepthFirst(Tree.Search search) {
         if (search == null) {
             throw new NullPointerException("The search criteria cannot be null");
         }
@@ -48,7 +48,7 @@ public class DefaultTree implements Tree {
     }
 
     @Override
-    public final List<TreeNode<?>> findDepthFirst(TreeNode<?> start, Tree.Search search) {
+    public List<TreeNode<?>> findDepthFirst(TreeNode<?> start, Tree.Search search) {
         if (start == null) {
             throw new NullPointerException("The search root node cannot be null");
         }
@@ -84,8 +84,7 @@ public class DefaultTree implements Tree {
     }
 
     @Override
-    public boolean findAllDepthFirst(final Object object,
-            List<List<TreeNode<?>>> solutions) {
+    public boolean findAllDepthFirst(Object object, List<List<TreeNode<?>>> solutions) {
         if (solutions == null) {
             throw new NullPointerException("The solution list cannot be null");
         }

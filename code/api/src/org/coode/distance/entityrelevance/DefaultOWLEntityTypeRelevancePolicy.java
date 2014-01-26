@@ -20,8 +20,7 @@ import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author Luigi Iannone */
-public final class DefaultOWLEntityTypeRelevancePolicy implements
-        RelevancePolicy<OWLEntity> {
+public class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolicy<OWLEntity> {
     // private EntityType<?> type;
     private final Set<EntityType<?>> types = new HashSet<EntityType<?>>();
     private final boolean relevant;

@@ -1,6 +1,5 @@
 package org.coode.basetest;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -12,6 +11,7 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -22,7 +22,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author eleni */
 public class ClusteringHelper {
@@ -35,14 +34,7 @@ public class ClusteringHelper {
             OWLOntologyManager m = o.getOWLOntologyManager();
             AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
                     .createStructuralAxiomRelevanceAxiomBasedDistance(m);
-            final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-            Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-                @Override
-                public int compare(final OWLEntity o1, final OWLEntity o2) {
-                    return shortFormProvider.getShortForm(o1).compareTo(
-                            shortFormProvider.getShortForm(o2));
-                }
-            });
+            Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
             for (OWLOntology ontology : m.getOntologies()) {
                 entities.addAll(ontology.getSignature());
             }
@@ -61,14 +53,7 @@ public class ClusteringHelper {
             OWLOntologyManager m = o.getOWLOntologyManager();
             AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
                     .createOWLEntityRelevanceAxiomBasedDistance(m);
-            final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-            Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-                @Override
-                public int compare(final OWLEntity o1, final OWLEntity o2) {
-                    return shortFormProvider.getShortForm(o1).compareTo(
-                            shortFormProvider.getShortForm(o2));
-                }
-            });
+            Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
             for (OWLOntology ontology : o.getImportsClosure()) {
                 for (OWLEntity e : ontology.getSignature()) {
                     if (!e.isType(EntityType.OBJECT_PROPERTY)
@@ -111,14 +96,7 @@ public class ClusteringHelper {
                     .createAxiomRelevanceAxiomBasedDistance(m);
             // XXX: remove next comment
             System.out.println("Distance was created...");
-            final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-            Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-                @Override
-                public int compare(final OWLEntity o1, final OWLEntity o2) {
-                    return shortFormProvider.getShortForm(o1).compareTo(
-                            shortFormProvider.getShortForm(o2));
-                }
-            });
+            Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
             for (OWLOntology ontology : m.getOntologies()) {
                 entities.addAll(ontology.getSignature());
             }

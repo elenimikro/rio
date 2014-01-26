@@ -48,10 +48,9 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
      *            axiomMap
      * @param entityAtomDependencies
      *            entityAtomDependencies */
-    public AtomicDecompositionRelevancePolicy(final OWLAxiom axiom,
-            final OWLDataFactory dataFactory,
-            final Collection<? extends OWLOntology> ontologies, final AxiomMap axiomMap,
-            final MultiMap<OWLEntity, Atom> entityAtomDependencies) {
+    public AtomicDecompositionRelevancePolicy(OWLAxiom axiom, OWLDataFactory dataFactory,
+            Collection<? extends OWLOntology> ontologies, AxiomMap axiomMap,
+            MultiMap<OWLEntity, Atom> entityAtomDependencies) {
         if (axiom == null) {
             throw new NullPointerException("The axiom cannot be null");
         }
@@ -82,10 +81,9 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
     }
 
     private AbstractRanking<OWLEntity> buildRanking() {
-        // final OWLAxiom replaced = (OWLAxiom) getAxiom().accept(replacer);
         Metric<OWLEntity> m = new Metric<OWLEntity>() {
             @Override
-            public double getValue(final OWLEntity object) {
+            public double getValue(OWLEntity object) {
                 double value = entityAtomDependencies.get(object).size();
                 // edit this metric and add the one for the atomic decomposition
                 // double total = entityAtomDependencies.getAllValues().size();
@@ -103,7 +101,7 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
     }
 
     @Override
-    public boolean isRelevant(final OWLEntity object) {
+    public boolean isRelevant(OWLEntity object) {
         return relevance.isRelevant(object);
     }
 

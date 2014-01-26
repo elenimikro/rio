@@ -40,7 +40,7 @@ public abstract class VariableProvider {
 
     /** @param entityProvider
      *            entityProvider */
-    public VariableProvider(final OWLEntityProvider entityProvider) {
+    public VariableProvider(OWLEntityProvider entityProvider) {
         if (entityProvider == null) {
             throw new NullPointerException("The entity provider cannot be null");
         }
@@ -50,7 +50,7 @@ public abstract class VariableProvider {
     /** @param owlObject
      *            owlObject
      * @return variable */
-    public Variable<?> get(final OWLObject owlObject) {
+    public Variable<?> get(OWLObject owlObject) {
         Variable<?> toReturn = cache.get(owlObject);
         if (toReturn == null) {
             VariableType<?> variableType = VariableTypeFactory.getVariableType(owlObject);
@@ -64,7 +64,7 @@ public abstract class VariableProvider {
 
     /** @param variableType
      *            variableType */
-    public void newVariable(final VariableType<?> variableType) {
+    public void newVariable(VariableType<?> variableType) {
         Integer integer = variableIndex.get(variableType);
         if (integer == null) {
             integer = 0;
@@ -80,12 +80,11 @@ public abstract class VariableProvider {
         }
     }
 
-    private String createName(final VariableType<?> variableType) {
+    private String createName(VariableType<?> variableType) {
         return String.format("?%s_%d", variableType.toString().toLowerCase(),
                 variableIndex.get(variableType).intValue());
     }
 
-    // protected abstract Variable<?> getAbstractingVariable(final IRI iri);
     protected abstract Variable<?> getAbstractingVariable(OWLObject owlObject);
 
     /** @return the constraintSystem */
@@ -98,7 +97,7 @@ public abstract class VariableProvider {
 
     /** @param cs
      *            cs */
-    public void setConstraintSystem(final ConstraintSystem cs) {
+    public void setConstraintSystem(ConstraintSystem cs) {
         constraintSystem = cs;
     }
 
@@ -113,32 +112,32 @@ public abstract class VariableProvider {
         while (!found && iterator.hasNext()) {
             owlObject = iterator.next();
             toReturn = owlObject.accept(new OWLObjectVisitorExAdapter<OWLObject>() {
-                private boolean matchEntity(final OWLEntity desc) {
+                private boolean matchEntity(OWLEntity desc) {
                     return desc.getIRI().equals(iri);
                 }
 
                 @Override
-                public OWLObject visit(final OWLClass desc) {
+                public OWLObject visit(OWLClass desc) {
                     return matchEntity(desc) ? desc : null;
                 }
 
                 @Override
-                public OWLObject visit(final OWLDataProperty property) {
+                public OWLObject visit(OWLDataProperty property) {
                     return matchEntity(property) ? property : null;
                 }
 
                 @Override
-                public OWLObject visit(final OWLObjectProperty property) {
+                public OWLObject visit(OWLObjectProperty property) {
                     return matchEntity(property) ? property : null;
                 }
 
                 @Override
-                public OWLObject visit(final OWLAnnotationProperty property) {
+                public OWLObject visit(OWLAnnotationProperty property) {
                     return matchEntity(property) ? property : null;
                 }
 
                 @Override
-                public OWLObject visit(final OWLNamedIndividual individual) {
+                public OWLObject visit(OWLNamedIndividual individual) {
                     return matchEntity(individual) ? individual : null;
                 }
             });

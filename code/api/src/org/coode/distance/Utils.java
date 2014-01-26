@@ -23,7 +23,7 @@ public class Utils {
      *            distance
      * @return equivalence classes */
     public static <P> MultiMap<P, P> getEquivalenceClasses(
-            final Collection<? extends P> objects, final Distance<P> distance) {
+            Collection<? extends P> objects, Distance<P> distance) {
         MultiMap<P, P> toReturn = new MultiMap<P, P>();
         for (P p : objects) {
             boolean found = false;

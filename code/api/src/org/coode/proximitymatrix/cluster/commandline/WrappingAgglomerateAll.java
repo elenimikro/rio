@@ -13,7 +13,6 @@ package org.coode.proximitymatrix.cluster.commandline;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -34,6 +33,7 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -41,7 +41,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author eleni */
 public class WrappingAgglomerateAll extends AgglomeratorBase {
@@ -49,28 +48,21 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void main(final String[] args) throws OWLOntologyCreationException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
         WrappingAgglomerateAll agglomerator = new WrappingAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
-    public void run(final File outfile, final java.util.List<IRI> iris)
+    public void run(File outfile, java.util.List<IRI> iris)
             throws OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         IOUtils.loadIRIMappers(iris, manager);
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology ontology : manager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
-        final Distance<OWLEntity> distance = getDistance(manager);
+        Distance<OWLEntity> distance = getDistance(manager);
         final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                 entities, distance);
         System.out.println(String.format(
@@ -81,8 +73,8 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
                         distanceMatrix.getObjects()),
                 new Distance<DistanceTableObject<OWLEntity>>() {
                     @Override
-                    public double getDistance(final DistanceTableObject<OWLEntity> a,
-                            final DistanceTableObject<OWLEntity> b) {
+                    public double getDistance(DistanceTableObject<OWLEntity> a,
+                            DistanceTableObject<OWLEntity> b) {
                         return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
                     }
                 });
@@ -93,8 +85,8 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
             @Override
             public double getDistance(
-                    final Collection<? extends DistanceTableObject<OWLEntity>> a,
-                    final Collection<? extends DistanceTableObject<OWLEntity>> b) {
+                    Collection<? extends DistanceTableObject<OWLEntity>> a,
+                    Collection<? extends DistanceTableObject<OWLEntity>> b) {
                 return wrappedMatrix
                         .getDistance(a.iterator().next(), b.iterator().next());
             }
@@ -129,23 +121,23 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
     }
 
     @Override
-    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+    public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                 manager.getOWLDataFactory(), new ReplacementByKindStrategy(
                         manager.getOWLDataFactory()));
-        final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
+        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
                 manager.getOntologies(), owlEntityReplacer, manager);
         return distance;
     }
 
     @Override
-    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
         Utility.print(clusteringMatrix);
     }
 
     private static <P> Set<Cluster<P>> buildClusters(
-            final ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
-            final ProximityMatrix<P> distanceMatrix) {
+            ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
+            ProximityMatrix<P> distanceMatrix) {
         Collection<Collection<? extends DistanceTableObject<P>>> objects = clusteringMatrix
                 .getObjects();
         Set<Cluster<P>> toReturn = new HashSet<Cluster<P>>(objects.size());

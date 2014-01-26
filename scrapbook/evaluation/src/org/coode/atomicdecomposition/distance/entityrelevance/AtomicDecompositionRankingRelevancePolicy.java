@@ -19,7 +19,7 @@ import org.coode.metrics.AbstractRanking;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author eleni */
-public final class AtomicDecompositionRankingRelevancePolicy implements
+public class AtomicDecompositionRankingRelevancePolicy implements
         RelevancePolicy<OWLEntity> {
     private final AbstractRanking<OWLEntity> ranking;
     private final double standardDeviation;
@@ -42,7 +42,6 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
         // zeta = getZeta(sampleSize);
         upperLimit = computeUpperLimit();
         lowerLimit = computeLowerLimit();
-        // this.anyRelenant = ranking.getTopValue() < this.getLowerLimit();
     }
 
     private double computeUpperLimit() {
@@ -63,7 +62,7 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
     /** @param sample
      *            sample
      * @return zeta */
-    public static double getZeta(final int sample) {
+    public static double getZeta(int sample) {
         if (sample <= 2) {
             return 4.303d;
         }
@@ -116,11 +115,11 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
         // return isRelevant;
     }
 
-    private final int computeSampleSize() {
+    private int computeSampleSize() {
         return getRanking().computeSampleSize();
     }
 
-    private final double computeMean() {
+    private double computeMean() {
         return getRanking().getAverageValue();
     }
 

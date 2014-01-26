@@ -53,7 +53,7 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         }
 
         @Override
-        public Variable<?> visit(final IRI iri) {
+        public Variable<?> visit(IRI iri) {
             OWLObject owlEntity = _this.getOWLEntity(iri);
             return owlEntity != null ? owlEntity.accept(this) : null;
         }
@@ -68,8 +68,7 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
      * @param entityProvider
      *            entityProvider */
     public SingleOWLEntityReplacementVariableProvider(
-            final RelevancePolicy<OWLEntity> relevancePolicy,
-            final OWLEntityProvider entityProvider) {
+            RelevancePolicy<OWLEntity> relevancePolicy, OWLEntityProvider entityProvider) {
         super(entityProvider);
         if (relevancePolicy == null) {
             throw new NullPointerException("The relevance policy cannot be null");
@@ -86,22 +85,21 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         return object.accept(abstracter);
     }
 
-    Variable<?> getVariable(final OWLObject object) {
+    Variable<?> getVariable(OWLObject object) {
         Variable<?> toReturn = null;
         VariableType<?> variableType = VariableTypeFactory.getVariableType(object);
         if (variableType != null) {
             toReturn = variableType.accept(new VariableTypeVisitorEx<Variable<?>>() {
                 @Override
                 public Variable<?> visitCLASSVariableType(
-                        final CLASSVariableType classVariableType) {
+                        CLASSVariableType classVariableType) {
                     return createVariable("?owlClass", classVariableType);
                 }
 
                 /** @param type
                  *            type
                  * @return variable */
-                protected Variable<?> createVariable(final String name,
-                        final VariableType<?> type) {
+                protected Variable<?> createVariable(String name, VariableType<?> type) {
                     try {
                         return SingleOWLEntityReplacementVariableProvider.this
                                 .getConstraintSystem().createVariableWithVerifiedName(
@@ -114,35 +112,33 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
 
                 @Override
                 public Variable<?> visitOBJECTPROPERTYVariableType(
-                        final OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                        OBJECTPROPERTYVariableType objectpropertyVariableType) {
                     return createVariable("?owlObjectproperty",
                             objectpropertyVariableType);
                 }
 
                 @Override
                 public Variable<?> visitDATAPROPERTYVariableType(
-                        final DATAPROPERTYVariableType datapropertyVariableType) {
+                        DATAPROPERTYVariableType datapropertyVariableType) {
                     return createVariable("?owlDatatypeProperty",
                             datapropertyVariableType);
                 }
 
                 @Override
                 public Variable<?> visitINDIVIDUALVariableType(
-                        final INDIVIDUALVariableType individualVariableType) {
+                        INDIVIDUALVariableType individualVariableType) {
                     return createVariable("?owlIndividual", individualVariableType);
                 }
 
                 @Override
                 public Variable<?> visitCONSTANTVariableType(
-                        final CONSTANTVariableType constantVariableType) {
+                        CONSTANTVariableType constantVariableType) {
                     return createVariable("?owlLiteral", constantVariableType);
                 }
 
                 @Override
-                public
-                        Variable<?>
-                        visitANNOTATIONPROPERTYVariableType(
-                                final ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                public Variable<?> visitANNOTATIONPROPERTYVariableType(
+                        ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
                     return createVariable("?owlAnnotationProperty",
                             annotationpropertyVariableType);
                 }

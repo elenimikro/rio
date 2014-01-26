@@ -15,7 +15,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
 
     /** @param size
      *            size */
-    public SparseMatrixSmallSize(final int size) {
+    public SparseMatrixSmallSize(int size) {
         this.size = size;
         matrix = new double[size][size];
         for (int i = 0; i < size; i++) {
@@ -27,7 +27,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
 
     /** @param m
      *            m */
-    public SparseMatrixSmallSize(final SparseMatrixSmallSize m) {
+    public SparseMatrixSmallSize(SparseMatrixSmallSize m) {
         this(m.length());
         System.arraycopy(m.matrix, 0, matrix, 0, m.matrix.length);
     }
@@ -38,7 +38,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     }
 
     @Override
-    public double get(final int _i, final int _j) {
+    public double get(int _i, int _j) {
         if (_i < size && _j < size) {
             // int i = _i < _j ? _i : _j;
             // int j = _i < _j ? _j : _i;
@@ -49,14 +49,14 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     }
 
     @Override
-    public double get(final Object i, final Object j) {
+    public double get(Object i, Object j) {
         return get(getPosition(i), getPosition(j));
     }
 
     /** @param i
      *            i
      * @return position */
-    public int getPosition(final Object i) {
+    public int getPosition(Object i) {
         Integer index = objectIndex.get(i);
         if (index == -1) {
             throw new IllegalArgumentException(String.format(
@@ -66,7 +66,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     }
 
     @Override
-    public void set(final int _i, final int _j, final double d) {
+    public void set(int _i, int _j, double d) {
         // System.out.println("SparseMatrixSmallSize.set() " + _i + "\t" + _j +
         // "\t" + d);
         if (_i < size && _j < size) {
@@ -80,7 +80,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     }
 
     @Override
-    public void printLine(final int i, final PrintWriter out) {
+    public void printLine(int i, PrintWriter out) {
         MathContext mathContext = new MathContext(2);
         for (int j = 0; j < size; j++) {
             out.print(String.format("\t%s", new BigDecimal(get(i, j), mathContext)));
@@ -90,7 +90,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     /** @param i
      *            i
      * @return row */
-    public double[] getRow(final int i) {
+    public double[] getRow(int i) {
         double[] row = new double[size];
         for (int j = 0; j < size; j++) {
             row[j] = get(i, j);
@@ -99,7 +99,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     }
 
     @Override
-    public void setKeys(final Collection<?> objects) {
+    public void setKeys(Collection<?> objects) {
         for (Object o : objects) {
             objectIndex.put(o, objectIndex.size());
         }

@@ -40,22 +40,22 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     final Set<OWLAxiom> axiomsDelegate = new HashSet<OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(final List<? extends OWLOntologyChange> changes)
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
                 throws OWLException {
             for (OWLOntologyChange change : changes) {
                 change.accept(new OWLOntologyChangeVisitor() {
                     @Override
-                    public void visit(final RemoveOntologyAnnotation c) {
+                    public void visit(RemoveOntologyAnnotation c) {
                         // Do Nothing
                     }
 
                     @Override
-                    public void visit(final AddOntologyAnnotation c) {
+                    public void visit(AddOntologyAnnotation c) {
                         // Do Nothing
                     }
 
                     @Override
-                    public void visit(final RemoveImport c) {
+                    public void visit(RemoveImport c) {
                         OWLOntology ontology = c.getOntology();
                         Set<OWLAxiom> axioms = ontology.getAxioms();
                         for (OWLAxiom axiom : axioms) {
@@ -65,7 +65,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                     }
 
                     @Override
-                    public void visit(final AddImport c) {
+                    public void visit(AddImport c) {
                         OWLOntology ontology = c.getOntology();
                         Set<OWLAxiom> axioms = ontology.getAxioms();
                         for (OWLAxiom axiom : axioms) {
@@ -75,12 +75,12 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                     }
 
                     @Override
-                    public void visit(final SetOntologyID c) {
+                    public void visit(SetOntologyID c) {
                         // Do Nothing
                     }
 
                     @Override
-                    public void visit(final RemoveAxiom c) {
+                    public void visit(RemoveAxiom c) {
                         OWLAxiom axiom = c.getAxiom();
                         boolean found = false;
                         // search for the removed axiom in ontologies other than
@@ -102,7 +102,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                     }
 
                     @Override
-                    public void visit(final AddAxiom c) {
+                    public void visit(AddAxiom c) {
                         OWLAxiom axiom = c.getAxiom();
                         // no need to check references, just add to the delegate
                         // set
@@ -120,8 +120,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
 
     /** @param ontologyManager
      *            ontologyManager */
-    public OWLOntologyManagerBasedOWLAxiomProvider(
-            final OWLOntologyManager ontologyManager) {
+    public OWLOntologyManagerBasedOWLAxiomProvider(OWLOntologyManager ontologyManager) {
         if (ontologyManager == null) {
             throw new NullPointerException("The manager cannot be null");
         }
@@ -163,12 +162,12 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
 
     // Delegate methods
     @Override
-    public boolean add(final OWLAxiom e) {
+    public boolean add(OWLAxiom e) {
         return axiomsDelegate.add(e);
     }
 
     @Override
-    public boolean addAll(final Collection<? extends OWLAxiom> c) {
+    public boolean addAll(Collection<? extends OWLAxiom> c) {
         return axiomsDelegate.addAll(c);
     }
 
@@ -178,17 +177,17 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     }
 
     @Override
-    public boolean contains(final Object o) {
+    public boolean contains(Object o) {
         return axiomsDelegate.contains(o);
     }
 
     @Override
-    public boolean containsAll(final Collection<?> c) {
+    public boolean containsAll(Collection<?> c) {
         return axiomsDelegate.containsAll(c);
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         return axiomsDelegate.equals(o);
     }
 
@@ -208,17 +207,17 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     }
 
     @Override
-    public boolean remove(final Object o) {
+    public boolean remove(Object o) {
         return axiomsDelegate.remove(o);
     }
 
     @Override
-    public boolean removeAll(final Collection<?> c) {
+    public boolean removeAll(Collection<?> c) {
         return axiomsDelegate.removeAll(c);
     }
 
     @Override
-    public boolean retainAll(final Collection<?> c) {
+    public boolean retainAll(Collection<?> c) {
         return axiomsDelegate.retainAll(c);
     }
 
@@ -233,7 +232,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     }
 
     @Override
-    public <T> T[] toArray(final T[] a) {
+    public <T> T[] toArray(T[] a) {
         return axiomsDelegate.toArray(a);
     }
 }

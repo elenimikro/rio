@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -42,13 +41,13 @@ import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.proximitymatrix.cluster.commandline.Utility;
 import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
+import org.coode.utils.EntityComparator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.w3c.dom.Document;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
@@ -64,10 +63,7 @@ public class PopularityBasedDistanceClusteringSlice {
      *            args
      * @throws Exception
      *             Exception */
-    // private final static String nci_iri =
-    // "profiling_ontologies/nci-2012.owl.xml";
-    // private final static String obi_iri = "profiling_ontologies/obi.owl";
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         File ontologyList = new File(args[0]);
         BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(
                 ontologyList)));
@@ -91,22 +87,14 @@ public class PopularityBasedDistanceClusteringSlice {
                 // System.out.println("PopularityDistanceSlice.main() Ontology "
                 // + onto.getOntologyID() + " was loaded");
                 System.out.println(line + " " + new Date());
-                final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-                final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+                OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                         manager.getOWLDataFactory(), new ReplacementByKindStrategy(
                                 manager.getOWLDataFactory()));
-                final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+                AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
                         onto.getImportsClosure(), owlEntityReplacer, manager);
                 // System.out
                 // .println("PopularityDistanceSlice.main() Distance measure was built");
-                Set<OWLEntity> entities = new TreeSet<OWLEntity>(
-                        new Comparator<OWLEntity>() {
-                            @Override
-                            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                                return shortFormProvider.getShortForm(o1).compareTo(
-                                        shortFormProvider.getShortForm(o2));
-                            }
-                        });
+                Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
                 for (OWLOntology o : onto.getImportsClosure()) {
                     Set<OWLEntity> signature = o.getSignature();
                     for (OWLEntity e : signature) {
@@ -129,22 +117,15 @@ public class PopularityBasedDistanceClusteringSlice {
                 MultiMap<OWLEntity, OWLEntity> equivalenceClasses = org.coode.distance.Utils
                         .getEquivalenceClasses(entities, distance);
                 entities = new HashSet<OWLEntity>(equivalenceClasses.keySet());
-                // System.out
-                // .println("PopularityDistanceSlice.main() building distanceMatrix...");
                 final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
                         entities, distance);
-                // System.out.println(String.format(
-                // "Finished computing distance between %d entities",
-                // distanceMatrix
-                // .getObjects().size()));
                 final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix = new SimpleProximityMatrix<DistanceTableObject<OWLEntity>>(
                         DistanceTableObject.createDistanceTableObjectSet(distance,
                                 distanceMatrix.getObjects()),
                         new Distance<DistanceTableObject<OWLEntity>>() {
                             @Override
-                            public double getDistance(
-                                    final DistanceTableObject<OWLEntity> a,
-                                    final DistanceTableObject<OWLEntity> b) {
+                            public double getDistance(DistanceTableObject<OWLEntity> a,
+                                    DistanceTableObject<OWLEntity> b) {
                                 return distanceMatrix.getDistance(a.getIndex(),
                                         b.getIndex());
                             }
@@ -156,8 +137,8 @@ public class PopularityBasedDistanceClusteringSlice {
                 Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
                     @Override
                     public double getDistance(
-                            final Collection<? extends DistanceTableObject<OWLEntity>> a,
-                            final Collection<? extends DistanceTableObject<OWLEntity>> b) {
+                            Collection<? extends DistanceTableObject<OWLEntity>> a,
+                            Collection<? extends DistanceTableObject<OWLEntity>> b) {
                         return wrappedMatrix.getDistance(a.iterator().next().getIndex(),
                                 b.iterator().next().getIndex());
                     }
@@ -186,8 +167,8 @@ public class PopularityBasedDistanceClusteringSlice {
                 // i, clusteringMatrix.getObjects().size()));
                 // file for saving results
                 File outfile = new File(saveTo);
-                final Set<Cluster<OWLEntity>> buildClusters = buildClusters(
-                        clusteringMatrix, distanceMatrix);
+                Set<Cluster<OWLEntity>> buildClusters = buildClusters(clusteringMatrix,
+                        distanceMatrix);
                 System.out.println(line + " " + new Date());
                 save(buildClusters, manager, outfile);
                 // , Utility.unwrapHistory(clusteringMatrix.getHistory())
@@ -200,26 +181,11 @@ public class PopularityBasedDistanceClusteringSlice {
                 e.printStackTrace(System.out);
             }
         }
-        // System.out.println("correct? " + correct);
     }
 
-    // private static String render(
-    // final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
-    // Formatter out = new Formatter();
-    // Iterator<? extends DistanceTableObject<OWLEntity>> iterator =
-    // cluster.iterator();
-    // while (iterator.hasNext()) {
-    // ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new
-    // ManchesterOWLSyntaxOWLObjectRendererImpl();
-    // OWLEntity owlEntity = iterator.next().getObject();
-    // out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", "
-    // : "");
-    // }
-    // return out.toString();
-    // }
     private static <P> Set<Cluster<P>> buildClusters(
-            final ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
-            final ProximityMatrix<P> distanceMatrix) {
+            ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
+            ProximityMatrix<P> distanceMatrix) {
         Collection<Collection<? extends DistanceTableObject<P>>> objects = clusteringMatrix
                 .getObjects();
         Set<Cluster<P>> toReturn = new HashSet<Cluster<P>>(objects.size());
@@ -231,8 +197,8 @@ public class PopularityBasedDistanceClusteringSlice {
     }
 
     private static <P extends OWLEntity> void save(
-            final Collection<? extends Cluster<P>> clusters,
-            final OWLOntologyManager manager, final File file) {
+            Collection<? extends Cluster<P>> clusters, OWLOntologyManager manager,
+            File file) {
         try {
             OWLOntology ontology = manager.getOntologies().iterator().next();
             OPPLFactory factory = new OPPLFactory(manager, ontology, null);

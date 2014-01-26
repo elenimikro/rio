@@ -26,19 +26,19 @@ public class StructuralVariableProvider extends VariableProvider {
      *            entityProvider
      * @param constraintSystem
      *            constraintSystem */
-    public StructuralVariableProvider(final OWLEntityProvider entityProvider,
-            final ConstraintSystem constraintSystem) {
+    public StructuralVariableProvider(OWLEntityProvider entityProvider,
+            ConstraintSystem constraintSystem) {
         super(entityProvider);
         setConstraintSystem(constraintSystem);
     }
 
     @Override
-    protected Variable<?> getAbstractingVariable(final OWLObject owlObject) {
+    protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
         VariableType<?> type = owlObject
                 .accept(new OWLObjectVisitorExAdapter<VariableType<?>>(
                         VariableTypeFactory.getVariableType(owlObject)) {
                     @Override
-                    public VariableType<?> visit(final IRI iri) {
+                    public VariableType<?> visit(IRI iri) {
                         OWLObject owlEntity = StructuralVariableProvider.this
                                 .getOWLEntity(iri);
                         return owlEntity != null ? VariableTypeFactory

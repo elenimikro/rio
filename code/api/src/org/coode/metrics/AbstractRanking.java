@@ -240,14 +240,14 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
 
     private final Comparator<RankingSlot<T>> sorter = new Comparator<RankingSlot<T>>() {
         @Override
-        public int compare(final RankingSlot<T> arg0, final RankingSlot<T> arg1) {
+        public int compare(RankingSlot<T> arg0, RankingSlot<T> arg1) {
             return (int) Math.signum(arg0.getValue() - arg1.getValue());
         }
     };
     private List<RankingSlot<T>> sortedList = null;
 
     @Override
-    public final List<RankingSlot<T>> getSortedRanking() {
+    public List<RankingSlot<T>> getSortedRanking() {
         if (sortedList == null) {
             List<RankingSlot<T>> list = getUnorderedRanking();
             Collections.sort(list, sorter);
@@ -257,7 +257,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
     }
 
     @Override
-    public final List<RankingSlot<T>> getUnorderedRanking() {
+    public List<RankingSlot<T>> getUnorderedRanking() {
         return null;
     }
 
@@ -272,7 +272,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
 
     /** @return average */
     public double computeAverage() {
-        final int size = dmap.size;
+        int size = dmap.size;
         if (size == 0) {
             return 0D;
         }
@@ -284,13 +284,12 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
     }
 
     /** @return sample size */
-    public final int computeSampleSize() {
+    public int computeSampleSize() {
         return dmap.addOccurrences();
     }
 
     /** @return mean */
-    public final double computeMean() {
-        // final int size = dmap.size;
+    public double computeMean() {
         int counter = dmap.addOccurrences();
         if (counter == 0) {
             return 0;

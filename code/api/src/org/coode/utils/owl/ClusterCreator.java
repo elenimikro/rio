@@ -57,8 +57,8 @@ public class ClusterCreator {
                         distanceMatrix.getObjects()),
                 new Distance<DistanceTableObject<OWLEntity>>() {
                     @Override
-                    public double getDistance(final DistanceTableObject<OWLEntity> a,
-                            final DistanceTableObject<OWLEntity> b) {
+                    public double getDistance(DistanceTableObject<OWLEntity> a,
+                            DistanceTableObject<OWLEntity> b) {
                         return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
                     }
                 });
@@ -69,8 +69,8 @@ public class ClusterCreator {
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
             @Override
             public double getDistance(
-                    final Collection<? extends DistanceTableObject<OWLEntity>> a,
-                    final Collection<? extends DistanceTableObject<OWLEntity>> b) {
+                    Collection<? extends DistanceTableObject<OWLEntity>> a,
+                    Collection<? extends DistanceTableObject<OWLEntity>> b) {
                 return wrappedMatrix
                         .getDistance(a.iterator().next(), b.iterator().next());
             }
@@ -89,7 +89,7 @@ public class ClusterCreator {
             <P extends OWLEntity>
             Set<Cluster<OWLEntity>>
             runClustering(
-                    final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix,
+                    SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix,
                     PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter,
                     Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance,
                     Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects,
@@ -206,8 +206,8 @@ public class ClusterCreator {
                         distanceMatrix.getObjects()),
                 new Distance<DistanceTableObject<OWLEntity>>() {
                     @Override
-                    public double getDistance(final DistanceTableObject<OWLEntity> a,
-                            final DistanceTableObject<OWLEntity> b) {
+                    public double getDistance(DistanceTableObject<OWLEntity> a,
+                            DistanceTableObject<OWLEntity> b) {
                         return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
                     }
                 });
@@ -218,8 +218,8 @@ public class ClusterCreator {
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
             @Override
             public double getDistance(
-                    final Collection<? extends DistanceTableObject<OWLEntity>> a,
-                    final Collection<? extends DistanceTableObject<OWLEntity>> b) {
+                    Collection<? extends DistanceTableObject<OWLEntity>> a,
+                    Collection<? extends DistanceTableObject<OWLEntity>> b) {
                 return wrappedMatrix
                         .getDistance(a.iterator().next(), b.iterator().next());
             }
@@ -236,7 +236,7 @@ public class ClusterCreator {
 
     /** @param cm
      *            cm */
-    public void print(final ClusteringProximityMatrix<?> cm) {
+    public void print(ClusteringProximityMatrix<?> cm) {
         Utility.print1(cm);
     }
 

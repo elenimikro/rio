@@ -17,7 +17,6 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +34,7 @@ import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
 import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.proximitymatrix.ProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -53,7 +53,7 @@ public class ProximityMatrixGUI extends JFrame {
 
     /** @param iris
      *            iris */
-    public ProximityMatrixGUI(final Collection<? extends IRI> iris) {
+    public ProximityMatrixGUI(Collection<? extends IRI> iris) {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
         }
@@ -69,14 +69,8 @@ public class ProximityMatrixGUI extends JFrame {
     }
 
     private void reset() {
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology ontology : manager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
@@ -115,7 +109,7 @@ public class ProximityMatrixGUI extends JFrame {
 
     /** @param args
      *            args */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         List<IRI> iris = new ArrayList<IRI>(args.length);
         for (String string : args) {
             iris.add(IRI.create(string));

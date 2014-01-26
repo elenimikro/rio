@@ -39,8 +39,8 @@ public class AtomicDecompositionMetric implements Metric<OWLEntity> {
      *            ontologies
      * @param map
      *            map */
-    public AtomicDecompositionMetric(final Collection<OWLOntology> ontologies,
-            final OWLAtomicDecompositionMap map) {
+    public AtomicDecompositionMetric(Collection<OWLOntology> ontologies,
+            OWLAtomicDecompositionMap map) {
         if (ontologies == null) {
             throw new NullPointerException("The ontology collection cannot be null");
         }
@@ -64,7 +64,7 @@ public class AtomicDecompositionMetric implements Metric<OWLEntity> {
      *            ontos
      * @return reverse indexing entity to set of mentioning axioms */
     public MultiMap<OWLEntity, OWLAxiom> getAxiomMap(
-            final Collection<? extends OWLOntology> ontos) {
+            Collection<? extends OWLOntology> ontos) {
         MultiMap<OWLEntity, OWLAxiom> toReturn = new MultiMap<OWLEntity, OWLAxiom>();
         for (OWLOntology ontology : ontos) {
             for (AxiomType<?> t : AxiomType.AXIOM_TYPES) {
@@ -81,7 +81,7 @@ public class AtomicDecompositionMetric implements Metric<OWLEntity> {
     /** @param ontos
      *            ontos
      * @return axioms */
-    public Set<OWLAxiom> getAxiomSet(final Collection<? extends OWLOntology> ontos) {
+    public Set<OWLAxiom> getAxiomSet(Collection<? extends OWLOntology> ontos) {
         Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
         for (OWLOntology ontology : ontos) {
             for (AxiomType<?> t : AxiomType.AXIOM_TYPES) {
@@ -92,14 +92,14 @@ public class AtomicDecompositionMetric implements Metric<OWLEntity> {
     }
 
     @Override
-    public double getValue(final OWLEntity object) {
+    public double getValue(OWLEntity object) {
         Double toReturn = cache.get(object);
         return toReturn == null ? computeValue(object,
                 atomsMap.getEntityAtomDependencies()) : toReturn;
     }
 
-    private double computeValue(final OWLEntity object,
-            final MultiMap<OWLEntity, Atom> entityAtomDependencies) {
+    private double computeValue(OWLEntity object,
+            MultiMap<OWLEntity, Atom> entityAtomDependencies) {
         double toReturn = entityAtomDependencies.get(object).size();
         double value = toReturn;
         cache.put(object, value);

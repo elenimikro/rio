@@ -47,11 +47,10 @@ import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 /** @author Eleni Mikroyannidi */
 public class AtomicDecompositionGeneralisationTreeBasedDistance implements
         AbstractAxiomBasedDistance {
-    private final class AxiomRelevanceMap extends AxiomRelevanceMapBase {
-        public AxiomRelevanceMap(final Collection<? extends OWLAxiom> axioms,
-                final OWLEntityProvider entityProvider,
-                final ConstraintSystem constraintSystem,
-                final AtomicDecomposition atomicDecomposition) {
+    private class AxiomRelevanceMap extends AxiomRelevanceMapBase {
+        public AxiomRelevanceMap(Collection<? extends OWLAxiom> axioms,
+                OWLEntityProvider entityProvider, ConstraintSystem constraintSystem,
+                AtomicDecomposition atomicDecomposition) {
             if (axioms == null) {
                 throw new NullPointerException("The axiom collection cannot be null");
             }
@@ -157,7 +156,7 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
     }
 
     @Override
-    public double getDistance(final OWLEntity a, final OWLEntity b) {
+    public double getDistance(OWLEntity a, OWLEntity b) {
         double toReturn = a.equals(b) ? 0 : 1;
         if (toReturn == 1) {
             Set<OWLAxiom> axiomsForA = getAxioms(a);
@@ -181,7 +180,7 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
     }
 
     @Override
-    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cached);
@@ -190,14 +189,14 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
     /** @param owlEntity
      *            owlEntity
      * @return axioms */
-    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+    protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         OPPLFactory factory = new OPPLFactory(getOntologyManger(), ontology, null);
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             RelevancePolicy<OWLEntity> policy = CollectionBasedRelevantPolicy
                     .allOf(getRelevantEntities(axiom));
-            final ConstraintSystem cs = factory.createConstraintSystem();
+            ConstraintSystem cs = factory.createConstraintSystem();
             RelevancePolicyOWLObjectGeneralisation replacer = new RelevancePolicyOWLObjectGeneralisation(
                     policy, getEntityProvider());
             replacer.setConstraintSystem(cs);
@@ -213,11 +212,11 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
                 .get(owlEntity));
     }
 
-    private Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
+    private Collection<OWLEntity> getRelevantEntities(OWLAxiom axiom) {
         return axiomRelevanceMap.getRelevantEntities(axiom);
     }
 
-    protected boolean isRelevant(final OWLAxiom replaced) {
+    protected boolean isRelevant(OWLAxiom replaced) {
         Set<OWLEntity> signature = replaced.getSignature();
         boolean found = false;
         Iterator<OWLEntity> iterator = signature.iterator();

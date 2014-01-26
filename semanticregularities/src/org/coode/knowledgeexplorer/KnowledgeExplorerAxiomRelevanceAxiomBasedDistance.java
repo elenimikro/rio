@@ -87,7 +87,7 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
      * @param explorer
      *            explorer */
     public KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(OWLOntology ontology,
-            final OWLEntityReplacer replacer, KnowledgeExplorer explorer) {
+            OWLEntityReplacer replacer, KnowledgeExplorer explorer) {
         if (replacer == null) {
             throw new NullPointerException("The replacer cannot be null");
         }
@@ -102,7 +102,7 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
     }
 
     @Override
-    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
         Set<OWLAxiom> cached = (Set<OWLAxiom>) cache.get(owlEntity);
         if (cached.isEmpty()) {
             cached = computeAxiomsForEntity(owlEntity);
@@ -113,7 +113,7 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
     /** @param owlEntity
      *            owlEntity
      * @return axioms */
-    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+    protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             // RelevancePolicyOWLObjectGeneralisation generalReplacer = new
             // RelevancePolicyOWLObjectGeneralisation(
@@ -131,7 +131,7 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer
                     .getVariableProvider()).setOWLObject(owlEntity);
-            final ConstraintSystem cs = factory.createConstraintSystem();
+            ConstraintSystem cs = factory.createConstraintSystem();
             generalReplacer.getVariableProvider().setConstraintSystem(cs);
             generalReplacer.setConstraintSystem(cs);
             OWLAxiom replaced = (OWLAxiom) axiom.accept(generalReplacer);
@@ -144,7 +144,7 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
         return collection;
     }
 
-    protected boolean isRelevant(final OWLAxiom replaced) {
+    protected boolean isRelevant(OWLAxiom replaced) {
         Set<OWLEntity> signature = replaced.getSignature();
         boolean found = false;
         Iterator<OWLEntity> iterator = signature.iterator();

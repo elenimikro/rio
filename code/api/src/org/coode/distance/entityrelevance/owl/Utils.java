@@ -28,30 +28,30 @@ public class Utils {
             final RelevancePolicy<OWLEntity> policy) {
         return new RelevancePolicy<OWLEntity>() {
             @Override
-            public boolean isRelevant(final OWLEntity object) {
+            public boolean isRelevant(OWLEntity object) {
                 return object.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
                     @Override
-                    public Boolean visit(final OWLClass desc) {
+                    public Boolean visit(OWLClass desc) {
                         return policy.isRelevant(desc);
                     }
 
                     @Override
-                    public Boolean visit(final OWLAnnotationProperty property) {
+                    public Boolean visit(OWLAnnotationProperty property) {
                         return policy.isRelevant(property);
                     }
 
                     @Override
-                    public Boolean visit(final OWLDataProperty property) {
+                    public Boolean visit(OWLDataProperty property) {
                         return policy.isRelevant(property);
                     }
 
                     @Override
-                    public Boolean visit(final OWLObjectProperty property) {
+                    public Boolean visit(OWLObjectProperty property) {
                         return policy.isRelevant(property);
                     }
 
                     @Override
-                    public Boolean visit(final OWLNamedIndividual individual) {
+                    public Boolean visit(OWLNamedIndividual individual) {
                         return policy.isRelevant(individual);
                     }
                 });

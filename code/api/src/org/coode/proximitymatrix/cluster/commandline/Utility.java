@@ -51,9 +51,8 @@ public class Utility {
 
     /** @param clusteringMatrix
      *            clusteringMatrix */
-    public static
-            void
-            print2(@SuppressWarnings("unused") final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public static void print2(
+            @SuppressWarnings("unused") ClusteringProximityMatrix<?> clusteringMatrix) {
         // System.out
         // .println(String.format(
         // "Next Pair %s %s %f",
@@ -68,9 +67,8 @@ public class Utility {
 
     /** @param clusteringMatrix
      *            clusteringMatrix */
-    public static
-            void
-            print1(@SuppressWarnings("unused") final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public static void print1(
+            @SuppressWarnings("unused") ClusteringProximityMatrix<?> clusteringMatrix) {
         // System.out
         // .println(String.format(
         // "Next Pair %s %s %f",

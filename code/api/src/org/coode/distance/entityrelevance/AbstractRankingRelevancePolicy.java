@@ -18,15 +18,15 @@ import org.coode.metrics.AbstractRanking;
 /** @author eleni
  * @param <T>
  *            type */
-public final class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
+public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
     private final AbstractRanking<T> ranking;
     private final double standardDeviation;
     private final double mean;
     private final Map<T, Boolean> cache = new HashMap<T, Boolean>();
     private final boolean anyRelenant;
     private final int sampleSize;
-    final double upperLimit;
-    final double lowerLimit;
+    protected final double upperLimit;
+    protected final double lowerLimit;
 
     /*
      * From http://onlinestatbook.com/chapter8/mean.html 2 4.303 9.925 3 3.182
@@ -36,7 +36,7 @@ public final class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<
     /** @param sample
      *            sample
      * @return zeta */
-    public static double getZeta(final int sample) {
+    public static double getZeta(int sample) {
         if (sample <= 2) {
             return 4.303d;
         }
@@ -66,7 +66,7 @@ public final class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<
 
     /** @param ranking
      *            ranking */
-    private AbstractRankingRelevancePolicy(final AbstractRanking<T> ranking) {
+    private AbstractRankingRelevancePolicy(AbstractRanking<T> ranking) {
         if (ranking == null) {
             throw new NullPointerException("The ranking cannot be null");
         }
@@ -136,7 +136,7 @@ public final class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<
      *            ranking
      * @return ranking relevance policy */
     public static <T> AbstractRankingRelevancePolicy<T>
-            getAbstractRankingRelevancePolicy(final AbstractRanking<T> ranking) {
+            getAbstractRankingRelevancePolicy(AbstractRanking<T> ranking) {
         return new AbstractRankingRelevancePolicy<T>(ranking);
     }
 

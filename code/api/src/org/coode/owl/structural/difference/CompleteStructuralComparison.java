@@ -115,8 +115,7 @@ final class CompleteStructuralComparison implements
      *            owlObject
      * @param position
      *            position */
-    public CompleteStructuralComparison(final OWLObject owlObject,
-            final List<Integer> position) {
+    public CompleteStructuralComparison(OWLObject owlObject, List<Integer> position) {
         if (owlObject == null) {
             throw new NullPointerException("The OWL Object cannot be null");
         }
@@ -140,7 +139,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLSubClassOfAxiom owlObject) {
+                            OWLSubClassOfAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getSubClass(),
                                 axiom.getSubClass()));
@@ -152,14 +151,14 @@ final class CompleteStructuralComparison implements
     }
 
     protected <O extends Collection<P>, P extends OWLObject>
-            List<StructuralDifferenceReport> compareCollection(final O aCollection,
-                    final O anotherCollection) {
+            List<StructuralDifferenceReport> compareCollection(O aCollection,
+                    O anotherCollection) {
         return this.compareCollection(aCollection, anotherCollection, 0);
     }
 
     protected <O extends Collection<P>, P extends OWLObject>
-            List<StructuralDifferenceReport> compareCollection(final O aCollection,
-                    final O anotherCollection, final int startIndex) {
+            List<StructuralDifferenceReport> compareCollection(O aCollection,
+                    O anotherCollection, int startIndex) {
         boolean sizeMatch = aCollection.size() == anotherCollection.size();
         List<StructuralDifferenceReport> toReturn = sizeMatch ? Collections
                 .<StructuralDifferenceReport> emptyList()
@@ -180,13 +179,12 @@ final class CompleteStructuralComparison implements
         return toReturn;
     }
 
-    protected List<StructuralDifferenceReport> compare(
-            final List<SimplePair<OWLObject>> pairs) {
+    protected List<StructuralDifferenceReport> compare(List<SimplePair<OWLObject>> pairs) {
         return this.compare(pairs, 0);
     }
 
-    protected List<StructuralDifferenceReport> compare(
-            final List<SimplePair<OWLObject>> pairs, int startIndex) {
+    protected List<StructuralDifferenceReport> compare(List<SimplePair<OWLObject>> pairs,
+            int startIndex) {
         Iterator<SimplePair<OWLObject>> iterator = pairs.iterator();
         StructuralDifference structDifference = new StructuralDifference(getPosition());
         List<StructuralDifferenceReport> toReturn = new ArrayList<StructuralDifferenceReport>();
@@ -207,7 +205,7 @@ final class CompleteStructuralComparison implements
                                 public
                                         void
                                         visitSomeDifferenceStructuralDifferenceReport(
-                                                final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
+                                                SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
                                     newPositions
                                             .addAll(someDifferenceStructuralDifferenceReport
                                                     .getPosition());
@@ -230,7 +228,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLNegativeDataPropertyAssertionAxiom owlObject) {
+                            OWLNegativeDataPropertyAssertionAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -251,7 +249,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLAsymmetricObjectPropertyAxiom owlObject) {
+                            OWLAsymmetricObjectPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -268,7 +266,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLAsymmetricObjectPropertyAxiom owlObject) {
+                            OWLAsymmetricObjectPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -284,7 +282,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDisjointClassesAxiom owlObject) {
+                            OWLDisjointClassesAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getClassExpressions(),
                                 axiom.getClassExpressions());
@@ -299,7 +297,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataPropertyDomainAxiom owlObject) {
+                            OWLDataPropertyDomainAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -318,7 +316,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectPropertyDomainAxiom owlObject) {
+                            OWLObjectPropertyDomainAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -337,7 +335,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLEquivalentObjectPropertiesAxiom owlObject) {
+                            OWLEquivalentObjectPropertiesAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getProperties(), axiom.getProperties());
                     }
@@ -352,7 +350,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLNegativeDataPropertyAssertionAxiom owlObject) {
+                            OWLNegativeDataPropertyAssertionAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -373,7 +371,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDifferentIndividualsAxiom owlObject) {
+                            OWLDifferentIndividualsAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getIndividuals(), axiom.getIndividuals());
                     }
@@ -388,7 +386,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDisjointDataPropertiesAxiom owlObject) {
+                            OWLDisjointDataPropertiesAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getProperties(), axiom.getProperties());
                     }
@@ -403,7 +401,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDisjointObjectPropertiesAxiom owlObject) {
+                            OWLDisjointObjectPropertiesAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getProperties(), axiom.getProperties());
                     }
@@ -418,7 +416,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectPropertyRangeAxiom owlObject) {
+                            OWLObjectPropertyRangeAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -437,7 +435,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectPropertyAssertionAxiom owlObject) {
+                            OWLObjectPropertyAssertionAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -458,7 +456,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLFunctionalObjectPropertyAxiom owlObject) {
+                            OWLFunctionalObjectPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -475,7 +473,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLSubObjectPropertyOfAxiom owlObject) {
+                            OWLSubObjectPropertyOfAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getSubProperty(),
                                 axiom.getSubProperty()));
@@ -493,7 +491,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDisjointUnionAxiom owlObject) {
+                            OWLDisjointUnionAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getClassExpressions(),
                                 axiom.getClassExpressions());
@@ -508,7 +506,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDeclarationAxiom owlObject) {
+                            OWLDeclarationAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getEntity(), axiom
                                 .getEntity()));
@@ -525,7 +523,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLAnnotationAssertionAxiom owlObject) {
+                            OWLAnnotationAssertionAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getSubject(), axiom
                                 .getSubject()));
@@ -544,7 +542,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLSymmetricObjectPropertyAxiom owlObject) {
+                            OWLSymmetricObjectPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -560,7 +558,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataPropertyRangeAxiom owlObject) {
+                            OWLDataPropertyRangeAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -579,7 +577,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLFunctionalDataPropertyAxiom owlObject) {
+                            OWLFunctionalDataPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -596,7 +594,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLEquivalentDataPropertiesAxiom owlObject) {
+                            OWLEquivalentDataPropertiesAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getProperties(), axiom.getProperties());
                     }
@@ -610,7 +608,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLClassAssertionAxiom owlObject) {
+                            OWLClassAssertionAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject
                                 .getClassExpression(), axiom.getClassExpression()));
@@ -628,7 +626,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLEquivalentClassesAxiom owlObject) {
+                            OWLEquivalentClassesAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getClassExpressions(),
                                 axiom.getClassExpressions());
@@ -644,7 +642,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataPropertyAssertionAxiom owlObject) {
+                            OWLDataPropertyAssertionAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -665,7 +663,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLTransitiveObjectPropertyAxiom owlObject) {
+                            OWLTransitiveObjectPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -682,7 +680,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLIrreflexiveObjectPropertyAxiom owlObject) {
+                            OWLIrreflexiveObjectPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -698,7 +696,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLSubDataPropertyOfAxiom owlObject) {
+                            OWLSubDataPropertyOfAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getSubProperty(),
                                 axiom.getSubProperty()));
@@ -717,7 +715,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLInverseFunctionalObjectPropertyAxiom owlObject) {
+                            OWLInverseFunctionalObjectPropertyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -733,7 +731,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLSameIndividualAxiom owlObject) {
+                            OWLSameIndividualAxiom owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getIndividuals(), axiom.getIndividuals());
                     }
@@ -747,7 +745,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLSubPropertyChainOfAxiom owlObject) {
+                            OWLSubPropertyChainOfAxiom owlObject) {
                         List<StructuralDifferenceReport> toReturn = CompleteStructuralComparison.this
                                 .compareCollection(owlObject.getPropertyChain(),
                                         axiom.getPropertyChain());
@@ -769,7 +767,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLInverseObjectPropertiesAxiom owlObject) {
+                            OWLInverseObjectPropertiesAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getFirstProperty(),
                                 axiom.getFirstProperty()));
@@ -786,8 +784,8 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final OWLHasKeyAxiom owlObject) {
+                    public List<StructuralDifferenceReport>
+                            visit(OWLHasKeyAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject
                                 .getClassExpression(), axiom.getClassExpression()));
@@ -808,7 +806,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDatatypeDefinitionAxiom owlObject) {
+                            OWLDatatypeDefinitionAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getDatatype(),
                                 axiom.getDatatype()));
@@ -825,8 +823,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport>
-                            visit(final SWRLRule owlObject) {
+                    public List<StructuralDifferenceReport> visit(SWRLRule owlObject) {
                         List<StructuralDifferenceReport> toReturn = CompleteStructuralComparison.this
                                 .compareCollection(owlObject.getHead(), rule.getHead());
                         toReturn.addAll(CompleteStructuralComparison.this
@@ -845,7 +842,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLSubAnnotationPropertyOfAxiom owlObject) {
+                            OWLSubAnnotationPropertyOfAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getSubProperty(),
                                 axiom.getSubProperty()));
@@ -864,7 +861,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLAnnotationPropertyDomainAxiom owlObject) {
+                            OWLAnnotationPropertyDomainAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -883,7 +880,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLAnnotationPropertyRangeAxiom owlObject) {
+                            OWLAnnotationPropertyRangeAxiom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(),
                                 axiom.getProperty()));
@@ -900,8 +897,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport>
-                            visit(final OWLClass owlObject) {
+                    public List<StructuralDifferenceReport> visit(OWLClass owlObject) {
                         return owlObject.equals(ce) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -918,7 +914,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectIntersectionOf owlObject) {
+                            OWLObjectIntersectionOf owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getOperands(), ce.getOperands());
                     }
@@ -932,7 +928,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectUnionOf owlObject) {
+                            OWLObjectUnionOf owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getOperands(), ce.getOperands());
                     }
@@ -946,7 +942,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectComplementOf owlObject) {
+                            OWLObjectComplementOf owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getOperand(), ce
                                 .getOperand()));
@@ -962,7 +958,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectSomeValuesFrom owlObject) {
+                            OWLObjectSomeValuesFrom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -980,7 +976,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectAllValuesFrom owlObject) {
+                            OWLObjectAllValuesFrom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -998,7 +994,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectHasValue owlObject) {
+                            OWLObjectHasValue owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1016,7 +1012,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectMinCardinality owlObject) {
+                            OWLObjectMinCardinality owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1046,7 +1042,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectExactCardinality owlObject) {
+                            OWLObjectExactCardinality owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1076,7 +1072,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectMaxCardinality owlObject) {
+                            OWLObjectMaxCardinality owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1106,7 +1102,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectHasSelf owlObject) {
+                            OWLObjectHasSelf owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1123,8 +1119,8 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final OWLObjectOneOf owlObject) {
+                    public List<StructuralDifferenceReport>
+                            visit(OWLObjectOneOf owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getIndividuals(), ce.getIndividuals());
                     }
@@ -1138,7 +1134,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataSomeValuesFrom owlObject) {
+                            OWLDataSomeValuesFrom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1156,7 +1152,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataAllValuesFrom owlObject) {
+                            OWLDataAllValuesFrom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1174,7 +1170,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataHasValue owlObject) {
+                            OWLDataHasValue owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1192,7 +1188,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataMinCardinality owlObject) {
+                            OWLDataMinCardinality owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1222,7 +1218,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataExactCardinality owlObject) {
+                            OWLDataExactCardinality owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1252,7 +1248,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataMaxCardinality owlObject) {
+                            OWLDataMaxCardinality owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), ce
                                 .getProperty()));
@@ -1281,8 +1277,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final OWLDatatype owlObject) {
+                    public List<StructuralDifferenceReport> visit(OWLDatatype owlObject) {
                         return node.equals(owlObject) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1299,7 +1294,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataComplementOf owlObject) {
+                            OWLDataComplementOf owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getDataRange(),
                                 node.getDataRange()));
@@ -1316,8 +1311,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final OWLDataOneOf owlObject) {
+                    public List<StructuralDifferenceReport> visit(OWLDataOneOf owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getValues(), node.getValues());
                     }
@@ -1331,7 +1325,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataIntersectionOf owlObject) {
+                            OWLDataIntersectionOf owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getOperands(), node.getOperands());
                     }
@@ -1344,8 +1338,8 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final OWLDataUnionOf owlObject) {
+                    public List<StructuralDifferenceReport>
+                            visit(OWLDataUnionOf owlObject) {
                         return CompleteStructuralComparison.this.compareCollection(
                                 owlObject.getOperands(), node.getOperands());
                     }
@@ -1359,7 +1353,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDatatypeRestriction owlObject) {
+                            OWLDatatypeRestriction owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getDatatype(), node
                                 .getDatatype()));
@@ -1379,8 +1373,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport>
-                            visit(final OWLLiteral literal) {
+                    public List<StructuralDifferenceReport> visit(OWLLiteral literal) {
                         return literal.equals(node) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1397,7 +1390,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLFacetRestriction owlObject) {
+                            OWLFacetRestriction owlObject) {
                         List<StructuralDifferenceReport> toReturn = owlObject.getFacet()
                                 .equals(node.getFacet()) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
@@ -1421,7 +1414,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectProperty owlObject) {
+                            OWLObjectProperty owlObject) {
                         return owlObject.equals(property) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1438,7 +1431,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLObjectInverseOf owlObject) {
+                            OWLObjectInverseOf owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject
                                 .getInverseProperty(), property.getInverseProperty()));
@@ -1454,7 +1447,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLDataProperty owlObject) {
+                            OWLDataProperty owlObject) {
                         return owlObject.equals(property) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1471,7 +1464,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLNamedIndividual owlObject) {
+                            OWLNamedIndividual owlObject) {
                         return owlObject.equals(individual) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1488,7 +1481,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLAnnotationProperty owlObject) {
+                            OWLAnnotationProperty owlObject) {
                         return owlObject.equals(property) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1504,8 +1497,8 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final OWLAnnotation owlObject) {
+                    public List<StructuralDifferenceReport>
+                            visit(OWLAnnotation owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getProperty(), node
                                 .getProperty()));
@@ -1522,7 +1515,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(final IRI owlObject) {
+                    public List<StructuralDifferenceReport> visit(IRI owlObject) {
                         return owlObject.equals(iri) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1540,7 +1533,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final OWLAnonymousIndividual owlObject) {
+                            OWLAnonymousIndividual owlObject) {
                         return owlObject.equals(individual) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(
@@ -1556,8 +1549,8 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final SWRLClassAtom owlObject) {
+                    public List<StructuralDifferenceReport>
+                            visit(SWRLClassAtom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getPredicate(),
                                 node.getPredicate()));
@@ -1575,7 +1568,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLDataRangeAtom owlObject) {
+                            SWRLDataRangeAtom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getPredicate(),
                                 node.getPredicate()));
@@ -1593,7 +1586,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLObjectPropertyAtom owlObject) {
+                            SWRLObjectPropertyAtom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getPredicate(),
                                 node.getPredicate()));
@@ -1613,7 +1606,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLDataPropertyAtom owlObject) {
+                            SWRLDataPropertyAtom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getPredicate(),
                                 node.getPredicate()));
@@ -1633,7 +1626,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLBuiltInAtom owlObject) {
+                            SWRLBuiltInAtom owlObject) {
                         List<StructuralDifferenceReport> toReturn = Collections
                                 .<StructuralDifferenceReport> emptyList();
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
@@ -1654,8 +1647,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final SWRLVariable owlObject) {
+                    public List<StructuralDifferenceReport> visit(SWRLVariable owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getIRI(), node
                                 .getIRI()));
@@ -1671,7 +1663,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLIndividualArgument owlObject) {
+                            SWRLIndividualArgument owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getIndividual(),
                                 node.getIndividual()));
@@ -1687,7 +1679,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLLiteralArgument owlObject) {
+                            SWRLLiteralArgument owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getLiteral(), node
                                 .getLiteral()));
@@ -1703,7 +1695,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLSameIndividualAtom owlObject) {
+                            SWRLSameIndividualAtom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getFirstArgument(),
                                 node.getFirstArgument()));
@@ -1722,7 +1714,7 @@ final class CompleteStructuralComparison implements
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
                     public List<StructuralDifferenceReport> visit(
-                            final SWRLDifferentIndividualsAtom owlObject) {
+                            SWRLDifferentIndividualsAtom owlObject) {
                         List<SimplePair<OWLObject>> pairs = new ArrayList<SimplePair<OWLObject>>();
                         pairs.add(new SimplePair<OWLObject>(owlObject.getFirstArgument(),
                                 node.getFirstArgument()));
@@ -1739,8 +1731,7 @@ final class CompleteStructuralComparison implements
                 new OWLObjectVisitorExAdapter<List<StructuralDifferenceReport>>(
                         Collections.<StructuralDifferenceReport> emptyList()) {
                     @Override
-                    public List<StructuralDifferenceReport> visit(
-                            final OWLOntology owlObject) {
+                    public List<StructuralDifferenceReport> visit(OWLOntology owlObject) {
                         return owlObject.equals(ontology) ? Collections
                                 .<StructuralDifferenceReport> emptyList()
                                 : new ArrayList<StructuralDifferenceReport>(

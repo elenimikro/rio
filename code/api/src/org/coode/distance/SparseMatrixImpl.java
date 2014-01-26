@@ -17,16 +17,16 @@ public class SparseMatrixImpl implements SparseMatrix {
 
     /** @param size
      *            size */
-    public SparseMatrixImpl(final int size) {
+    public SparseMatrixImpl(int size) {
         this.size = size;
     }
 
     /** @param m
      *            m */
-    public SparseMatrixImpl(final SparseMatrixImpl m) {
+    public SparseMatrixImpl(SparseMatrixImpl m) {
         size = m.length();
         for (Record r : m.matrix.keySet()) {
-            final Record copy = r.copy();
+            Record copy = r.copy();
             matrix.put(copy, copy);
         }
     }
@@ -34,7 +34,7 @@ public class SparseMatrixImpl implements SparseMatrix {
     /** @param i
      *            i
      * @return row */
-    public double[] getRow(final int i) {
+    public double[] getRow(int i) {
         double[] toReturn = new double[size];
         Arrays.fill(toReturn, 1D);
         for (Record r : matrix.values()) {
@@ -51,19 +51,13 @@ public class SparseMatrixImpl implements SparseMatrix {
     }
 
     @Override
-    public double get(final int _i, final int _j) {
+    public double get(int _i, int _j) {
         if (_i < size && _j < size) {
             if (_i == _j) {
                 return 0D;
             }
             int i = _i < _j ? _i : _j;
             int j = _i < _j ? _j : _i;
-            // double[] d=cache.get(i);
-            // if(d==null) {
-            // d=getRow(i);
-            // cache.put(i, d);
-            // }
-            // return d[j];
             key.i = i;// Math.min(i, j);
             key.j = j;// Math.max(i, j);
             Record value = matrix.get(key);
@@ -77,7 +71,7 @@ public class SparseMatrixImpl implements SparseMatrix {
     }
 
     @Override
-    public double get(final Object i, final Object j) {
+    public double get(Object i, Object j) {
         Integer index = objectIndex.get(i);
         int rowIndex = index == null ? -1 : index;
         if (rowIndex == -1) {
@@ -94,7 +88,7 @@ public class SparseMatrixImpl implements SparseMatrix {
     }
 
     @Override
-    public void set(final int _i, final int _j, final double d) {
+    public void set(int _i, int _j, double d) {
         if (_i < size && _j < size) {
             if (_i == _j) {
                 return;
@@ -118,7 +112,7 @@ public class SparseMatrixImpl implements SparseMatrix {
     }
 
     @Override
-    public void printLine(final int i, final PrintWriter out) {
+    public void printLine(int i, PrintWriter out) {
         MathContext mathContext = new MathContext(2);
         for (int j = 0; j < size; j++) {
             out.print(String.format("\t%s", new BigDecimal(get(i, j), mathContext)));
@@ -126,24 +120,24 @@ public class SparseMatrixImpl implements SparseMatrix {
     }
 
     @Override
-    public void setKeys(final Collection<?> objects) {
+    public void setKeys(Collection<?> objects) {
         for (Object o : objects) {
             objectIndex.put(o, objectIndex.size());
         }
     }
 
-    final static class Record {
+    static class Record {
         int i;
         int j;
         double value;
 
         @Override
-        public final int hashCode() {
+        public int hashCode() {
             return i << 16 + j;
         }
 
         @Override
-        public final boolean equals(final Object obj) {
+        public boolean equals(Object obj) {
             if (obj == this) {
                 return true;
             }

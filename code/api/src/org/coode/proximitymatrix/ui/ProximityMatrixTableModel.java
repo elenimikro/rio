@@ -31,8 +31,8 @@ public class ProximityMatrixTableModel implements TableModel {
      *            proximityMatrix
      * @param columnNames
      *            columnNames */
-    public ProximityMatrixTableModel(final ProximityMatrix<?> proximityMatrix,
-            final String[] columnNames) {
+    public ProximityMatrixTableModel(ProximityMatrix<?> proximityMatrix,
+            String[] columnNames) {
         if (proximityMatrix == null) {
             throw new NullPointerException("Proximity matrix cannot be null");
         }
@@ -42,14 +42,14 @@ public class ProximityMatrixTableModel implements TableModel {
     }
 
     @Override
-    public void addTableModelListener(final TableModelListener l) {
+    public void addTableModelListener(TableModelListener l) {
         if (l != null) {
             listeners.add(l);
         }
     }
 
     @Override
-    public Class<?> getColumnClass(final int i) {
+    public Class<?> getColumnClass(int i) {
         return Object.class;
     }
 
@@ -59,7 +59,7 @@ public class ProximityMatrixTableModel implements TableModel {
     }
 
     @Override
-    public String getColumnName(final int i) {
+    public String getColumnName(int i) {
         return columnNames[i];
     }
 
@@ -69,7 +69,7 @@ public class ProximityMatrixTableModel implements TableModel {
     }
 
     @Override
-    public Object getValueAt(final int row, final int column) {
+    public Object getValueAt(int row, int column) {
         Object toReturn = null;
         if (column == 0) {
             toReturn = columnNames[row + 1];
@@ -80,17 +80,17 @@ public class ProximityMatrixTableModel implements TableModel {
     }
 
     @Override
-    public boolean isCellEditable(final int arg0, final int arg1) {
+    public boolean isCellEditable(int arg0, int arg1) {
         return false;
     }
 
     @Override
-    public void removeTableModelListener(final TableModelListener l) {
+    public void removeTableModelListener(TableModelListener l) {
         listeners.remove(l);
     }
 
     @Override
-    public void setValueAt(final Object arg0, final int arg1, final int arg2) {
+    public void setValueAt(Object arg0, int arg1, int arg2) {
         // TODO Auto-generated method stub
     }
 

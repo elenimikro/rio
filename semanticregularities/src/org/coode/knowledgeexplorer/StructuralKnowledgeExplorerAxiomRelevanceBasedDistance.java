@@ -45,10 +45,9 @@ import org.semanticweb.owlapi.util.MultiMap;
 /** @author Luigi Iannone */
 public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
         AbstractAxiomBasedDistanceImpl {
-    protected final class AxiomRelevanceMap extends AxiomRelevanceMapBase {
-        public AxiomRelevanceMap(final Collection<? extends OWLAxiom> axioms,
-                final OWLEntityProvider entityProvider,
-                final ConstraintSystem constraintSystem) {
+    protected class AxiomRelevanceMap extends AxiomRelevanceMapBase {
+        public AxiomRelevanceMap(Collection<? extends OWLAxiom> axioms,
+                OWLEntityProvider entityProvider, ConstraintSystem constraintSystem) {
             if (axioms == null) {
                 throw new NullPointerException("The axiom collection cannot be null");
             }
@@ -80,7 +79,7 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
     private final AxiomRelevanceMap axiomRelevanceMap;
     private final OPPLFactory opplfactory;
 
-    private void buildAxiomEntityMap(final Set<OWLAxiom> set) {
+    private void buildAxiomEntityMap(Set<OWLAxiom> set) {
         for (OWLAxiom ax : set) {
             if (!ax.isOfType(AxiomType.DECLARATION)) {
                 for (OWLEntity e : ax.getSignature()) {
@@ -101,8 +100,8 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
      *            ontology
      * @param knowledgeExplorer
      *            knowledgeExplorer */
-    public StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
-            final OWLOntology ontology, final KnowledgeExplorer knowledgeExplorer) {
+    public StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(OWLOntology ontology,
+            KnowledgeExplorer knowledgeExplorer) {
         if (ontology == null) {
             throw new NullPointerException("The ontolgy canont be null");
         }
@@ -133,7 +132,7 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
     }
 
     @Override
-    public Set<OWLAxiom> getAxioms(final OWLEntity owlEntity) {
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
         return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cached);
@@ -142,7 +141,7 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
     /** @param owlEntity
      *            owlEntity
      * @return axioms */
-    protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
+    protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             RelevancePolicy<OWLEntity> policy = CollectionBasedRelevantPolicy
                     .allOf(getRelevantEntities(axiom));
@@ -154,7 +153,7 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer
                     .getVariableProvider()).setOWLObject(owlEntity);
-            final ConstraintSystem cs = opplfactory.createConstraintSystem();
+            ConstraintSystem cs = opplfactory.createConstraintSystem();
             generalReplacer.getVariableProvider().setConstraintSystem(cs);
             generalReplacer.setConstraintSystem(cs);
             OWLAxiom replaced = (OWLAxiom) axiom.accept(generalReplacer);
@@ -166,11 +165,11 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
                 .get(owlEntity));
     }
 
-    private Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
+    private Collection<OWLEntity> getRelevantEntities(OWLAxiom axiom) {
         return axiomRelevanceMap.getRelevantEntities(axiom);
     }
 
-    protected boolean isRelevant(final OWLAxiom replaced) {
+    protected boolean isRelevant(OWLAxiom replaced) {
         Set<OWLEntity> signature = replaced.getSignature();
         boolean found = false;
         Iterator<OWLEntity> iterator = signature.iterator();

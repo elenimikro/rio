@@ -72,8 +72,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
      *            constraintSystem
      * @param dataFactory
      *            dataFactory */
-    public InlineSetBuilder(final ConstraintSystem constraintSystem,
-            final OWLDataFactory dataFactory) {
+    public InlineSetBuilder(ConstraintSystem constraintSystem, OWLDataFactory dataFactory) {
         if (constraintSystem == null) {
             throw new NullPointerException("The constraint system cannot be null");
         }
@@ -90,9 +89,8 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
      *            dataFactory
      * @return inline builder */
     public static InlineSetBuilder<OWLObjectPropertyExpression>
-            getOWLObjectPropertyExpressionBuilder(
-                    final ConstraintSystem constraintSystem,
-                    final OWLDataFactory dataFactory) {
+            getOWLObjectPropertyExpressionBuilder(ConstraintSystem constraintSystem,
+                    OWLDataFactory dataFactory) {
         return new InlineSetBuilder<OWLObjectPropertyExpression>(constraintSystem,
                 dataFactory) {
             @Override
@@ -109,10 +107,9 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                             .getType()
                             .accept(new VariableTypeVisitorEx<InlineSet<OWLObjectPropertyExpression>>() {
                                 @Override
-                                public
-                                        InlineSet<OWLObjectPropertyExpression>
+                                public InlineSet<OWLObjectPropertyExpression>
                                         visitCLASSVariableType(
-                                                final CLASSVariableType classVariableType) {
+                                                CLASSVariableType classVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getOBJECTPROPERTYTypeVariableType(),
@@ -124,7 +121,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitOBJECTPROPERTYVariableType(
-                                                final OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                                                OBJECTPROPERTYVariableType objectpropertyVariableType) {
                                     // I am sure the type is
                                     // InlineSet<OWLObjectPropertyExpression>
                                     return (InlineSet<OWLObjectPropertyExpression>) buildVariableValuesInlineSet(
@@ -136,7 +133,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitDATAPROPERTYVariableType(
-                                                final DATAPROPERTYVariableType datapropertyVariableType) {
+                                                DATAPROPERTYVariableType datapropertyVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getOBJECTPROPERTYTypeVariableType(),
@@ -147,7 +144,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitINDIVIDUALVariableType(
-                                                final INDIVIDUALVariableType individualVariableType) {
+                                                INDIVIDUALVariableType individualVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getOBJECTPROPERTYTypeVariableType(),
@@ -158,7 +155,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitCONSTANTVariableType(
-                                                final CONSTANTVariableType constantVariableType) {
+                                                CONSTANTVariableType constantVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getOBJECTPROPERTYTypeVariableType(),
@@ -169,7 +166,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLObjectPropertyExpression>
                                         visitANNOTATIONPROPERTYVariableType(
-                                                final ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                                                ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getOBJECTPROPERTYTypeVariableType(),
@@ -182,13 +179,13 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
 
             @Override
             public InlineSet<OWLObjectPropertyExpression> visit(
-                    final OWLObjectInverseOf property) {
+                    OWLObjectInverseOf property) {
                 return this.generaliseObjectPropertyExpression(property);
             }
 
             private InlineSet<OWLObjectPropertyExpression>
                     generaliseObjectPropertyExpression(
-                            final OWLObjectPropertyExpression property) {
+                            OWLObjectPropertyExpression property) {
                 String name = "?expression";
                 Variable<?> variable = getConstraintSystem().getVariable(name);
                 int i = 1;
@@ -212,7 +209,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
      *            dataFactory
      * @return inline builder */
     public static InlineSetBuilder<OWLIndividual> getOWLIndividualBuilder(
-            final ConstraintSystem constraintSystem, final OWLDataFactory dataFactory) {
+            ConstraintSystem constraintSystem, OWLDataFactory dataFactory) {
         return new InlineSetBuilder<OWLIndividual>(constraintSystem, dataFactory) {
             @Override
             public InlineSet<OWLIndividual> visit(final OWLNamedIndividual individual) {
@@ -226,7 +223,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                             new VariableTypeVisitorEx<InlineSet<OWLIndividual>>() {
                                 @Override
                                 public InlineSet<OWLIndividual> visitCLASSVariableType(
-                                        final CLASSVariableType classVariableType) {
+                                        CLASSVariableType classVariableType) {
                                     return buildSingletonInlineSet(individual,
                                             VariableTypeFactory
                                                     .getINDIVIDUALVariableType(),
@@ -237,7 +234,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLIndividual>
                                         visitOBJECTPROPERTYVariableType(
-                                                final OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                                                OBJECTPROPERTYVariableType objectpropertyVariableType) {
                                     return buildSingletonInlineSet(individual,
                                             VariableTypeFactory
                                                     .getINDIVIDUALVariableType(),
@@ -248,7 +245,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLIndividual>
                                         visitDATAPROPERTYVariableType(
-                                                final DATAPROPERTYVariableType datapropertyVariableType) {
+                                                DATAPROPERTYVariableType datapropertyVariableType) {
                                     return buildSingletonInlineSet(individual,
                                             VariableTypeFactory
                                                     .getINDIVIDUALVariableType(),
@@ -260,7 +257,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLIndividual>
                                         visitINDIVIDUALVariableType(
-                                                final INDIVIDUALVariableType individualVariableType) {
+                                                INDIVIDUALVariableType individualVariableType) {
                                     // I am sure the type is
                                     // InlineSet<OWLIndividual>
                                     return (InlineSet<OWLIndividual>) buildVariableValuesInlineSet(
@@ -272,7 +269,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLIndividual>
                                         visitCONSTANTVariableType(
-                                                final CONSTANTVariableType constantVariableType) {
+                                                CONSTANTVariableType constantVariableType) {
                                     return buildSingletonInlineSet(individual,
                                             VariableTypeFactory
                                                     .getINDIVIDUALVariableType(),
@@ -283,7 +280,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLIndividual>
                                         visitANNOTATIONPROPERTYVariableType(
-                                                final ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                                                ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
                                     return buildSingletonInlineSet(individual,
                                             VariableTypeFactory
                                                     .getINDIVIDUALVariableType(),
@@ -302,8 +299,8 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
      *            dataFactory
      * @return inline builder */
     public static InlineSetBuilder<OWLDataPropertyExpression>
-            getOWLDataPropertyExpressionBuilder(final ConstraintSystem constraintSystem,
-                    final OWLDataFactory dataFactory) {
+            getOWLDataPropertyExpressionBuilder(ConstraintSystem constraintSystem,
+                    OWLDataFactory dataFactory) {
         return new InlineSetBuilder<OWLDataPropertyExpression>(constraintSystem,
                 dataFactory) {
             @Override
@@ -319,10 +316,9 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                             .getType()
                             .accept(new VariableTypeVisitorEx<InlineSet<OWLDataPropertyExpression>>() {
                                 @Override
-                                public
-                                        InlineSet<OWLDataPropertyExpression>
+                                public InlineSet<OWLDataPropertyExpression>
                                         visitCLASSVariableType(
-                                                final CLASSVariableType classVariableType) {
+                                                CLASSVariableType classVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getDATAPROPERTYVariableType(),
@@ -333,7 +329,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitOBJECTPROPERTYVariableType(
-                                                final OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                                                OBJECTPROPERTYVariableType objectpropertyVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getDATAPROPERTYVariableType(),
@@ -345,7 +341,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitDATAPROPERTYVariableType(
-                                                final DATAPROPERTYVariableType datapropertyVariableType) {
+                                                DATAPROPERTYVariableType datapropertyVariableType) {
                                     // I am sure the type is
                                     // InlineSet<OWLDataProperty>
                                     return (InlineSet<OWLDataPropertyExpression>) buildVariableValuesInlineSet(
@@ -357,7 +353,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitINDIVIDUALVariableType(
-                                                final INDIVIDUALVariableType individualVariableType) {
+                                                INDIVIDUALVariableType individualVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getDATAPROPERTYVariableType(),
@@ -368,7 +364,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitCONSTANTVariableType(
-                                                final CONSTANTVariableType constantVariableType) {
+                                                CONSTANTVariableType constantVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getDATAPROPERTYVariableType(),
@@ -379,7 +375,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLDataPropertyExpression>
                                         visitANNOTATIONPROPERTYVariableType(
-                                                final ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                                                ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
                                     return buildSingletonInlineSet(property,
                                             VariableTypeFactory
                                                     .getDATAPROPERTYVariableType(),
@@ -398,7 +394,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
      *            dataFactory
      * @return inline builder */
     public static InlineSetBuilder<OWLClassExpression> getOWLClassExpressionBuilder(
-            final ConstraintSystem constraintSystem, final OWLDataFactory dataFactory) {
+            ConstraintSystem constraintSystem, OWLDataFactory dataFactory) {
         return new InlineSetBuilder<OWLClassExpression>(constraintSystem, dataFactory) {
             @Override
             public InlineSet<OWLClassExpression> visit(final OWLClass desc) {
@@ -412,10 +408,9 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                             new VariableTypeVisitorEx<InlineSet<OWLClassExpression>>() {
                                 @Override
                                 @SuppressWarnings("unchecked")
-                                public
-                                        InlineSet<OWLClassExpression>
+                                public InlineSet<OWLClassExpression>
                                         visitCLASSVariableType(
-                                                final CLASSVariableType classVariableType) {
+                                                CLASSVariableType classVariableType) {
                                     // I am sure the type is
                                     // InlineSet<OWLClassExpression>
                                     return (InlineSet<OWLClassExpression>) buildVariableValuesInlineSet(
@@ -427,7 +422,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitOBJECTPROPERTYVariableType(
-                                                final OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                                                OBJECTPROPERTYVariableType objectpropertyVariableType) {
                                     return buildSingletonInlineSet(desc,
                                             VariableTypeFactory.getCLASSVariableType(),
                                             getDataFactory(), getConstraintSystem());
@@ -437,7 +432,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitDATAPROPERTYVariableType(
-                                                final DATAPROPERTYVariableType datapropertyVariableType) {
+                                                DATAPROPERTYVariableType datapropertyVariableType) {
                                     return buildSingletonInlineSet(desc,
                                             VariableTypeFactory.getCLASSVariableType(),
                                             getDataFactory(), getConstraintSystem());
@@ -447,7 +442,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitINDIVIDUALVariableType(
-                                                final INDIVIDUALVariableType individualVariableType) {
+                                                INDIVIDUALVariableType individualVariableType) {
                                     return buildSingletonInlineSet(desc,
                                             VariableTypeFactory.getCLASSVariableType(),
                                             getDataFactory(), getConstraintSystem());
@@ -457,7 +452,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitCONSTANTVariableType(
-                                                final CONSTANTVariableType constantVariableType) {
+                                                CONSTANTVariableType constantVariableType) {
                                     return buildSingletonInlineSet(desc,
                                             VariableTypeFactory.getCLASSVariableType(),
                                             getDataFactory(), getConstraintSystem());
@@ -467,7 +462,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
                                 public
                                         InlineSet<OWLClassExpression>
                                         visitANNOTATIONPROPERTYVariableType(
-                                                final ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                                                ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
                                     return buildSingletonInlineSet(desc,
                                             VariableTypeFactory.getCLASSVariableType(),
                                             getDataFactory(), getConstraintSystem());
@@ -478,68 +473,67 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectIntersectionOf ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectIntersectionOf ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectUnionOf ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectUnionOf ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectComplementOf ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectComplementOf ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectSomeValuesFrom ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectSomeValuesFrom ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectAllValuesFrom ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectAllValuesFrom ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectHasValue ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectHasValue ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectMinCardinality ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectMinCardinality ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression>
-                    visit(final OWLObjectExactCardinality ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectExactCardinality ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectMaxCardinality ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectMaxCardinality ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectHasSelf ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectHasSelf ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLObjectOneOf ce) {
+            public InlineSet<OWLClassExpression> visit(OWLObjectOneOf ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLDataSomeValuesFrom ce) {
+            public InlineSet<OWLClassExpression> visit(OWLDataSomeValuesFrom ce) {
                 return this.generaliseClassExpression(ce);
             }
 
             @Override
-            public InlineSet<OWLClassExpression> visit(final OWLDataAllValuesFrom ce) {
+            public InlineSet<OWLClassExpression> visit(OWLDataAllValuesFrom ce) {
                 return this.generaliseClassExpression(ce);
             }
 
@@ -547,7 +541,7 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
              *            ce
              * @return inline set */
             private InlineSet<OWLClassExpression> generaliseClassExpression(
-                    final OWLClassExpression ce) {
+                    OWLClassExpression ce) {
                 String name = "?expression";
                 Variable<?> variable = getConstraintSystem().getVariable(name);
                 int i = 1;
@@ -570,9 +564,9 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
         return this.constraintSystem;
     }
 
-    static <O extends OWLObject> InlineSet<O> buildSingletonInlineSet(final O object,
-            final VariableType<O> variableType, final OWLDataFactory dataFactory,
-            final ConstraintSystem constraintSystem) {
+    static <O extends OWLObject> InlineSet<O> buildSingletonInlineSet(O object,
+            VariableType<O> variableType, OWLDataFactory dataFactory,
+            ConstraintSystem constraintSystem) {
         Aggregandum<Collection<? extends O>> aggregandums = Adapter
                 .buildAggregandumOfCollection(object);
         return new InlineSet<O>(variableType, Collections.singleton(aggregandums),
@@ -580,8 +574,8 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
     }
 
     protected static <O extends OWLObject> InlineSet<O> buildVariableValuesInlineSet(
-            final Variable<O> variable, final OWLDataFactory dataFactory,
-            final ConstraintSystem constraintSystem) {
+            Variable<O> variable, OWLDataFactory dataFactory,
+            ConstraintSystem constraintSystem) {
         Aggregandum<Collection<? extends O>> aggregandums = Adapter
                 .buildAggregandumCollection(Collections
                         .singleton(ValuesVariableAtttribute

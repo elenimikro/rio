@@ -11,14 +11,14 @@ public class FederateMatrix implements SparseMatrix {
 
     /** @param i
      *            i */
-    public FederateMatrix(final int i) {
+    public FederateMatrix(int i) {
         actual = new SparseMatrixSmallSize(i);
         test = new SparseMatrixListImpl(i);
     }
 
     /** @param m
      *            m */
-    public FederateMatrix(final FederateMatrix m) {
+    public FederateMatrix(FederateMatrix m) {
         for (int i = 0; i < m.length(); i++) {
             for (int j = 0; j < m.length(); j++) {
                 m.get(i, j);
@@ -35,20 +35,10 @@ public class FederateMatrix implements SparseMatrix {
     }
 
     @Override
-    public double get(final int _i, final int _j) {
+    public double get(int _i, int _j) {
         double toReturn = actual.get(_i, _j);
         if (toReturn != test.get(_i, _j)) {
             printDiff(_i);
-            // System.out.println("FederateMatrix.get() " + toReturn + " " + _i
-            // + " " + _j
-            // + "\t " + test.get(_i, _j));
-            // final PrintWriter out = new PrintWriter(System.out);
-            // actual.printLine(_i, out);
-            // out.println();
-            // out.flush();
-            // test.printLine(_i, out);
-            // out.println();
-            // out.flush();
         }
         return toReturn;
     }
@@ -64,7 +54,7 @@ public class FederateMatrix implements SparseMatrix {
     }
 
     @Override
-    public double get(final Object i, final Object j) {
+    public double get(Object i, Object j) {
         double toReturn = actual.get(i, j);
         if (toReturn != test.get(i, j)) {
             printDiff(test.getPosition(i));
@@ -76,7 +66,7 @@ public class FederateMatrix implements SparseMatrix {
     }
 
     @Override
-    public void set(final int _i, final int _j, final double d) {
+    public void set(int _i, int _j, double d) {
         actual.set(_i, _j, d);
         test.set(_i, _j, d);
         get(_i, _j);
@@ -85,7 +75,7 @@ public class FederateMatrix implements SparseMatrix {
 
     /** @param _i
      *            _i */
-    public void printDiff(final int _i) {
+    public void printDiff(int _i) {
         double[] d1 = actual.getRow(_i);
         double[] d2 = test.getRow(_i);
         if (!Arrays.equals(d1, d2)) {
@@ -99,13 +89,13 @@ public class FederateMatrix implements SparseMatrix {
     }
 
     @Override
-    public void setKeys(final Collection<?> objects) {
+    public void setKeys(Collection<?> objects) {
         actual.setKeys(objects);
         test.setKeys(objects);
     }
 
     @Override
-    public void printLine(final int i, final PrintWriter out) {
+    public void printLine(int i, PrintWriter out) {
         actual.printLine(i, out);
     }
 }

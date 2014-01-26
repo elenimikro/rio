@@ -61,7 +61,7 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll {
      *             TransformerException
      * @throws TransformerFactoryConfigurationError
      *             TransformerFactoryConfigurationError */
-    public static void main(final String[] args) throws OWLOntologyCreationException,
+    public static void main(String[] args) throws OWLOntologyCreationException,
             OPPLException, ParserConfigurationException,
             TransformerFactoryConfigurationError, TransformerException {
         KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll agglomerator = new KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll();
@@ -80,10 +80,9 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll {
      *             TransformerFactoryConfigurationError
      * @throws TransformerException
      *             TransformerException */
-    public void checkArgumentsAndRun(final String[] args)
-            throws OWLOntologyCreationException, OPPLException,
-            ParserConfigurationException, TransformerFactoryConfigurationError,
-            TransformerException {
+    public void checkArgumentsAndRun(String[] args) throws OWLOntologyCreationException,
+            OPPLException, ParserConfigurationException,
+            TransformerFactoryConfigurationError, TransformerException {
         if (args.length >= 2) {
             File outfile = new File(args[0]);
             run(outfile, IRI.create(args[1]));
@@ -125,7 +124,7 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll {
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
             @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
+            public int compare(OWLEntity o1, OWLEntity o2) {
                 return shortFormProvider.getShortForm(o1).compareTo(
                         shortFormProvider.getShortForm(o2));
             }

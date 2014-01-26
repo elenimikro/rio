@@ -2,7 +2,6 @@ package org.coode.popularitydistance.profiling;
 
 import java.io.File;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -13,13 +12,13 @@ import org.coode.distance.Distance;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.EntityComparator;
 import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.DistanceCreator;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author eleni */
 public class StructuralClusteringComparison {
@@ -43,14 +42,7 @@ public class StructuralClusteringComparison {
         OWLOntology o = m.loadOntologyFromOntologyDocument(ontology);
         Distance<OWLEntity> distance = DistanceCreator
                 .createStructuralAxiomRelevanceAxiomBasedDistance(m);
-        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(final OWLEntity o1, final OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology onto : m.getOntologies()) {
             entities.addAll(onto.getSignature());
         }

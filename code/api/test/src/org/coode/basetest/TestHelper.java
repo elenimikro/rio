@@ -32,8 +32,8 @@ public class TestHelper {
      * @return ontology
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static OWLOntology loadIRIMappers(final IRI iri,
-            final OWLOntologyManager manager) throws OWLOntologyCreationException {
+    public static OWLOntology loadIRIMappers(IRI iri, OWLOntologyManager manager)
+            throws OWLOntologyCreationException {
         URI uri = iri.toURI();
         if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
             File file = new File(uri);
@@ -52,9 +52,8 @@ public class TestHelper {
      * @return ontology
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static OWLOntology
-            loadFileMappers(File file, final OWLOntologyManager manager)
-                    throws OWLOntologyCreationException {
+    public static OWLOntology loadFileMappers(File file, OWLOntologyManager manager)
+            throws OWLOntologyCreationException {
         File parentFile = file.getParentFile();
         if (parentFile.isDirectory()) {
             manager.addIRIMapper(new AutoIRIMapper(parentFile, true));

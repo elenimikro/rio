@@ -12,29 +12,23 @@ import org.apache.commons.math.util.OpenIntToDoubleHashMap;
 /** @author eleni */
 public class SparseMatrixListImpl implements SparseMatrix {
     private final OpenIntToDoubleHashMap m;
-    // private static class Record {
-    // int y;
-    // double d;
-    // }
-    // private final List<List<Record>> matrix;
-    // private final List<Map<Integer, Double>> matrix;
     private final int size;
     private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
 
     /** @param size
      *            size */
-    public SparseMatrixListImpl(final int size) {
+    public SparseMatrixListImpl(int size) {
         m = new OpenIntToDoubleHashMap(1D);
         this.size = size;
     }
 
     /** @param m
      *            m */
-    public SparseMatrixListImpl(final SparseMatrixListImpl m) {
+    public SparseMatrixListImpl(SparseMatrixListImpl m) {
         this(m.length());
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                final double d = m.get(i, j);
+                double d = m.get(i, j);
                 if (d < 1D) {
                     set(i, j, d);
                 }
@@ -48,7 +42,7 @@ public class SparseMatrixListImpl implements SparseMatrix {
     }
 
     @Override
-    public double get(final int _i, final int _j) {
+    public double get(int _i, int _j) {
         if (_i < size && _j < size) {
             if (_i == _j) {
                 return 0D;
@@ -62,14 +56,14 @@ public class SparseMatrixListImpl implements SparseMatrix {
     }
 
     @Override
-    public double get(final Object i, final Object j) {
+    public double get(Object i, Object j) {
         return get(getPosition(i), getPosition(j));
     }
 
     /** @param i
      *            i
      * @return position */
-    public int getPosition(final Object i) {
+    public int getPosition(Object i) {
         Integer index = objectIndex.get(i);
         if (index == -1) {
             throw new IllegalArgumentException(String.format(
@@ -79,7 +73,7 @@ public class SparseMatrixListImpl implements SparseMatrix {
     }
 
     @Override
-    public void set(final int _i, final int _j, final double d) {
+    public void set(int _i, int _j, double d) {
         // System.out.println("SparseMatrixSmallSize.set() " + _i + "\t" + _j +
         // "\t" + d);
         if (_i < size && _j < size) {
@@ -100,7 +94,7 @@ public class SparseMatrixListImpl implements SparseMatrix {
     }
 
     @Override
-    public void printLine(final int i, final PrintWriter out) {
+    public void printLine(int i, PrintWriter out) {
         MathContext mathContext = new MathContext(2);
         for (int j = 0; j < size; j++) {
             out.print(String.format("\t%s", new BigDecimal(get(i, j), mathContext)));
@@ -110,7 +104,7 @@ public class SparseMatrixListImpl implements SparseMatrix {
     /** @param i
      *            i
      * @return row */
-    public double[] getRow(final int i) {
+    public double[] getRow(int i) {
         double[] row = new double[size];
         for (int j = 0; j < size; j++) {
             row[j] = get(i, j);
@@ -119,7 +113,7 @@ public class SparseMatrixListImpl implements SparseMatrix {
     }
 
     @Override
-    public void setKeys(final Collection<?> objects) {
+    public void setKeys(Collection<?> objects) {
         for (Object o : objects) {
             objectIndex.put(o, objectIndex.size());
         }

@@ -61,8 +61,8 @@ public class SemanticClusteringTasksRunner extends
             File allResultsFile) throws FileNotFoundException,
             OWLOntologyCreationException, OPPLException, ParserConfigurationException,
             TransformerFactoryConfigurationError, TransformerException {
-        for (final String s : input) {
-            final ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
+        for (String s : input) {
+            ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
             System.out.println("\n SemanticClusteringTasksRunner \t " + s);
             String substring = s.substring(s.lastIndexOf("/") + 1);
             String filename = RESULTS_BASE + substring.replaceAll(".owl", ".csv");
@@ -71,7 +71,7 @@ public class SemanticClusteringTasksRunner extends
                             + substring);
             File f = new File(filename);
             if (!f.exists()) {
-                final PrintStream singleOut = new PrintStream(f);
+                PrintStream singleOut = new PrintStream(f);
                 OWLOntologyManager m = OWLManager.createOWLOntologyManager();
                 OWLOntology o = m.loadOntologyFromOntologyDocument(new File(s));
                 ExperimentHelper.stripOntologyFromAnnotationAssertions(o);

@@ -55,8 +55,8 @@ public class TestProximityMatrix {
                 signature, axiomBasedDistance);
         PairFilter<Collection<? extends OWLEntity>> filter = new PairFilter<Collection<? extends OWLEntity>>() {
             @Override
-            public boolean accept(final Collection<? extends OWLEntity> first,
-                    final Collection<? extends OWLEntity> second) {
+            public boolean accept(Collection<? extends OWLEntity> first,
+                    Collection<? extends OWLEntity> second) {
                 Iterator<? extends OWLEntity> iterator = first.iterator();
                 boolean found = false;
                 while (!found && iterator.hasNext()) {
@@ -78,8 +78,8 @@ public class TestProximityMatrix {
         }
         Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
             @Override
-            public double getDistance(final Collection<? extends OWLEntity> a,
-                    final Collection<? extends OWLEntity> b) {
+            public double getDistance(Collection<? extends OWLEntity> a,
+                    Collection<? extends OWLEntity> b) {
                 return axiomBasedDistance.getDistance(a.iterator().next(), b.iterator()
                         .next());
             }

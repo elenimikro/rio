@@ -26,19 +26,19 @@ public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateA
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
-    public static void main(final String[] args) throws OWLOntologyCreationException {
+    public static void main(String[] args) throws OWLOntologyCreationException {
         AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll runner = new AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll();
         runner.checkArgumentsAndRun(args);
     }
 
     @Override
-    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
         Utility.print2(clusteringMatrix);
     }
 
     @Override
-    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-        final Distance<OWLEntity> distance = new AtomicDecompositionGeneralisationTreeBasedDistance(
+    public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
+        Distance<OWLEntity> distance = new AtomicDecompositionGeneralisationTreeBasedDistance(
                 manager.getOntologies().iterator().next(), manager.getOWLDataFactory(),
                 manager);
         return distance;

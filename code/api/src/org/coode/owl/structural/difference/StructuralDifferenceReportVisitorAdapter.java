@@ -9,6 +9,7 @@
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.owl.structural.difference;
+
 /** @author eleni */
 public class StructuralDifferenceReportVisitorAdapter implements
         StructuralDifferenceReportVisitor {
@@ -16,17 +17,17 @@ public class StructuralDifferenceReportVisitorAdapter implements
     public
             void
             visitNoDifferenceStructuralDifferenceReport(
-                    final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {}
+                    NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {}
 
     @Override
     public
             void
             visitIncomparableObjectsStructuralDifferenceReport(
-                    final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {}
+                    IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {}
 
     @Override
     public
             void
             visitSomeDifferenceStructuralDifferenceReport(
-                    final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {}
+                    SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {}
 }
