@@ -22,43 +22,45 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class TestStructuralHashCode extends TestCase {
-	private final static OWLOntologyManager ontologyManager = OWLManager
-			.createOWLOntologyManager();
-	private final static HashCode hashCode = new StructuralHashCode(
-			ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
-					ontologyManager.getOWLDataFactory()));
+    private final static OWLOntologyManager ontologyManager = OWLManager
+            .createOWLOntologyManager();
+    private final static HashCode hashCode = new StructuralHashCode(
+            ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
+                    ontologyManager.getOWLDataFactory()));
 
-	public void testSubClassAxiom() {
-		OWLClass a = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("A"));
-		OWLClass b = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("B"));
-		OWLSubClassOfAxiom anAxiom = ontologyManager.getOWLDataFactory()
-				.getOWLSubClassOfAxiom(a, a);
-		OWLSubClassOfAxiom anotherAxiom = ontologyManager.getOWLDataFactory()
-				.getOWLSubClassOfAxiom(a, b);
-		assertEquals(hashCode.hashCode(anAxiom), hashCode.hashCode(anotherAxiom));
-	}
+    public void testSubClassAxiom() {
+        OWLClass a = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("A"));
+        OWLClass b = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("B"));
+        OWLSubClassOfAxiom anAxiom = ontologyManager.getOWLDataFactory()
+                .getOWLSubClassOfAxiom(a, a);
+        OWLSubClassOfAxiom anotherAxiom = ontologyManager.getOWLDataFactory()
+                .getOWLSubClassOfAxiom(a, b);
+        assertEquals(hashCode.hashCode(anAxiom), hashCode.hashCode(anotherAxiom));
+    }
 
-	public void testSubClassAxiomNotStructurallyEqual() {
-		OWLClass a = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("A"));
-		OWLClass b = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("B"));
-		OWLSubClassOfAxiom anAxiom = ontologyManager.getOWLDataFactory()
-				.getOWLSubClassOfAxiom(
-						a,
-						ontologyManager.getOWLDataFactory().getOWLObjectIntersectionOf(a,
-								a));
-		OWLSubClassOfAxiom anotherAxiom = ontologyManager.getOWLDataFactory()
-				.getOWLSubClassOfAxiom(a, b);
-		assertFalse(hashCode.hashCode(anAxiom) == hashCode.hashCode(anotherAxiom));
-	}
+    public void testSubClassAxiomNotStructurallyEqual() {
+        OWLClass a = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("A"));
+        OWLClass b = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("B"));
+        OWLSubClassOfAxiom anAxiom = ontologyManager.getOWLDataFactory()
+                .getOWLSubClassOfAxiom(
+                        a,
+                        ontologyManager.getOWLDataFactory().getOWLObjectIntersectionOf(a,
+                                a));
+        OWLSubClassOfAxiom anotherAxiom = ontologyManager.getOWLDataFactory()
+                .getOWLSubClassOfAxiom(a, b);
+        assertFalse(hashCode.hashCode(anAxiom) == hashCode.hashCode(anotherAxiom));
+    }
 
-	public void testEquivalentAxiom() {
-		OWLClass a = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("A"));
-		OWLClass b = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("B"));
-		OWLAxiom anAxiom = ontologyManager.getOWLDataFactory()
-				.getOWLEquivalentClassesAxiom(a, a);
-		OWLAxiom anotherAxiom = ontologyManager.getOWLDataFactory()
-				.getOWLEquivalentClassesAxiom(a, b);
-		assertEquals(hashCode.hashCode(anAxiom), hashCode.hashCode(anotherAxiom));
-	}
+    public void testEquivalentAxiom() {
+        OWLClass a = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("A"));
+        OWLClass b = ontologyManager.getOWLDataFactory().getOWLClass(IRI.create("B"));
+        OWLAxiom anAxiom = ontologyManager.getOWLDataFactory()
+                .getOWLEquivalentClassesAxiom(a, a);
+        OWLAxiom anotherAxiom = ontologyManager.getOWLDataFactory()
+                .getOWLEquivalentClassesAxiom(a, b);
+        assertEquals(hashCode.hashCode(anAxiom), hashCode.hashCode(anotherAxiom));
+    }
 }

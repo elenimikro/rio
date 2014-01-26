@@ -40,61 +40,57 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class TestStructuralDifference extends TestCase {
     private static class DiffAdapter extends StructuralDifferenceReportVisitorAdapter {
+        public DiffAdapter() {}
+
         @Override
-        public
-                void
-                visitNoDifferenceStructuralDifferenceReport(
-                        final NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {
+        public void visitNoDifferenceStructuralDifferenceReport(
+                NoDifferenceStructuralDifferenceReport report) {
             fail("Wrong kind of report");
         }
 
         @Override
-        public
-                void
-                visitIncomparableObjectsStructuralDifferenceReport(
-                        final IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {
+        public void visitIncomparableObjectsStructuralDifferenceReport(
+                IncomparableObjectsStructuralDifferenceReport report) {
             fail("Wrong kind of report");
         }
     }
 
     private final class Personalized3 extends
             StructuralDifferenceReportVisitorExAdapter<List<Integer>> {
-        private Personalized3(final List<Integer> defaultValue) {
+        public Personalized3(List<Integer> defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public
-                List<Integer>
-                visitSomeDifferenceStructuralDifferenceReport(
-                        final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-            return someDifferenceStructuralDifferenceReport.getPosition();
+        public List<Integer> visitSomeDifferenceStructuralDifferenceReport(
+                SomeDifferenceStructuralDifferenceReport report) {
+            return report.getPosition();
         }
     }
 
     private final class Personalized1 extends DiffAdapter {
+        public Personalized1() {}
+
         @Override
-        public
-                void
-                visitSomeDifferenceStructuralDifferenceReport(
-                        final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-            List<Integer> position = someDifferenceStructuralDifferenceReport
-                    .getPosition();
+        public void visitSomeDifferenceStructuralDifferenceReport(
+                SomeDifferenceStructuralDifferenceReport report) {
+            List<Integer> position = report.getPosition();
             assertTrue(position.size() == 1);
             assertTrue(position.get(0).intValue() == 2);
         }
     }
 
     private static final class PersonalizedReportVisitor extends DiffAdapter {
+        public PersonalizedReportVisitor() {}
+
         @Override
-        public
-                void
-                visitSomeDifferenceStructuralDifferenceReport(
-                        final SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {
-            List<Integer> position = someDifferenceStructuralDifferenceReport
-                    .getPosition();
+        public void visitSomeDifferenceStructuralDifferenceReport(
+                SomeDifferenceStructuralDifferenceReport report) {
+            List<Integer> position = report.getPosition();
             assertTrue(position.size() == 2);
             assertTrue(position.get(0).intValue() == 2);
             assertTrue(position.get(1).intValue() == 2);

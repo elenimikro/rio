@@ -25,11 +25,9 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class GeneralisationStatisticsTest {
-    public GeneralisationStatisticsTest() {
-        // TODO Auto-generated constructor stub
-    }
-
     public static String amino_iri = "similarity/experiment-ontologies/amino-acid-original.owl";
 
     @Test

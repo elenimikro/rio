@@ -20,6 +20,8 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class StructuralAxiomRelevanceAxiomBasedBasedDistanceTest extends DistanceTestCase {
     @Override
     protected DistanceBuilder getDistanceBuilder() {

@@ -38,6 +38,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class TableDistanceTest extends TestCase {
     public void testSimpleDistanceMatrixVSCollectionSingleton() {
         OWLOntology ontology = TestHelper.getPizza();

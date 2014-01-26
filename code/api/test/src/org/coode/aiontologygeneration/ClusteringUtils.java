@@ -26,7 +26,13 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.xml.sax.SAXException;
 
+/** @author eleni */
 public class ClusteringUtils {
+    /** @param onto
+     *            onto
+     * @param clusters
+     *            clusters
+     * @return generalisation map */
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap(
             final OWLOntology onto, final Set<Set<OWLEntity>> clusters) {
         OWLOntologyManager ontologyManager = onto.getOWLOntologyManager();
@@ -48,6 +54,19 @@ public class ClusteringUtils {
         return generalisationMap;
     }
 
+    /** @param filename
+     *            filename
+     * @param ontologyManager
+     *            ontologyManager
+     * @return cluster entities
+     * @throws FileNotFoundException
+     *             FileNotFoundException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws SAXException
+     *             SAXException
+     * @throws IOException
+     *             IOException */
     public static Set<Set<OWLEntity>> loadClustersFromFile(final String filename,
             final OWLOntologyManager ontologyManager) throws FileNotFoundException,
             ParserConfigurationException, SAXException, IOException {
@@ -56,6 +75,10 @@ public class ClusteringUtils {
         return clusters;
     }
 
+    /** @param args
+     *            args
+     * @throws Exception
+     *             Exception */
     public static void main(final String[] args) throws Exception {
         BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(
                 new File("comparison.txt"))));
@@ -81,6 +104,15 @@ public class ClusteringUtils {
         }
     }
 
+    /** @param onto
+     *            onto
+     * @param input1
+     *            input1
+     * @param input2
+     *            input2
+     * @return true if checked
+     * @throws Exception
+     *             Exception */
     public static boolean check(final String onto, final String input1,
             final String input2) throws Exception {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -88,20 +120,23 @@ public class ClusteringUtils {
         return check(ontology, input1, input2);
     }
 
+    /** @param onto
+     *            onto
+     * @param input1
+     *            input1
+     * @param input2
+     *            input2
+     * @return true if checked
+     * @throws Exception
+     *             Exception */
     public static boolean check(final OWLOntology onto, final String input1,
             final String input2) throws Exception {
         // the clusters are sorted
         boolean toReturn = true;
         Set<Set<OWLEntity>> loadClustersFromFile1 = ClusteringUtils.loadClustersFromFile(
                 input1, onto.getOWLOntologyManager());
-        // MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap1 =
-        // ClusteringUtils
-        // .getGeneralisationMap(onto, loadClustersFromFile1);
         Set<Set<OWLEntity>> loadClustersFromFile2 = ClusteringUtils.loadClustersFromFile(
                 input2, onto.getOWLOntologyManager());
-        // MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap2 =
-        // ClusteringUtils
-        // .getGeneralisationMap(onto, loadClustersFromFile2);
         Set<Set<OWLEntity>> common = new HashSet<Set<OWLEntity>>();
         if (!loadClustersFromFile1.equals(loadClustersFromFile2)) {
             int diffs = 0;

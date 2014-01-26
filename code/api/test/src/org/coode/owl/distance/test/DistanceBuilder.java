@@ -15,8 +15,17 @@ import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+/** @author eleni */
 public interface DistanceBuilder {
+    /** @param o
+     *            o
+     * @return distance */
     AbstractAxiomBasedDistance getDistance(OWLOntology o);
 
+    /** @param o
+     *            o
+     * @param rp
+     *            rp
+     * @return distance */
     AbstractAxiomBasedDistance getDistance(OWLOntology o, RelevancePolicy<OWLEntity> rp);
 }

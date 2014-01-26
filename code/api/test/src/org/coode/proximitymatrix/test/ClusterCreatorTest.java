@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class ClusterCreatorTest {
     private OWLOntology ontology;
     private ClusterCreator clusterer;

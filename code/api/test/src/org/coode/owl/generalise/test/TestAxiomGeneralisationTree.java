@@ -31,6 +31,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class TestAxiomGeneralisationTree extends TestCase {
     @Override
     protected void setUp() throws Exception {

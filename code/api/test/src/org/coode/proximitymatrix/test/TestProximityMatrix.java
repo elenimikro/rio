@@ -36,6 +36,8 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class TestProximityMatrix {
     @Test
     public void testAgglomerate() {

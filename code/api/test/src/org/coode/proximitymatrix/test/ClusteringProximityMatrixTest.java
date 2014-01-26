@@ -43,6 +43,8 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class ClusteringProximityMatrixTest {
     @Test
     public void testReduce() throws OWLOntologyCreationException {

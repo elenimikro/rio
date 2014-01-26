@@ -24,7 +24,11 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+/** @author eleni */
 public class ClusteringHelper {
+    /** @param o
+     *            o
+     * @return cluster decomposition model */
     public static ClusterDecompositionModel<OWLEntity>
             getSyntacticStructuralClusterModel(OWLOntology o) {
         try {
@@ -48,6 +52,9 @@ public class ClusteringHelper {
         }
     }
 
+    /** @param o
+     *            o
+     * @return cluster decomposition model */
     public static ClusterDecompositionModel<OWLEntity> getSyntacticPropertyClusterModel(
             OWLOntology o) {
         try {
@@ -78,6 +85,9 @@ public class ClusteringHelper {
         }
     }
 
+    /** @param seedAxioms
+     *            seedAxioms
+     * @return cluster decomposition model */
     public static ClusterDecompositionModel<OWLEntity>
             getSyntacticPopularityClusterModel(Set<OWLAxiom> seedAxioms) {
         OWLOntology onto = null;
@@ -90,6 +100,9 @@ public class ClusteringHelper {
         return getSyntacticPopularityClusterModel(onto);
     }
 
+    /** @param o
+     *            o
+     * @return cluster decomposition model */
     public static ClusterDecompositionModel<OWLEntity>
             getSyntacticPopularityClusterModel(OWLOntology o) {
         try {
@@ -125,6 +138,9 @@ public class ClusteringHelper {
         return model;
     }
 
+    /** @param model
+     *            model
+     * @return generalisation map */
     public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation>
             extractGeneralisationMap(RegularitiesDecompositionModel<C, OWLEntity> model) {
         List<C> clusterList = model.getClusterList();
@@ -132,13 +148,6 @@ public class ClusteringHelper {
         for (int counter = 0; counter < clusterList.size(); counter++) {
             multiMap.putAll(model.get(clusterList.get(counter)));
         }
-        // for (OWLAxiom ax : multiMap.keySet()) {
-        // System.out.println("Generalisation: " + ax);
-        // System.out.println("Instantiations:");
-        // for (OWLAxiomInstantiation inst : multiMap.get(ax)) {
-        // System.out.println("\t" + inst);
-        // }
-        // }
         return multiMap;
     }
 }

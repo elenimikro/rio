@@ -34,6 +34,8 @@ import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLOb
 import experiments.ExperimentHelper;
 import experiments.GeneralisationComparison;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class GeneralisationComparisonTest {
     private final MultiMap<OWLAxiom, OWLAxiomInstantiation> popularityMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     private final MultiMap<OWLAxiom, OWLAxiomInstantiation> structuralMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();

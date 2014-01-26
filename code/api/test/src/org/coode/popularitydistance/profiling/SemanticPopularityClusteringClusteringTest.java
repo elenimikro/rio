@@ -10,8 +10,6 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.coode.distance.Distance;
 import org.coode.knowledgeexplorer.KnowledgeExplorer;
 import org.coode.knowledgeexplorer.KnowledgeExplorerMaxFillersFactplusplusImpl;
@@ -34,22 +32,9 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 import experiments.ClusteringWithADEvaluationExperimentBase;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class SemanticPopularityClusteringClusteringTest {
-    public SemanticPopularityClusteringClusteringTest() {
-        // TODO Auto-generated constructor stub
-    }
-
-    /** @param args
-     * @throws ParserConfigurationException
-     * @throws OPPLException
-     * @throws FileNotFoundException
-     * @throws OWLOntologyCreationException */
-    // public static void main(String[] args) throws
-    // OWLOntologyCreationException,
-    // FileNotFoundException, OPPLException, ParserConfigurationException {
-    // testSemanticPopularityClusteringStats();
-    //
-    // }
     @Test
     public void testSemanticPopularityClusteringStats() throws OPPLException,
             OWLOntologyCreationException, FileNotFoundException {

@@ -53,13 +53,17 @@ import org.w3c.dom.Document;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
+/** @author eleni */
 public class PopularityBasedDistanceClusteringSlice {
     /** This program takes an ontology as an input, computes pairwise distances
      * between all entities in the signature of the ontology, and build the
      * proximity matrix. The distance is computed with the use of popularity
      * ranking of an entity.
      * 
-     * @param args */
+     * @param args
+     *            args
+     * @throws Exception
+     *             Exception */
     // private final static String nci_iri =
     // "profiling_ontologies/nci-2012.owl.xml";
     // private final static String obi_iri = "profiling_ontologies/obi.owl";

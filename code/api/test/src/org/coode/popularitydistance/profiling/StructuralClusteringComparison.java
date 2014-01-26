@@ -21,16 +21,16 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+/** @author eleni */
 public class StructuralClusteringComparison {
-    public StructuralClusteringComparison() {
-        // TODO Auto-generated constructor stub
-    }
-
     private final static String onto_iri = "similarity/experiment-ontologies/amino-acid-original.owl";
 
     /** @param args
+     *            args
      * @throws TransformerFactoryConfigurationError
-     * @throws Exception */
+     *             TransformerFactoryConfigurationError
+     * @throws Exception
+     *             Exception */
     public static void main(String[] args) throws TransformerFactoryConfigurationError,
             Exception {
         boolean correct = true;

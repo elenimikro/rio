@@ -39,171 +39,161 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class EquivalenceClassTest {
-	@Test
-	public void testGetEquivalenceClassesPizza() {
-		OWLOntology ontology = TestHelper.getPizza();
-		OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-		Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
-				new Comparator<OWLEntity>() {
-					@Override
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
-						return shortFormProvider.getShortForm(o1).compareTo(
-								shortFormProvider.getShortForm(o2));
-					}
-				});
-		for (OWLOntology o : ontologyManager.getOntologies()) {
-			entities.addAll(o.getSignature());
-		}
-		final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-				ontologyManager.getOWLDataFactory(),
-				new ReplacementByKindStrategy(
-						ontologyManager.getOWLDataFactory()));
-		final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-				ontologies, owlEntityReplacer, ontologyManager);
-		MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils
-				.getEquivalenceClasses(entities, distance);
-		int i = 0;
-		for (OWLEntity key : equivalenceClasses.keySet()) {
-			Collection<OWLEntity> set = equivalenceClasses.get(key);
-			System.out.println(String.format("Equivalence class no %d %s", i++,
-					render(set)));
-		}
-		for (OWLEntity key : equivalenceClasses.keySet()) {
-			Collection<OWLEntity> set = equivalenceClasses.get(key);
-			for (OWLEntity anotherKey : equivalenceClasses.keySet()) {
-				if (key != anotherKey) {
-					Collection<OWLEntity> anotherSet = equivalenceClasses
-							.get(anotherKey);
-					Set<OWLEntity> intersection = new HashSet<OWLEntity>(set);
-					intersection.retainAll(anotherSet);
-					assertTrue(intersection.isEmpty());
-				}
-			}
-		}
-		for (OWLEntity owlEntity : entities) {
-			boolean found = false;
-			Iterator<OWLEntity> iterator = equivalenceClasses.keySet()
-					.iterator();
-			while (!found && iterator.hasNext()) {
-				OWLEntity key = iterator.next();
-				Iterator<OWLEntity> it = equivalenceClasses.get(key).iterator();
-				while (!found && it.hasNext()) {
-					OWLEntity memeber = it.next();
-					found = memeber == owlEntity;
-				}
-			}
-			assertTrue(String.format("Entity %s is  missing", owlEntity), found);
-		}
-		distance.dispose();
-	}
+    @Test
+    public void testGetEquivalenceClassesPizza() {
+        OWLOntology ontology = TestHelper.getPizza();
+        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
+        Set<OWLOntology> ontologies = ontologyManager.getOntologies();
+        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
+            public int compare(final OWLEntity o1, final OWLEntity o2) {
+                return shortFormProvider.getShortForm(o1).compareTo(
+                        shortFormProvider.getShortForm(o2));
+            }
+        });
+        for (OWLOntology o : ontologyManager.getOntologies()) {
+            entities.addAll(o.getSignature());
+        }
+        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+                ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
+                        ontologyManager.getOWLDataFactory()));
+        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+                ontologies, owlEntityReplacer, ontologyManager);
+        MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils.getEquivalenceClasses(
+                entities, distance);
+        int i = 0;
+        for (OWLEntity key : equivalenceClasses.keySet()) {
+            Collection<OWLEntity> set = equivalenceClasses.get(key);
+            System.out.println(String.format("Equivalence class no %d %s", i++,
+                    render(set)));
+        }
+        for (OWLEntity key : equivalenceClasses.keySet()) {
+            Collection<OWLEntity> set = equivalenceClasses.get(key);
+            for (OWLEntity anotherKey : equivalenceClasses.keySet()) {
+                if (key != anotherKey) {
+                    Collection<OWLEntity> anotherSet = equivalenceClasses.get(anotherKey);
+                    Set<OWLEntity> intersection = new HashSet<OWLEntity>(set);
+                    intersection.retainAll(anotherSet);
+                    assertTrue(intersection.isEmpty());
+                }
+            }
+        }
+        for (OWLEntity owlEntity : entities) {
+            boolean found = false;
+            Iterator<OWLEntity> iterator = equivalenceClasses.keySet().iterator();
+            while (!found && iterator.hasNext()) {
+                OWLEntity key = iterator.next();
+                Iterator<OWLEntity> it = equivalenceClasses.get(key).iterator();
+                while (!found && it.hasNext()) {
+                    OWLEntity memeber = it.next();
+                    found = memeber == owlEntity;
+                }
+            }
+            assertTrue(String.format("Entity %s is  missing", owlEntity), found);
+        }
+        distance.dispose();
+    }
 
-	@Test
-	public void testGetEquivalenceClassesSameDistancePizza() {
-		OWLOntology ontology = TestHelper.getPizza();
-		OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-		Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
-				new Comparator<OWLEntity>() {
-					@Override
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
-						return shortFormProvider.getShortForm(o1).compareTo(
-								shortFormProvider.getShortForm(o2));
-					}
-				});
-		for (OWLOntology o : ontologyManager.getOntologies()) {
-			entities.addAll(o.getSignature());
-		}
-		final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-				ontologyManager.getOWLDataFactory(),
-				new ReplacementByKindStrategy(
-						ontologyManager.getOWLDataFactory()));
-		final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-				ontologies, owlEntityReplacer, ontologyManager);
-		MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils
-				.getEquivalenceClasses(entities, distance);
-		int i = 0;
-		for (OWLEntity key : equivalenceClasses.keySet()) {
-			Collection<OWLEntity> set = equivalenceClasses.get(key);
-			System.out.println(String.format("Equivalence class no %d %s", i++,
-					render(set)));
-		}
-		for (OWLEntity key : equivalenceClasses.keySet()) {
-			Collection<OWLEntity> set = equivalenceClasses.get(key);
-			for (OWLEntity anotherEntity : entities) {
-				double d = -1;
-				for (OWLEntity owlEntity : set) {
-					double equivalentClassDistance = distance.getDistance(
-							owlEntity, anotherEntity);
-					assertTrue(d == -1 || d == equivalentClassDistance);
-					d = equivalentClassDistance;
-				}
-			}
-		}
-		distance.dispose();
-	}
+    @Test
+    public void testGetEquivalenceClassesSameDistancePizza() {
+        OWLOntology ontology = TestHelper.getPizza();
+        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
+        Set<OWLOntology> ontologies = ontologyManager.getOntologies();
+        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
+            public int compare(final OWLEntity o1, final OWLEntity o2) {
+                return shortFormProvider.getShortForm(o1).compareTo(
+                        shortFormProvider.getShortForm(o2));
+            }
+        });
+        for (OWLOntology o : ontologyManager.getOntologies()) {
+            entities.addAll(o.getSignature());
+        }
+        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+                ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
+                        ontologyManager.getOWLDataFactory()));
+        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+                ontologies, owlEntityReplacer, ontologyManager);
+        MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils.getEquivalenceClasses(
+                entities, distance);
+        int i = 0;
+        for (OWLEntity key : equivalenceClasses.keySet()) {
+            Collection<OWLEntity> set = equivalenceClasses.get(key);
+            System.out.println(String.format("Equivalence class no %d %s", i++,
+                    render(set)));
+        }
+        for (OWLEntity key : equivalenceClasses.keySet()) {
+            Collection<OWLEntity> set = equivalenceClasses.get(key);
+            for (OWLEntity anotherEntity : entities) {
+                double d = -1;
+                for (OWLEntity owlEntity : set) {
+                    double equivalentClassDistance = distance.getDistance(owlEntity,
+                            anotherEntity);
+                    assertTrue(d == -1 || d == equivalentClassDistance);
+                    d = equivalentClassDistance;
+                }
+            }
+        }
+        distance.dispose();
+    }
 
-	public void testGetEquivalenceClassesTravel() throws Exception {
-		OWLOntologyManager ontologyManager = OWLManager
-				.createOWLOntologyManager();
-		File file = new File("code/test/resources/c16.rdf.owl");
-		IOUtils.loadIRIMappers(Collections.singleton(IRI.create(file)),
-				ontologyManager);
-		ontologyManager.loadOntologyFromOntologyDocument(file);
-		Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-		final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-		Set<OWLEntity> entities = new TreeSet<OWLEntity>(
-				new Comparator<OWLEntity>() {
-					@Override
-					public int compare(final OWLEntity o1, final OWLEntity o2) {
-						return shortFormProvider.getShortForm(o1).compareTo(
-								shortFormProvider.getShortForm(o2));
-					}
-				});
-		for (OWLOntology ontology : ontologyManager.getOntologies()) {
-			entities.addAll(ontology.getSignature());
-		}
-		final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-				ontologyManager.getOWLDataFactory(),
-				new ReplacementByKindStrategy(
-						ontologyManager.getOWLDataFactory()));
-		final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-				ontologies, owlEntityReplacer, ontologyManager);
-		MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils
-				.getEquivalenceClasses(entities, distance);
-		int i = 0;
-		for (OWLEntity key : equivalenceClasses.keySet()) {
-			Collection<OWLEntity> set = equivalenceClasses.get(key);
-			System.out.println(String.format("Equivalence class no %d %s", i++,
-					render(set)));
-		}
-		for (OWLEntity key : equivalenceClasses.keySet()) {
-			Collection<OWLEntity> set = equivalenceClasses.get(key);
-			for (OWLEntity anotherKey : equivalenceClasses.keySet()) {
-				if (key != anotherKey) {
-					Collection<OWLEntity> anotherSet = equivalenceClasses
-							.get(anotherKey);
-					Set<OWLEntity> intersection = new HashSet<OWLEntity>(set);
-					intersection.retainAll(anotherSet);
-					assertTrue(intersection.isEmpty());
-				}
-			}
-		}
-		distance.dispose();
-	}
+    public void testGetEquivalenceClassesTravel() throws Exception {
+        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        File file = new File("code/test/resources/c16.rdf.owl");
+        IOUtils.loadIRIMappers(Collections.singleton(IRI.create(file)), ontologyManager);
+        ontologyManager.loadOntologyFromOntologyDocument(file);
+        Set<OWLOntology> ontologies = ontologyManager.getOntologies();
+        final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
+            @Override
+            public int compare(final OWLEntity o1, final OWLEntity o2) {
+                return shortFormProvider.getShortForm(o1).compareTo(
+                        shortFormProvider.getShortForm(o2));
+            }
+        });
+        for (OWLOntology ontology : ontologyManager.getOntologies()) {
+            entities.addAll(ontology.getSignature());
+        }
+        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+                ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
+                        ontologyManager.getOWLDataFactory()));
+        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
+                ontologies, owlEntityReplacer, ontologyManager);
+        MultiMap<OWLEntity, OWLEntity> equivalenceClasses = Utils.getEquivalenceClasses(
+                entities, distance);
+        int i = 0;
+        for (OWLEntity key : equivalenceClasses.keySet()) {
+            Collection<OWLEntity> set = equivalenceClasses.get(key);
+            System.out.println(String.format("Equivalence class no %d %s", i++,
+                    render(set)));
+        }
+        for (OWLEntity key : equivalenceClasses.keySet()) {
+            Collection<OWLEntity> set = equivalenceClasses.get(key);
+            for (OWLEntity anotherKey : equivalenceClasses.keySet()) {
+                if (key != anotherKey) {
+                    Collection<OWLEntity> anotherSet = equivalenceClasses.get(anotherKey);
+                    Set<OWLEntity> intersection = new HashSet<OWLEntity>(set);
+                    intersection.retainAll(anotherSet);
+                    assertTrue(intersection.isEmpty());
+                }
+            }
+        }
+        distance.dispose();
+    }
 
-	private static String render(final Collection<? extends OWLEntity> cluster) {
-		Formatter out = new Formatter();
-		Iterator<? extends OWLEntity> iterator = cluster.iterator();
-		while (iterator.hasNext()) {
-			ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-			OWLEntity owlEntity = iterator.next();
-			out.format("%s%s", renderer.render(owlEntity),
-					iterator.hasNext() ? ", " : "");
-		}
-		return out.toString();
-	}
+    private static String render(final Collection<? extends OWLEntity> cluster) {
+        Formatter out = new Formatter();
+        Iterator<? extends OWLEntity> iterator = cluster.iterator();
+        while (iterator.hasNext()) {
+            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
+            OWLEntity owlEntity = iterator.next();
+            out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
+        }
+        return out.toString();
+    }
 }

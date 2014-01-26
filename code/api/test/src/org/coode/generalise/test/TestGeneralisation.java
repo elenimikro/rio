@@ -55,16 +55,16 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class TestGeneralisation extends TestCase {
     private class UnionFinder extends OWLObjectVisitorExAdapter<Boolean> {
-        private UnionFinder(Boolean defaultReturnValue) {
+        public UnionFinder(Boolean defaultReturnValue) {
             super(defaultReturnValue);
         }
 
         @Override
-        public
-                Boolean
-                visit(final OWLObjectUnionOf desc) {
+        public Boolean visit(final OWLObjectUnionOf desc) {
             return true;
         }
     }
@@ -121,8 +121,8 @@ public class TestGeneralisation extends TestCase {
                                 @Override
                                 public Boolean visit(final OWLObjectAllValuesFrom desc) {
                                     return !desc.getProperty().isAnonymous()
-                                            && desc.getFiller()
-                                                    .accept(new UnionFinder(false));
+                                            && desc.getFiller().accept(
+                                                    new UnionFinder(false));
                                 }
                             });
                     return !ax.getSubClass().isAnonymous() && isRightSuperClass;

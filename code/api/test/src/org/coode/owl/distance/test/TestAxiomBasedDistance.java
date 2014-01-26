@@ -34,6 +34,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /** @author Luigi Iannone */
+@SuppressWarnings("javadoc")
 public class TestAxiomBasedDistance extends DistanceTestCase {
     @Override
     protected DistanceBuilder getDistanceBuilder() {
