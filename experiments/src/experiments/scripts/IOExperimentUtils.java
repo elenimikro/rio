@@ -15,9 +15,25 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import experiments.ClusterResultsExploitationUtils;
 import experiments.ExperimentHelper;
 
+/** @author eleni */
 public class IOExperimentUtils {
     private static String results_base = "";
 
+    /** @param substring
+     *            substring
+     * @param clustering_type
+     *            clustering_type
+     * @param model
+     *            model
+     * @return file
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException
+     * @throws FileNotFoundException
+     *             FileNotFoundException */
     public static File saveResults(String substring, String clustering_type,
             ClusterDecompositionModel<OWLEntity> model)
             throws ParserConfigurationException, TransformerFactoryConfigurationError,

@@ -38,9 +38,19 @@ import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+/** @author eleni */
 public class ExperimentHelper {
     private static ClusterCreator clusterer;
 
+    /** @param o
+     *            o
+     * @param distance
+     *            distance
+     * @param clusteringSignature
+     *            clusteringSignature
+     * @return cluster decompositon model
+     * @throws OPPLException
+     *             OPPLException */
     public static ClusterDecompositionModel<OWLEntity> startSyntacticClustering(
             OWLOntology o, Distance<OWLEntity> distance,
             Set<OWLEntity> clusteringSignature) throws OPPLException {
@@ -56,6 +66,17 @@ public class ExperimentHelper {
         return model;
     }
 
+    /** @param o
+     *            o
+     * @param entailments
+     *            entailments
+     * @param distance
+     *            distance
+     * @param clusteringSignature
+     *            clusteringSignature
+     * @return cluster decompositon model
+     * @throws OPPLException
+     *             OPPLException */
     public static ClusterDecompositionModel<OWLEntity> startSemanticClustering(
             OWLOntology o, Set<OWLAxiom> entailments, Distance<OWLEntity> distance,
             Set<OWLEntity> clusteringSignature) throws OPPLException {
@@ -105,6 +126,9 @@ public class ExperimentHelper {
     // clusters);
     // return model;
     // }
+    /** @param model
+     *            model
+     * @return clustering metrics */
     public static Collection<? extends SimpleMetric<?>> getClusteringMetrics(
             ClusterDecompositionModel<OWLEntity> model) {
         ArrayList<SimpleMetric<?>> toReturn = new ArrayList<SimpleMetric<?>>();
@@ -133,6 +157,9 @@ public class ExperimentHelper {
         return toReturn;
     }
 
+    /** @param gad
+     *            gad
+     * @return metrics */
     public static Collection<? extends SimpleMetric<?>>
             getAtomicDecompositionGeneralisedMetrics(
                     GeneralisedAtomicDecomposition<OWLEntity> gad) {
@@ -152,6 +179,20 @@ public class ExperimentHelper {
         return toReturn;
     }
 
+    /** @param out
+     *            out
+     * @param s
+     *            s
+     * @param axiomCount
+     *            axiomCount
+     * @param logicalAxiomCount
+     *            logicalAxiomCount
+     * @param entitiesNo
+     *            entitiesNo
+     * @param model
+     *            model
+     * @param gad
+     *            gad */
     public static void printStats(PrintStream out, String s, int axiomCount,
             int logicalAxiomCount, int entitiesNo,
             ClusterDecompositionModel<OWLEntity> model,
@@ -184,6 +225,12 @@ public class ExperimentHelper {
                 + ",");
     }
 
+    /** @param out
+     *            out
+     * @param f
+     *            f
+     * @param sortedClusters
+     *            sortedClusters */
     public static <P> void printClusteringStats(PrintStream out, File f,
             Collection<Cluster<P>> sortedClusters) {
         try {
@@ -236,6 +283,10 @@ public class ExperimentHelper {
         }
     }
 
+    /** @param output
+     *            output
+     * @param table
+     *            table */
     public static void print(PrintStream output, String[][] table) {
         for (int i = 0; i < table.length; i++) {
             for (int j = 0; j < table[i].length; j++) {
@@ -248,6 +299,9 @@ public class ExperimentHelper {
         output.println();
     }
 
+    /** @param o
+     *            o
+     * @return axioms */
     public static Set<OWLAnnotationAssertionAxiom> stripOntologyFromAnnotationAssertions(
             OWLOntology o) {
         Set<OWLAnnotationAssertionAxiom> set = new HashSet<OWLAnnotationAssertionAxiom>();
@@ -259,11 +313,15 @@ public class ExperimentHelper {
         return set;
     }
 
+    /** @return clustering matrix */
     public static ClusteringProximityMatrix<DistanceTableObject<OWLEntity>>
             getClusteringMatrix() {
         return clusterer.getClusteringMatrix();
     }
 
+    /** @param manager
+     *            manager
+     * @return renderer */
     public static ManchesterSyntaxRenderer setManchesterSyntaxWithLabelRendering(
             OWLOntologyManager manager) {
         OWLDataFactory dataFactory = manager.getOWLDataFactory();

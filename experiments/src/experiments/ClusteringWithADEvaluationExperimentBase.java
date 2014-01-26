@@ -18,9 +18,16 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 
+/** @author eleni */
 public class ClusteringWithADEvaluationExperimentBase {
     protected static boolean firstTime = true;
 
+    /** @param indi_metrics
+     *            indi_metrics
+     * @param file
+     *            file
+     * @throws FileNotFoundException
+     *             FileNotFoundException */
     public static void printMetrics(List<SimpleMetric<?>> indi_metrics, File file)
             throws FileNotFoundException {
         FileOutputStream fout = new FileOutputStream(file, true);
@@ -40,6 +47,9 @@ public class ClusteringWithADEvaluationExperimentBase {
         out.close();
     }
 
+    /** @param m
+     *            m
+     * @return simple metrics */
     public static Collection<? extends SimpleMetric<?>> getBasicOntologyMetrics(
             OWLOntologyManager m) {
         ArrayList<SimpleMetric<?>> toReturn = new ArrayList<SimpleMetric<?>>();
@@ -57,6 +67,9 @@ public class ClusteringWithADEvaluationExperimentBase {
         return toReturn;
     }
 
+    /** @param ad
+     *            ad
+     * @return ad metrics */
     public static Collection<? extends SimpleMetric<?>> getADMetrics(
             AtomicDecomposition ad) {
         ArrayList<SimpleMetric<?>> toReturn = new ArrayList<SimpleMetric<?>>();
@@ -71,6 +84,11 @@ public class ClusteringWithADEvaluationExperimentBase {
     }
 
     // FIXME: These are wrong. They need refinement
+    /** @param out
+     *            out
+     * @param sortedClusters
+     *            sortedClusters
+     * @return clustering stats */
     public static <P> Collection<? extends SimpleMetric<?>> getClusteringStats(
             PrintStream out, Collection<Cluster<P>> sortedClusters) {
         ArrayList<SimpleMetric<?>> toReturn = new ArrayList<SimpleMetric<?>>();
@@ -125,6 +143,9 @@ public class ClusteringWithADEvaluationExperimentBase {
         return toReturn;
     }
 
+    /**
+     * 
+     */
     public ClusteringWithADEvaluationExperimentBase() {
         super();
     }

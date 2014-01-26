@@ -28,6 +28,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
 
+/** @author eleni */
 public class SemanticPopularityClusteringJustificationSimilarityExperiment {
     private final static String root = "experiment-results/semantic/bioportal/justification-results/";
     private static File outputFile;
@@ -36,9 +37,13 @@ public class SemanticPopularityClusteringJustificationSimilarityExperiment {
      * computes their semantic regularities
      * 
      * @param args
+     *            args
      * @throws FileNotFoundException
+     *             FileNotFoundException
      * @throws OPPLException
-     * @throws OWLOntologyCreationException */
+     *             OPPLException
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void main(String[] args) throws FileNotFoundException,
             OWLOntologyCreationException, OPPLException {
         String ontologyList = "40BioPortalList.txt";

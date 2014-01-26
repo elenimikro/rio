@@ -16,7 +16,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import experiments.ExperimentHelper;
 import experiments.ExperimentUtils;
-
+/** @author eleni */
 public class SnomedQualityAssurance {
     /** @param args
      *            args[0]: "ontology usage", args[1]: keyword */

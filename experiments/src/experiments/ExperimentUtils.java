@@ -55,7 +55,11 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 
+/** @author eleni */
 public class ExperimentUtils {
+    /** @param ontology
+     *            ontology
+     * @return knowledge explorer */
     public static KnowledgeExplorer runFactplusplusKnowledgeExplorerReasoner(
             OWLOntology ontology) {
         OWLReasoner reasoner = new FaCTPlusPlusReasoner(ontology,
@@ -68,6 +72,9 @@ public class ExperimentUtils {
         return ke;
     }
 
+    /** @param ontoFile
+     *            ontoFile
+     * @return ontology */
     public static OWLOntology loadOntology(File ontoFile) {
         OWLOntology ontology = null;
         try {
@@ -80,6 +87,11 @@ public class ExperimentUtils {
         return ontology;
     }
 
+    /** @param ontoFile
+     *            ontoFile
+     * @param axioms
+     *            axioms
+     * @return ontology */
     public static OWLOntology saveOntology(File ontoFile, Set<OWLAxiom> axioms) {
         try {
             OWLOntology ontology = OWLManager.createOWLOntologyManager().createOntology(
@@ -106,6 +118,12 @@ public class ExperimentUtils {
 
     protected static boolean firstTime = true;
 
+    /** @param metrics
+     *            metrics
+     * @param file
+     *            file
+     * @throws FileNotFoundException
+     *             FileNotFoundException */
     public static void printMetrics(List<SimpleMetric<?>> metrics, File file)
             throws FileNotFoundException {
         FileOutputStream fout = new FileOutputStream(file, true);
@@ -125,6 +143,9 @@ public class ExperimentUtils {
         out.close();
     }
 
+    /** @param bioportalList
+     *            bioportalList
+     * @return list */
     public static ArrayList<String> extractListFromFile(String bioportalList) {
         ArrayList<String> inputList = new ArrayList<String>();
         try {
@@ -139,6 +160,12 @@ public class ExperimentUtils {
         return inputList;
     }
 
+    /** @param model
+     *            model
+     * @param o
+     *            o
+     * @param txtFile
+     *            txtFile */
     public static <C extends Set<OWLEntity>> void saveToTXT(
             RegularitiesDecompositionModel<C, OWLEntity> model, OWLOntology o,
             File txtFile) {
@@ -158,6 +185,14 @@ public class ExperimentUtils {
         }
     }
 
+    /** @param list
+     *            list
+     * @param out
+     *            out
+     * @param map
+     *            map
+     * @param renderer
+     *            renderer */
     public static <C extends Set<OWLEntity>> void writeClusters(List<C> list,
             PrintStream out, MultiMap<OWLAxiom, OWLAxiomInstantiation> map,
             ManchesterSyntaxRenderer renderer) {
@@ -173,6 +208,12 @@ public class ExperimentUtils {
         }
     }
 
+    /** @param out
+     *            out
+     * @param map
+     *            map
+     * @param renderer
+     *            renderer */
     public static void writeGeneralisations(PrintStream out,
             MultiMap<OWLAxiom, OWLAxiomInstantiation> map,
             ManchesterSyntaxRenderer renderer) {
@@ -186,6 +227,17 @@ public class ExperimentUtils {
         }
     }
 
+    /** @param set
+     *            set
+     * @param ontologies
+     *            ontologies
+     * @param constraintSystem
+     *            constraintSystem
+     * @param renderer
+     *            renderer
+     * @return generalization
+     * @throws OPPLException
+     *             OPPLException */
     public static <O extends OWLObject> OWLObjectGeneralisation
             getUnwrappedOWLObjectGeneralisation(
                     Collection<? extends Collection<? extends O>> set,
@@ -255,6 +307,17 @@ public class ExperimentUtils {
         return new UnwrappedOWLObjectGeneralisation(bindings, constraintSystem);
     }
 
+    /** @param clusterListA
+     *            clusterListA
+     * @param clusterListB
+     *            clusterListB
+     * @param mapA
+     *            mapA
+     * @param mapB
+     *            mapB
+     * @param signature
+     *            signature
+     * @return mean similarity */
     public static double computeTotalMeanClusterSimilarity(
             List<Set<OWLEntity>> clusterListA, List<Set<OWLEntity>> clusterListB,
             Map<OWLEntity, Integer> mapA, Map<OWLEntity, Integer> mapB,

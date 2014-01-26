@@ -13,7 +13,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import experiments.ExperimentHelper;
 import experiments.ExperimentUtils;
-
+/** @author eleni */
 public class SnomedRegularityUsageExtractor {
 
 	private static String RESULTS_BASE = "/Volumes/Passport-mac/Expeiments/";

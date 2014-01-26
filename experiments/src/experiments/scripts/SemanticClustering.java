@@ -33,9 +33,26 @@ import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasoner
 import experiments.ClusteringWithADEvaluationExperimentBase;
 import experiments.ExperimentHelper;
 
+/** @author eleni */
 public class SemanticClustering extends ClusteringWithADEvaluationExperimentBase {
     private final ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
 
+    /** @param o
+     *            o
+     * @param filename
+     *            filename
+     * @throws FileNotFoundException
+     *             FileNotFoundException
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public void runPopularitySemanticClustering(OWLOntology o, String filename)
             throws FileNotFoundException, OWLOntologyCreationException, OPPLException,
             ParserConfigurationException, TransformerFactoryConfigurationError,
@@ -57,6 +74,23 @@ public class SemanticClustering extends ClusteringWithADEvaluationExperimentBase
         out.close();
     }
 
+    /** @param distanceType
+     *            distanceType
+     * @param singleOut
+     *            singleOut
+     * @param o
+     *            o
+     * @param distance
+     *            distance
+     * @param clusteringSignature
+     *            clusteringSignature
+     * @param entailments
+     *            entailments
+     * @return cluster decomposition model
+     * @throws OPPLException
+     *             OPPLException
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public ClusterDecompositionModel<OWLEntity> run(String distanceType,
             PrintStream singleOut, OWLOntology o, Distance<OWLEntity> distance,
             Set<OWLEntity> clusteringSignature, Set<OWLAxiom> entailments)
@@ -82,6 +116,9 @@ public class SemanticClustering extends ClusteringWithADEvaluationExperimentBase
         return toReturn;
     }
 
+    /** @param o
+     *            o
+     * @return knowledge explorer */
     public KnowledgeExplorer runFactplusplusKnowledgeExplorerReasoner(OWLOntology o) {
         OWLReasoner reasoner = new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
                 BufferingMode.NON_BUFFERING);

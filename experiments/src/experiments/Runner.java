@@ -1,4 +1,5 @@
 package experiments;
+
 /*******************************************************************************
  * Copyright (c) 2012 Eleni Mikroyannidi.
  * All rights reserved. This program and the accompanying materials
@@ -15,7 +16,12 @@ import org.coode.atomicdecomposition.commandline.AtomicDecompositionDifferenceWr
 import org.coode.atomicdecomposition.commandline.AtomicDecompositionEquivalenceClassesAgglomerateAll;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+/** @author eleni */
 public class Runner {
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void main(final String[] args) throws OWLOntologyCreationException {
         final String uri = "file://";
         String atomic1 = "atomic1";
@@ -65,6 +71,15 @@ public class Runner {
         // }
     }
 
+    /** @param uri
+     *            uri
+     * @param base
+     *            base
+     * @param current
+     *            current
+     * @param s
+     *            s
+     * @return arguments */
     public static String[] args(final String uri, final String base,
             final String current, final String s) {
         return new String[] {

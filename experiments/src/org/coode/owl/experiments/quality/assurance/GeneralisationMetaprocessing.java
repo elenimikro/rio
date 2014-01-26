@@ -35,7 +35,12 @@ import org.xml.sax.SAXException;
 import experiments.ExperimentHelper;
 import experiments.ExperimentUtils;
 
+/** @author eleni
+ * @param <C>
+ *            type */
 public class GeneralisationMetaprocessing<C extends Set<OWLEntity>> {
+    /** @param args
+     *            args */
     public static void main(String[] args) {
         try {
             // ontology
@@ -89,6 +94,10 @@ public class GeneralisationMetaprocessing<C extends Set<OWLEntity>> {
     private final MultiMap<OWLAxiom, OWLAxiomInstantiation> map = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     private final ConstraintSystem constraintSystem;
 
+    /** @param model
+     *            model
+     * @param constraintSystem
+     *            constraintSystem */
     public GeneralisationMetaprocessing(
             RegularitiesDecompositionModel<C, OWLEntity> model,
             ConstraintSystem constraintSystem) {
@@ -96,6 +105,10 @@ public class GeneralisationMetaprocessing<C extends Set<OWLEntity>> {
         this.constraintSystem = constraintSystem;
     }
 
+    /** @param generalisationMap
+     *            generalisationMap
+     * @param constraintSystem
+     *            constraintSystem */
     public GeneralisationMetaprocessing(
             MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap,
             ConstraintSystem constraintSystem) {
@@ -103,6 +116,9 @@ public class GeneralisationMetaprocessing<C extends Set<OWLEntity>> {
         this.constraintSystem = constraintSystem;
     }
 
+    /** @return generalisation map
+     * @throws OPPLException
+     *             OPPLException */
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> getProcessedGeneralisationMap()
             throws OPPLException {
         MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();

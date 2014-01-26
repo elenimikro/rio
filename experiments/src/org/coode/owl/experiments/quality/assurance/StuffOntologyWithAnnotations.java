@@ -11,7 +11,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import experiments.ExperimentUtils;
-
+/** @author eleni */
 public class StuffOntologyWithAnnotations {
     /** @param args
      *            args[0]: Asserted ontology, args[1]: Ontology to stuff. */

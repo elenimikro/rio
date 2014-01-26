@@ -22,17 +22,25 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import experiments.ExperimentHelper;
 
+/** @author eleni
+ * @param <C>
+ *            type */
 public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEntity>> {
     private final Set<OWLEntity> target = new HashSet<OWLEntity>();
     private final OWLOntology o;
     private final String keyword;
     private final Set<OWLAxiom> usage = new HashSet<OWLAxiom>();
 
+    /** @param keyword
+     *            keyword
+     * @param o
+     *            o */
     public LexicalAndAxiomaticPatternBasedQualityAssurance(String keyword, OWLOntology o) {
         this.o = o;
         this.keyword = keyword.toLowerCase();
     }
 
+    /** @return target entities */
     public Set<OWLEntity> getTargetEntities() {
         if (target.isEmpty()) {
             ManchesterSyntaxRenderer renderer = ExperimentHelper
@@ -47,6 +55,7 @@ public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEn
         return target;
     }
 
+    /** @return target entities usage */
     public Set<OWLAxiom> getTargetEntitiesUsage() {
         if (usage.isEmpty()) {
             for (OWLEntity e : target) {
@@ -56,6 +65,9 @@ public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEn
         return usage;
     }
 
+    /** @param clusterList
+     *            clusterList
+     * @return target entities not in clusters */
     public Set<OWLEntity> getTargetEntitiesExcludedFromClusters(List<C> clusterList) {
         Set<OWLEntity> toReturn = new HashSet<OWLEntity>(target);
         for (C cl : clusterList) {
@@ -64,6 +76,9 @@ public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEn
         return toReturn;
     }
 
+    /** @param list
+     *            list
+     * @return clusters with target entities */
     public List<C> getClustersIncludingTargetEntities(List<C> list) {
         List<C> toReturn = new ArrayList<C>();
         for (int i = 0; i < list.size(); i++) {
@@ -76,6 +91,7 @@ public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEn
         return toReturn;
     }
 
+    /** @return regularities */
     public ClusterDecompositionModel<OWLEntity> getRegularities() {
         Set<OWLAnnotationAssertionAxiom> annotations = ExperimentHelper
                 .stripOntologyFromAnnotationAssertions(o);
@@ -85,6 +101,7 @@ public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEn
         return model;
     }
 
+    /** @return regularities based on usage */
     public ClusterDecompositionModel<OWLEntity> getRegularitiesBasedOnUsage() {
         ClusterDecompositionModel<OWLEntity> model = null;
         try {
@@ -95,16 +112,19 @@ public class LexicalAndAxiomaticPatternBasedQualityAssurance<C extends Set<OWLEn
             model = ClusteringHelper.getSyntacticPopularityClusterModel(onto);
             onto.getOWLOntologyManager().addAxioms(onto, annotations);
         } catch (OWLOntologyCreationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return model;
     }
 
+    /** @return keyword */
     public String getLexicalPattern() {
         return keyword;
     }
 
+    /** @param model
+     *            model
+     * @return stats */
     public ArrayList<SimpleMetric<?>> getQualityAssuranceStats(
             RegularitiesDecompositionModel<C, OWLEntity> model) {
         ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();

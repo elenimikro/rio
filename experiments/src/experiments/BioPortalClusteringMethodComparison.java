@@ -30,11 +30,13 @@ import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.xml.sax.SAXException;
 
+/** @author eleni */
 public class BioPortalClusteringMethodComparison {
     private final static String RESULTS_BASE = "previva-experiment/";
     private final static ArrayList<SimpleMetric<?>> metrics = new ArrayList<SimpleMetric<?>>();
 
-    /** @param args */
+    /** @param args
+     *            args */
     public static void main(String[] args) {
         try {
             String bioportalList = "BioPortal_relativeRepositoryIRIs.txt";
@@ -59,6 +61,20 @@ public class BioPortalClusteringMethodComparison {
         }
     }
 
+    /** @param input
+     *            input
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws FileNotFoundException
+     *             FileNotFoundException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws SAXException
+     *             SAXException
+     * @throws IOException
+     *             IOException
+     * @throws UnknownOWLOntologyException
+     *             UnknownOWLOntologyException */
     public static void runComparison(ArrayList<String> input)
             throws OWLOntologyCreationException, FileNotFoundException,
             ParserConfigurationException, SAXException, IOException,

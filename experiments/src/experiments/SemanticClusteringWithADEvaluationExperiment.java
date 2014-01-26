@@ -37,6 +37,7 @@ import uk.ac.manchester.cs.chainsaw.ChainsawReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasonerFactory;
 
+/** @author eleni */
 public class SemanticClusteringWithADEvaluationExperiment extends
         ClusteringWithADEvaluationExperimentBase {
     private final static String RESULTS_BASE = "similarity/experiment-results/semantic/";
@@ -45,6 +46,20 @@ public class SemanticClusteringWithADEvaluationExperiment extends
     // MultiArrayMap<String, SimpleMetric<?>>();
     // private static Map<String, MultiArrayMap<String, Number>>
     // detailedMetricMap = new HashMap<String, MultiArrayMap<String,Number>>();
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws FileNotFoundException
+     *             FileNotFoundException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public static void main(String[] args) throws OWLOntologyCreationException,
             OPPLException, ParserConfigurationException, FileNotFoundException,
             TransformerFactoryConfigurationError, TransformerException {
@@ -62,6 +77,24 @@ public class SemanticClusteringWithADEvaluationExperiment extends
         setupClusteringExperiment(base, input, file);
     }
 
+    /** @param baseDir
+     *            baseDir
+     * @param input
+     *            input
+     * @param allResultsFile
+     *            allResultsFile
+     * @throws FileNotFoundException
+     *             FileNotFoundException
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public static void setupClusteringExperiment(String baseDir, String[] input,
             File allResultsFile) throws FileNotFoundException,
             OWLOntologyCreationException, OPPLException, ParserConfigurationException,
@@ -123,6 +156,25 @@ public class SemanticClusteringWithADEvaluationExperiment extends
         }
     }
 
+    /** @param distanceType
+     *            distanceType
+     * @param metrics
+     *            metrics
+     * @param singleOut
+     *            singleOut
+     * @param o
+     *            o
+     * @param distance
+     *            distance
+     * @param clusteringSignature
+     *            clusteringSignature
+     * @param entailments
+     *            entailments
+     * @return cluster decomposition model
+     * @throws OPPLException
+     *             OPPLException
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static ClusterDecompositionModel<OWLEntity> run(String distanceType,
             ArrayList<SimpleMetric<?>> metrics, PrintStream singleOut, OWLOntology o,
             Distance<OWLEntity> distance, Set<OWLEntity> clusteringSignature,
@@ -151,6 +203,9 @@ public class SemanticClusteringWithADEvaluationExperiment extends
         return toReturn;
     }
 
+    /** @param ke
+     *            ke
+     * @return signature */
     public static Set<OWLEntity> getSignatureWithoutProperties(KnowledgeExplorer ke) {
         // final SimpleShortFormProvider shortFormProvider = new
         // SimpleShortFormProvider();
@@ -167,6 +222,9 @@ public class SemanticClusteringWithADEvaluationExperiment extends
         return entities;
     }
 
+    /** @param o
+     *            o
+     * @return knowledge explorer */
     public static KnowledgeExplorer runChainsawFactplusplusKnowledgeExplorerReasoner(
             OWLOntology o) {
         OWLReasoner reasoner = new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),

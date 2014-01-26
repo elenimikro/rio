@@ -25,9 +25,16 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import experiments.ExperimentUtils;
 
+/** @author eleni */
 public class MultipleLexicalPatternRegularityAnalysis {
     private final Set<String> lexicalPatterns = new HashSet<String>();
+    /**
+     * 
+     */
     public static final String VARIABLE_NAME_INVALID_CHARACTERS_REGEXP = "[[^\\?]&&[^\\p{Alnum}]&&[^-_]]";
+    /**
+     * 
+     */
     public static final String RESULTS_BASE = "/Volumes/Passport-mac/Expeiments/";
 
     /** @param args
@@ -45,9 +52,13 @@ public class MultipleLexicalPatternRegularityAnalysis {
     }
 
     /** @param resultsDir
+     *            resultsDir
      * @param ontoFile
+     *            ontoFile
      * @param xmlPatternsFile
-     * @param toSaveMetrics */
+     *            xmlPatternsFile
+     * @param toSaveMetrics
+     *            toSaveMetrics */
     public static void run(String resultsDir, File ontoFile, File xmlPatternsFile,
             File toSaveMetrics) {
         try {
@@ -107,6 +118,8 @@ public class MultipleLexicalPatternRegularityAnalysis {
         }
     }
 
+    /** @param lexicalPatterns
+     *            lexicalPatterns */
     public MultipleLexicalPatternRegularityAnalysis(Set<String> lexicalPatterns) {
         this.lexicalPatterns.addAll(lexicalPatterns);
     }

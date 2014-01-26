@@ -27,10 +27,25 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
 public class SyntacticClusteringWithADEvaluationExperiment extends
         ClusteringWithADEvaluationExperimentBase {
     private final static String RESULTS_BASE = "similarity/experiment-results/syntactic/";
 
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws FileNotFoundException
+     *             FileNotFoundException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public static void main(String[] args) throws OWLOntologyCreationException,
             OPPLException, ParserConfigurationException, FileNotFoundException,
             TransformerFactoryConfigurationError, TransformerException {
@@ -46,6 +61,24 @@ public class SyntacticClusteringWithADEvaluationExperiment extends
         setupClusteringExperiment(base, input, file);
     }
 
+    /** @param baseDir
+     *            baseDir
+     * @param input
+     *            input
+     * @param allResultsFile
+     *            allResultsFile
+     * @throws FileNotFoundException
+     *             FileNotFoundException
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public static void setupClusteringExperiment(String baseDir, String[] input,
             File allResultsFile) throws FileNotFoundException,
             OWLOntologyCreationException, OPPLException, ParserConfigurationException,

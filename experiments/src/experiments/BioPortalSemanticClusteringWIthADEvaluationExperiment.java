@@ -36,6 +36,7 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 
+/** @author eleni */
 public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends
         SyntacticClusteringWithADEvaluationExperiment {
     private final static String RESULTS_BASE = "experiment-results/semantic/bioportal/previva-experiment/";
@@ -44,9 +45,13 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends
      *            a textfile with the list of ontologies that are going to be
      *            processed, timeout in minutes for clustering task
      * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
      * @throws OPPLException
+     *             OPPLException
      * @throws ParserConfigurationException
-     * @throws FileNotFoundException */
+     *             ParserConfigurationException
+     * @throws FileNotFoundException
+     *             FileNotFoundException */
     public static void main(String[] args) throws OWLOntologyCreationException,
             OPPLException, ParserConfigurationException, FileNotFoundException {
         if (args.length >= 2) {
@@ -80,6 +85,14 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends
     }
 
     // XXX: The results are not saved at the moment...
+    /** @param input
+     *            input
+     * @param allResultsFile
+     *            allResultsFile
+     * @param timeout
+     *            timeout
+     * @throws FileNotFoundException
+     *             FileNotFoundException */
     public static void setupClusteringExperiment(ArrayList<String> input,
             File allResultsFile, int timeout) throws FileNotFoundException {
         for (final String s : input) {
@@ -96,14 +109,6 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends
             File f = new File(filename);
             if (!f.exists()) {
                 final PrintStream singleOut = new PrintStream(f);
-                // final OWLOntologyManager m = OWLManager
-                // .createOWLOntologyManager();
-                // final OWLOntology o = m
-                // .loadOntologyFromOntologyDocument(IRI.create(s));
-                // final AtomicReference<JFactReasoner> reasoner = new
-                // AtomicReference<JFactReasoner>();
-                // final AtomicReference<KnowledgeExplorer> ke = new
-                // AtomicReference<KnowledgeExplorer>();
                 Callable<Object> task1 = new Callable<Object>() {
                     @Override
                     public Object call() throws OWLOntologyCreationException,
@@ -154,6 +159,12 @@ public class BioPortalSemanticClusteringWIthADEvaluationExperiment extends
         }
     }
 
+    /** @param task
+     *            task
+     * @param timeout
+     *            timeout
+     * @param timeUnit
+     *            timeUnit */
     public static void runTaskWithTimeout(Callable<Object> task, long timeout,
             TimeUnit timeUnit) {
         ExecutorService executor = Executors.newCachedThreadPool();

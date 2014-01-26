@@ -20,19 +20,26 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
+/** @author eleni */
 public class ADPatternInductionExperiment {
-    public ADPatternInductionExperiment() {
-        // TODO Auto-generated constructor stub
-    }
-
     /** @param args
+     *            args
      * @throws OPPLException
-     * @throws OWLOntologyCreationException */
+     *             OPPLException
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void main(String[] args) throws OWLOntologyCreationException,
             OPPLException {
         run(args[0]);
     }
 
+    /** @param filename
+     *            filename
+     * @return cluster decomposition model
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException */
     public static ClusterDecompositionModel<OWLEntity> run(String filename)
             throws OWLOntologyCreationException, OPPLException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
