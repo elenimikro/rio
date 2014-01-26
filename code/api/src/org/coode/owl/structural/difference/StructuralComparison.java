@@ -110,7 +110,10 @@ final class StructuralComparison implements
     private final List<Integer> position = new ArrayList<Integer>();
     private final StructuralDifference difference;
 
-    /** @param objectToCompare */
+    /** @param owlObject
+     *            owlObject
+     * @param position
+     *            position */
     public StructuralComparison(final OWLObject owlObject, final List<Integer> position) {
         if (owlObject == null) {
             throw new NullPointerException("The OWL Object cannot be null");

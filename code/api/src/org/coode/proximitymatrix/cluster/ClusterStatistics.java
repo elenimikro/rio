@@ -20,11 +20,14 @@ import java.util.Set;
 import org.coode.pair.Pair;
 import org.coode.pair.SimplePair;
 
-/** @author Luigi Iannone */
+/** @author Luigi Iannone
+ * @param <O>
+ *            type */
 public class ClusterStatistics<O> {
     private final Cluster<O> cluster;
 
-    /** @param cluster */
+    /** @param cluster
+     *            cluster */
     private ClusterStatistics(final Cluster<O> cluster) {
         if (cluster == null) {
             throw new NullPointerException("The cluster cannot be null");
@@ -37,6 +40,7 @@ public class ClusterStatistics<O> {
         return this.cluster;
     }
 
+    /** @return min internal distance */
     public double getMinInternalDistance() {
         double min = this.getCluster().size() <= 1 ? 0 : Double.MAX_VALUE;
         for (O object : this.getCluster()) {
@@ -51,6 +55,7 @@ public class ClusterStatistics<O> {
         return min;
     }
 
+    /** @return min external distance */
     public double getMinExternalDistance() {
         double min = this.getCluster().size() <= 1 ? 0 : Double.MAX_VALUE;
         Set<O> externalObjects = this.getExternalObjects();
@@ -71,6 +76,7 @@ public class ClusterStatistics<O> {
         return externalObjects;
     }
 
+    /** @return max internal distance */
     public double getMaxInternalDistance() {
         double max = 0;
         for (O object : this.getCluster()) {
@@ -85,6 +91,7 @@ public class ClusterStatistics<O> {
         return max;
     }
 
+    /** @return max external distance */
     public double getMaxExternalDistance() {
         double max = 0;
         for (O object : this.getCluster()) {
@@ -97,6 +104,7 @@ public class ClusterStatistics<O> {
         return max;
     }
 
+    /** @return average internal distance */
     public double getAverageInternalDistance() {
         double sum = 0;
         Set<Pair<O>> pairs = new HashSet<Pair<O>>();
@@ -114,6 +122,7 @@ public class ClusterStatistics<O> {
         return this.getCluster().size() <= 1 ? 0 : sum / pairs.size();
     }
 
+    /** @return average external distance */
     public double getAverageExternalDistance() {
         double sum = 0;
         Set<Pair<O>> pairs = new HashSet<Pair<O>>();
@@ -131,6 +140,9 @@ public class ClusterStatistics<O> {
         return pairs.size() <= 1 ? 0 : sum / pairs.size();
     }
 
+    /** @param cluster
+     *            cluster
+     * @return ststistics */
     public static <P> ClusterStatistics<P> buildStatistics(final Cluster<P> cluster) {
         return new ClusterStatistics<P>(cluster);
     }

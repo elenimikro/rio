@@ -110,6 +110,7 @@ import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLOb
 
 //import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 //import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
+/** @author ignazio */
 public class Utils {
     private final static class OWLOntologyAnnotationClusterDetector extends
             OWLObjectVisitorExAdapter<Boolean> {
@@ -117,7 +118,10 @@ public class Utils {
         private final Set<OWLEntity> cluster = new HashSet<OWLEntity>();
 
         // private final Set<IRI> iris = new HashSet<IRI>();
-        /** @param ontologies */
+        /** @param cluster
+         *            cluster
+         * @param ontologies
+         *            ontologies */
         public OWLOntologyAnnotationClusterDetector(
                 final Collection<? extends OWLEntity> cluster,
                 final Collection<? extends OWLOntology> ontologies) {
@@ -148,9 +152,10 @@ public class Utils {
     @SuppressWarnings("unused")
     private final static class Handler extends DefaultHandler {
         private final OWLOntologyManager manager;
-        private final Set<Set<OWLEntity>> clusters = new LinkedHashSet<Set<OWLEntity>>();
+        protected final Set<Set<OWLEntity>> clusters = new LinkedHashSet<Set<OWLEntity>>();
 
-        /** @param manager */
+        /** @param manager
+         *            manager */
         public Handler(final OWLOntologyManager manager) {
             if (manager == null) {
                 throw new NullPointerException("The manager cannot be null");
@@ -253,6 +258,15 @@ public class Utils {
         }
     }
 
+    /** @param set
+     *            set
+     * @param ontologies
+     *            ontologies
+     * @param constraintSystem
+     *            constraintSystem
+     * @return generalisation
+     * @throws OPPLException
+     *             OPPLException */
     public static <O extends OWLObject> OWLObjectGeneralisation
             getOWLObjectGeneralisation(
                     final Collection<? extends Collection<? extends O>> set,
@@ -326,6 +340,13 @@ public class Utils {
         return new OWLObjectGeneralisation(bindings, constraintSystem);
     }
 
+    /** @param string
+     *            string
+     * @param names
+     *            names
+     * @param rootNames
+     *            rootNames
+     * @return name */
     public static String createName(final String string, final Set<String> names,
             final Set<String> rootNames) {
         if (!rootNames.contains(string)) {
@@ -353,6 +374,8 @@ public class Utils {
         }
     }
 
+    /** @param cluster
+     *            cluster */
     public static <O extends OWLObject> void
             checkForPuns(Collection<? extends O> cluster) {
         // String name = cluster.iterator().next().getClass().getName();
@@ -365,6 +388,17 @@ public class Utils {
         }
     }
 
+    /** @param clusters
+     *            clusters
+     * @param ontologies
+     *            ontologies
+     * @param renderer
+     *            renderer
+     * @param generalisation
+     *            generalisation
+     * @return document
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException */
     public static <O extends OWLEntity> Document
             toXML(final Collection<? extends Cluster<O>> clusters,
                     final Collection<? extends OWLOntology> ontologies,
@@ -454,6 +488,17 @@ public class Utils {
         return document;
     }
 
+    /** @param in
+     *            in
+     * @param manager
+     *            manager
+     * @return set of entities
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws SAXException
+     *             SAXException
+     * @throws IOException
+     *             IOException */
     public static Set<Set<OWLEntity>> readFromXML(final InputStream in,
             final OWLOntologyManager manager) throws ParserConfigurationException,
             SAXException, IOException {
@@ -477,6 +522,17 @@ public class Utils {
         return toReturn;
     }
 
+    /** @param in
+     *            in
+     * @param manager
+     *            manager
+     * @return history
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws SAXException
+     *             SAXException
+     * @throws IOException
+     *             IOException */
     public static History<Collection<OWLEntity>> readHistoryFromXML(final InputStream in,
             final OWLOntologyManager manager) throws ParserConfigurationException,
             SAXException, IOException {
@@ -544,6 +600,13 @@ public class Utils {
         }
     }
 
+    /** @param cluster
+     *            cluster
+     * @param ontologies
+     *            ontologies
+     * @param generalisation
+     *            generalisation
+     * @return generalisation map */
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
             final Collection<? extends OWLEntity> cluster,
             final Collection<? extends OWLOntology> ontologies,
@@ -585,6 +648,13 @@ public class Utils {
         return generalisationMap;
     }
 
+    /** @param cluster
+     *            cluster
+     * @param generalisation
+     *            generalisation
+     * @param axioms
+     *            axioms
+     * @return generalisation map */
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation>
             buildKnowledgeExplorerGeneralisationMap(
                     final Collection<? extends OWLEntity> cluster,
@@ -636,6 +706,15 @@ public class Utils {
     // }
     // return generalisationMap;
     // }
+    /** @param cluster
+     *            cluster
+     * @param ontologies
+     *            ontologies
+     * @param axioms
+     *            axioms
+     * @param generalisation
+     *            generalisation
+     * @return generalisation map */
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
             Collection<? extends OWLEntity> cluster,
             Collection<? extends OWLOntology> ontologies, Set<OWLAxiom> axioms,
@@ -659,6 +738,11 @@ public class Utils {
         return generalisationMap;
     }
 
+    /** @param owlObject
+     *            owlObject
+     * @param instantiations
+     *            instantiations
+     * @return true if appears */
     public static boolean appears(final OWLObject owlObject,
             final Collection<? extends OWLAxiomInstantiation> instantiations) {
         if (owlObject == null) {
@@ -682,6 +766,11 @@ public class Utils {
         return found;
     }
 
+    /** @param cluster
+     *            cluster
+     * @param generalisationMap
+     *            generalisationMap
+     * @return cluster breakdown */
     public static MultiMap<OWLObject, OWLAxiom> buildClusterAppearanceBreakdown(
             final Collection<? extends OWLObject> cluster,
             final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
@@ -699,9 +788,12 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param generalisation
+    /** @param constraintSystem
+     *            constraintSystem
      * @param runtimeExceptionHandler
-     * @param generalisationMap */
+     *            runtimeExceptionHandler
+     * @param generalisationMap
+     *            generalisationMap */
     public static void pruneGeneralisationMap(final ConstraintSystem constraintSystem,
             final RuntimeExceptionHandler runtimeExceptionHandler,
             final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
@@ -784,11 +876,13 @@ public class Utils {
      * union of its members.
      * 
      * @param <P>
+     *            type
      * @param collections
-     *            The collection of collections. Cannot be {@code null}.
+     *            collections The collection of collections. Cannot be
+     *            {@code null}.
      * @return A Set.
      * @throws NullPointerException
-     *             if the input is {@code null}. */
+     *             NullPointerException if the input is {@code null}. */
     public static <P extends OWLObject> Set<P> flatten(
             final Collection<? extends Collection<? extends P>> collections) {
         if (collections == null) {
@@ -802,6 +896,9 @@ public class Utils {
         return toReturn;
     }
 
+    /** @param assignmentMap
+     *            assignmentMap
+     * @return rendering */
     public static String renderInstantiationsStats(final AssignmentMap assignmentMap) {
         Formatter formatter = new Formatter();
         Iterator<Variable<?>> iterator = assignmentMap.keySet().iterator();
@@ -813,6 +910,9 @@ public class Utils {
         return formatter.toString();
     }
 
+    /** @param instantiations
+     *            instantiations
+     * @return assignment map */
     public static AssignmentMap buildAssignmentMap(
             final Collection<? extends OWLAxiomInstantiation> instantiations) {
         AssignmentMap toReturn = new AssignmentMap(Collections.<BindingNode> emptySet());
@@ -833,6 +933,9 @@ public class Utils {
         return toReturn;
     }
 
+    /** @param instantiations
+     *            instantiations
+     * @return axioms */
     public static Set<OWLAxiom> extractAxioms(
             final Collection<? extends OWLAxiomInstantiation> instantiations) {
         if (instantiations == null) {
@@ -845,6 +948,9 @@ public class Utils {
         return toReturn;
     }
 
+    /** @param model
+     *            model
+     * @return generalisation map */
     public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation>
             extractGeneralisationMap(RegularitiesDecompositionModel<C, OWLEntity> model) {
         MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
@@ -854,6 +960,11 @@ public class Utils {
         return toReturn;
     }
 
+    /** @param cluster
+     *            cluster
+     * @param generalisationMap
+     *            generalisationMap
+     * @return variable */
     public static Variable<?> getVariable(final Collection<? extends OWLEntity> cluster,
             final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
         boolean found = false;
@@ -883,6 +994,9 @@ public class Utils {
         return toReturn;
     }
 
+    /** @param cluster
+     *            cluster
+     * @return rendering */
     public static String render(
             final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
         Formatter out = new Formatter();
@@ -895,6 +1009,9 @@ public class Utils {
         return out.toString();
     }
 
+    /** @param cluster
+     *            cluster
+     * @return rendering */
     public static String renderManchester(
             final Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
         Formatter out = new Formatter();
@@ -907,6 +1024,13 @@ public class Utils {
         return out.toString();
     }
 
+    /** @param clusteringMatrix
+     *            clusteringMatrix
+     * @param distanceMatrix
+     *            distanceMatrix
+     * @param equivalenceClasses
+     *            equivalenceClasses
+     * @return clusters */
     public static <P> Set<Cluster<P>> buildClusters(
             final ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
             final ProximityMatrix<P> distanceMatrix,
@@ -941,6 +1065,16 @@ public class Utils {
         return toReturn;
     }
 
+    /** @param model
+     *            model
+     * @param file
+     *            file
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public static <C extends Set<P>, P extends OWLEntity> void saveToXML(
             final RegularitiesDecompositionModel<C, P> model, final File file)
             throws ParserConfigurationException, TransformerFactoryConfigurationError,
@@ -1006,9 +1140,12 @@ public class Utils {
     /** It saves the clusters in an xml. In this version the history is not
      * saved.
      * 
-     * @param clusters
+     * @param _clusters
+     *            _clusters
      * @param manager
-     * @param file */
+     *            manager
+     * @param file
+     *            file */
     public static <P extends OWLEntity> void save(
             final Collection<? extends Cluster<P>> _clusters,
             final OWLOntologyManager manager, final File file) {
@@ -1048,6 +1185,10 @@ public class Utils {
         }
     }
 
+    /** @param file
+     *            file
+     * @param sortedClusters
+     *            sortedClusters */
     public static <P> void printExtraStats(final File file,
             final Collection<Cluster<P>> sortedClusters) {
         try {
@@ -1083,11 +1224,12 @@ public class Utils {
      * regularities
      * 
      * @param _clusters
+     *            _clusters
      * @param ontologies
+     *            ontologies
      * @param generalisation
-     * @param runtimeExceptionHandler
-     * @return
-     * @throws ParserConfigurationException */
+     *            generalisation
+     * @return cluster decomposition model */
     public static <P extends OWLEntity> ClusterDecompositionModel<P>
             toClusterDecompositionModel(Collection<? extends Cluster<P>> _clusters,
                     Collection<? extends OWLOntology> ontologies,
@@ -1102,6 +1244,15 @@ public class Utils {
         return model;
     }
 
+    /** @param _clusters
+     *            _clusters
+     * @param ontologies
+     *            ontologies
+     * @param axioms
+     *            axioms
+     * @param generalisation
+     *            generalisation
+     * @return cluster decomposition model */
     public static <P extends OWLEntity> ClusterDecompositionModel<P>
             toKnowledgeExplorerClusterDecompositionModel(
                     Collection<? extends Cluster<P>> _clusters,
@@ -1118,6 +1269,9 @@ public class Utils {
         return model;
     }
 
+    /** @param o
+     *            o
+     * @return signature */
     public static Set<OWLEntity> getSortedSignature(OWLOntology o) {
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
@@ -1133,6 +1287,9 @@ public class Utils {
         return entities;
     }
 
+    /** @param axioms
+     *            axioms
+     * @return signature */
     public static Set<OWLEntity> getSortedSignature(Set<OWLAxiom> axioms) {
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
@@ -1148,6 +1305,9 @@ public class Utils {
         return entities;
     }
 
+    /** @param _entities
+     *            _entities
+     * @return sgnature */
     public static Set<OWLEntity> sortSignature(Set<OWLEntity> _entities) {
         final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
@@ -1161,6 +1321,9 @@ public class Utils {
         return entities;
     }
 
+    /** @param manager
+     *            manager
+     * @return renderer */
     public static org.coode.utils.owl.ManchesterSyntaxRenderer enableLabelRendering(
             OWLOntologyManager manager) {
         OWLDataFactory dataFactory = manager.getOWLDataFactory();

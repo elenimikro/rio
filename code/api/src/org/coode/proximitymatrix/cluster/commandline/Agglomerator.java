@@ -10,12 +10,28 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
 public interface Agglomerator {
+    /** @param outFile
+     *            outFile
+     * @param iris
+     *            iris
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     void run(File outFile, List<IRI> iris) throws OWLOntologyCreationException;
 
+    /** @param manager
+     *            manager
+     * @return distance */
     Distance<OWLEntity> getDistance(OWLOntologyManager manager);
 
+    /** @param clusteringMatrix
+     *            clusteringMatrix */
     void print(ClusteringProximityMatrix<?> clusteringMatrix);
 
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     void checkArgumentsAndRun(String[] args) throws OWLOntologyCreationException;
 }

@@ -18,11 +18,15 @@ import java.util.Set;
 import org.coode.distance.ReplacementStrategy;
 import org.semanticweb.owlapi.model.*;
 
+/** @author eleni */
 public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
     private final OWLDataFactory dataFactory;
     private final ReplacementStrategy replacementStrategy;
 
-    /** @param structuralHashCode */
+    /** @param dataFactory
+     *            dataFactory
+     * @param replacementStrategy
+     *            replacementStrategy */
     public OWLEntityReplacer(OWLDataFactory dataFactory,
             ReplacementStrategy replacementStrategy) {
         if (dataFactory == null) {

@@ -21,8 +21,15 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class OWLEntityReplacementVariableProvider extends
         SingleOWLEntityReplacementVariableProvider {
+    /** @param relevancePolicy
+     *            relevancePolicy
+     * @param entityProvider
+     *            entityProvider
+     * @param constraintSystem
+     *            constraintSystem */
     public OWLEntityReplacementVariableProvider(
             RelevancePolicy<OWLEntity> relevancePolicy, OWLEntityProvider entityProvider,
             ConstraintSystem constraintSystem) {
@@ -41,8 +48,6 @@ public class OWLEntityReplacementVariableProvider extends
                 OWLEntity object = (OWLEntity) _object;
                 return object.equals(OWLEntityReplacementVariableProvider.this
                         .getOWLObject()) ? null
-                // OWLEntityReplacementVariableProvider.this
-                // .getStar(object)
                         : OWLEntityReplacementVariableProvider.this.getRelevancePolicy()
                                 .isRelevant(object) ? null
                                 : OWLEntityReplacementVariableProvider.this

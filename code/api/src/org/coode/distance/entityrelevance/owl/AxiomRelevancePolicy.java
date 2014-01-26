@@ -28,15 +28,19 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
     private final RelevancePolicy<OWLEntity> relevance;
 
     /** @param replacedAxiom
-     * @param axiomMap */
+     *            replacedAxiom
+     * @param axiomMap
+     *            axiomMap */
     public AxiomRelevancePolicy(final OWLAxiom replacedAxiom, final AxiomMap axiomMap) {
         relevance = AbstractRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom, axiomMap));
     }
 
     /** @param replacedAxiom
+     *            replacedAxiom
      * @param axiomMap
-     * @return */
+     *            axiomMap
+     * @return ranking */
     public static AbstractRanking<OWLEntity> buildRanking(final OWLAxiom replacedAxiom,
             final AxiomMap axiomMap) {
         final Map<OWLEntity, AtomicInteger> entityMap = axiomMap.get(replacedAxiom);

@@ -21,78 +21,81 @@ import org.coode.oppl.bindingtree.BindingNode;
 import org.coode.utils.DefaultTreeNode;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
+/** @author eleni */
 public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNode>
-		implements GeneralisationTreeNode<BindingNode> {
-	private final OWLAxiom generalisation;
-	private final Set<OWLAxiomInstantiation> instantiations = new HashSet<OWLAxiomInstantiation>();
-	private final ConstraintSystem constraintSystem;
+        implements GeneralisationTreeNode<BindingNode> {
+    private final OWLAxiom generalisation;
+    private final Set<OWLAxiomInstantiation> instantiations = new HashSet<OWLAxiomInstantiation>();
+    private final ConstraintSystem constraintSystem;
 
-	public BindingNodeGeneralisationTreeNode(BindingNode userObject,
-			OWLAxiom generalisation,
-			Collection<? extends OWLAxiomInstantiation> instantiations,
-			ConstraintSystem constraintSystem) {
-		super(userObject);
-		if (generalisation == null) {
-			throw new NullPointerException("The generalisation cannot be null");
-		}
-		if (instantiations == null) {
-			throw new NullPointerException("The instantiation collection cannot be null");
-		}
-		if (constraintSystem == null) {
-			throw new NullPointerException("The constraint system cannot be null");
-		}
-		this.constraintSystem = constraintSystem;
-		this.generalisation = generalisation;
-		this.instantiations.addAll(instantiations);
-		if (!instantiations.isEmpty()) {
-			this.addChild(new AxiomGeneralisationTreeNode(generalisation, instantiations,
-					constraintSystem));
-		}
-	}
+    /** @param userObject
+     *            userObject
+     * @param generalisation
+     *            generalisation
+     * @param instantiations
+     *            instantiations
+     * @param constraintSystem
+     *            constraintSystem */
+    public BindingNodeGeneralisationTreeNode(BindingNode userObject,
+            OWLAxiom generalisation,
+            Collection<? extends OWLAxiomInstantiation> instantiations,
+            ConstraintSystem constraintSystem) {
+        super(userObject);
+        if (generalisation == null) {
+            throw new NullPointerException("The generalisation cannot be null");
+        }
+        if (instantiations == null) {
+            throw new NullPointerException("The instantiation collection cannot be null");
+        }
+        if (constraintSystem == null) {
+            throw new NullPointerException("The constraint system cannot be null");
+        }
+        this.constraintSystem = constraintSystem;
+        this.generalisation = generalisation;
+        this.instantiations.addAll(instantiations);
+        if (!instantiations.isEmpty()) {
+            this.addChild(new AxiomGeneralisationTreeNode(generalisation, instantiations,
+                    constraintSystem));
+        }
+    }
 
-	@Override
+    @Override
     public void accept(GeneralisationTreeNodeVisitor visitor) {
-		visitor.visitBindingNodeGeneralisationTreeNode(this);
-	}
+        visitor.visitBindingNodeGeneralisationTreeNode(this);
+    }
 
-	@Override
+    @Override
     public <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor) {
-		return visitor.visitBindingNodeGeneralisationTreeNode(this);
-	}
+        return visitor.visitBindingNodeGeneralisationTreeNode(this);
+    }
 
-	/**
-	 * @return the generalisation
-	 */
-	public OWLAxiom getGeneralisation() {
-		return this.generalisation;
-	}
+    /** @return the generalisation */
+    public OWLAxiom getGeneralisation() {
+        return generalisation;
+    }
 
-	/**
-	 * @return the instantiations
-	 */
-	public Set<OWLAxiomInstantiation> getInstantiations() {
-		return new HashSet<OWLAxiomInstantiation>(this.instantiations);
-	}
+    /** @return the instantiations */
+    public Set<OWLAxiomInstantiation> getInstantiations() {
+        return new HashSet<OWLAxiomInstantiation>(instantiations);
+    }
 
-	/**
-	 * @return the constraintSystem
-	 */
-	public ConstraintSystem getConstraintSystem() {
-		return this.constraintSystem;
-	}
+    /** @return the constraintSystem */
+    public ConstraintSystem getConstraintSystem() {
+        return constraintSystem;
+    }
 
-	@Override
+    @Override
     public String render() {
-		BindingNode bindingNode = this.getUserObject();
-		StringBuilder out = new StringBuilder();
-		Iterator<Assignment> iterator = bindingNode.getAssignments().iterator();
-		while (iterator.hasNext()) {
-			Assignment assignment = iterator.next();
-			out.append(assignment.toString());
-			if (iterator.hasNext()) {
-				out.append(", ");
-			}
-		}
-		return out.toString();
-	}
+        BindingNode bindingNode = getUserObject();
+        StringBuilder out = new StringBuilder();
+        Iterator<Assignment> iterator = bindingNode.getAssignments().iterator();
+        while (iterator.hasNext()) {
+            Assignment assignment = iterator.next();
+            out.append(assignment.toString());
+            if (iterator.hasNext()) {
+                out.append(", ");
+            }
+        }
+        return out.toString();
+    }
 }

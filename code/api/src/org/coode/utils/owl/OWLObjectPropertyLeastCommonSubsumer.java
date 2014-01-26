@@ -27,7 +27,9 @@ import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 public class OWLObjectPropertyLeastCommonSubsumer extends
         LeastCommonSubsumer<OWLObjectProperty, OWLObjectProperty> {
     /** @param axiomProvider
-     * @param dataFactory */
+     *            axiomProvider
+     * @param dataFactory
+     *            dataFactory */
     public OWLObjectPropertyLeastCommonSubsumer(final OWLAxiomProvider axiomProvider,
             final OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory.getOWLTopObjectProperty());

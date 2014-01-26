@@ -12,45 +12,38 @@ package org.coode.utils;
 
 import java.util.List;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public interface TreeNode<O> {
-	/**
-	 * A List containing all the children of this TreeNode.
-	 * 
-	 * @return A List of TreeNode.
-	 */
-	List<TreeNode<?>> getChildren();
+    /** A List containing all the children of this TreeNode.
+     * 
+     * @return A List of TreeNode. */
+    List<TreeNode<?>> getChildren();
 
-	/**
-	 * The user object. It can be {@code null}.
-	 * 
-	 * @return An Object instance or {@code null}.
-	 */
-	O getUserObject();
+    /** The user object. It can be {@code null}.
+     * 
+     * @return An Object instance or {@code null}. */
+    O getUserObject();
 
-	/**
-	 * Determines whether this TreeNode has children.
-	 * 
-	 * @return {@code true} if this TreeNode has no children. <code>false</code>
-	 *         otherwise.
-	 */
-	boolean isLeaf();
+    /** Determines whether this TreeNode has children.
+     * 
+     * @return {@code true} if this TreeNode has no children. <code>false</code>
+     *         otherwise. */
+    boolean isLeaf();
 
-	/**
-	 * The index of the first child TreeNode amongst this TreeNode children that
-	 * has the input object as its user object. It returns -1 if no chld
-	 * TreeNode has it.
-	 * 
-	 * @param object
-	 *            The target object.
-	 * @return An integer
-	 */
-	int getChildIndex(Object object);
+    /** The index of the first child TreeNode amongst this TreeNode children that
+     * has the input object as its user object. It returns -1 if no chld
+     * TreeNode has it.
+     * 
+     * @param object
+     *            The target object.
+     * @return An integer */
+    int getChildIndex(Object object);
 
-	/**
-	 * Provides an appropriate rendering that may be different from the toString
-	 * method
-	 * 
-	 * @return
-	 */
-	public String render();
+    /** Provides an appropriate rendering that may be different from the toString
+     * method
+     * 
+     * @return rendering */
+    public String render();
 }

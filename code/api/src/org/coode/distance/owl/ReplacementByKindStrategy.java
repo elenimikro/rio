@@ -25,11 +25,13 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class ReplacementByKindStrategy implements ReplacementStrategy {
     private final static Properties properties = new Properties();
     private final OWLDataFactory dataFactory;
 
-    /** @param dataFactory */
+    /** @param dataFactory
+     *            dataFactory */
     public ReplacementByKindStrategy(OWLDataFactory dataFactory) {
         if (dataFactory == null) {
             throw new NullPointerException("The data factory cannot be null");

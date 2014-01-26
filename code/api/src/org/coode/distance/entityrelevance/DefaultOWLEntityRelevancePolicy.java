@@ -32,10 +32,12 @@ public final class DefaultOWLEntityRelevancePolicy implements RelevancePolicy<OW
         return relevant;
     }
 
+    /** @return relevance policy */
     public static RelevancePolicy<OWLEntity> getAlwaysRelevantPolicy() {
         return ALWAYS_RELEVANT_POLICY;
     }
 
+    /** @return relevance policy */
     public static RelevancePolicy<OWLEntity> getAlwaysIrrelevantPolicy() {
         return ALWAYS_IRRELEVANT_POLICY;
     }

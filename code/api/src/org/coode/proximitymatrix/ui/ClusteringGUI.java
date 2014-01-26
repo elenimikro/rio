@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -102,6 +101,8 @@ public class ClusteringGUI extends JFrame {
     private final class Reducer
             extends
             SwingWorker<ClusteringProximityMatrix<OWLEntity>, ClusteringProximityMatrix<OWLEntity>> {
+        public Reducer() {}
+
         @Override
         protected ClusteringProximityMatrix<OWLEntity> doInBackground() throws Exception {
             return clusteringMatrix.reduce(filter);
@@ -130,7 +131,9 @@ public class ClusteringGUI extends JFrame {
         private int count = 0;
 
         /** @param start
-         * @param pairFilter */
+         *            start
+         * @param filter
+         *            filter */
         public Agglomerator(final ClusteringProximityMatrix<OWLEntity> start,
                 final PairFilter<Collection<? extends OWLEntity>> filter) {
             if (start == null) {
@@ -151,13 +154,13 @@ public class ClusteringGUI extends JFrame {
             do {
                 toReturn = toReturn.agglomerate(getFilter());
                 count++;
-                process(Arrays.asList(toReturn));
+                process(Collections.singletonList(toReturn));
             } while (!stop(toReturn));
             return toReturn;
         }
 
         @Override
-        protected void process(final List<ClusteringProximityMatrix<OWLEntity>> chunks) {
+        protected void process(List<ClusteringProximityMatrix<OWLEntity>> chunks) {
             if (!chunks.isEmpty()) {
                 int clusterCount = 0;
                 for (ClusteringProximityMatrix<OWLEntity> clusteringProximityMatrix : chunks) {
@@ -196,14 +199,9 @@ public class ClusteringGUI extends JFrame {
     }
 
     private final class SaveClustering extends AbstractAction {
-        /**
-		 *
-		 */
         private static final long serialVersionUID = 7419620562572349981L;
 
-        /**
-		 *
-		 */
+        /** default constructor */
         public SaveClustering() {
             super("Save Clusters");
         }
@@ -259,9 +257,6 @@ public class ClusteringGUI extends JFrame {
             super("Save");
         }
 
-        /**
-		 *
-		 */
         private static final long serialVersionUID = -6759993806728785589L;
 
         @Override
@@ -287,25 +282,11 @@ public class ClusteringGUI extends JFrame {
                 }
             }
         }
-
-        /** @param owlEntity
-         * @return */
-        private String renderOWLEntity(final OWLEntity owlEntity) {
-            return shortFormProvider.getShortForm(owlEntity);
-        }
-
-        /** @param cluster
-         * @return */
-        private String renderCluster(final Cluster<OWLEntity> cluster) {
-            Set<String> toReturn = new HashSet<String>(cluster.size());
-            for (OWLEntity owlEntity : cluster) {
-                toReturn.add(shortFormProvider.getShortForm(owlEntity));
-            }
-            return toReturn.toString();
-        }
     }
 
     private final class ClusteringTableCellRenderer implements TableCellRenderer {
+        public ClusteringTableCellRenderer() {}
+
         @Override
         public Component getTableCellRendererComponent(final JTable table,
                 final Object value, final boolean isSelected, final boolean hasFocus,
@@ -344,29 +325,29 @@ public class ClusteringGUI extends JFrame {
         }
     }
 
-    /**
-	 *
-	 */
     private static final long serialVersionUID = 3154241412745213737L;
-    private final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-    private final ClusterSummaryPanel<OWLEntity> clusterSummaryPanel = ClusterSummaryPanel
+    protected final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+    protected final ClusterSummaryPanel<OWLEntity> clusterSummaryPanel = ClusterSummaryPanel
             .buildOWLEntityClusterSummaryPanel(new SimpleShortFormProvider());
-    private ClusterAxiomPanel<OWLEntity> clusterAxiomPanel;
-    private final JTable proximityTable = new JTable();
-    final JTable clusterStatisticsTable = new JTable();
-    ClusteringProximityMatrix<OWLEntity> clusteringMatrix = null;
-    private final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-    private final JButton reduceButton = new JButton("Reduce");
-    private final JButton agglomerateButton = new JButton("Agglomerate");
-    private final JButton agglomerateAllZerosButton = new JButton("Agglomerate All Zeros");
-    private final JButton agglomerateAllButton = new JButton("Agglomerate All");
-    private final GlassPane glassPane = new GlassPane();
-    private final Action saveAction = new SaveAction();
-    private final Action saveClusteringAction = new SaveClustering();
-    private final ClusteringTableCellRenderer clusteringTableCellRenderer = new ClusteringTableCellRenderer();
-    private ProximityMatrix<OWLEntity> distanceMatrix;
-    PairFilter<Collection<? extends OWLEntity>> filter;
+    protected ClusterAxiomPanel<OWLEntity> clusterAxiomPanel;
+    protected final JTable proximityTable = new JTable();
+    protected final JTable clusterStatisticsTable = new JTable();
+    protected ClusteringProximityMatrix<OWLEntity> clusteringMatrix = null;
+    protected final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
+    protected final JButton reduceButton = new JButton("Reduce");
+    protected final JButton agglomerateButton = new JButton("Agglomerate");
+    protected final JButton agglomerateAllZerosButton = new JButton(
+            "Agglomerate All Zeros");
+    protected final JButton agglomerateAllButton = new JButton("Agglomerate All");
+    protected final GlassPane glassPane = new GlassPane();
+    protected final Action saveAction = new SaveAction();
+    protected final Action saveClusteringAction = new SaveClustering();
+    protected final ClusteringTableCellRenderer clusteringTableCellRenderer = new ClusteringTableCellRenderer();
+    protected ProximityMatrix<OWLEntity> distanceMatrix;
+    protected PairFilter<Collection<? extends OWLEntity>> filter;
 
+    /** @param iris
+     *            iris */
     public ClusteringGUI(final Collection<? extends IRI> iris) {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
@@ -492,7 +473,7 @@ public class ClusteringGUI extends JFrame {
         });
     }
 
-    private void updateGUI() {
+    protected void updateGUI() {
         List<String> columnNames = getColumnNames(clusteringMatrix.getObjects());
         proximityTable.setModel(new ProximityMatrixTableModel(clusteringMatrix,
                 columnNames.toArray(new String[columnNames.size()])));
@@ -509,7 +490,7 @@ public class ClusteringGUI extends JFrame {
         glassPane.setVisible(false);
     }
 
-    private Set<Cluster<OWLEntity>> buildClusters() {
+    protected Set<Cluster<OWLEntity>> buildClusters() {
         Collection<Collection<? extends OWLEntity>> objects = clusteringMatrix
                 .getObjects();
         Set<Cluster<OWLEntity>> toReturn = new HashSet<Cluster<OWLEntity>>(objects.size());
@@ -598,7 +579,8 @@ public class ClusteringGUI extends JFrame {
     }
 
     /** @param objects
-     * @return */
+     *            objects
+     * @return column names */
     public List<String> getColumnNames(
             final Collection<? extends Collection<? extends OWLEntity>> objects) {
         List<String> columnNames = new ArrayList<String>(objects.size());
@@ -614,6 +596,8 @@ public class ClusteringGUI extends JFrame {
         return columnNames;
     }
 
+    /** @param args
+     *            args */
     public static void main(final String[] args) {
         List<IRI> iris = new ArrayList<IRI>(args.length);
         for (String string : args) {

@@ -33,6 +33,11 @@ import org.semanticweb.owlapi.util.MultiMap;
 public class ClusterCreator {
     private ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix;
 
+    /** @param distance
+     *            distance
+     * @param entities
+     *            entities
+     * @return clusters */
     public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(
             Distance<OWLEntity> distance, Set<OWLEntity> entities) {
         SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new SimpleProximityMatrix<OWLEntity>(
@@ -130,6 +135,13 @@ public class ClusterCreator {
         return clusters;
     }
 
+    /** @param o
+     *            o
+     * @param clusters
+     *            clusters
+     * @return cluster decomposition model
+     * @throws OPPLException
+     *             OPPLException */
     public
             <P extends OWLEntity>
             ClusterDecompositionModel<P>
@@ -147,6 +159,17 @@ public class ClusterCreator {
         return clusterModel;
     }
 
+    /** @param o
+     *            o
+     * @param entailements
+     *            entailements
+     * @param manager
+     *            manager
+     * @param clusters
+     *            clusters
+     * @return cluster decomposition model
+     * @throws OPPLException
+     *             OPPLException */
     public <P extends OWLEntity> ClusterDecompositionModel<P>
             buildKnowledgeExplorerClusterDecompositionModel(OWLOntology o,
                     Set<OWLAxiom> entailements, OWLOntologyManager manager,
@@ -161,6 +184,11 @@ public class ClusterCreator {
         return clusterModel;
     }
 
+    /** @param distance
+     *            distance
+     * @param entities
+     *            entities
+     * @return clusters */
     public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateZeros(
             Distance<OWLEntity> distance, Set<OWLEntity> entities) {
         SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new SimpleProximityMatrix<OWLEntity>(
@@ -206,10 +234,13 @@ public class ClusterCreator {
         return clusters;
     }
 
+    /** @param cm
+     *            cm */
     public void print(final ClusteringProximityMatrix<?> cm) {
         Utility.print1(cm);
     }
 
+    /** @return cluster matrix */
     public ClusteringProximityMatrix<DistanceTableObject<OWLEntity>>
             getClusteringMatrix() {
         return clusteringMatrix;

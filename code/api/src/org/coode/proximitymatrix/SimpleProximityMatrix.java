@@ -28,6 +28,9 @@ import org.coode.pair.Pair;
 import org.coode.pair.SimplePair;
 import org.coode.pair.filter.PairFilter;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     private final SparseMatrix delegate;
     private final List<O> objects = new ArrayList<O>();
@@ -37,6 +40,14 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     private final PairFilter<O> filter;
     private final Map<O, Integer> objectIndex;
 
+    /** @param objects
+     *            objects
+     * @param distances
+     *            distances
+     * @param filter
+     *            filter
+     * @param comparator
+     *            comparator */
     public SimpleProximityMatrix(final Collection<? extends O> objects,
             final SparseMatrix distances, final PairFilter<O> filter,
             final Comparator<? super Pair<O>> comparator) {
@@ -86,6 +97,10 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         this.delegate = SparseMatrixFactory.create(distances);
     }
 
+    /** @param objects
+     *            objects
+     * @param distance
+     *            distance */
     public SimpleProximityMatrix(final Collection<? extends O> objects,
             final Distance<O> distance) {
         this(objects, distance, new PairFilter<O>() {
@@ -101,6 +116,14 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         });
     }
 
+    /** @param objects
+     *            objects
+     * @param distance
+     *            distance
+     * @param filter
+     *            filter
+     * @param comparator
+     *            comparator */
     public SimpleProximityMatrix(final Collection<? extends O> objects,
             final Distance<O> distance, final PairFilter<O> filter,
             final Comparator<? super Pair<O>> comparator) {
@@ -238,13 +261,11 @@ public final class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         return rows;
     }
 
-    /** @see org.apache.commons.math.linear.RealMatrix#getData() */
     @Override
     public SparseMatrix getData() {
         return this.delegate;
     }
 
-    /** @see org.apache.commons.math.linear.RealMatrix#getEntry(int, int) */
     @Override
     public double getDistance(final int row, final int column)
             throws MatrixIndexException {

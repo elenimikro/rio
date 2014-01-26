@@ -121,6 +121,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 
+/** @author eleni */
 public abstract class AbstractOWLObjectGeneralisation extends
         OWLObjectVisitorExAdapter<OWLObject> implements OWLObjectVisitorEx<OWLObject> {
     private abstract class FunctionGeneralisation implements
@@ -285,7 +286,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
         }
 
         /** @param ce
-         * @return */
+         *            ce
+         * @return generalised class expression */
         private OWLClassExpression generaliseClassExpression(final OWLClassExpression ce) {
             String name = "?expression";
             Variable<?> variable = getConstraintSystem().getVariable(name);
@@ -360,8 +362,10 @@ public abstract class AbstractOWLObjectGeneralisation extends
         }
 
         /** @param expressionGeneratedVariable
+         *            expressionGeneratedVariable
          * @param a
-         * @return */
+         *            a
+         * @return aggregate variable */
         protected abstract
                 GeneratedVariable<OWLClassExpression>
                 aggregate(
@@ -395,10 +399,11 @@ public abstract class AbstractOWLObjectGeneralisation extends
     final Map<Collection<? extends Aggregandum<?>>, GeneratedVariable<?>> generatedVariableAggregations = new HashMap<Collection<? extends Aggregandum<?>>, GeneratedVariable<?>>();
     private final AssignmentMap substitutions = new AssignmentMap(
             Collections.<BindingNode> emptySet());
-    private final OWLDataFactory factory;
+    protected final OWLDataFactory factory;
 
-    /** @param constraintSystem */
-    public AbstractOWLObjectGeneralisation(final VariableProvider variableProvider) {
+    /** @param variableProvider
+     *            variableProvider */
+    public AbstractOWLObjectGeneralisation(VariableProvider variableProvider) {
         factory = OWLManager.getOWLDataFactory();
         if (variableProvider == null) {
             throw new NullPointerException("The variable provider cannot be null");
@@ -1164,6 +1169,7 @@ public abstract class AbstractOWLObjectGeneralisation extends
                         .accept(this));
     }
 
+    /** clear substitutions */
     public void clearSubstitutions() {
         substitutions.clear();
     }
@@ -1186,6 +1192,8 @@ public abstract class AbstractOWLObjectGeneralisation extends
         return constraintSystem;
     }
 
+    /** @param cs
+     *            cs */
     public void setConstraintSystem(final ConstraintSystem cs) {
         constraintSystem = cs;
     }

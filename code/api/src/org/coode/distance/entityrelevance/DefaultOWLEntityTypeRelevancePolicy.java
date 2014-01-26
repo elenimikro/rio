@@ -53,18 +53,22 @@ public final class DefaultOWLEntityTypeRelevancePolicy implements
         }
     }
 
+    /** @return relevance policy */
     public static RelevancePolicy<OWLEntity> getPropertiesAlwaysRelevantPolicy() {
         return PROPERTIES_ALWAYS_RELEVANT_POLICY;
     }
 
+    /** @return relevance policy */
     public static RelevancePolicy<OWLEntity> getObjectPropertyAlwaysRelevantPolicy() {
         return OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY;
     }
 
+    /** @return relevance policy */
     public static RelevancePolicy<OWLEntity> getAlwaysIrrelevantPolicy() {
         return ALWAYS_IRRELEVANT_POLICY;
     }
 
+    /** @return relevance policy */
     public static RelevancePolicy<OWLEntity> getAlwaysRelevantPolicy() {
         return ALWAYS_RELEVANT_POLICY;
     }

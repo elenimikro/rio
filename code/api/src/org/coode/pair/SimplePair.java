@@ -13,33 +13,44 @@
  */
 package org.coode.pair;
 
-
-/**
- * @author Luigi Iannone
- *
- */
+/** @author Luigi Iannone
+ * @param <O>
+ *            type */
 public class SimplePair<O> implements Pair<O> {
     private final O first;
     private final O second;
 
+    /** @param first
+     *            first
+     * @param second
+     *            second */
     public SimplePair(O first, O second) {
         if (first == null) {
             throw new IllegalArgumentException("first cannot be null");
-        }if(second==null) {
+        }
+        if (second == null) {
             throw new IllegalArgumentException("second cannot be null");
         }
         this.first = first;
         this.second = second;
     }
 
+    /** @param pair
+     *            pair */
     public SimplePair(Pair<O> pair) {
         this(pair.getFirst(), pair.getSecond());
     }
 
+    @Override
     public boolean contains(Object o) {
         return first.equals(o) || second.equals(o);
     }
 
+    /** @param object
+     *            object
+     * @param anotherObject
+     *            anotherObject
+     * @return pair */
     public static <P> SimplePair<P> build(P object, P anotherObject) {
         return new SimplePair<P>(object, anotherObject);
     }
@@ -49,12 +60,12 @@ public class SimplePair<O> implements Pair<O> {
         return String.format("%s, %s ", this.first, this.second);
     }
 
-    /** @return the first */
+    @Override
     public O getFirst() {
         return this.first;
     }
 
-    /** @return the second */
+    @Override
     public O getSecond() {
         return this.second;
     }
@@ -67,7 +78,6 @@ public class SimplePair<O> implements Pair<O> {
         result = prime * result + (this.second == null ? 0 : this.second.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

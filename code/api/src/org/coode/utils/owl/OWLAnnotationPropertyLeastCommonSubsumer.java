@@ -26,11 +26,16 @@ import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 /** @author Eleni Mikroyannidi */
 public class OWLAnnotationPropertyLeastCommonSubsumer extends
         LeastCommonSubsumer<OWLAnnotationProperty, OWLAnnotationProperty> {
+    /**
+     * 
+     */
     public static final IRI TOP_ANNOTATION_PROPERTY_IRI = IRI
             .create("http://www.coode.org#topAnnotationProperty");
 
     /** @param axiomProvider
-     * @param dataFactory */
+     *            axiomProvider
+     * @param dataFactory
+     *            dataFactory */
     public OWLAnnotationPropertyLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
             OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory

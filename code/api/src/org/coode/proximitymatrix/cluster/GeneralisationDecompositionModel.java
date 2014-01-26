@@ -23,18 +23,17 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
 import org.semanticweb.owlapi.util.MultiMap;
 
-/** @author elenimikroyannidi Convenience class for analysing regularities that
- *         were already saved in xml file. The difference from the
- *         ClusterDecompositionModel is that instead of having Cluster
- *         <P>
- *         is using Set
- *         <P>
- *         .
- * @param <P> */
+/** Convenience class for analysing regularities that were already saved in xml
+ * file. The difference from the ClusterDecompositionModel is that instead of
+ * having Cluster is using Set.
+ * 
+ * @author elenimikroyannidi
+ * @param <P>
+ *            type */
 public class GeneralisationDecompositionModel<P extends OWLEntity> implements
         RegularitiesDecompositionModel<Set<P>, P> {
     private final Map<Set<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>> fullGeneralisationMap = new LinkedHashMap<Set<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>>();
-    private static MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+    protected static MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     private final MultiMap<OWLAxiom, OWLAxiomInstantiation> sortedGeneralisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     Map<Set<P>, Variable<?>> variableMap = new HashMap<Set<P>, Variable<?>>();
     List<Set<P>> sortedClusters;
@@ -61,6 +60,12 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
     };
     private ConstraintSystem constraintSystem;
 
+    /** @param _clusters
+     *            _clusters
+     * @param ontology
+     *            ontology
+     * @throws UnknownOWLOntologyException
+     *             UnknownOWLOntologyException */
     public GeneralisationDecompositionModel(Collection<? extends Set<P>> _clusters,
             OWLOntology ontology) throws UnknownOWLOntologyException {
         sortedClusters = new ArrayList<Set<P>>(_clusters.size());
@@ -107,6 +112,8 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
         fullGeneralisationMap.put(cluster, map);
     }
 
+    /** @param map
+     *            map */
     public void putAll(MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         generalisationMap.putAll(map);
     }
@@ -124,6 +131,7 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
         return fullGeneralisationMap.get(c);
     }
 
+    /** @return ontology */
     public OWLOntology getOntology() {
         return ontology;
     }
@@ -175,10 +183,13 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
         return sortedGeneralisationMap;
     }
 
+    /** @return constraint system */
     public ConstraintSystem getConstraintSystem() {
         return constraintSystem;
     }
 
+    /** @param constraintSystem
+     *            constraintSystem */
     public void setConstraintSystem(ConstraintSystem constraintSystem) {
         this.constraintSystem = constraintSystem;
     }
@@ -188,6 +199,8 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
         return ontology.getImportsClosure();
     }
 
+    /** @param map
+     *            map */
     public void setGeneralisationMap(MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         GeneralisationDecompositionModel.generalisationMap.clear();
         this.sortedGeneralisationMap.clear();

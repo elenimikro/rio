@@ -42,6 +42,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+/** @author eleni */
 public abstract class AgglomeratorBase implements Agglomerator {
     @Override
     public void checkArgumentsAndRun(final String[] args)
@@ -65,8 +66,6 @@ public abstract class AgglomeratorBase implements Agglomerator {
         }
     }
 
-    /** @param args
-     * @throws OWLOntologyCreationException */
     @Override
     public void run(final File outfile, final List<IRI> iris)
             throws OWLOntologyCreationException {

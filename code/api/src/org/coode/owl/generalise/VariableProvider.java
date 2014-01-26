@@ -30,6 +30,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public abstract class VariableProvider {
     private ConstraintSystem constraintSystem;
     private final OWLEntityProvider entityProvider;
@@ -37,7 +38,8 @@ public abstract class VariableProvider {
     private final Map<VariableType<?>, Variable<?>> variables = new HashMap<VariableType<?>, Variable<?>>();
     private final Map<VariableType<?>, Integer> variableIndex = new HashMap<VariableType<?>, Integer>();
 
-    /** @param structuralOWLObjectGeneralisation */
+    /** @param entityProvider
+     *            entityProvider */
     public VariableProvider(final OWLEntityProvider entityProvider) {
         if (entityProvider == null) {
             throw new NullPointerException("The entity provider cannot be null");
@@ -45,7 +47,9 @@ public abstract class VariableProvider {
         this.entityProvider = entityProvider;
     }
 
-
+    /** @param owlObject
+     *            owlObject
+     * @return variable */
     public Variable<?> get(final OWLObject owlObject) {
         Variable<?> toReturn = cache.get(owlObject);
         if (toReturn == null) {
@@ -58,6 +62,8 @@ public abstract class VariableProvider {
         return toReturn;
     }
 
+    /** @param variableType
+     *            variableType */
     public void newVariable(final VariableType<?> variableType) {
         Integer integer = variableIndex.get(variableType);
         if (integer == null) {
@@ -90,10 +96,15 @@ public abstract class VariableProvider {
         return constraintSystem;
     }
 
+    /** @param cs
+     *            cs */
     public void setConstraintSystem(final ConstraintSystem cs) {
         constraintSystem = cs;
     }
 
+    /** @param iri
+     *            iri
+     * @return entity */
     public OWLObject getOWLEntity(final IRI iri) {
         boolean found = false;
         OWLObject toReturn = null;

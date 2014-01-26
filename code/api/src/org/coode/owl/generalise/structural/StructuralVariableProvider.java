@@ -20,7 +20,12 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class StructuralVariableProvider extends VariableProvider {
+    /** @param entityProvider
+     *            entityProvider
+     * @param constraintSystem
+     *            constraintSystem */
     public StructuralVariableProvider(final OWLEntityProvider entityProvider,
             final ConstraintSystem constraintSystem) {
         super(entityProvider);

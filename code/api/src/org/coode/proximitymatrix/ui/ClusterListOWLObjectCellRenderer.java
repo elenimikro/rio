@@ -30,7 +30,8 @@ public class ClusterListOWLObjectCellRenderer implements
         ListCellRenderer<Collection<? extends OWLEntity>> {
     private final ShortFormProvider shortFormProvider;
 
-    /** @param shortFormProvider */
+    /** @param shortFormProvider
+     *            shortFormProvider */
     public ClusterListOWLObjectCellRenderer(ShortFormProvider shortFormProvider) {
         if (shortFormProvider == null) {
             throw new NullPointerException("The short form provider cannot be null");

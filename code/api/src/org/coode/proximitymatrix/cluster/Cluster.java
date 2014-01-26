@@ -14,6 +14,10 @@ import java.util.Set;
 
 import org.coode.proximitymatrix.ProximityMatrix;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public interface Cluster<O> extends Set<O> {
-	public ProximityMatrix<O> getProximityMatrix();
+    /** @return proximity matrix */
+    public ProximityMatrix<O> getProximityMatrix();
 }

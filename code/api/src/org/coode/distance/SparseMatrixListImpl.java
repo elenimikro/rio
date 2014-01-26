@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.math.util.OpenIntToDoubleHashMap;
 
+/** @author eleni */
 public class SparseMatrixListImpl implements SparseMatrix {
     private final OpenIntToDoubleHashMap m;
     // private static class Record {
@@ -20,11 +21,15 @@ public class SparseMatrixListImpl implements SparseMatrix {
     private final int size;
     private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
 
+    /** @param size
+     *            size */
     public SparseMatrixListImpl(final int size) {
         m = new OpenIntToDoubleHashMap(1D);
         this.size = size;
     }
 
+    /** @param m
+     *            m */
     public SparseMatrixListImpl(final SparseMatrixListImpl m) {
         this(m.length());
         for (int i = 0; i < size; i++) {
@@ -61,6 +66,9 @@ public class SparseMatrixListImpl implements SparseMatrix {
         return get(getPosition(i), getPosition(j));
     }
 
+    /** @param i
+     *            i
+     * @return position */
     public int getPosition(final Object i) {
         Integer index = objectIndex.get(i);
         if (index == -1) {
@@ -99,6 +107,9 @@ public class SparseMatrixListImpl implements SparseMatrix {
         }
     }
 
+    /** @param i
+     *            i
+     * @return row */
     public double[] getRow(final int i) {
         double[] row = new double[size];
         for (int j = 0; j < size; j++) {

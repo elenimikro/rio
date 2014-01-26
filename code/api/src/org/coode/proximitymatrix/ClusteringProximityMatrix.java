@@ -26,11 +26,23 @@ import org.coode.pair.Pair;
 import org.coode.pair.filter.PairFilter;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public class ClusteringProximityMatrix<O> implements
         ProximityMatrix<Collection<? extends O>> {
     private final ProximityMatrix<Collection<? extends O>> delegate;
     private final ProximityMeasureFactory proximityMeasureFactory;
 
+    /** @param initialMatrix
+     *            initialMatrix
+     * @param proximityMeasureFactory
+     *            proximityMeasureFactory
+     * @param filter
+     *            filter
+     * @param comparator
+     *            comparator
+     * @return clustering proximity matrix */
     public static <P> ClusteringProximityMatrix<P> build(
             final ProximityMatrix<P> initialMatrix,
             final ProximityMeasureFactory proximityMeasureFactory,
@@ -45,33 +57,31 @@ public class ClusteringProximityMatrix<O> implements
         return new ClusteringProximityMatrix<P>(newDelegate, proximityMeasureFactory);
     }
 
-    /** @param delegate */
+    /** @param delegate
+     *            delegate
+     * @param proximityMeasureFactory
+     *            proximityMeasureFactory */
     public ClusteringProximityMatrix(
             final ProximityMatrix<Collection<? extends O>> delegate,
             final ProximityMeasureFactory proximityMeasureFactory) {
         if (delegate == null) {
             throw new NullPointerException("The delegate matrix cannot be null");
         }
-        // if (history == null) {
-        // throw new NullPointerException("The history cannot be null");
-        // }
         if (proximityMeasureFactory == null) {
             throw new NullPointerException("The proximity measure factory cannot be null");
         }
-        // if (historyItemFactory == null) {
-        // throw new
-        // NullPointerException("The history item factory cannot be null");
-        // }
         this.delegate = delegate;
         this.proximityMeasureFactory = proximityMeasureFactory;
-        // this.history = history;
-        // this.historyItemFactory = historyItemFactory;
     }
 
+    /** @return proximity measure factory */
     public ProximityMeasureFactory getProximityMeasureFactory() {
         return this.proximityMeasureFactory;
     }
 
+    /** @param filter
+     *            filter
+     * @return clustering proximity matrix */
     public ClusteringProximityMatrix<O> agglomerate(
             final PairFilter<Collection<? extends O>> filter) {
         Collection<Collection<? extends O>> objects = this.getObjects();
@@ -153,66 +163,42 @@ public class ClusteringProximityMatrix<O> implements
                 this.getProximityMeasureFactory());
     }
 
-    /** @return
-     * @see org.coode.proximitymatrix.ProximityMatrix#getObjects() */
     @Override
     public Collection<Collection<? extends O>> getObjects() {
         return this.delegate.getObjects();
     }
 
-    /** @return
-     * @see org.coode.proximitymatrix.ProximityMatrix#getMinimumDistancePair() */
     @Override
     public Pair<Collection<? extends O>> getMinimumDistancePair() {
         return this.delegate.getMinimumDistancePair();
     }
 
-    /** @return
-     * @see org.coode.proximitymatrix.ProximityMatrix#getMinimumDistance() */
     @Override
     public double getMinimumDistance() {
         return this.delegate.getMinimumDistance();
     }
 
-    /** @param o
-     * @return
-     * @see org.coode.proximitymatrix.ProximityMatrix#getRowIndex(java.lang.Object) */
     @Override
     public int getRowIndex(final Collection<? extends O> o) {
         return this.delegate.getRowIndex(o);
     }
 
-    /** @param o
-     * @return
-     * @see org.coode.proximitymatrix.ProximityMatrix#getColumnIndex(java.lang.Object) */
     @Override
     public int getColumnIndex(final Collection<? extends O> o) {
         return this.delegate.getColumnIndex(o);
     }
 
-    /** @param anObject
-     * @param anotherObject
-     * @return
-     * @see org.coode.proximitymatrix.ProximityMatrix#getDistance(java.lang.Object,
-     *      java.lang.Object) */
     @Override
     public double getDistance(final Collection<? extends O> anObject,
             final Collection<? extends O> anotherObject) {
         return this.delegate.getDistance(anObject, anotherObject);
     }
 
-    /** @return
-     * @see org.apache.commons.math.linear.RealMatrix#getData() */
     @Override
     public SparseMatrix getData() {
         return this.delegate.getData();
     }
 
-    /** @param row
-     * @param column
-     * @return
-     * @throws MatrixIndexException
-     * @see org.apache.commons.math.linear.RealMatrix#getEntry(int, int) */
     @Override
     public double getDistance(final int row, final int column)
             throws MatrixIndexException {
@@ -223,24 +209,4 @@ public class ClusteringProximityMatrix<O> implements
     public String toString() {
         return this.delegate.toString();
     }
-    // /** @return the history */
-    // public History<Collection<? extends O>> getHistory() {
-    // try {
-    // return this.history.clone();
-    // } catch (CloneNotSupportedException e) {
-    // return this.history;
-    // }
-    // }
-    // /** @return the historyItemFactory */
-    // public HistoryItemFactory<Collection<? extends O>>
-    // getHistoryItemFactory() {
-    // return this.historyItemFactory;
-    // }
-    //
-    // /** @param historyItemFactory
-    // * the historyItemFactory to set */
-    // public void setHistoryItemFactory(
-    // final HistoryItemFactory<Collection<? extends O>> historyItemFactory) {
-    // this.historyItemFactory = historyItemFactory;
-    // }
 }

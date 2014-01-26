@@ -8,16 +8,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/** @author eleni */
 public class SparseMatrixImpl implements SparseMatrix {
     Map<Record, Record> matrix = new HashMap<Record, Record>();
     private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
     private final Record key = new Record();
     private final int size;
 
+    /** @param size
+     *            size */
     public SparseMatrixImpl(final int size) {
         this.size = size;
     }
 
+    /** @param m
+     *            m */
     public SparseMatrixImpl(final SparseMatrixImpl m) {
         size = m.length();
         for (Record r : m.matrix.keySet()) {
@@ -26,6 +31,9 @@ public class SparseMatrixImpl implements SparseMatrix {
         }
     }
 
+    /** @param i
+     *            i
+     * @return row */
     public double[] getRow(final int i) {
         double[] toReturn = new double[size];
         Arrays.fill(toReturn, 1D);

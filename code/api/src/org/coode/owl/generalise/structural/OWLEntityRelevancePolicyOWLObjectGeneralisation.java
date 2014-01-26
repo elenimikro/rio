@@ -16,11 +16,15 @@ import org.coode.owl.generalise.AbstractOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+/** @author eleni */
 public class OWLEntityRelevancePolicyOWLObjectGeneralisation extends
         AbstractOWLObjectGeneralisation {
     /** @param policy
+     *            policy
      * @param entityProvider
-     * @param constraintSystem */
+     *            entityProvider
+     * @param constraintSystem
+     *            constraintSystem */
     public OWLEntityRelevancePolicyOWLObjectGeneralisation(
             RelevancePolicy<OWLEntity> policy, OWLEntityProvider entityProvider,
             ConstraintSystem constraintSystem) {

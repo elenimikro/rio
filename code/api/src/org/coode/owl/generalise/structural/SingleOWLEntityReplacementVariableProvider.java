@@ -29,6 +29,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class SingleOWLEntityReplacementVariableProvider extends VariableProvider {
     private static final class AbstractingVisitor extends
             OWLObjectVisitorExAdapter<Variable<?>> {
@@ -63,7 +64,9 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
     private final AbstractingVisitor abstracter;
 
     /** @param relevancePolicy
-     * @param entityProvider */
+     *            relevancePolicy
+     * @param entityProvider
+     *            entityProvider */
     public SingleOWLEntityReplacementVariableProvider(
             final RelevancePolicy<OWLEntity> relevancePolicy,
             final OWLEntityProvider entityProvider) {
@@ -95,8 +98,8 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
                 }
 
                 /** @param type
-                 * @return
-                 * @throws OPPLException */
+                 *            type
+                 * @return variable */
                 protected Variable<?> createVariable(final String name,
                         final VariableType<?> type) {
                     try {
@@ -166,6 +169,8 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         return owlObject;
     }
 
+    /** @param o
+     *            o */
     public void setOWLObject(OWLObject o) {
         owlObject = o;
     }

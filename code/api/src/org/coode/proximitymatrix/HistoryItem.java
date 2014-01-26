@@ -17,37 +17,36 @@ import java.util.List;
 
 import org.coode.pair.Pair;
 
-/**
- *
- * HistoryItems are immutable
+/** HistoryItems are immutable
+ * 
  * @param <O>
- */
+ *            type */
 public class HistoryItem<O> {
-	private final Pair<O> pair;
-	private final List<O> items = new ArrayList<O>();
+    private final Pair<O> pair;
+    private final List<O> items = new ArrayList<O>();
 
-	public HistoryItem(Pair<O> pair, Collection<? extends O> clusters) {
-		if (pair == null) {
-			throw new NullPointerException("The pair cannot be null");
-		}
-		if (clusters == null) {
-			throw new NullPointerException("The cluster collection cannot be null");
-		}
-		this.pair = pair;
-		this.items.addAll(clusters);
-	}
+    /** @param pair
+     *            pair
+     * @param clusters
+     *            clusters */
+    public HistoryItem(Pair<O> pair, Collection<? extends O> clusters) {
+        if (pair == null) {
+            throw new NullPointerException("The pair cannot be null");
+        }
+        if (clusters == null) {
+            throw new NullPointerException("The cluster collection cannot be null");
+        }
+        this.pair = pair;
+        this.items.addAll(clusters);
+    }
 
-	/**
-	 * @return the pair
-	 */
-	public Pair<O> getPair() {
-		return this.pair;
-	}
+    /** @return the pair */
+    public Pair<O> getPair() {
+        return this.pair;
+    }
 
-	/**
-	 * @return the items
-	 */
-	public Collection<O> getItems() {
-		return Collections.unmodifiableCollection(this.items);
-	}
+    /** @return the items */
+    public Collection<O> getItems() {
+        return Collections.unmodifiableCollection(this.items);
+    }
 }

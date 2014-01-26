@@ -39,7 +39,7 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     private final OWLDataFactory dataFactory;
     private final RelevancePolicy<OWLEntity> relevancePolicy;
     private final static Properties properties = new Properties();
-    private final ReplacementStrategy defaultStrategy;
+    protected final ReplacementStrategy defaultStrategy;
     static {
         try {
             properties.load(ReplacementByKindStrategy.class
@@ -50,6 +50,12 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
         }
     }
 
+    /** @param owlEntity
+     *            owlEntity
+     * @param dataFactory
+     *            dataFactory
+     * @param relevancePolicy
+     *            relevancePolicy */
     public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity,
             OWLDataFactory dataFactory, RelevancePolicy<OWLEntity> relevancePolicy) {
         if (dataFactory == null) {

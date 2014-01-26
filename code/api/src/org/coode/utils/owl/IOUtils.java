@@ -11,6 +11,12 @@ import org.semanticweb.owlapi.util.AutoIRIMapper;
 
 /** @author Eleni Mikroyannidi */
 public class IOUtils {
+    /** @param iris
+     *            iris
+     * @param manager
+     *            manager
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void loadIRIMappers(final Collection<IRI> iris,
             final OWLOntologyManager manager) throws OWLOntologyCreationException {
         for (IRI iri : iris) {

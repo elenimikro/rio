@@ -12,17 +12,28 @@ package org.coode.owl.generalise;
 
 import org.coode.atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public interface GeneralisationTreeNodeVisitorEx<O> {
-    O visitAxiomGeneralisationTreeNode(
-            AxiomGeneralisationTreeNode axiomGeneralisationTreeNode);
+    /** @param node
+     *            node
+     * @return visitor value */
+    O visitAxiomGeneralisationTreeNode(AxiomGeneralisationTreeNode node);
 
-            O
-            visitAxiomAtomicDecompositionGeneralisationTreeNode(
-                    AxiomAtomicDecompositionGeneralisationTreeNode axiomAtomicDecompositionGeneralisationTreeNode);
+    /** @param node
+     *            node
+     * @return visitor value */
+    O visitAxiomAtomicDecompositionGeneralisationTreeNode(
+            AxiomAtomicDecompositionGeneralisationTreeNode node);
 
-    O visitVariableGeneralisationTreeNode(
-            VariableGeneralisationTreeNode variableGeneralisationTreeNode);
+    /** @param node
+     *            node
+     * @return visitor value */
+    O visitVariableGeneralisationTreeNode(VariableGeneralisationTreeNode node);
 
-    O visitBindingNodeGeneralisationTreeNode(
-            BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode);
+    /** @param node
+     *            node
+     * @return visitor value */
+    O visitBindingNodeGeneralisationTreeNode(BindingNodeGeneralisationTreeNode node);
 }

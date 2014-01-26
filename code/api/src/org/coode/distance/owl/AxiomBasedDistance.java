@@ -74,9 +74,13 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     }
 
     /** @param ontologies
+     *            ontologies
      * @param dataFactory
+     *            dataFactory
      * @param relevancePolicy
-     * @param manager */
+     *            relevancePolicy
+     * @param manager
+     *            manager */
     public AxiomBasedDistance(Collection<? extends OWLOntology> ontologies,
             OWLDataFactory dataFactory, RelevancePolicy<OWLEntity> relevancePolicy,
             OWLOntologyManager manager) {
@@ -106,8 +110,6 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
                 getEntityProvider());
     }
 
-    /** @see org.coode.distance.Distance#getDistance(java.lang.Object,
-     *      java.lang.Object) */
     @Override
     public double getDistance(final OWLEntity a, final OWLEntity b) {
         double toReturn = a.equals(b) ? 0 : 1;
@@ -140,7 +142,8 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     }
 
     /** @param owlEntity
-     * @return */
+     *            owlEntity
+     * @return axioms */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             ((SingleOWLEntityReplacementVariableProvider) replacer.getVariableProvider())
@@ -161,7 +164,10 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
                 .get(owlEntity));
     }
 
-    public Collection<OWLAxiomInstantiation> getInstantiations(final OWLAxiom ax) {
+    /** @param ax
+     *            ax
+     * @return instantiations */
+    public Collection<OWLAxiomInstantiation> getInstantiations(OWLAxiom ax) {
         return instantiationMap.get(ax);
     }
 
@@ -191,6 +197,9 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
         return relevancePolicy;
     }
 
+    /**
+     * 
+     */
     public void dispose() {
         ontologyManger.removeOntologyChangeListener(listener);
     }

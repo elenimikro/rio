@@ -20,53 +20,44 @@ import java.util.Set;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class OWLAxiomListItem {
-	private final OWLAxiom axiom;
-	private final Set<OWLAxiomInstantiation> instantiations = new HashSet<OWLAxiomInstantiation>();
+    private final OWLAxiom axiom;
+    private final Set<OWLAxiomInstantiation> instantiations = new HashSet<OWLAxiomInstantiation>();
 
-	/**
-	 * @param axiom
-	 * @param count
-	 */
-	public OWLAxiomListItem(OWLAxiom axiom,
-			Collection<? extends OWLAxiomInstantiation> instantiations) {
-		if (axiom == null) {
-			throw new NullPointerException("The axiom cannot be null");
-		}
-		if (instantiations == null) {
-			throw new NullPointerException("The instantiations cannot be null");
-		}
-		this.axiom = axiom;
-		this.instantiations.addAll(instantiations);
-	}
+    /** @param axiom
+     *            axiom
+     * @param instantiations
+     *            instantiations */
+    public OWLAxiomListItem(OWLAxiom axiom,
+            Collection<? extends OWLAxiomInstantiation> instantiations) {
+        if (axiom == null) {
+            throw new NullPointerException("The axiom cannot be null");
+        }
+        if (instantiations == null) {
+            throw new NullPointerException("The instantiations cannot be null");
+        }
+        this.axiom = axiom;
+        this.instantiations.addAll(instantiations);
+    }
 
-	/**
-	 * @return the axiom
-	 */
-	public OWLAxiom getAxiom() {
-		return axiom;
-	}
+    /** @return the axiom */
+    public OWLAxiom getAxiom() {
+        return axiom;
+    }
 
-	/**
-	 * @return the count
-	 */
-	public int getCount() {
+    /** @return the count */
+    public int getCount() {
         return instantiations.size();
-	}
+    }
 
-	@Override
-	public String toString() {
-		return String.format("%s[%d]", getAxiom(), getCount());
-	}
+    @Override
+    public String toString() {
+        return String.format("%s[%d]", getAxiom(), getCount());
+    }
 
-	/**
-	 * @return the instantiations
-	 */
-	public Set<OWLAxiomInstantiation> getInstantiations() {
-		return new HashSet<OWLAxiomInstantiation>(instantiations);
-	}
+    /** @return the instantiations */
+    public Set<OWLAxiomInstantiation> getInstantiations() {
+        return new HashSet<OWLAxiomInstantiation>(instantiations);
+    }
 }

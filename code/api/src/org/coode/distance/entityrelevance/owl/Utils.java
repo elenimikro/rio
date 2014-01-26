@@ -19,7 +19,11 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class Utils {
+    /** @param policy
+     *            policy
+     * @return relevance policy */
     public static RelevancePolicy<OWLEntity> toOWLObjectRelevancePolicy(
             final RelevancePolicy<OWLEntity> policy) {
         return new RelevancePolicy<OWLEntity>() {

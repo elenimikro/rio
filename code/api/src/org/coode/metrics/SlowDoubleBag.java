@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/** @author eleni */
 public class SlowDoubleBag implements Iterable<Double> {
     private static class DoubleIterator implements Iterator<Double> {
         int next = 0;
@@ -14,9 +15,7 @@ public class SlowDoubleBag implements Iterable<Double> {
         }
 
         @Override
-        public void remove() {
-            // TODO Auto-generated method stub
-        }
+        public void remove() {}
 
         @Override
         public Double next() {
@@ -34,9 +33,12 @@ public class SlowDoubleBag implements Iterable<Double> {
 
     private double[] keys;
     private int[] occurrences;
-    private int size = 0;
-    private int recordSize = 0;
+    protected int size = 0;
 
+    /** @param values
+     *            values
+     * @param uniques
+     *            uniques */
     public SlowDoubleBag(double[] values, Collection<Double> uniques) {
         keys = new double[uniques.size()];
         occurrences = new int[uniques.size()];
@@ -54,6 +56,10 @@ public class SlowDoubleBag implements Iterable<Double> {
         }
     }
 
+    /** @param s
+     *            s
+     * @param uniques
+     *            uniques */
     public SlowDoubleBag(int s, Collection<Double> uniques) {
         keys = new double[uniques.size()];
         occurrences = new int[uniques.size()];
@@ -71,6 +77,10 @@ public class SlowDoubleBag implements Iterable<Double> {
         return keys;
     }
 
+    /** @param key
+     *            key
+     * @param toAdd
+     *            toAdd */
     public void addOccurrence(double key, int toAdd) {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == key) {
@@ -80,6 +90,10 @@ public class SlowDoubleBag implements Iterable<Double> {
         }
     }
 
+    /** @param key
+     *            key
+     * @param toAdd
+     *            toAdd */
     public void setOccurrence(double key, int toAdd) {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == key) {
@@ -90,6 +104,9 @@ public class SlowDoubleBag implements Iterable<Double> {
         throw new RuntimeException("key not found: " + key);
     }
 
+    /** @param key
+     *            key
+     * @return occurrences */
     public int occurrences(double key) {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == key) {
@@ -99,10 +116,12 @@ public class SlowDoubleBag implements Iterable<Double> {
         return 0;
     }
 
+    /** @return all occurrences */
     public int[] occurrences() {
         return occurrences;
     }
 
+    /** @return total occurrences */
     public int addOccurrences() {
         int toReturn = 0;
         for (int i : occurrences) {
@@ -111,10 +130,14 @@ public class SlowDoubleBag implements Iterable<Double> {
         return toReturn;
     }
 
+    /** @return size */
     public long getSize() {
         return size;
     }
 
+    /** @param position
+     *            position
+     * @return double at position */
     public double get(int position) {
         if (position < 0 || position >= size) {
             throw new NoSuchElementException("Position is past last element: " + position);

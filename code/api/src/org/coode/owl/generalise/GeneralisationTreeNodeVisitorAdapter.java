@@ -12,7 +12,7 @@ package org.coode.owl.generalise;
 
 import org.coode.atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
 
-
+/** @author eleni */
 public abstract class GeneralisationTreeNodeVisitorAdapter implements
         GeneralisationTreeNodeVisitor {
     @Override

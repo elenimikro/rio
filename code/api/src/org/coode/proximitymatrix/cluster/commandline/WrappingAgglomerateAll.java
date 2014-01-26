@@ -43,9 +43,12 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+/** @author eleni */
 public class WrappingAgglomerateAll extends AgglomeratorBase {
     /** @param args
-     * @throws OWLOntologyCreationException */
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void main(final String[] args) throws OWLOntologyCreationException {
         WrappingAgglomerateAll agglomerator = new WrappingAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);

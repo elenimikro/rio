@@ -59,147 +59,154 @@ import org.semanticweb.owlapi.io.OWLRendererException;
 import org.semanticweb.owlapi.io.OWLRendererIOException;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 
-/**
- * Author: Matthew Horridge<br>
+/** Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 25-Apr-2007<br>
- * <br>
- */
+ * <br> */
 public class AbstractRenderer {
-	private ShortFormProvider shortFormProvider;
-	private int lastNewLinePos = -1;
-	private int currentPos;
-	private Writer writer;
-	private List<Integer> tabs;
-	private boolean useTabbing = true;
-	private boolean useWrapping = true;
+    private ShortFormProvider shortFormProvider;
+    private int lastNewLinePos = -1;
+    private int currentPos;
+    private Writer writer;
+    private List<Integer> tabs;
+    private boolean useTabbing = true;
+    private boolean useWrapping = true;
 
-	public AbstractRenderer(Writer writer, ShortFormProvider shortFormProvider) {
-		this.writer = writer;
-		this.shortFormProvider = shortFormProvider;
-		this.tabs = new ArrayList<Integer>();
-		this.pushTab(0);
-	}
+    /** @param writer
+     *            writer
+     * @param shortFormProvider
+     *            shortFormProvider */
+    public AbstractRenderer(Writer writer, ShortFormProvider shortFormProvider) {
+        this.writer = writer;
+        this.shortFormProvider = shortFormProvider;
+        tabs = new ArrayList<Integer>();
+        pushTab(0);
+    }
 
-	public void setUseTabbing(boolean useTabbing) {
-		this.useTabbing = useTabbing;
-	}
+    /** @param useTabbing
+     *            useTabbing */
+    public void setUseTabbing(boolean useTabbing) {
+        this.useTabbing = useTabbing;
+    }
 
-	public void setUseWrapping(boolean useWrapping) {
-		this.useWrapping = useWrapping;
-	}
+    /** @param useWrapping
+     *            useWrapping */
+    public void setUseWrapping(boolean useWrapping) {
+        this.useWrapping = useWrapping;
+    }
 
-	public boolean isUseWrapping() {
-		return this.useWrapping;
-	}
+    /** @return use wrapping */
+    public boolean isUseWrapping() {
+        return useWrapping;
+    }
 
-	public boolean isUseTabbing() {
-		return this.useTabbing;
-	}
+    /** @return use tabbing */
+    public boolean isUseTabbing() {
+        return useTabbing;
+    }
 
-	// public void setShortFormProvider(ShortFormProvider shortFormProvider) {
-	// this.shortFormProvider = shortFormProvider;
-	// }
-	public void flush() throws OWLRendererException {
-		try {
-			this.writer.flush();
-		} catch (IOException e) {
-			throw new OWLRendererIOException(e);
-		}
-	}
+    /** @throws OWLRendererException
+     *             OWLRendererException */
+    public void flush() throws OWLRendererException {
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            throw new OWLRendererIOException(e);
+        }
+    }
 
-	protected void pushTab(int size) {
-		this.tabs.add(0, size);
-	}
+    protected void pushTab(int size) {
+        tabs.add(0, size);
+    }
 
-	protected void incrementTab(int increment) {
-		int base = 0;
-		if (!this.tabs.isEmpty()) {
-			base = this.tabs.get(0);
-		}
-		this.tabs.add(0, base + increment);
-	}
+    protected void incrementTab(int increment) {
+        int base = 0;
+        if (!tabs.isEmpty()) {
+            base = tabs.get(0);
+        }
+        tabs.add(0, base + increment);
+    }
 
-	protected void popTab() {
-		this.tabs.remove(0);
-	}
+    protected void popTab() {
+        tabs.remove(0);
+    }
 
-	protected void writeTab() {
-		int tab = this.tabs.get(0);
-		for (int i = 0; i < tab; i++) {
-			this.write(" ");
-		}
-	}
+    protected void writeTab() {
+        int tab = tabs.get(0);
+        for (int i = 0; i < tab; i++) {
+            this.write(" ");
+        }
+    }
 
-	protected int getIndent() {
-		return this.currentPos - this.lastNewLinePos - 2;
-	}
+    protected int getIndent() {
+        return currentPos - lastNewLinePos - 2;
+    }
 
-	protected void write(String s) {
-		if (s == null) {
-			return;
-		}
-		int indexOfNewLine = s.indexOf('\n');
-		if (indexOfNewLine != -1) {
-			this.lastNewLinePos = this.currentPos + indexOfNewLine;
-		}
-		this.currentPos += s.length();
-		try {
-			this.writer.write(s);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    protected void write(String s) {
+        if (s == null) {
+            return;
+        }
+        int indexOfNewLine = s.indexOf('\n');
+        if (indexOfNewLine != -1) {
+            lastNewLinePos = currentPos + indexOfNewLine;
+        }
+        currentPos += s.length();
+        try {
+            writer.write(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	protected void write(String s, int lineLen) {
-		StringTokenizer tokenizer = new StringTokenizer(s, " \n\t-", true);
-		int currentLineLength = 0;
-		while (tokenizer.hasMoreTokens()) {
-			String curToken = tokenizer.nextToken();
-			this.write(curToken);
-			if (curToken.equals("\n")) {
-				this.writeTab();
-			}
-			currentLineLength += curToken.length();
-			if (currentLineLength > lineLen && curToken.trim().length() != 0
-					&& tokenizer.hasMoreTokens()) {
-				this.writeNewLine();
-				currentLineLength = 0;
-			}
-		}
-	}
+    protected void write(String s, int lineLen) {
+        StringTokenizer tokenizer = new StringTokenizer(s, " \n\t-", true);
+        int currentLineLength = 0;
+        while (tokenizer.hasMoreTokens()) {
+            String curToken = tokenizer.nextToken();
+            this.write(curToken);
+            if (curToken.equals("\n")) {
+                writeTab();
+            }
+            currentLineLength += curToken.length();
+            if (currentLineLength > lineLen && curToken.trim().length() != 0
+                    && tokenizer.hasMoreTokens()) {
+                writeNewLine();
+                currentLineLength = 0;
+            }
+        }
+    }
 
-	protected void writeSpace() {
-		this.write(" ");
-	}
+    protected void writeSpace() {
+        this.write(" ");
+    }
 
-	protected void write(ManchesterOWLSyntax keyword) {
-		this.write(" ", keyword, " ");
-	}
+    protected void write(ManchesterOWLSyntax keyword) {
+        this.write(" ", keyword, " ");
+    }
 
-	protected void writeFrameKeyword(ManchesterOWLSyntax keyword) {
-		this.write("", keyword, ": ");
-	}
+    protected void writeFrameKeyword(ManchesterOWLSyntax keyword) {
+        this.write("", keyword, ": ");
+    }
 
-	protected void writeSectionKeyword(ManchesterOWLSyntax keyword) {
-		this.write(" ", keyword, ": ");
-	}
+    protected void writeSectionKeyword(ManchesterOWLSyntax keyword) {
+        this.write(" ", keyword, ": ");
+    }
 
-	protected void writeNewLine() {
-		this.write("\n");
-		if (this.useTabbing) {
-			this.writeTab();
-		}
-	}
+    protected void writeNewLine() {
+        this.write("\n");
+        if (useTabbing) {
+            writeTab();
+        }
+    }
 
-	protected void write(String prefix, ManchesterOWLSyntax keyword, String suffix) {
-		this.write(prefix);
-		this.write(keyword.toString());
-		this.write(suffix);
-	}
+    protected void write(String prefix, ManchesterOWLSyntax keyword, String suffix) {
+        this.write(prefix);
+        this.write(keyword.toString());
+        this.write(suffix);
+    }
 
-	protected ShortFormProvider getShortFormProvider() {
-		return this.shortFormProvider;
-	}
+    protected ShortFormProvider getShortFormProvider() {
+        return shortFormProvider;
+    }
 }

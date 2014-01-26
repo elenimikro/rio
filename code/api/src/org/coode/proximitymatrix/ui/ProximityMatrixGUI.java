@@ -51,7 +51,8 @@ public class ProximityMatrixGUI extends JFrame {
     private final JTable table = new JTable();
     private final JList<Collection<? extends OWLEntity>> clusterList = new JList<Collection<? extends OWLEntity>>();
 
-    /** @param iris */
+    /** @param iris
+     *            iris */
     public ProximityMatrixGUI(final Collection<? extends IRI> iris) {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
@@ -112,6 +113,8 @@ public class ProximityMatrixGUI extends JFrame {
         this.add(mainPane, BorderLayout.CENTER);
     }
 
+    /** @param args
+     *            args */
     public static void main(final String[] args) {
         List<IRI> iris = new ArrayList<IRI>(args.length);
         for (String string : args) {

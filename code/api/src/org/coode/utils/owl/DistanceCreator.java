@@ -16,6 +16,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author Eleni Mikroyannidi */
 public class DistanceCreator {
+    /** @param manager
+     *            manager
+     * @return distance */
     public static Distance<OWLEntity> createAxiomRelevanceAxiomBasedDistance(
             OWLOntologyManager manager) {
         final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
@@ -26,6 +29,9 @@ public class DistanceCreator {
         return distance;
     }
 
+    /** @param manager
+     *            manager
+     * @return distance */
     public static Distance<OWLEntity> createOWLEntityRelevanceAxiomBasedDistance(
             final OWLOntologyManager manager) {
         final Distance<OWLEntity> distance = new OWLEntityRelevanceAxiomBasedDistance(
@@ -33,6 +39,9 @@ public class DistanceCreator {
         return distance;
     }
 
+    /** @param manager
+     *            manager
+     * @return distance */
     public static Distance<OWLEntity> createStructuralAxiomRelevanceAxiomBasedDistance(
             final OWLOntologyManager manager) {
         final Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
@@ -40,6 +49,11 @@ public class DistanceCreator {
         return distance;
     }
 
+    /** @param o
+     *            o
+     * @param ke
+     *            ke
+     * @return distance */
     public static Distance<OWLEntity>
             createKnowledgeExplorerAxiomRelevanceAxiomBasedDistance(OWLOntology o,
                     KnowledgeExplorer ke) {
@@ -52,6 +66,11 @@ public class DistanceCreator {
         return distance;
     }
 
+    /** @param o
+     *            o
+     * @param ke
+     *            ke
+     * @return distance */
     public static Distance<OWLEntity>
             createKnowledgeExplorerOWLEntityRelevanceBasedDistance(OWLOntology o,
                     KnowledgeExplorer ke) {
@@ -60,6 +79,11 @@ public class DistanceCreator {
         return distance;
     }
 
+    /** @param ontology
+     *            ontology
+     * @param ke
+     *            ke
+     * @return distance */
     public static Distance<OWLEntity>
             createStructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
                     final OWLOntology ontology, KnowledgeExplorer ke) {

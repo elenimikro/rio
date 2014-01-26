@@ -105,9 +105,12 @@ import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class StructuralDifference {
     private final List<Integer> position = new ArrayList<Integer>();
 
+    /** @param position
+     *            position */
     public StructuralDifference(final List<? extends Integer> position) {
         if (position == null) {
             throw new NullPointerException("The position cannot be null");
@@ -115,6 +118,9 @@ public class StructuralDifference {
         this.position.addAll(position);
     }
 
+    /**
+     * 
+     */
     public StructuralDifference() {
         this(Collections.<Integer> emptyList());
     }
@@ -140,6 +146,11 @@ public class StructuralDifference {
         return toReturn;
     }
 
+    /** @param anOWLObject
+     *            anOWLObject
+     * @param anotherOWLObject
+     *            anotherOWLObject
+     * @return top differences */
     public List<StructuralDifferenceReport> getTopDifferences(
             final OWLObject anOWLObject, final OWLObject anotherOWLObject) {
         boolean areComparable = areComparable(anOWLObject, anotherOWLObject);
@@ -156,6 +167,9 @@ public class StructuralDifference {
         return toReturn;
     }
 
+    /** @param c
+     *            c
+     * @return top differences */
     public Set<List<StructuralDifferenceReport>> getTopDifferences(
             final Collection<? extends OWLObject> c) {
         if (c == null) {

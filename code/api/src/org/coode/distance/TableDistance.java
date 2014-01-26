@@ -15,13 +15,16 @@ package org.coode.distance;
 
 import java.util.Collection;
 
-
-/** @author Luigi Iannone */
+/** @author Luigi Iannone
+ * @param <O>
+ *            type */
 public final class TableDistance<O> implements Distance<O> {
     private final SparseMatrix table;
 
-    // private final Set<O> objects = new LinkedHashSet<O>();
-    // private final Map<O, Integer> objectIndex = new HashMap<O, Integer>();
+    /** @param objects
+     *            objects
+     * @param table
+     *            table */
     public TableDistance(final Collection<? extends O> objects, final SparseMatrix table) {
         if (table == null) {
             throw new NullPointerException("The table cannot be null");
@@ -37,33 +40,18 @@ public final class TableDistance<O> implements Distance<O> {
         }
         this.table = SparseMatrixFactory.create(table);
         this.table.setKeys(objects);
-        // this.objects.addAll(objects);
-        // int i = 0;
-        // Iterator<? extends O> iterator = objects.iterator();
-        // while (iterator.hasNext()) {
-        // O o = iterator.next();
-        // this.objectIndex.put(o, i);
-        // i++;
-        // }
     }
 
     @Override
     public double getDistance(final O a, final O b) {
-        // Integer index = this.objectIndex.get(a);
-        // int rowIndex = index == null ? -1 : index;
-        // if (rowIndex == -1) {
-        // throw new IllegalArgumentException(String.format(
-        // "%s is not contained in this table based distance", a));
-        // }
-        // index = this.objectIndex.get(b);
-        // int columnIndex = index == null ? -1 : index;
-        // if (columnIndex == -1) {
-        // throw new IllegalArgumentException(String.format(
-        // "%s is not contained in this table based distance", b));
-        // }
         return this.table.get(a, b);
     }
 
+    /** @param i
+     *            i
+     * @param j
+     *            j
+     * @return distance */
     public double getDistance(final int i, final int j) {
         return this.table.get(i, j);
     }

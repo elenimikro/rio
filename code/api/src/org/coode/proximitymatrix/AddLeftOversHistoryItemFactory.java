@@ -16,35 +16,41 @@ import java.util.Set;
 
 import org.coode.pair.Pair;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public class AddLeftOversHistoryItemFactory<O> implements HistoryItemFactory<O> {
-	private final Set<O> leftOvers = new HashSet<O>();
+    private final Set<O> leftOvers = new HashSet<O>();
 
-	public AddLeftOversHistoryItemFactory(Collection<? extends O> leftOvers) {
-		if (leftOvers == null) {
-			throw new NullPointerException("The left over set cannot be null");
-		}
-		this.leftOvers.addAll(leftOvers);
-	}
+    /** @param leftOvers
+     *            leftOvers */
+    public AddLeftOversHistoryItemFactory(Collection<? extends O> leftOvers) {
+        if (leftOvers == null) {
+            throw new NullPointerException("The left over set cannot be null");
+        }
+        this.leftOvers.addAll(leftOvers);
+    }
 
-	@Override
+    @Override
     public HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters) {
-		Set<O> newClusters = this.getLeftOvers();
-		newClusters.addAll(clusters);
-		return new HistoryItem<O>(pair, newClusters);
-	}
+        Set<O> newClusters = this.getLeftOvers();
+        newClusters.addAll(clusters);
+        return new HistoryItem<O>(pair, newClusters);
+    }
 
-	/**
-	 * @return the leftOvers
-	 */
-	public Set<O> getLeftOvers() {
-		return new HashSet<O>(this.leftOvers);
-	}
+    /** @return the leftOvers */
+    public Set<O> getLeftOvers() {
+        return new HashSet<O>(this.leftOvers);
+    }
 
-	public static <P> AddLeftOversHistoryItemFactory<P> build(
-			Collection<? extends P> leftOvers) {
-		if (leftOvers == null) {
-			throw new NullPointerException("The leftOvers cannot be null");
-		}
-		return new AddLeftOversHistoryItemFactory<P>(leftOvers);
-	}
+    /** @param leftOvers
+     *            leftOvers
+     * @return leftovers */
+    public static <P> AddLeftOversHistoryItemFactory<P> build(
+            Collection<? extends P> leftOvers) {
+        if (leftOvers == null) {
+            throw new NullPointerException("The leftOvers cannot be null");
+        }
+        return new AddLeftOversHistoryItemFactory<P>(leftOvers);
+    }
 }

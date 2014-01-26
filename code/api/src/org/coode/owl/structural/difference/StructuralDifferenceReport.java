@@ -10,17 +10,21 @@
  ******************************************************************************/
 package org.coode.owl.structural.difference;
 
-/**
- * Generic Structural difference report.
+/** Generic Structural difference report.
  * 
- * @author Luigi Iannone
- * 
- */
+ * @author Luigi Iannone */
 public interface StructuralDifferenceReport {
-	public static final NoDifferenceStructuralDifferenceReport NO_DIFFERENCE = NoDifferenceStructuralDifferenceReport.INSTANCE;
-	public static final IncomparableObjectsStructuralDifferenceReport INCOMPARABLE = IncomparableObjectsStructuralDifferenceReport.INSTANCE;
+    /** no difference report */
+    public static final NoDifferenceStructuralDifferenceReport NO_DIFFERENCE = NoDifferenceStructuralDifferenceReport.INSTANCE;
+    /** incomparable report */
+    public static final IncomparableObjectsStructuralDifferenceReport INCOMPARABLE = IncomparableObjectsStructuralDifferenceReport.INSTANCE;
 
-	void accept(StructuralDifferenceReportVisitor visitor);
+    /** @param visitor
+     *            visitor */
+    void accept(StructuralDifferenceReportVisitor visitor);
 
-	<O> O accept(StructuralDifferenceReportVisitorEx<O> visitor);
+    /** @param visitor
+     *            visitor
+     * @return visitor value */
+    <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor);
 }

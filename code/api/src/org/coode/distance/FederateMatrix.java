@@ -4,15 +4,20 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
 
+/** @author eleni */
 public class FederateMatrix implements SparseMatrix {
     private final SparseMatrixSmallSize actual;
     private final SparseMatrixListImpl test;
 
+    /** @param i
+     *            i */
     public FederateMatrix(final int i) {
         actual = new SparseMatrixSmallSize(i);
         test = new SparseMatrixListImpl(i);
     }
 
+    /** @param m
+     *            m */
     public FederateMatrix(final FederateMatrix m) {
         for (int i = 0; i < m.length(); i++) {
             for (int j = 0; j < m.length(); j++) {
@@ -78,6 +83,8 @@ public class FederateMatrix implements SparseMatrix {
         // printDiff(_i);
     }
 
+    /** @param _i
+     *            _i */
     public void printDiff(final int _i) {
         double[] d1 = actual.getRow(_i);
         double[] d2 = test.getRow(_i);

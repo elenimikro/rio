@@ -27,7 +27,10 @@ public class ProximityMatrixTableModel implements TableModel {
     private final String[] columnNames;
     private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    /** @param proximityMatrix */
+    /** @param proximityMatrix
+     *            proximityMatrix
+     * @param columnNames
+     *            columnNames */
     public ProximityMatrixTableModel(final ProximityMatrix<?> proximityMatrix,
             final String[] columnNames) {
         if (proximityMatrix == null) {

@@ -26,11 +26,15 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
+/** @author eleni */
 public class AxiomRelevanceMapBase {
     protected final Map<OWLAxiom, OWLAxiom> generalisationMap = new HashMap<OWLAxiom, OWLAxiom>();
     protected final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantionMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     protected final MultiMap<OWLAxiom, OWLEntity> relevanceMap = new MultiMap<OWLAxiom, OWLEntity>();
 
+    /** @param axiom
+     *            axiom
+     * @return entities */
     public Collection<OWLEntity> getRelevantEntities(final OWLAxiom axiom) {
         OWLAxiom generalisedOWLAxiom = generalisationMap.get(axiom);
         if (generalisedOWLAxiom != null) {

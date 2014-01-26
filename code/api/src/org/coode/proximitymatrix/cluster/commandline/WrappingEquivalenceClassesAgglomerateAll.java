@@ -25,7 +25,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  * @author elenimikroyannidi */
 public class WrappingEquivalenceClassesAgglomerateAll extends AgglomeratorBase {
     /** @param args
-     * @throws OWLOntologyCreationException */
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void main(final String[] args) throws OWLOntologyCreationException {
         WrappingEquivalenceClassesAgglomerateAll agglomerator = new WrappingEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);

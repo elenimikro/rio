@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
 public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase implements
         OWLEntityProvider {
     private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
@@ -32,6 +33,10 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase 
         }
     };
 
+    /** @param ontologyManager
+     *            ontologyManager
+     * @param generalisations
+     *            generalisations */
     public GeneralisationBasedOWLEntityProvider(final OWLOntologyManager ontologyManager,
             final Set<OWLAxiom> generalisations) {
         super(ontologyManager);
@@ -40,12 +45,13 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase 
         loadDelegate();
     }
 
-    private void loadDelegate() {
+    protected void loadDelegate() {
         for (OWLAxiom ax : axioms) {
             addAll(ax.getSignature());
         }
     }
 
+    /** dispose */
     public void dispose() {
         getOntologyManager().removeOntologyChangeListener(listener);
     }

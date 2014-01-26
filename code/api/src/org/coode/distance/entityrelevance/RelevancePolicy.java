@@ -10,7 +10,12 @@
  ******************************************************************************/
 package org.coode.distance.entityrelevance;
 
-
+/** @author eleni
+ * @param <T>
+ *            type */
 public interface RelevancePolicy<T> {
-	boolean isRelevant(T object);
+    /** @param object
+     *            object
+     * @return true if relevant */
+    boolean isRelevant(T object);
 }

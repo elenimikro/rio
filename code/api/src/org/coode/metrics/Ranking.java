@@ -12,22 +12,34 @@ package org.coode.metrics;
 
 import java.util.List;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public interface Ranking<O> {
-	double getTopValue();
+    /** @return top value */
+    double getTopValue();
 
-	double getBottomValue();
+    /** @return bottom value */
+    double getBottomValue();
 
-	O[] getTop();
+    /** @return top */
+    O[] getTop();
 
-	O[] getBottom();
+    /** @return bottom */
+    O[] getBottom();
 
-	double[] getValues();
+    /** @return values */
+    double[] getValues();
 
-	boolean isAverageable();
+    /** @return true if averageable */
+    boolean isAverageable();
 
-	double getAverageValue();
+    /** @return average */
+    double getAverageValue();
 
-	List<RankingSlot<O>> getSortedRanking();
+    /** @return sorted ranking */
+    List<RankingSlot<O>> getSortedRanking();
 
-	List<RankingSlot<O>> getUnorderedRanking();
+    /** @return unordered ranking */
+    List<RankingSlot<O>> getUnorderedRanking();
 }

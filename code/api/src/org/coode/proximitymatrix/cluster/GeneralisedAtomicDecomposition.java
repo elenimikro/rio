@@ -18,6 +18,9 @@ import uk.ac.manchester.cs.atomicdecomposition.Atom;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 
+/** @author eleni
+ * @param <P>
+ *            type */
 public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
     private final ClusterDecompositionModel<OWLEntity> model;
     private final AtomicDecomposition ad;
@@ -32,6 +35,10 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
     private final MultiMap<Collection<OWLAxiom>, Atom> duplicateAtomMap = new MultiMap<Collection<OWLAxiom>, Atom>();
     MultiMap<Atom, OWLAxiom> dirtyMap = new MultiMap<Atom, OWLAxiom>();
 
+    /** @param model
+     *            model
+     * @param o
+     *            o */
     public GeneralisedAtomicDecomposition(ClusterDecompositionModel<OWLEntity> model,
             OWLOntology o) {
         this.model = model;
@@ -77,6 +84,7 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
         }
     }
 
+    /** @return top atoms */
     public Set<Atom> getTopAtoms() {
         Set<Atom> toReturn = new HashSet<Atom>();
         Set<Atom> bottomAtoms = ad.getBottomAtoms();
@@ -84,6 +92,7 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
         return toReturn;
     }
 
+    /** @return bottom atoms */
     public Set<Atom> getBottomAtoms() {
         Set<Atom> toReturn = new HashSet<Atom>();
         Set<Atom> bottomAtoms = ad.getBottomAtoms();
@@ -91,23 +100,36 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
         return toReturn;
     }
 
+    /** @return generalisation axiom map */
     public Map<Collection<OWLAxiom>, Atom> getGeneralisationAtomMap() {
         return this.delegate;
     }
 
+    /** @return atomic decomposition */
     public AtomicDecomposition getAtomicDecomposer() {
         return ad;
     }
 
+    /** @return Cluster decomposition model */
     public ClusterDecompositionModel<OWLEntity> getClusterDecompositionModel() {
         return model;
     }
 
+    /** @param a
+     *            a
+     * @param b
+     *            b
+     * @return dependents */
     public Collection<? extends Atom> getDependents(Atom a, boolean b) {
         Set<Atom> dependencies = ad.getDependents(a, b);
         return getReducedAtoms(dependencies);
     }
 
+    /** @param atom
+     *            atom
+     * @param b
+     *            b
+     * @return dependencies */
     public Collection<? extends Atom> getDependencies(Atom atom, boolean b) {
         Set<Atom> dependencies = ad.getDependencies(atom, b);
         if (dependencies != null && !dependencies.isEmpty()) {
@@ -117,6 +139,9 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
         }
     }
 
+    /** @param atom
+     *            atom
+     * @return dependencies */
     public Collection<? extends Atom> getDependencies(Atom atom) {
         Set<Atom> dependencies = ad.getDependencies(atom);
         if (dependencies != null && !dependencies.isEmpty()) {
@@ -160,6 +185,7 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
         }
     }
 
+    /** @return term based index */
     public MultiMap<OWLEntity, Atom> getTermBasedIndex() {
         if (entityAtomMap == null || entityAtomMap.size() == 0) {
             Set<Collection<OWLAxiom>> keySet = this.delegate.keySet();
@@ -178,10 +204,12 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
         return entityAtomMap;
     }
 
+    /** @return dirty map */
     public MultiMap<Atom, OWLAxiom> getDirtyMap() {
         return this.dirtyMap;
     }
 
+    /** @return merged atoms */
     public MultiMap<Collection<OWLAxiom>, Atom> getMergedAtoms() {
         MultiMap<Collection<OWLAxiom>, Atom> toReturn = new MultiMap<Collection<OWLAxiom>, Atom>();
         Set<Collection<OWLAxiom>> collections = this.duplicateAtomMap.keySet();
@@ -194,24 +222,31 @@ public class GeneralisedAtomicDecomposition<P extends OWLEntity> {
         return toReturn;
     }
 
+    /** @param atom
+     *            atom
+     * @return axioms */
     public Collection<OWLAxiom> getAxioms(Atom atom) {
         return this.atomMap.get(atom);
     }
 
+    /** @return atoms */
     public Collection<? extends Atom> getAtoms() {
         Set<Atom> toReturn = new HashSet<Atom>();
         toReturn.addAll(this.delegate.values());
         return toReturn;
     }
 
+    /** @return entities to atoms */
     public MultiMap<OWLEntity, Atom> getEntitiesToAtom() {
         return entityAtomMap;
     }
 
+    /** @return syntactic regularities */
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> getSyntacticRegularities() {
         return regularitiesMap;
     }
 
+    /** @return patterns */
     public Set<List<Atom>> getPatterns() {
         Set<List<Atom>> toReturn = new HashSet<List<Atom>>();
         Set<Atom> topAtoms = this.getTopAtoms();

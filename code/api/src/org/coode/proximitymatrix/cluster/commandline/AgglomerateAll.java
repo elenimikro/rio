@@ -48,9 +48,12 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 
+/** @author eleni */
 public class AgglomerateAll extends AgglomeratorBase {
     /** @param args
-     * @throws OWLOntologyCreationException */
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void main(final String[] args) throws OWLOntologyCreationException {
         AgglomerateAll agglomerator = new AgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);

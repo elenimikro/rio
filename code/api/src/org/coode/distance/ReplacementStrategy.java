@@ -12,6 +12,10 @@ package org.coode.distance;
 
 import org.semanticweb.owlapi.model.OWLObject;
 
+/** @author eleni */
 public interface ReplacementStrategy {
-	<O extends OWLObject> O replace(O owlObject);
+    /** @param owlObject
+     *            owlObject
+     * @return replaced object */
+    <O extends OWLObject> O replace(O owlObject);
 }

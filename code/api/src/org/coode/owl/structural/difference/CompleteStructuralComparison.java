@@ -111,7 +111,10 @@ final class CompleteStructuralComparison implements
     private final List<Integer> position = new ArrayList<Integer>();
     private final StructuralDifference difference;
 
-    /** @param objectToCompare */
+    /** @param owlObject
+     *            owlObject
+     * @param position
+     *            position */
     public CompleteStructuralComparison(final OWLObject owlObject,
             final List<Integer> position) {
         if (owlObject == null) {

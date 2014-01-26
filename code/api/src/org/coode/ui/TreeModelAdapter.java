@@ -21,104 +21,66 @@ import javax.swing.tree.TreePath;
 import org.coode.utils.Tree;
 import org.coode.utils.TreeNode;
 
+/** @author eleni */
 public class TreeModelAdapter implements TreeModel {
-	private final TreeModel delegate;
+    private final TreeModel delegate;
 
-	public TreeModelAdapter(Tree tree) {
-		TreeNode<?> currentTreeNode = tree.getRoot();
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(currentTreeNode);
-		DefaultTreeModel defaultTreeModel = new DefaultTreeModel(root);
-		this.buildNode(root, currentTreeNode);
-		this.delegate = defaultTreeModel;
-	}
+    /** @param tree
+     *            tree */
+    public TreeModelAdapter(Tree tree) {
+        TreeNode<?> currentTreeNode = tree.getRoot();
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(currentTreeNode);
+        DefaultTreeModel defaultTreeModel = new DefaultTreeModel(root);
+        buildNode(root, currentTreeNode);
+        delegate = defaultTreeModel;
+    }
 
-	private void buildNode(DefaultMutableTreeNode node, TreeNode<?> currentTreeNode) {
-		List<TreeNode<?>> children = currentTreeNode.getChildren();
-		for (TreeNode<?> childTreeNode : children) {
-			DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(childTreeNode);
-			node.add(childNode);
-			this.buildNode(childNode, childTreeNode);
-		}
-	}
+    private void buildNode(DefaultMutableTreeNode node, TreeNode<?> currentTreeNode) {
+        List<TreeNode<?>> children = currentTreeNode.getChildren();
+        for (TreeNode<?> childTreeNode : children) {
+            DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(childTreeNode);
+            node.add(childNode);
+            buildNode(childNode, childTreeNode);
+        }
+    }
 
-	/**
-	 * @param l
-	 * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
-	 */
-	@Override
+    @Override
     public void addTreeModelListener(TreeModelListener l) {
-		this.delegate.addTreeModelListener(l);
-	}
+        delegate.addTreeModelListener(l);
+    }
 
-	/**
-	 * @param parent
-	 * @param index
-	 * @return
-	 * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
-	 */
-	@Override
+    @Override
     public Object getChild(Object parent, int index) {
-		return this.delegate.getChild(parent, index);
-	}
+        return delegate.getChild(parent, index);
+    }
 
-	/**
-	 * @param parent
-	 * @return
-	 * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
-	 */
-	@Override
+    @Override
     public int getChildCount(Object parent) {
-		return this.delegate.getChildCount(parent);
-	}
+        return delegate.getChildCount(parent);
+    }
 
-	/**
-	 * @param parent
-	 * @param child
-	 * @return
-	 * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
-	 *      java.lang.Object)
-	 */
-	@Override
+    @Override
     public int getIndexOfChild(Object parent, Object child) {
-		return this.delegate.getIndexOfChild(parent, child);
-	}
+        return delegate.getIndexOfChild(parent, child);
+    }
 
-	/**
-	 * @return
-	 * @see javax.swing.tree.TreeModel#getRoot()
-	 */
-	@Override
+    @Override
     public Object getRoot() {
-		return this.delegate.getRoot();
-	}
+        return delegate.getRoot();
+    }
 
-	/**
-	 * @param node
-	 * @return
-	 * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
-	 */
-	@Override
+    @Override
     public boolean isLeaf(Object node) {
-		return this.delegate.isLeaf(node);
-	}
+        return delegate.isLeaf(node);
+    }
 
-	/**
-	 * @param l
-	 * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
-	 */
-	@Override
+    @Override
     public void removeTreeModelListener(TreeModelListener l) {
-		this.delegate.removeTreeModelListener(l);
-	}
+        delegate.removeTreeModelListener(l);
+    }
 
-	/**
-	 * @param path
-	 * @param newValue
-	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath,
-	 *      java.lang.Object)
-	 */
-	@Override
+    @Override
     public void valueForPathChanged(TreePath path, Object newValue) {
-		this.delegate.valueForPathChanged(path, newValue);
-	}
+        delegate.valueForPathChanged(path, newValue);
+    }
 }

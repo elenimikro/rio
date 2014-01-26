@@ -17,6 +17,9 @@ import java.util.List;
 import org.coode.distance.SparseMatrix;
 import org.coode.pair.filter.PairFilter;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public class DistanceThresholdBasedFilter<O> implements
         PairFilter<Collection<? extends DistanceTableObject<O>>> {
     private final SparseMatrix distance;
@@ -35,16 +38,12 @@ public class DistanceThresholdBasedFilter<O> implements
     Collection<? extends DistanceTableObject<O>> lastsecond;
     boolean lastResult;
 
-    /** @see org.coode.pair.filter.PairFilter#accept(java.lang.Objefilteredjava.lang.Object) */
     @Override
     public boolean accept(final Collection<? extends DistanceTableObject<O>> first,
             final Collection<? extends DistanceTableObject<O>> second) {
         if (lastfirst == first && lastsecond == second) {
             return lastResult;
         }
-        // System.out.println("DistanceThresholdBasedFilter.accept() " +
-        // hashCode() + "\t"
-        // + first.hashCode() + "\t" + second.hashCode());
         lastfirst = first;
         lastsecond = second;
         if (first instanceof List && second instanceof List) {
@@ -82,6 +81,11 @@ public class DistanceThresholdBasedFilter<O> implements
         return !found;
     }
 
+    /** @param distance
+     *            distance
+     * @param threshold
+     *            threshold
+     * @return distance filter */
     public static <P> DistanceThresholdBasedFilter<P> build(final SparseMatrix distance,
             final double threshold) {
         return new DistanceThresholdBasedFilter<P>(distance, threshold);

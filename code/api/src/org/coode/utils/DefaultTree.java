@@ -15,108 +15,106 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+/** @author eleni */
 public class DefaultTree implements Tree {
-	private final TreeNode<?> root;
+    private final TreeNode<?> root;
 
-	/**
-	 * @param root
-	 */
-	public DefaultTree(TreeNode<?> root) {
-		if (root == null) {
-			throw new NullPointerException("The root cannot be null");
-		}
-		this.root = root;
-	}
+    /** @param root
+     *            root */
+    public DefaultTree(TreeNode<?> root) {
+        if (root == null) {
+            throw new NullPointerException("The root cannot be null");
+        }
+        this.root = root;
+    }
 
-	/**
-	 * @return the root
-	 */
-	@Override
+    /** @return the root */
+    @Override
     public TreeNode<?> getRoot() {
-		return this.root;
-	}
+        return root;
+    }
 
-	@Override
+    @Override
     public final List<TreeNode<?>> findDepthFirst(final Object o) {
-		return this.findDepthFirst(this.getRoot(), Utils.getUserObjectSearch(o));
-	}
+        return this.findDepthFirst(getRoot(), Utils.getUserObjectSearch(o));
+    }
 
-	@Override
+    @Override
     public final List<TreeNode<?>> findDepthFirst(Tree.Search search) {
-		if (search == null) {
-			throw new NullPointerException("The search criteria cannot be null");
-		}
-		return this.findDepthFirst(this.getRoot(), search);
-	}
+        if (search == null) {
+            throw new NullPointerException("The search criteria cannot be null");
+        }
+        return this.findDepthFirst(getRoot(), search);
+    }
 
-	@Override
+    @Override
     public final List<TreeNode<?>> findDepthFirst(TreeNode<?> start, Tree.Search search) {
-		if (start == null) {
-			throw new NullPointerException("The search root node cannot be null");
-		}
-		if (search == null) {
-			throw new NullPointerException("The search criteria cannot be null");
-		}
-		Stack<TreeNode<?>> result = new Stack<TreeNode<?>>();
-		boolean found = this.depthFirstSearch(start, result, search);
-		return found ? new ArrayList<TreeNode<?>>(result) : Collections
-				.<TreeNode<?>> emptyList();
-	}
+        if (start == null) {
+            throw new NullPointerException("The search root node cannot be null");
+        }
+        if (search == null) {
+            throw new NullPointerException("The search criteria cannot be null");
+        }
+        Stack<TreeNode<?>> result = new Stack<TreeNode<?>>();
+        boolean found = depthFirstSearch(start, result, search);
+        return found ? new ArrayList<TreeNode<?>>(result) : Collections
+                .<TreeNode<?>> emptyList();
+    }
 
-	private boolean depthFirstSearch(TreeNode<?> start, Stack<TreeNode<?>> result,
-			Tree.Search search) {
-		if (result.contains(start)) {
-			return false;
-		}
-		result.push(start);
-		boolean goalReached = search.goalReached(start);
-		if (goalReached) {
-			return true;
-		}
-		List<TreeNode<?>> children = start.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			TreeNode<?> child = children.get(i);
-			if (this.depthFirstSearch(child, result, search)) {
-				return true;
-			}
-		}
-		// No path was found
-		result.pop();
-		return false;
-	}
+    private boolean depthFirstSearch(TreeNode<?> start, Stack<TreeNode<?>> result,
+            Tree.Search search) {
+        if (result.contains(start)) {
+            return false;
+        }
+        result.push(start);
+        boolean goalReached = search.goalReached(start);
+        if (goalReached) {
+            return true;
+        }
+        List<TreeNode<?>> children = start.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            TreeNode<?> child = children.get(i);
+            if (depthFirstSearch(child, result, search)) {
+                return true;
+            }
+        }
+        // No path was found
+        result.pop();
+        return false;
+    }
 
-	@Override
+    @Override
     public boolean findAllDepthFirst(final Object object,
-			List<List<TreeNode<?>>> solutions) {
-		if (solutions == null) {
-			throw new NullPointerException("The solution list cannot be null");
-		}
-		solutions.clear();
-		return this.findAllDepthFirst(this.getRoot(), new Stack<TreeNode<?>>(),
-				solutions, Utils.getUserObjectSearch(object));
-	}
+            List<List<TreeNode<?>>> solutions) {
+        if (solutions == null) {
+            throw new NullPointerException("The solution list cannot be null");
+        }
+        solutions.clear();
+        return this.findAllDepthFirst(getRoot(), new Stack<TreeNode<?>>(), solutions,
+                Utils.getUserObjectSearch(object));
+    }
 
-	private boolean findAllDepthFirst(TreeNode<?> start, Stack<TreeNode<?>> currentPath,
-			List<List<TreeNode<?>>> solutions, Search search) {
-		if (currentPath.contains(start)) {
-			return false;
-		}
-		currentPath.push(start);
-		boolean goalReached = search.goalReached(start);
-		if (goalReached) {
-			solutions.add(new ArrayList<TreeNode<?>>(currentPath));
-			currentPath.pop();
-			return true;
-		}
-		List<TreeNode<?>> children = start.getChildren();
-		boolean found = false;
-		for (int i = 0; i < children.size(); i++) {
-			TreeNode<?> child = children.get(i);
-			boolean searchSubTree = this.findAllDepthFirst(child, currentPath, solutions,
-					search);
-			found = found || searchSubTree;
-		}
-		currentPath.pop();
-		return found;
-	}
+    private boolean findAllDepthFirst(TreeNode<?> start, Stack<TreeNode<?>> currentPath,
+            List<List<TreeNode<?>>> solutions, Search search) {
+        if (currentPath.contains(start)) {
+            return false;
+        }
+        currentPath.push(start);
+        boolean goalReached = search.goalReached(start);
+        if (goalReached) {
+            solutions.add(new ArrayList<TreeNode<?>>(currentPath));
+            currentPath.pop();
+            return true;
+        }
+        List<TreeNode<?>> children = start.getChildren();
+        boolean found = false;
+        for (int i = 0; i < children.size(); i++) {
+            TreeNode<?> child = children.get(i);
+            boolean searchSubTree = this.findAllDepthFirst(child, currentPath, solutions,
+                    search);
+            found = found || searchSubTree;
+        }
+        currentPath.pop();
+        return found;
+    }
 }

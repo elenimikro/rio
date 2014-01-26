@@ -10,6 +10,14 @@
  ******************************************************************************/
 package org.coode.pair.filter;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public interface PairFilter<O> {
-	boolean accept(O first, O second);
+    /** @param first
+     *            first
+     * @param second
+     *            second
+     * @return true if accepted */
+    boolean accept(O first, O second);
 }

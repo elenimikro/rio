@@ -24,6 +24,9 @@ public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
     private ManchesterOWLSyntaxObjectRenderer ren;
     private WriterDelegate writerDelegate;
 
+    /**
+     * 
+     */
     public ManchesterSyntaxRenderer() {
         writerDelegate = new WriterDelegate();
         ren = new ManchesterOWLSyntaxObjectRenderer(writerDelegate,
@@ -46,11 +49,9 @@ public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
     private static class WriterDelegate extends Writer {
         private StringWriter delegate;
 
-        public WriterDelegate() {
-            // TODO Auto-generated constructor stub
-        }
+        public WriterDelegate() {}
 
-        private void reset() {
+        protected void reset() {
             delegate = new StringWriter();
         }
 

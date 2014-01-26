@@ -9,7 +9,7 @@
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.owl.structural.difference;
-
+/** @author eleni */
 public class StructuralDifferenceReportVisitorAdapter implements
         StructuralDifferenceReportVisitor {
     @Override

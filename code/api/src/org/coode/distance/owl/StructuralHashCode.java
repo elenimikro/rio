@@ -17,61 +17,51 @@ import org.coode.distance.ReplacementStrategy;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
 
-/**
- * Hashing function that takes into account only the structure of an OWL Object.
+/** Hashing function that takes into account only the structure of an OWL Object.
  * OWL entities of the same kind will have the same hash code. For instance
  * <code>this.hasCode(owl:Thing) == this.hashCode(owl:Nothing)</code>
  * 
- * @author Luigi Iannone
- * 
- */
+ * @author Luigi Iannone */
 public class StructuralHashCode implements HashCode {
-	private final OWLEntityReplacer replacer;
-	private final OWLDataFactory dataFactory;
-	private final ReplacementStrategy replacementStrategy;
+    private final OWLEntityReplacer replacer;
+    private final OWLDataFactory dataFactory;
+    private final ReplacementStrategy replacementStrategy;
 
-	/**
-	 * @param dataFactory
-	 */
-	public StructuralHashCode(OWLDataFactory dataFactory,
-			ReplacementStrategy replacementStrategy) {
-		if (dataFactory == null) {
-			throw new NullPointerException("The OWL data factory cannot be null");
-		}
-		if (replacementStrategy == null) {
-			throw new NullPointerException("The replacement strategy cannot be null");
-		}
-		this.dataFactory = dataFactory;
-		this.replacementStrategy = replacementStrategy;
-		this.replacer = new OWLEntityReplacer(this.getDataFactory(),
-				this.getReplacementStrategy());
-	}
+    /** @param dataFactory
+     *            dataFactory
+     * @param replacementStrategy
+     *            replacementStrategy */
+    public StructuralHashCode(OWLDataFactory dataFactory,
+            ReplacementStrategy replacementStrategy) {
+        if (dataFactory == null) {
+            throw new NullPointerException("The OWL data factory cannot be null");
+        }
+        if (replacementStrategy == null) {
+            throw new NullPointerException("The replacement strategy cannot be null");
+        }
+        this.dataFactory = dataFactory;
+        this.replacementStrategy = replacementStrategy;
+        replacer = new OWLEntityReplacer(getDataFactory(), getReplacementStrategy());
+    }
 
-	/**
-	 * Computes the hash code of the object only by looking at its structure.
-	 * Can only distinguish between different kinds of OWL entities, nut not
-	 * between entities of the same kind.
-	 * 
-	 * @see org.coode.distance.owl.HashCode#hashCode(org.semanticweb.owlapi.model
-	 *      .OWLObject)
-	 */
-	@Override
+    /*
+     * Computes the hash code of the object only by looking at its structure.
+     * Can only distinguish between different kinds of OWL entities, nut not
+     * between entities of the same kind.
+     */
+    @Override
     public int hashCode(OWLObject owlObject) {
-		OWLObject replacedOWLObject = owlObject.accept(this.replacer);
-		return replacedOWLObject.hashCode();
-	}
+        OWLObject replacedOWLObject = owlObject.accept(replacer);
+        return replacedOWLObject.hashCode();
+    }
 
-	/**
-	 * @return the dataFactory
-	 */
-	public OWLDataFactory getDataFactory() {
-		return this.dataFactory;
-	}
+    /** @return the dataFactory */
+    public OWLDataFactory getDataFactory() {
+        return dataFactory;
+    }
 
-	/**
-	 * @return the replacementStrategy
-	 */
-	public ReplacementStrategy getReplacementStrategy() {
-		return this.replacementStrategy;
-	}
+    /** @return the replacementStrategy */
+    public ReplacementStrategy getReplacementStrategy() {
+        return replacementStrategy;
+    }
 }

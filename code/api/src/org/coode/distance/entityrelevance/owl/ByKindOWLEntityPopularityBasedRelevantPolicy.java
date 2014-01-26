@@ -34,9 +34,12 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+/** @author eleni */
 public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
         RelevancePolicy<OWLEntity> {
     private final class GroupRanking implements Ranking<OWLEntity> {
+        public GroupRanking() {}
+
         @Override
         public double getTopValue() {
             return getMaxValue();
@@ -231,6 +234,10 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
     final AbstractRankingRelevancePolicy<OWLEntity> owlNamedIndividualsPopularityRanking;
     final AbstractRankingRelevancePolicy<OWLEntity> owlDatatypesPopularityRanking;
 
+    /** @param objects
+     *            objects
+     * @param ontologies
+     *            ontologies */
     public ByKindOWLEntityPopularityBasedRelevantPolicy(Collection<OWLEntity> objects,
             Collection<OWLOntology> ontologies) {
         if (objects == null) {
@@ -335,6 +342,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
         });
     }
 
+    /** @return ranking */
     public Ranking<OWLEntity> getRanking() {
         return new GroupRanking();
     }

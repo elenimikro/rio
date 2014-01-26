@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
 public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
         implements OWLEntityProvider {
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
@@ -30,19 +31,22 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
         }
     };
 
+    /** @param ontologyManager
+     *            ontologyManager */
     public OntologyManagerBasedOWLEntityProvider(final OWLOntologyManager ontologyManager) {
         super(ontologyManager);
         // getOntologyManager().addOntologyChangeListener(listener);
         loadDelegate();
     }
 
-    private void loadDelegate() {
+    protected void loadDelegate() {
         Set<OWLOntology> ontologies = getOntologyManager().getOntologies();
         for (OWLOntology ontology : ontologies) {
             addAll(ontology.getSignature());
         }
     }
 
+    /** dispose */
     public void dispose() {
         getOntologyManager().removeOntologyChangeListener(listener);
     }

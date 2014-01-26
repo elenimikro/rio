@@ -7,11 +7,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/** @author eleni */
 public class SparseMatrixSmallSize implements SparseMatrix {
     double[][] matrix;
     final int size;
     private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
 
+    /** @param size
+     *            size */
     public SparseMatrixSmallSize(final int size) {
         this.size = size;
         matrix = new double[size][size];
@@ -22,6 +25,8 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         }
     }
 
+    /** @param m
+     *            m */
     public SparseMatrixSmallSize(final SparseMatrixSmallSize m) {
         this(m.length());
         System.arraycopy(m.matrix, 0, matrix, 0, m.matrix.length);
@@ -48,6 +53,9 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         return get(getPosition(i), getPosition(j));
     }
 
+    /** @param i
+     *            i
+     * @return position */
     public int getPosition(final Object i) {
         Integer index = objectIndex.get(i);
         if (index == -1) {
@@ -79,6 +87,9 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         }
     }
 
+    /** @param i
+     *            i
+     * @return row */
     public double[] getRow(final int i) {
         double[] row = new double[size];
         for (int j = 0; j < size; j++) {

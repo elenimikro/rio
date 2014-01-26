@@ -34,7 +34,9 @@ public class OWLAxiomInstantiation {
     private final AssignmentMap substitutions;
 
     /** @param axiom
-     * @param assignmentMap */
+     *            axiom
+     * @param assignmentMap
+     *            assignmentMap */
     public OWLAxiomInstantiation(OWLAxiom axiom, AssignmentMap assignmentMap) {
         if (axiom == null) {
             throw new NullPointerException("The axiom cannot be null");
@@ -56,6 +58,7 @@ public class OWLAxiomInstantiation {
         return new AssignmentMap(substitutions);
     }
 
+    /** @return input variables */
     public Set<InputVariable<?>> getInputVariables() {
         final Set<InputVariable<?>> toReturn = new HashSet<InputVariable<?>>();
         for (Variable<?> v : substitutions.keySet()) {
@@ -76,10 +79,6 @@ public class OWLAxiomInstantiation {
         return toReturn;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -89,10 +88,6 @@ public class OWLAxiomInstantiation {
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -122,6 +117,11 @@ public class OWLAxiomInstantiation {
         return true;
     }
 
+    /** @param bindingNode
+     *            bindingNode
+     * @param parameters
+     *            parameters
+     * @return true if in agreement */
     public boolean agreesWith(BindingNode bindingNode,
             ValueComputationParameters parameters) {
         if (bindingNode == null) {

@@ -19,8 +19,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class Utils {
-
     private final static OWLObjectVisitorEx<Boolean> ENTITY_RECOGNISER = new OWLObjectVisitorExAdapter<Boolean>(
             false) {
         @Override
@@ -54,6 +54,7 @@ public class Utils {
         }
     };
 
+    /** @return entity recognizer */
     public static OWLObjectVisitorEx<Boolean> getOWLEntityRecogniser() {
         return ENTITY_RECOGNISER;
     }

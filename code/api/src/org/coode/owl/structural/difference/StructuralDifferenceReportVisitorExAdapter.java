@@ -10,15 +10,22 @@
  ******************************************************************************/
 package org.coode.owl.structural.difference;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public class StructuralDifferenceReportVisitorExAdapter<O> implements
         StructuralDifferenceReportVisitorEx<O> {
     private O defaultValue;
 
+    /**
+     * 
+     */
     public StructuralDifferenceReportVisitorExAdapter() {
         this(null);
     }
 
-    /** @param defaultValue */
+    /** @param defaultValue
+     *            defaultValue */
     public StructuralDifferenceReportVisitorExAdapter(O defaultValue) {
         this.defaultValue = defaultValue;
     }

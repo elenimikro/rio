@@ -15,33 +15,45 @@ import java.util.List;
 
 import org.coode.utils.Tree.Search;
 
+/** @author eleni */
 public class Utils {
-	public static Search getUserObjectSearch(final Object object) {
-		return new Search() {
-			@Override
+    /** @param object
+     *            object
+     * @return user object search */
+    public static Search getUserObjectSearch(final Object object) {
+        return new Search() {
+            @Override
             public boolean goalReached(TreeNode<?> node) {
-				return object == null ? object == node.getUserObject() : object
-						.equals(node.getUserObject());
-			}
-		};
-	}
+                return object == null ? object == node.getUserObject() : object
+                        .equals(node.getUserObject());
+            }
+        };
+    }
 
-	public static void printTree(Tree tree, PrintStream out) {
-		printNode(tree.getRoot(), out);
-	}
+    /** @param tree
+     *            tree
+     * @param out
+     *            out */
+    public static void printTree(Tree tree, PrintStream out) {
+        printNode(tree.getRoot(), out);
+    }
 
-	public static void printNode(TreeNode<?> node, PrintStream out) {
-		printNode(node, 0, out);
-	}
+    /** @param node
+     *            node
+     * @param out
+     *            out */
+    public static void printNode(TreeNode<?> node, PrintStream out) {
+        printNode(node, 0, out);
+    }
 
-	private static void printNode(TreeNode<?> node, int tabs, PrintStream out) {
-		for (int i = 0; i < tabs; i++) {
-			out.print("\t");
-		}
-		out.println(node.render());
-		List<TreeNode<?>> children = node.getChildren();
-		for (TreeNode<?> child : children) {
-			printNode(child, tabs + 1, out);
-		}
-	}
+    private static void printNode(TreeNode<?> node, int tabs, PrintStream out) {
+        for (int i = 0; i < tabs; i++) {
+            out.print("\t");
+        }
+        out.println(node.render());
+        List<TreeNode<?>> children = node.getChildren();
+        for (TreeNode<?> child : children) {
+            printNode(child, tabs + 1, out);
+        }
+    }
 }

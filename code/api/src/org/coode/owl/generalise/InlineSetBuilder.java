@@ -59,15 +59,19 @@ import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
-/** @author Luigi Iannone */
-
+/** @author Luigi Iannone
+ * @param <O>
+ *            type */
 public abstract class InlineSetBuilder<O extends OWLObject> extends
         OWLObjectVisitorExAdapter<InlineSet<O>> implements
         OWLObjectVisitorEx<InlineSet<O>> {
     private final ConstraintSystem constraintSystem;
     private final OWLDataFactory dataFactory;
 
-    /** @param constraintSystem */
+    /** @param constraintSystem
+     *            constraintSystem
+     * @param dataFactory
+     *            dataFactory */
     public InlineSetBuilder(final ConstraintSystem constraintSystem,
             final OWLDataFactory dataFactory) {
         if (constraintSystem == null) {
@@ -80,6 +84,11 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
         this.dataFactory = dataFactory;
     }
 
+    /** @param constraintSystem
+     *            constraintSystem
+     * @param dataFactory
+     *            dataFactory
+     * @return inline builder */
     public static InlineSetBuilder<OWLObjectPropertyExpression>
             getOWLObjectPropertyExpressionBuilder(
                     final ConstraintSystem constraintSystem,
@@ -197,6 +206,11 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
         };
     }
 
+    /** @param constraintSystem
+     *            constraintSystem
+     * @param dataFactory
+     *            dataFactory
+     * @return inline builder */
     public static InlineSetBuilder<OWLIndividual> getOWLIndividualBuilder(
             final ConstraintSystem constraintSystem, final OWLDataFactory dataFactory) {
         return new InlineSetBuilder<OWLIndividual>(constraintSystem, dataFactory) {
@@ -282,6 +296,11 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
         };
     }
 
+    /** @param constraintSystem
+     *            constraintSystem
+     * @param dataFactory
+     *            dataFactory
+     * @return inline builder */
     public static InlineSetBuilder<OWLDataPropertyExpression>
             getOWLDataPropertyExpressionBuilder(final ConstraintSystem constraintSystem,
                     final OWLDataFactory dataFactory) {
@@ -373,6 +392,11 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
         };
     }
 
+    /** @param constraintSystem
+     *            constraintSystem
+     * @param dataFactory
+     *            dataFactory
+     * @return inline builder */
     public static InlineSetBuilder<OWLClassExpression> getOWLClassExpressionBuilder(
             final ConstraintSystem constraintSystem, final OWLDataFactory dataFactory) {
         return new InlineSetBuilder<OWLClassExpression>(constraintSystem, dataFactory) {
@@ -520,7 +544,8 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
             }
 
             /** @param ce
-             * @return */
+             *            ce
+             * @return inline set */
             private InlineSet<OWLClassExpression> generaliseClassExpression(
                     final OWLClassExpression ce) {
                 String name = "?expression";
@@ -545,16 +570,16 @@ public abstract class InlineSetBuilder<O extends OWLObject> extends
         return this.constraintSystem;
     }
 
-    static <O extends OWLObject> InlineSet<O> buildSingletonInlineSet(
-            final O object, final VariableType<O> variableType,
-            final OWLDataFactory dataFactory, final ConstraintSystem constraintSystem) {
+    static <O extends OWLObject> InlineSet<O> buildSingletonInlineSet(final O object,
+            final VariableType<O> variableType, final OWLDataFactory dataFactory,
+            final ConstraintSystem constraintSystem) {
         Aggregandum<Collection<? extends O>> aggregandums = Adapter
                 .buildAggregandumOfCollection(object);
         return new InlineSet<O>(variableType, Collections.singleton(aggregandums),
                 dataFactory, constraintSystem);
     }
 
-    private static <O extends OWLObject> InlineSet<O> buildVariableValuesInlineSet(
+    protected static <O extends OWLObject> InlineSet<O> buildVariableValuesInlineSet(
             final Variable<O> variable, final OWLDataFactory dataFactory,
             final ConstraintSystem constraintSystem) {
         Aggregandum<Collection<? extends O>> aggregandums = Adapter

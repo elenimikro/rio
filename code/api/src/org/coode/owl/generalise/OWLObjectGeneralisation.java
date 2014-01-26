@@ -49,6 +49,10 @@ public class OWLObjectGeneralisation extends AbstractOWLObjectGeneralisation imp
         OWLObjectVisitorEx<OWLObject> {
     private final Set<BindingNode> bindingNodes = new HashSet<BindingNode>();
 
+    /** @param bindingNodes
+     *            bindingNodes
+     * @param constraintSystem
+     *            constraintSystem */
     public OWLObjectGeneralisation(final Collection<? extends BindingNode> bindingNodes,
             final ConstraintSystem constraintSystem) {
         super(new AssignmentMapBasedVariableProvider(new AssignmentMap(bindingNodes),
@@ -61,6 +65,7 @@ public class OWLObjectGeneralisation extends AbstractOWLObjectGeneralisation imp
         this.bindingNodes.addAll(bindingNodes);
     }
 
+    /** @return assignment map */
     public AssignmentMap getAssignmentMap() {
         return new AssignmentMap(bindingNodes);
     }

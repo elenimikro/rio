@@ -20,13 +20,21 @@ import org.coode.distance.Distance;
 import org.coode.pair.Pair;
 import org.coode.pair.filter.PairFilter;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
     private final PairFilter<O> filter;
     private final Set<O> objects = new LinkedHashSet<O>();
     private final Distance<O> distance;
     private final static WeakHashMap<Pair<?>, Integer> scores = new WeakHashMap<Pair<?>, Integer>();
 
-    /** @param filter */
+    /** @param filter
+     *            filter
+     * @param objects
+     *            objects
+     * @param distance
+     *            distance */
     private PairFilterBasedComparator(final PairFilter<O> filter,
             final Collection<? extends O> objects, final Distance<O> distance) {
         if (filter == null) {
@@ -77,6 +85,13 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
         return cached;
     }
 
+    /** @param filter
+     *            filter
+     * @param objects
+     *            objects
+     * @param distance
+     *            distance
+     * @return comparator */
     public static <P> PairFilterBasedComparator<P> build(final PairFilter<P> filter,
             final Collection<? extends P> objects, final Distance<P> distance) {
         return new PairFilterBasedComparator<P>(filter, objects, distance);

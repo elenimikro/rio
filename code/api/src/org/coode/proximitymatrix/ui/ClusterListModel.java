@@ -19,11 +19,14 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
-/** @author Luigi Iannone */
+/** @author Luigi Iannone
+ * @param <O>
+ *            type */
 public class ClusterListModel<O> implements ListModel<Collection<? extends O>> {
     private final ListModel<Collection<? extends O>> delegate;
 
-    /** @param clusters */
+    /** @param clusters
+     *            clusters */
     public ClusterListModel(Collection<? extends Collection<? extends O>> clusters) {
         if (clusters == null) {
             throw new NullPointerException("The clusters collection cannot be null");
@@ -55,6 +58,9 @@ public class ClusterListModel<O> implements ListModel<Collection<? extends O>> {
         this.delegate.removeListDataListener(l);
     }
 
+    /** @param clusters
+     *            clusters
+     * @return cluster list model */
     public static <P> ClusterListModel<P> build(
             Collection<? extends Collection<? extends P>> clusters) {
         return new ClusterListModel<P>(clusters);

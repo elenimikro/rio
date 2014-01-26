@@ -74,7 +74,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends
         }
     }
 
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    protected final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
     private final OWLDataFactory dataFactory;
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
     private final OWLOntologyManager ontologyManger;
@@ -93,7 +93,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends
         }
     };
 
-    private void buildAxiomEntityMap(final Collection<? extends OWLOntology> ontos) {
+    protected void buildAxiomEntityMap(final Collection<? extends OWLOntology> ontos) {
         Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         for (OWLOntology ontology : ontos) {
@@ -107,7 +107,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends
         }
     }
 
-    private void buildOntologySignature() {
+    protected void buildOntologySignature() {
         ontologySignature.clear();
         for (OWLOntology ontology : ontologies) {
             ontologySignature.addAll(ontology.getSignature());
@@ -116,6 +116,12 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends
 
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
 
+    /** @param ontologies
+     *            ontologies
+     * @param dataFactory
+     *            dataFactory
+     * @param manager
+     *            manager */
     public StructuralAxiomRelevanceAxiomBasedDistance(
             final Collection<? extends OWLOntology> ontologies,
             final OWLDataFactory dataFactory, final OWLOntologyManager manager) {
@@ -163,7 +169,8 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends
     }
 
     /** @param owlEntity
-     * @return */
+     *            owlEntity
+     * @return axioms */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             RelevancePolicy<OWLEntity> policy = CollectionBasedRelevantPolicy
@@ -216,6 +223,9 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends
         return dataFactory;
     }
 
+    /**
+     * 
+     */
     public void dispose() {
         ontologyManger.removeOntologyChangeListener(listener);
     }

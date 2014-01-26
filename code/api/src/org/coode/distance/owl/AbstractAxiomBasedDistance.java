@@ -16,6 +16,10 @@ import org.coode.distance.Distance;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+/** @author eleni */
 public interface AbstractAxiomBasedDistance extends Distance<OWLEntity> {
-	public Set<OWLAxiom> getAxioms(OWLEntity owlEntity);
+    /** @param owlEntity
+     *            owlEntity
+     * @return axioms */
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity);
 }

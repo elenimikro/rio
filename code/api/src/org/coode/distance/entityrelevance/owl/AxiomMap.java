@@ -25,21 +25,19 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
 public class AxiomMap {
     private final Map<OWLAxiom, Map<OWLEntity, AtomicInteger>> delegate = new HashMap<OWLAxiom, Map<OWLEntity, AtomicInteger>>();
     private final Map<OWLAxiom, AtomicInteger> axiomCountMap = new HashMap<OWLAxiom, AtomicInteger>();
     private final OWLEntityReplacer replacer;
     private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
 
-    // private final OWLOntologyChangeListener listener = new
-    // OWLOntologyChangeListener() {
-    // @Override
-    // public void ontologiesChanged(final List<? extends OWLOntologyChange>
-    // changes)
-    // throws OWLException {
-    // AxiomMap.this.buildMaps(axioms);
-    // }
-    // };
+    /** @param ontologies
+     *            ontologies
+     * @param ontologyManager
+     *            ontologyManager
+     * @param replacer
+     *            replacer */
     public AxiomMap(final Collection<? extends OWLOntology> ontologies,
             final OWLOntologyManager ontologyManager, final OWLEntityReplacer replacer) {
         if (ontologies == null) {
@@ -56,6 +54,10 @@ public class AxiomMap {
         buildMaps(axioms);
     }
 
+    /** @param axioms
+     *            axioms
+     * @param replacer
+     *            replacer */
     public AxiomMap(Set<OWLAxiom> axioms, final OWLEntityReplacer replacer) {
         if (axioms == null) {
             throw new NullPointerException("The set of axioms cannot be null");
@@ -95,6 +97,9 @@ public class AxiomMap {
         }
     }
 
+    /** @param object
+     *            object
+     * @return map */
     public Map<OWLEntity, AtomicInteger> get(final OWLAxiom object) {
         Map<OWLEntity, AtomicInteger> map = delegate.get(object);
         if (map == null) {
@@ -107,6 +112,9 @@ public class AxiomMap {
     int lastElement = -1;
     OWLAxiom lastRequest;
 
+    /** @param object
+     *            object
+     * @return count */
     public int getAxiomCount(final OWLAxiom object) {
         if (object == lastRequest) {
             return lastElement;
@@ -122,10 +130,12 @@ public class AxiomMap {
         return lastElement;
     }
 
+    /** dispose */
     public void dispose() {
         // ontologyManager.removeOntologyChangeListener(listener);
     }
 
+    /** @return axioms */
     public Set<OWLAxiom> getAxioms() {
         return axioms;
     }

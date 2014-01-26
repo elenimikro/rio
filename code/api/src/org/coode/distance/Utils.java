@@ -15,7 +15,13 @@ import java.util.Collection;
 
 import org.semanticweb.owlapi.util.MultiMap;
 
+/** @author eleni */
 public class Utils {
+    /** @param objects
+     *            objects
+     * @param distance
+     *            distance
+     * @return equivalence classes */
     public static <P> MultiMap<P, P> getEquivalenceClasses(
             final Collection<? extends P> objects, final Distance<P> distance) {
         MultiMap<P, P> toReturn = new MultiMap<P, P>();

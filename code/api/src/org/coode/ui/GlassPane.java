@@ -25,53 +25,50 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class GlassPane extends JComponent {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7970489771369242157L;
-	private static final int BAR_WIDTH = 200;
-	private static final int BAR_HEIGHT = 10;
-	private static final Color TEXT_COLOR = new Color(0x333333);
-	private String message = "Agglomerating...";
+    private static final long serialVersionUID = -7970489771369242157L;
+    private static final int BAR_WIDTH = 200;
+    private static final int BAR_HEIGHT = 10;
+    private static final Color TEXT_COLOR = new Color(0x333333);
+    private String message = "Agglomerating...";
 
-	public GlassPane() {
-		this.setBackground(Color.WHITE);
-		this.setFont(new Font("Default", Font.BOLD, 16));
-	}
+    /** default constructor */
+    public GlassPane() {
+        setBackground(Color.WHITE);
+        setFont(new Font("Default", Font.BOLD, 16));
+    }
 
-	public void setMessage(String message) {
-		// computes the damaged area
-		this.message = message;
-		this.repaint();
-	}
+    /** @param message
+     *            message */
+    public void setMessage(String message) {
+        // computes the damaged area
+        this.message = message;
+        this.repaint();
+    }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		// enables anti-aliasing
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		// gets the current clipping area
-		Rectangle clip = g.getClipBounds();
-		// sets a 65% translucent composite
-		AlphaComposite alpha = AlphaComposite.SrcOver.derive(0.65f);
-		Composite composite = g2.getComposite();
-		g2.setComposite(alpha);
-		// fills the background
-		g2.setColor(this.getBackground());
-		g2.fillRect(clip.x, clip.y, clip.width, clip.height);
-		// centers the progress bar on screen
-		FontMetrics metrics = g.getFontMetrics();
-		int x = (this.getWidth() - BAR_WIDTH) / 2;
-		int y = (this.getHeight() - BAR_HEIGHT - metrics.getDescent()) / 2;
-		// draws the text
-		g2.setColor(TEXT_COLOR);
-		g2.drawString(this.message, x, y);
-		g2.setComposite(composite);
-	}
+    @Override
+    protected void paintComponent(Graphics g) {
+        // enables anti-aliasing
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        // gets the current clipping area
+        Rectangle clip = g.getClipBounds();
+        // sets a 65% translucent composite
+        AlphaComposite alpha = AlphaComposite.SrcOver.derive(0.65f);
+        Composite composite = g2.getComposite();
+        g2.setComposite(alpha);
+        // fills the background
+        g2.setColor(getBackground());
+        g2.fillRect(clip.x, clip.y, clip.width, clip.height);
+        // centers the progress bar on screen
+        FontMetrics metrics = g.getFontMetrics();
+        int x = (getWidth() - BAR_WIDTH) / 2;
+        int y = (getHeight() - BAR_HEIGHT - metrics.getDescent()) / 2;
+        // draws the text
+        g2.setColor(TEXT_COLOR);
+        g2.drawString(message, x, y);
+        g2.setComposite(composite);
+    }
 }

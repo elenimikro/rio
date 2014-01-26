@@ -20,9 +20,14 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+/** @author eleni */
 public class AssignmentMapBasedVariableProvider extends VariableProvider {
-    private final AssignmentMap assignmentMap;
+    protected final AssignmentMap assignmentMap;
 
+    /** @param assignmentMap
+     *            assignmentMap
+     * @param constraintSystem
+     *            constraintSystem */
     public AssignmentMapBasedVariableProvider(final AssignmentMap assignmentMap,
             final ConstraintSystem constraintSystem) {
         super(new AssignmentMapBasedOWLEntityProvider(assignmentMap));

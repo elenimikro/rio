@@ -17,181 +17,116 @@ import java.util.Set;
 
 import org.coode.proximitymatrix.ProximityMatrix;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public class SimpleCluster<O> implements Cluster<O> {
-	private final Set<O> delegate = new HashSet<O>();
-	private final ProximityMatrix<O> proximityMatrix;
+    private final Set<O> delegate = new HashSet<O>();
+    private final ProximityMatrix<O> proximityMatrix;
 
-	public SimpleCluster(Collection<? extends O> members,
-			ProximityMatrix<O> proximityMatrix) {
-		if (members == null) {
-			throw new NullPointerException("The members' collection cannot be null");
-		}
-		if (proximityMatrix == null) {
-			throw new NullPointerException("The proximity matrix cannot be null");
-		}
-		if (!proximityMatrix.getObjects().containsAll(members)) {
-			throw new IllegalArgumentException(
-					"The proximity matrix does not contain the necessary information about all the cluster members");
-		}
-		this.proximityMatrix = proximityMatrix;
-		this.delegate.addAll(members);
-	}
+    /** @param members
+     *            members
+     * @param proximityMatrix
+     *            proximityMatrix */
+    public SimpleCluster(Collection<? extends O> members,
+            ProximityMatrix<O> proximityMatrix) {
+        if (members == null) {
+            throw new NullPointerException("The members' collection cannot be null");
+        }
+        if (proximityMatrix == null) {
+            throw new NullPointerException("The proximity matrix cannot be null");
+        }
+        if (!proximityMatrix.getObjects().containsAll(members)) {
+            throw new IllegalArgumentException(
+                    "The proximity matrix does not contain the necessary information about all the cluster members");
+        }
+        this.proximityMatrix = proximityMatrix;
+        this.delegate.addAll(members);
+    }
 
-	/**
-	 * @param e
-	 * @return
-	 * @see java.util.Set#add(java.lang.Object)
-	 */
-	@Override
+    @Override
     public boolean add(O e) {
-		return this.delegate.add(e);
-	}
+        return this.delegate.add(e);
+    }
 
-	/**
-	 * @param c
-	 * @return
-	 * @see java.util.Set#addAll(java.util.Collection)
-	 */
-	@Override
+    @Override
     public boolean addAll(Collection<? extends O> c) {
-		return this.delegate.addAll(c);
-	}
+        return this.delegate.addAll(c);
+    }
 
-	/**
-	 * 
-	 * @see java.util.Set#clear()
-	 */
-	@Override
+    @Override
     public void clear() {
-		this.delegate.clear();
-	}
+        this.delegate.clear();
+    }
 
-	/**
-	 * @param o
-	 * @return
-	 * @see java.util.Set#contains(java.lang.Object)
-	 */
-	@Override
+    @Override
     public boolean contains(Object o) {
-		return this.delegate.contains(o);
-	}
+        return this.delegate.contains(o);
+    }
 
-	/**
-	 * @param c
-	 * @return
-	 * @see java.util.Set#containsAll(java.util.Collection)
-	 */
-	@Override
+    @Override
     public boolean containsAll(Collection<?> c) {
-		return this.delegate.containsAll(c);
-	}
+        return this.delegate.containsAll(c);
+    }
 
-	/**
-	 * @param o
-	 * @return
-	 * @see java.util.Set#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object o) {
-		return this.delegate.equals(o);
-	}
+    @Override
+    public boolean equals(Object o) {
+        return this.delegate.equals(o);
+    }
 
-	/**
-	 * @return
-	 * @see java.util.Set#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return this.delegate.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return this.delegate.hashCode();
+    }
 
-	/**
-	 * @return
-	 * @see java.util.Set#isEmpty()
-	 */
-	@Override
+    @Override
     public boolean isEmpty() {
-		return this.delegate.isEmpty();
-	}
+        return this.delegate.isEmpty();
+    }
 
-	/**
-	 * @return
-	 * @see java.util.Set#iterator()
-	 */
-	@Override
+    @Override
     public Iterator<O> iterator() {
-		return this.delegate.iterator();
-	}
+        return this.delegate.iterator();
+    }
 
-	/**
-	 * @param o
-	 * @return
-	 * @see java.util.Set#remove(java.lang.Object)
-	 */
-	@Override
+    @Override
     public boolean remove(Object o) {
-		return this.delegate.remove(o);
-	}
+        return this.delegate.remove(o);
+    }
 
-	/**
-	 * @param c
-	 * @return
-	 * @see java.util.Set#removeAll(java.util.Collection)
-	 */
-	@Override
+    @Override
     public boolean removeAll(Collection<?> c) {
-		return this.delegate.removeAll(c);
-	}
+        return this.delegate.removeAll(c);
+    }
 
-	/**
-	 * @param c
-	 * @return
-	 * @see java.util.Set#retainAll(java.util.Collection)
-	 */
-	@Override
+    @Override
     public boolean retainAll(Collection<?> c) {
-		return this.delegate.retainAll(c);
-	}
+        return this.delegate.retainAll(c);
+    }
 
-	/**
-	 * @return
-	 * @see java.util.Set#size()
-	 */
-	@Override
+    @Override
     public int size() {
-		return this.delegate.size();
-	}
+        return this.delegate.size();
+    }
 
-	/**
-	 * @return
-	 * @see java.util.Set#toArray()
-	 */
-	@Override
+    @Override
     public Object[] toArray() {
-		return this.delegate.toArray();
-	}
+        return this.delegate.toArray();
+    }
 
-	/**
-	 * @param <T>
-	 * @param a
-	 * @return
-	 * @see java.util.Set#toArray(T[])
-	 */
-	@Override
+    @Override
     public <T> T[] toArray(T[] a) {
-		return this.delegate.toArray(a);
-	}
+        return this.delegate.toArray(a);
+    }
 
-	/**
-	 * @return the proximityMatrix
-	 */
-	@Override
+    /** @return the proximityMatrix */
+    @Override
     public ProximityMatrix<O> getProximityMatrix() {
-		return this.proximityMatrix;
-	}
+        return this.proximityMatrix;
+    }
 
-	@Override
-	public String toString() {
-		return this.delegate.toString();
-	}
+    @Override
+    public String toString() {
+        return this.delegate.toString();
+    }
 }

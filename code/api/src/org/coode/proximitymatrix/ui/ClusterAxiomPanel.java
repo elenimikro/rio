@@ -40,7 +40,8 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /** @author Luigi Iannone
- * @param <O> */
+ * @param <O>
+ *            type */
 public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
     private static final long serialVersionUID = -8706696433509939648L;
     private final JList<OWLAxiomListItem> axiomList = new JList<OWLAxiomListItem>();
@@ -132,7 +133,9 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
     /** @param cluster
      *            the cluster to set
      * @param ontologies
-     * @param generalisation */
+     *            ontologies
+     * @param generalisation
+     *            generalisation */
     public void setCluster(Cluster<O> cluster,
             Collection<? extends OWLOntology> ontologies,
             OWLObjectGeneralisation generalisation) {
@@ -141,6 +144,7 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
     }
 
     /** @param renderer
+     *            renderer
      * @return cluster axiom panel */
     public static <P extends OWLEntity> ClusterAxiomPanel<P> build(
             final OWLObjectRenderer renderer) {

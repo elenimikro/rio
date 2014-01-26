@@ -33,10 +33,9 @@ import org.semanticweb.owlapi.model.RemoveOntologyAnnotation;
 import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.util.MultiMap;
 
+/** @author eleni */
 public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomProvider {
     final OWLOntologyManager ontologyManager;
-    // private final Map<OWLAxiom, Set<OWLOntology>> axiomOntologyMap = new
-    // HashMap<OWLAxiom, Set<OWLOntology>>();
     final MultiMap<OWLEntity, OWLAxiom> entityAxiomMap = new MultiMap<OWLEntity, OWLAxiom>();
     final Set<OWLAxiom> axiomsDelegate = new HashSet<OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
@@ -46,13 +45,11 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
             for (OWLOntologyChange change : changes) {
                 change.accept(new OWLOntologyChangeVisitor() {
                     @Override
-
                     public void visit(final RemoveOntologyAnnotation c) {
                         // Do Nothing
                     }
 
                     @Override
-
                     public void visit(final AddOntologyAnnotation c) {
                         // Do Nothing
                     }
@@ -78,7 +75,6 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                     }
 
                     @Override
-
                     public void visit(final SetOntologyID c) {
                         // Do Nothing
                     }
@@ -99,15 +95,6 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                         if (!found) {
                             axiomsDelegate.remove(axiom);
                         }
-                        // Set<OWLOntology> set =
-                        // OWLOntologyManagerBasedOWLAxiomProvider.this.axiomOntologyMap.get(axiom);
-                        // if (set != null) {
-                        // set.remove(change.getOntology());
-                        // }
-                        // if (set.isEmpty()) {
-                        // OWLOntologyManagerBasedOWLAxiomProvider.this.axiomOntologyMap.remove(axiom);
-                        // OWLOntologyManagerBasedOWLAxiomProvider.this.axiomsDelegate.remove(axiom);
-                        // }
                         Set<OWLEntity> signature = axiom.getSignature();
                         for (OWLEntity entity : signature) {
                             entityAxiomMap.remove(entity, axiom);
@@ -120,15 +107,6 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                         // no need to check references, just add to the delegate
                         // set
                         axiomsDelegate.add(axiom);
-                        // Set<OWLOntology> set =
-                        // OWLOntologyManagerBasedOWLAxiomProvider.this.axiomOntologyMap.get(axiom);
-                        // if (set == null) {
-                        // set = new HashSet<OWLOntology>();
-                        // OWLOntologyManagerBasedOWLAxiomProvider.this.axiomOntologyMap.put(axiom,
-                        // set);
-                        // OWLOntologyManagerBasedOWLAxiomProvider.this.axiomsDelegate.add(axiom);
-                        // }
-                        // set.add(change.getOntology());
                         Set<OWLEntity> signature = axiom.getSignature();
                         for (OWLEntity entity : signature) {
                             entityAxiomMap.put(entity, axiom);
@@ -140,6 +118,8 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
         }
     };
 
+    /** @param ontologyManager
+     *            ontologyManager */
     public OWLOntologyManagerBasedOWLAxiomProvider(
             final OWLOntologyManager ontologyManager) {
         if (ontologyManager == null) {
@@ -155,23 +135,16 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
         for (OWLOntology ontology : ontologies) {
             Set<OWLAxiom> axioms = ontology.getAxioms();
             for (OWLAxiom axiom : axioms) {
-                // Set<OWLOntology> set = this.axiomOntologyMap.get(axiom);
-                // if (set == null) {
-                // set = new HashSet<OWLOntology>();
-                // this.axiomOntologyMap.put(axiom, set);
                 axiomsDelegate.add(axiom);
-                // }
-                // set.add(ontology);
                 Set<OWLEntity> signature = axiom.getSignature();
                 for (OWLEntity entity : signature) {
                     entityAxiomMap.put(entity, axiom);
                 }
             }
         }
-        // this.axiomsDelegate.clear();
-        // this.axiomsDelegate.addAll(this.axiomOntologyMap.keySet());
     }
 
+    /** @return mnager */
     public OWLOntologyManager getOntologyManager() {
         return ontologyManager;
     }
@@ -181,120 +154,84 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
         return new HashSet<OWLEntity>(entityAxiomMap.keySet());
     }
 
+    /**
+     * 
+     */
     public void dispose() {
         getOntologyManager().removeOntologyChangeListener(listener);
     }
 
     // Delegate methods
-    /** @param e
-     * @return
-     * @see java.util.Set#add(java.lang.Object) */
     @Override
     public boolean add(final OWLAxiom e) {
         return axiomsDelegate.add(e);
     }
 
-    /** @param c
-     * @return
-     * @see java.util.Set#addAll(java.util.Collection) */
     @Override
     public boolean addAll(final Collection<? extends OWLAxiom> c) {
         return axiomsDelegate.addAll(c);
     }
 
-    /** @see java.util.Set#clear() */
     @Override
     public void clear() {
         axiomsDelegate.clear();
     }
 
-    /** @param o
-     * @return
-     * @see java.util.Set#contains(java.lang.Object) */
     @Override
     public boolean contains(final Object o) {
         return axiomsDelegate.contains(o);
     }
 
-    /** @param c
-     * @return
-     * @see java.util.Set#containsAll(java.util.Collection) */
     @Override
     public boolean containsAll(final Collection<?> c) {
         return axiomsDelegate.containsAll(c);
     }
 
-    /** @param o
-     * @return
-     * @see java.util.Set#equals(java.lang.Object) */
     @Override
     public boolean equals(final Object o) {
         return axiomsDelegate.equals(o);
     }
 
-    /** @return
-     * @see java.util.Set#hashCode() */
     @Override
     public int hashCode() {
         return axiomsDelegate.hashCode();
     }
 
-    /** @return
-     * @see java.util.Set#isEmpty() */
     @Override
     public boolean isEmpty() {
         return axiomsDelegate.isEmpty();
     }
 
-    /** @return
-     * @see java.util.Set#iterator() */
     @Override
     public Iterator<OWLAxiom> iterator() {
         return axiomsDelegate.iterator();
     }
 
-    /** @param o
-     * @return
-     * @see java.util.Set#remove(java.lang.Object) */
     @Override
     public boolean remove(final Object o) {
         return axiomsDelegate.remove(o);
     }
 
-    /** @param c
-     * @return
-     * @see java.util.Set#removeAll(java.util.Collection) */
     @Override
     public boolean removeAll(final Collection<?> c) {
         return axiomsDelegate.removeAll(c);
     }
 
-    /** @param c
-     * @return
-     * @see java.util.Set#retainAll(java.util.Collection) */
     @Override
     public boolean retainAll(final Collection<?> c) {
         return axiomsDelegate.retainAll(c);
     }
 
-    /** @return
-     * @see java.util.Set#size() */
     @Override
     public int size() {
         return axiomsDelegate.size();
     }
 
-    /** @return
-     * @see java.util.Set#toArray() */
     @Override
     public Object[] toArray() {
         return axiomsDelegate.toArray();
     }
 
-    /** @param <T>
-     * @param a
-     * @return
-     * @see java.util.Set#toArray(T[]) */
     @Override
     public <T> T[] toArray(final T[] a) {
         return axiomsDelegate.toArray(a);

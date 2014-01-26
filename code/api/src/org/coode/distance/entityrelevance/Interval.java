@@ -10,8 +10,11 @@
  ******************************************************************************/
 package org.coode.distance.entityrelevance;
 
+/** @author eleni */
 public interface Interval {
+    /** @return lower bound */
     double getLowerBound();
 
+    /** @return upper bound */
     double getUpperBound();
 }

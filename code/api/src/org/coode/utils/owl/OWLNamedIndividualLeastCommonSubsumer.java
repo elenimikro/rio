@@ -29,7 +29,9 @@ public class OWLNamedIndividualLeastCommonSubsumer extends
     private final OWLClassLeastCommonSubsumer delegate;
 
     /** @param axiomProvider
-     * @param dataFactory */
+     *            axiomProvider
+     * @param dataFactory
+     *            dataFactory */
     public OWLNamedIndividualLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
             OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory.getOWLThing());

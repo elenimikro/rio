@@ -13,35 +13,37 @@
  */
 package org.coode.proximitymatrix;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public final class LanceWilliamsFormula {
-	public static final LanceWilliamsFormula SINGLE_LINK = new LanceWilliamsFormula(.5,
-			.5, 0, -0.5);
-	public static final LanceWilliamsFormula COMPLETE_LINK = new LanceWilliamsFormula(.5,
-			.5, 0, 0.5);
-	private final double alphaA;
-	private final double alphaB;
-	private final double beta;
-	private final double gamma;
+    private final double alphaA;
+    private final double alphaB;
+    private final double beta;
+    private final double gamma;
 
-	/**
-	 * @param alphaA
-	 * @param alphaB
-	 * @param beta
-	 * @param gamma
-	 */
-	public LanceWilliamsFormula(double alphaA, double alphaB, double beta, double gamma) {
-		this.alphaA = alphaA;
-		this.alphaB = alphaB;
-		this.beta = beta;
-		this.gamma = gamma;
-	}
+    /** @param alphaA
+     *            alphaA
+     * @param alphaB
+     *            alphaB
+     * @param beta
+     *            beta
+     * @param gamma
+     *            gamma */
+    public LanceWilliamsFormula(double alphaA, double alphaB, double beta, double gamma) {
+        this.alphaA = alphaA;
+        this.alphaB = alphaB;
+        this.beta = beta;
+        this.gamma = gamma;
+    }
 
-	public double distance(double distanceAQ, double distanceBQ, double distanceAB) {
-		return this.alphaA * distanceAQ + this.alphaB * distanceBQ + this.beta
-				* distanceAB + this.gamma * Math.abs(distanceAQ - distanceBQ);
-	}
+    /** @param distanceAQ
+     *            distanceAQ
+     * @param distanceBQ
+     *            distanceBQ
+     * @param distanceAB
+     *            distanceAB
+     * @return distance */
+    public double distance(double distanceAQ, double distanceBQ, double distanceAB) {
+        return alphaA * distanceAQ + alphaB * distanceBQ + beta * distanceAB + gamma
+                * Math.abs(distanceAQ - distanceBQ);
+    }
 }

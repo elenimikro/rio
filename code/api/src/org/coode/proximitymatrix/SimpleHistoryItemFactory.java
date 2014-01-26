@@ -14,9 +14,12 @@ import java.util.Collection;
 
 import org.coode.pair.Pair;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public class SimpleHistoryItemFactory<O> implements HistoryItemFactory<O> {
-	@Override
+    @Override
     public HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters) {
-		return new HistoryItem<O>(pair, clusters);
-	}
+        return new HistoryItem<O>(pair, clusters);
+    }
 }

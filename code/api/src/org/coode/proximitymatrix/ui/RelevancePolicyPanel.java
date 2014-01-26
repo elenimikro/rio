@@ -35,14 +35,13 @@ import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author Luigi Iannone */
 public abstract class RelevancePolicyPanel extends JPanel {
-    /**
-	 *
-	 */
     private static final long serialVersionUID = 8159023598180517334L;
     private final JList<RankingSlot<OWLEntity>> rankingList = new JList<RankingSlot<OWLEntity>>();
     protected final RelevancePolicy<OWLEntity> policy;
     private final JLabel summaryLabel = new JLabel();
 
+    /** @param policy
+     *            policy */
     public RelevancePolicyPanel(RelevancePolicy<OWLEntity> policy) {
         if (policy == null) {
             throw new NullPointerException("The policy cannot be null");
@@ -78,6 +77,8 @@ public abstract class RelevancePolicyPanel extends JPanel {
 
     protected abstract Object render(Set<?> members);
 
+    /** @param ranking
+     *            ranking */
     public <P> void reset(Ranking<OWLEntity> ranking) {
         List<? extends RankingSlot<OWLEntity>> list = ranking.getSortedRanking();
         DefaultListModel<RankingSlot<OWLEntity>> model = new DefaultListModel<RankingSlot<OWLEntity>>();

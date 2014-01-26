@@ -9,19 +9,34 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
+/** @author eleni
+ * @param <C>
+ *            type
+ * @param <P>
+ *            type */
 public interface RegularitiesDecompositionModel<C extends Set<P>, P> {
+    /** @param cluster
+     *            cluster
+     * @param map
+     *            map */
+    public abstract void put(C cluster, MultiMap<OWLAxiom, OWLAxiomInstantiation> map);
 
-	public abstract void put(C cluster,
-			MultiMap<OWLAxiom, OWLAxiomInstantiation> map);
+    /** @return cluster list */
+    public abstract List<C> getClusterList();
 
-	public abstract List<C> getClusterList();
+    /** @param c
+     *            c
+     * @return map */
+    public abstract MultiMap<OWLAxiom, OWLAxiomInstantiation> get(C c);
 
-	public abstract MultiMap<OWLAxiom, OWLAxiomInstantiation> get(C c);
+    /** @return ontologies */
+    public abstract Set<OWLOntology> getOntologies();
 
-	public abstract Set<OWLOntology> getOntologies();
+    /** @param c
+     *            c
+     * @return variable */
+    public abstract Variable<?> getVariableRepresentative(C c);
 
-	public abstract Variable<?> getVariableRepresentative(C c);
-
-	public MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap();
-
+    /** @return generalisation map */
+    public MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap();
 }

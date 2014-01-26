@@ -21,31 +21,31 @@ import org.coode.metrics.AbstractRanking;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public class OWLEntityPopularityRanking extends AbstractRanking<OWLEntity> {
-	/**
-	 * @param metric
-	 * @param objects
-	 */
-	public OWLEntityPopularityRanking(Set<OWLEntity> objects,
-			Collection<OWLOntology> ontologies) {
-		super(new OWLEntityPopularity(ontologies), objects, OWLEntity.class);
-	}
+    /** @param ontologies
+     *            ontologies
+     * @param objects
+     *            objects */
+    public OWLEntityPopularityRanking(Set<OWLEntity> objects,
+            Collection<OWLOntology> ontologies) {
+        super(new OWLEntityPopularity(ontologies), objects, OWLEntity.class);
+    }
 
-	@Override
-	public boolean isAverageable() {
-		return true;
-	}
+    @Override
+    public boolean isAverageable() {
+        return true;
+    }
 
-	public static OWLEntityPopularityRanking buildRanking(
-			Collection<OWLOntology> ontologies) {
-		Set<OWLEntity> entities = new HashSet<OWLEntity>();
-		for (OWLOntology owlOntology : ontologies) {
-			entities.addAll(owlOntology.getSignature());
-		}
-		return new OWLEntityPopularityRanking(entities, ontologies);
-	}
+    /** @param ontologies
+     *            ontologies
+     * @return popularity ranking */
+    public static OWLEntityPopularityRanking buildRanking(
+            Collection<OWLOntology> ontologies) {
+        Set<OWLEntity> entities = new HashSet<OWLEntity>();
+        for (OWLOntology owlOntology : ontologies) {
+            entities.addAll(owlOntology.getSignature());
+        }
+        return new OWLEntityPopularityRanking(entities, ontologies);
+    }
 }

@@ -12,7 +12,7 @@ package org.coode.owl.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** @author eleni */
 public abstract class AbstractOWLAxiomProvider implements OWLAxiomProvider {
 	private final List<OWLAxiomsChangedListener> listeners = new ArrayList<OWLAxiomsChangedListener>();
 

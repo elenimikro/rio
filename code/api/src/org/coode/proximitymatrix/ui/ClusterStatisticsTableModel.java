@@ -37,6 +37,7 @@ public class ClusterStatisticsTableModel implements TableModel {
     private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
     private final Cluster<?>[] clusters;
     private final ClusterStatistics<?>[] statistics;
+    /** size comparator */
     public final static Comparator<Cluster<?>> SIZE_COMPARATOR = Collections
             .reverseOrder(new Comparator<Cluster<?>>() {
                 @Override
@@ -49,10 +50,16 @@ public class ClusterStatisticsTableModel implements TableModel {
     private static final String[] COLUMN_NAMES = new String[] { "Cluster",
             "Avg Distance", "Min Distance", "Max Distance" };
 
+    /** @param clusters
+     *            clusters */
     public ClusterStatisticsTableModel(final Collection<? extends Cluster<?>> clusters) {
         this(clusters, SIZE_COMPARATOR);
     }
 
+    /** @param clusters
+     *            clusters
+     * @param comparator
+     *            comparator */
     public ClusterStatisticsTableModel(final Collection<? extends Cluster<?>> clusters,
             final Comparator<Cluster<?>> comparator) {
         if (clusters == null) {
@@ -69,71 +76,14 @@ public class ClusterStatisticsTableModel implements TableModel {
             Cluster<?> cluster = this.clusters[i];
             statistics[i] = ClusterStatistics.buildStatistics(cluster);
         }
-        // this.delegate = new DefaultTableModel(clusters.size() + 1, 4);
-        // this.delegate.setColumnIdentifiers(new String[] { "Cluster",
-        // "Avg Distance",
-        // "Min Distance", "Max Distance" });
-        // int i = 0;
-        // double count = 0;
-        // for (Cluster<?> cluster : sortedSet) {
-        // this.fillRow(i, cluster);
-        // i++;
-        // count += cluster.size();
-        // }
-        // this.delegate.setValueAt("TOTAL", i, 0);
-        // double sumInternal = 0;
-        // double minInternal = Double.MAX_VALUE;
-        // double maxInternal = 0;
-        // for (int j = 0; j < i; j++) {
-        // minInternal = minInternal <=
-        // Double.parseDouble(this.delegate.getValueAt(j, 2).toString()) ?
-        // minInternal
-        // : Double.parseDouble(this.delegate.getValueAt(j, 2).toString());
-        // maxInternal = maxInternal >=
-        // Double.parseDouble(this.delegate.getValueAt(j, 3).toString()) ?
-        // maxInternal
-        // : Double.parseDouble(this.delegate.getValueAt(j, 3).toString());
-        // sumInternal += Double.parseDouble(this.delegate.getValueAt(j,
-        // 1).toString());
-        // }
-        // this.delegate.setValueAt(
-        // String.format("TOTAL %d  Avg size %s", clusters.size(), count /
-        // clusters.size()),
-        // i,
-        // 0);
-        // this.delegate.setValueAt(new BigDecimal(sumInternal / i,
-        // MATH_CONTEXT).doubleValue(), i, 1);
-        // this.delegate.setValueAt(new BigDecimal(minInternal,
-        // MATH_CONTEXT).doubleValue(), i, 2);
-        // this.delegate.setValueAt(new BigDecimal(maxInternal,
-        // MATH_CONTEXT).doubleValue(), i, 3);
     }
 
-    // private void fillRow(int i, Cluster<?> cluster) {
-    // ClusterStatistics<?> statistics =
-    // ClusterStatistics.buildStatistics(cluster);
-    // this.delegate.setValueAt(cluster, i, 0);
-    // this.delegate.setValueAt(new
-    // BigDecimal(statistics.getAverageInternalDistance(),
-    // MATH_CONTEXT).doubleValue(), i, 1);
-    // this.delegate.setValueAt(
-    // new BigDecimal(statistics.getMinInternalDistance(),
-    // MATH_CONTEXT).doubleValue(),
-    // i,
-    // 2);
-    // this.delegate.setValueAt(
-    // new BigDecimal(statistics.getMaxInternalDistance(),
-    // MATH_CONTEXT).doubleValue(),
-    // i,
-    // 3);
-    // }
     @Override
     public void addTableModelListener(final TableModelListener l) {
         if (l != null) {
             listeners.add(l);
         }
     }
-
 
     @Override
     public Class<?> getColumnClass(final int columnIndex) {
@@ -206,7 +156,6 @@ public class ClusterStatisticsTableModel implements TableModel {
         return clusters.length + 1;
     }
 
-
     @Override
     public boolean isCellEditable(final int rowIndex, final int columnIndex) {
         return false;
@@ -216,7 +165,6 @@ public class ClusterStatisticsTableModel implements TableModel {
     public void removeTableModelListener(final TableModelListener l) {
         listeners.remove(l);
     }
-
 
     @Override
     public void

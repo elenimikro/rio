@@ -15,10 +15,16 @@ import java.util.Set;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+/** @author eleni */
 public interface OWLAxiomProvider extends Set<OWLAxiom> {
-	public void addOWLAxiomsChangedListener(OWLAxiomsChangedListener l);
+    /** @param l
+     *            l */
+    public void addOWLAxiomsChangedListener(OWLAxiomsChangedListener l);
 
-	public void removeOWLAxiomsChangedListener(OWLAxiomsChangedListener l);
+    /** @param l
+     *            l */
+    public void removeOWLAxiomsChangedListener(OWLAxiomsChangedListener l);
 
-	public Set<OWLEntity> getSignature();
+    /** @return signature */
+    public Set<OWLEntity> getSignature();
 }

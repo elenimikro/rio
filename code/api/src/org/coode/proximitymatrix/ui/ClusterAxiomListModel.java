@@ -40,8 +40,11 @@ public class ClusterAxiomListModel implements ListModel<OWLAxiomListItem> {
     private final int axiomCount;
 
     /** @param cluster
+     *            cluster
      * @param ontologies
-     * @param generalisation */
+     *            ontologies
+     * @param generalisation
+     *            generalisation */
     public ClusterAxiomListModel(Cluster<? extends OWLEntity> cluster,
             Collection<? extends OWLOntology> ontologies,
             OWLObjectGeneralisation generalisation) {
@@ -106,15 +109,11 @@ public class ClusterAxiomListModel implements ListModel<OWLAxiomListItem> {
         return getDelegate().getElementAt(index);
     }
 
-    /** @param l
-     * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener) */
     @Override
     public void addListDataListener(ListDataListener l) {
         getDelegate().addListDataListener(l);
     }
 
-    /** @param l
-     * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener) */
     @Override
     public void removeListDataListener(ListDataListener l) {
         getDelegate().removeListDataListener(l);

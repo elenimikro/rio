@@ -13,32 +13,29 @@
  */
 package org.coode.pair.filter;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone
+ * @param <O>
+ *            type */
 public class OrPairFilter<O> extends BooleanExpressionFilter<O> {
-	/**
-	 * @param filters
-	 */
-	public OrPairFilter(PairFilter<O>... filters) {
-		super(filters);
-	}
+    /** @param filters
+     *            filters */
+    public OrPairFilter(PairFilter<O>... filters) {
+        super(filters);
+    }
 
-	/**
-	 * @see org.coode.pair.filter.PairFilter#accept(java.lang.Object,
-	 *      java.lang.Object)
-	 */
-	@Override
+    @Override
     public boolean accept(O first, O second) {
-		boolean toReturn = false;
-		for (PairFilter<O> filter : this.getFilters()) {
-			toReturn = toReturn || filter.accept(first, second);
-		}
-		return toReturn;
-	}
+        boolean toReturn = false;
+        for (PairFilter<O> filter : getFilters()) {
+            toReturn = toReturn || filter.accept(first, second);
+        }
+        return toReturn;
+    }
 
-	public static <P> OrPairFilter<P> build(PairFilter<P>... filters) {
-		return new OrPairFilter<P>(filters);
-	}
+    /** @param filters
+     *            filters
+     * @return filter */
+    public static <P> OrPairFilter<P> build(PairFilter<P>... filters) {
+        return new OrPairFilter<P>(filters);
+    }
 }

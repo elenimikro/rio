@@ -32,7 +32,9 @@ import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 /** @author Eleni Mikroyannidi
  * @param <O>
- * @param <R> */
+ *            type
+ * @param <R>
+ *            type */
 public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObject> {
     private final OWLAxiomProvider axiomProvider;
     private final MultiMap<O, R> nodeParentIndex = new MultiMap<O, R>();
@@ -40,7 +42,9 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
     private final Set<OWLEntity> signature = new HashSet<OWLEntity>();
 
     /** @param axiomProvider
-     * @param defaultRoot */
+     *            axiomProvider
+     * @param defaultRoot
+     *            defaultRoot */
     public LeastCommonSubsumer(final OWLAxiomProvider axiomProvider, final R defaultRoot) {
         if (axiomProvider == null) {
             throw new NullPointerException("The axiom provider cannot be null");
@@ -56,6 +60,13 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
 
     protected abstract void rebuild();
 
+    /** @param anObject
+     *            anObject
+     * @param anotherObject
+     *            anotherObject
+     * @param others
+     *            others
+     * @return subsumer */
     public R get(final O anObject, final O anotherObject, final O... others) {
         List<O> list = new ArrayList<O>();
         list.add(anObject);
@@ -66,6 +77,9 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         return this.get(list);
     }
 
+    /** @param objects
+     *            objects
+     * @return subsumer */
     public abstract R get(Collection<? extends O> objects);
 
     /** @return the axiomProvider */
@@ -73,6 +87,9 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         return this.axiomProvider;
     }
 
+    /** @param node
+     *            node
+     * @return parents */
     public Set<R> getParents(final O node) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
@@ -98,6 +115,10 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         return toReturn;
     }
 
+    /** @param node
+     *            node
+     * @param parent
+     *            parent */
     public void addParent(final O node, final R parent) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
@@ -105,6 +126,11 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         this.nodeParentIndex.put(node, parent);
     }
 
+    /** @param node
+     *            node
+     * @param parent
+     *            parent
+     * @return true if parent */
     public boolean isParent(final O node, final R parent) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
@@ -116,6 +142,11 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         return parents != null && parents.contains(parent);
     }
 
+    /** @param node
+     *            node
+     * @param parent
+     *            parent
+     * @return true if ancestor */
     public boolean isAncestor(final O node, final R parent) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
@@ -127,6 +158,9 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         return ancestors != null && ancestors.contains(parent);
     }
 
+    /** @param node
+     *            node
+     * @return ancestors */
     public Set<R> getAncestors(O node) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
@@ -139,6 +173,10 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         return ancestors;
     }
 
+    /** @param parent
+     *            parent
+     * @param c
+     *            c */
     public void removeChildren(R parent, Collection<? extends O> c) {
         Iterator<? extends O> iterator = c.iterator();
         while (iterator.hasNext()) {
@@ -149,6 +187,10 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         }
     }
 
+    /** @param ancestor
+     *            ancestor
+     * @param c
+     *            c */
     public void removeDescendants(final R ancestor, final Collection<? extends O> c) {
         Iterator<? extends O> iterator = c.iterator();
         while (iterator.hasNext()) {
@@ -159,6 +201,10 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         }
     }
 
+    /** @param node
+     *            node
+     * @param parents
+     *            parents */
     public void addAllParents(final O node, final Collection<? extends R> parents) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
@@ -173,6 +219,13 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         return this.defaultRoot;
     }
 
+    /** @param set
+     *            set
+     * @param axiomProvider
+     *            axiomProvider
+     * @param dataFactory
+     *            dataFactory
+     * @return lcs */
     @SuppressWarnings("unchecked")
     public static <T extends OWLObject> LeastCommonSubsumer<T, ?> build(
             final Collection<? extends T> set, final OWLAxiomProvider axiomProvider,

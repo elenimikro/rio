@@ -12,45 +12,51 @@ package org.coode.metrics;
 
 import java.util.Arrays;
 
+/** @author eleni
+ * @param <O>
+ *            type */
 public class RankingSlot<O> {
     private final double value;
     private final O[] toReturn;
-	private final int size;
-	   private int hashCode=0;
+    private final int size;
+    private int hashCode = 0;
 
+    /** @param value
+     *            value
+     * @param members
+     *            members */
     public RankingSlot(double value, O... members) {
-		if (members == null) {
-			throw new NullPointerException("The members collection cannot be null");
-		}
+        if (members == null) {
+            throw new NullPointerException("The members collection cannot be null");
+        }
         if (members.length == 0) {
-			throw new IllegalArgumentException("The members collection cannot be empty");
-		}
-		this.value = value;
-		toReturn=members;
+            throw new IllegalArgumentException("The members collection cannot be empty");
+        }
+        this.value = value;
+        toReturn = members;
         size = toReturn.length;
-	}
+    }
 
-	/**
-	 * @return the members
-	 */
+    /** @return the members */
     public O[] getMembers() {
-		return toReturn;
-	}
+        return toReturn;
+    }
 
-	public int getMembersSize() {
-		return this.size;
-	}
+    /** @return member size */
+    public int getMembersSize() {
+        return this.size;
+    }
 
+    /** @return members hash code */
     public int getMembersHashCode() {
         if (hashCode == 0) {
             hashCode = Arrays.hashCode(toReturn);
         }
         return this.hashCode;
     }
-	/**
-	 * @return the value
-	 */
+
+    /** @return the value */
     public double getValue() {
-		return this.value;
-	}
+        return this.value;
+    }
 }
