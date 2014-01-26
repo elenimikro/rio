@@ -29,6 +29,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 import uk.ac.manchester.cs.chainsaw.JFactChainsawReasoner;
 import uk.ac.manchester.cs.jfact.JFactFactory;
 
+/** @author eleni */
 public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
     private final OWLKnowledgeExplorerReasoner r;
     private final OWLReasoner reasoner;
@@ -39,6 +40,8 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
     private final OWLDataFactory dataFactory;
     OWLClass rootClass = null;
 
+    /** @param reasoner
+     *            reasoner */
     public KnowledgeExplorerChainsawJFactImpl(OWLReasoner reasoner) {
         if (reasoner == null) {
             throw new NullPointerException("OWLKnowledgeExplorerReasoner cannot be null");
@@ -254,6 +257,7 @@ public class KnowledgeExplorerChainsawJFactImpl implements KnowledgeExplorer {
         return signature;
     }
 
+    /** @return classes */
     public Set<OWLClass> getOWLClasses() {
         Set<OWLClass> toReturn = new HashSet<OWLClass>();
         for (OWLEntity e : signature) {

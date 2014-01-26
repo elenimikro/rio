@@ -80,6 +80,12 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
 
     private final WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new WeakIndexCache<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
 
+    /** @param ontology
+     *            ontology
+     * @param replacer
+     *            replacer
+     * @param explorer
+     *            explorer */
     public KnowledgeExplorerAxiomRelevanceAxiomBasedDistance(OWLOntology ontology,
             final OWLEntityReplacer replacer, KnowledgeExplorer explorer) {
         if (replacer == null) {
@@ -105,7 +111,8 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
     }
 
     /** @param owlEntity
-     * @return */
+     *            owlEntity
+     * @return axioms */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             // RelevancePolicyOWLObjectGeneralisation generalReplacer = new
@@ -151,6 +158,7 @@ public class KnowledgeExplorerAxiomRelevanceAxiomBasedDistance extends
         return found;
     }
 
+    /** dispose */
     public void dispose() {
         // ontologyManger.removeOntologyChangeListener(listener);
     }

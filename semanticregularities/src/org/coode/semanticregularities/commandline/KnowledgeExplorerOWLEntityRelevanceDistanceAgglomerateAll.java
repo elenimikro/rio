@@ -50,11 +50,17 @@ import uk.ac.manchester.cs.jfact.JFactReasoner;
  * @author elenimikroyannidi */
 public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll {
     /** @param args
+     *            args
      * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
      * @throws ParserConfigurationException
+     *             ParserConfigurationException
      * @throws OPPLException
+     *             OPPLException
      * @throws TransformerException
-     * @throws TransformerFactoryConfigurationError */
+     *             TransformerException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError */
     public static void main(final String[] args) throws OWLOntologyCreationException,
             OPPLException, ParserConfigurationException,
             TransformerFactoryConfigurationError, TransformerException {
@@ -62,6 +68,18 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll {
         agglomerator.checkArgumentsAndRun(args);
     }
 
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public void checkArgumentsAndRun(final String[] args)
             throws OWLOntologyCreationException, OPPLException,
             ParserConfigurationException, TransformerFactoryConfigurationError,
@@ -77,6 +95,21 @@ public class KnowledgeExplorerOWLEntityRelevanceDistanceAgglomerateAll {
         }
     }
 
+    /** @param outfile
+     *            outfile
+     * @param iri
+     *            iri
+     * @return cluster decomposition model
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public ClusterDecompositionModel<OWLEntity> run(File outfile, IRI iri)
             throws OWLOntologyCreationException, OPPLException,
             ParserConfigurationException, TransformerFactoryConfigurationError,

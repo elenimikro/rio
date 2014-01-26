@@ -1,7 +1,7 @@
 package org.coode.rclustering;
 
 import org.rosuda.JRI.Rengine;
-
+/** @author eleni */
 public class JRITest {
 	public static void main(String[] args) {
 		// new R-engine

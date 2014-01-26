@@ -20,30 +20,27 @@ import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class KnowledgeExplorerTest {
-
     public static void main(String[] args) throws OWLOntologyCreationException {
-		knowledgeExplorerTest();
-	}
+        knowledgeExplorerTest();
+    }
 
-	@Test
-	public static void knowledgeExplorerTest()
- throws OWLOntologyCreationException {
-		File f = new File("similarity/ontologies/amino-acid-original.owl");
-		OWLOntology o = OWLManager.createOWLOntologyManager()
-				.loadOntologyFromOntologyDocument(f);
-		JFactReasoner reasoner = new JFactReasoner(o,
-				new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-		reasoner.precomputeInferences();
-
-		KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(
-				reasoner);
-		assertNotNull(ke.getEntities());
-		ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
-				new OWLKnowledgeExplorationReasonerWrapper(
-						new FaCTPlusPlusReasoner(o, new SimpleConfiguration(),
-								BufferingMode.NON_BUFFERING)));
-		Set<OWLEntity> set = ke.getEntities();
-		assertNotNull(set);
-	}
+    @Test
+    public static void knowledgeExplorerTest() throws OWLOntologyCreationException {
+        File f = new File("similarity/ontologies/amino-acid-original.owl");
+        OWLOntology o = OWLManager.createOWLOntologyManager()
+                .loadOntologyFromOntologyDocument(f);
+        JFactReasoner reasoner = new JFactReasoner(o, new SimpleConfiguration(),
+                BufferingMode.NON_BUFFERING);
+        reasoner.precomputeInferences();
+        KnowledgeExplorer ke = new KnowledgeExplorerMaxFillersFactplusplusImpl(reasoner);
+        assertNotNull(ke.getEntities());
+        ke = new KnowledgeExplorerMaxFillersImpl(reasoner,
+                new OWLKnowledgeExplorationReasonerWrapper(new FaCTPlusPlusReasoner(o,
+                        new SimpleConfiguration(), BufferingMode.NON_BUFFERING)));
+        Set<OWLEntity> set = ke.getEntities();
+        assertNotNull(set);
+    }
 }

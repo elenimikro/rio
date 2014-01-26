@@ -22,7 +22,13 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 
+/** @author eleni */
 public class SemanticClusteringHelper {
+    /** @param o
+     *            o
+     * @return cluster decomposition model
+     * @throws Exception
+     *             Exception */
     public static ClusterDecompositionModel<OWLEntity> getSemanticPopularityClusterModel(
             OWLOntology o) throws Exception {
         OWLOntologyManager m = o.getOWLOntologyManager();

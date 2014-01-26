@@ -48,11 +48,17 @@ import uk.ac.manchester.cs.jfact.JFactReasoner;
  * @author elenimikroyannidi */
 public class KnowledgeExplorerStructuralDifferenceAgglomerateAll {
     /** @param args
+     *            args
      * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
      * @throws ParserConfigurationException
+     *             ParserConfigurationException
      * @throws OPPLException
+     *             OPPLException
      * @throws TransformerException
-     * @throws TransformerFactoryConfigurationError */
+     *             TransformerException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError */
     public static void main(final String[] args) throws OWLOntologyCreationException,
             OPPLException, ParserConfigurationException,
             TransformerFactoryConfigurationError, TransformerException {
@@ -60,12 +66,27 @@ public class KnowledgeExplorerStructuralDifferenceAgglomerateAll {
         agglomerator.checkArgumentsAndRun(args);
     }
 
+    /** @param manager
+     *            manager
+     * @return distance */
     public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
         final Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
                 manager.getOntologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
 
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public void checkArgumentsAndRun(final String[] args)
             throws OWLOntologyCreationException, OPPLException,
             ParserConfigurationException, TransformerFactoryConfigurationError,
@@ -81,6 +102,21 @@ public class KnowledgeExplorerStructuralDifferenceAgglomerateAll {
         }
     }
 
+    /** @param outfile
+     *            outfile
+     * @param ontologyIri
+     *            ontologyIri
+     * @return cluster decomposition model
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException
+     * @throws OPPLException
+     *             OPPLException
+     * @throws ParserConfigurationException
+     *             ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError
+     *             TransformerFactoryConfigurationError
+     * @throws TransformerException
+     *             TransformerException */
     public ClusterDecompositionModel<OWLEntity> run(File outfile, IRI ontologyIri)
             throws OWLOntologyCreationException, OPPLException,
             ParserConfigurationException, TransformerFactoryConfigurationError,

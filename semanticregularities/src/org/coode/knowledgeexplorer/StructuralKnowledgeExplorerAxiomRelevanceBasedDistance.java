@@ -97,6 +97,10 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
 
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
 
+    /** @param ontology
+     *            ontology
+     * @param knowledgeExplorer
+     *            knowledgeExplorer */
     public StructuralKnowledgeExplorerAxiomRelevanceBasedDistance(
             final OWLOntology ontology, final KnowledgeExplorer knowledgeExplorer) {
         if (ontology == null) {
@@ -136,7 +140,8 @@ public class StructuralKnowledgeExplorerAxiomRelevanceBasedDistance extends
     }
 
     /** @param owlEntity
-     * @return */
+     *            owlEntity
+     * @return axioms */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             RelevancePolicy<OWLEntity> policy = CollectionBasedRelevantPolicy

@@ -26,84 +26,82 @@ import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorer
 import org.semanticweb.owlapi.reasoner.knowledgeexploration.OWLKnowledgeExplorerReasoner.RootNode;
 import org.semanticweb.owlapi.util.MultiMap;
 
-public class ChainsawKnowledgeExplorerMaxFillersImpl implements
-		KnowledgeExplorer {
+/** @author eleni */
+public class ChainsawKnowledgeExplorerMaxFillersImpl implements KnowledgeExplorer {
+    private final OWLKnowledgeExplorerReasoner r;
+    private final OWLReasoner reasoner;
+    private final OWLOntology o;
+    private final OWLOntologyManager manager;
+    private final Set<OWLEntity> signature = new HashSet<OWLEntity>();
+    private final MultiMap<OWLEntity, OWLAxiom> axiomMap = new MultiMap<OWLEntity, OWLAxiom>();
+    private final OWLDataFactory dataFactory;
 
-	private final OWLKnowledgeExplorerReasoner r;
-	private final OWLReasoner reasoner;
-	private final OWLOntology o;
-	private final OWLOntologyManager manager;
-	private final Set<OWLEntity> signature = new HashSet<OWLEntity>();
-	private final MultiMap<OWLEntity, OWLAxiom> axiomMap = new MultiMap<OWLEntity, OWLAxiom>();
-	private final OWLDataFactory dataFactory;
+    /** @param reasoner
+     *            reasoner
+     * @param r
+     *            r */
+    public ChainsawKnowledgeExplorerMaxFillersImpl(OWLReasoner reasoner,
+            OWLKnowledgeExplorerReasoner r) {
+        if (reasoner == null) {
+            throw new NullPointerException("OWLKnowledgeExplorerReasoner cannot be null");
+        }
+        o = reasoner.getRootOntology();
+        this.reasoner = reasoner;
+        this.r = r;
+        this.r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
+        manager = o.getOWLOntologyManager();
+        dataFactory = manager.getOWLDataFactory();
+        buildAxiomMap();
+    }
 
-	public ChainsawKnowledgeExplorerMaxFillersImpl(OWLReasoner reasoner,
-			OWLKnowledgeExplorerReasoner r) {
-		if (reasoner == null) {
-			throw new NullPointerException(
-					"OWLKnowledgeExplorerReasoner cannot be null");
-		}
-		o = reasoner.getRootOntology();
-		this.reasoner = reasoner;
-		this.r = r;
-		this.r.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-		manager = o.getOWLOntologyManager();
-		dataFactory = manager.getOWLDataFactory();
-		buildAxiomMap();
-	}
-
-	private void buildAxiomMap() {
-		List<OWLClass> satisfiable = new ArrayList<OWLClass>();
-		for (OWLClass c : o.getClassesInSignature(true)) {
-			if (reasoner.isSatisfiable(c)) {
-				satisfiable.add(c);
-			}
-		}
-
-		for (OWLClass c : satisfiable) {
-			RootNode root = r.getRoot(c);
+    private void buildAxiomMap() {
+        List<OWLClass> satisfiable = new ArrayList<OWLClass>();
+        for (OWLClass c : o.getClassesInSignature(true)) {
+            if (reasoner.isSatisfiable(c)) {
+                satisfiable.add(c);
+            }
+        }
+        for (OWLClass c : satisfiable) {
+            RootNode root = r.getRoot(c);
             // System.out.println(r.getClass().getSimpleName() + " ROOT CLASS "
             // + c);
-			Set<OWLAxiom> computeAxioms = computeAxioms(root, c);
+            Set<OWLAxiom> computeAxioms = computeAxioms(root, c);
+            computeAxioms.addAll(getNamedSubClassAxioms(root, c));
+            System.out.println(computeAxioms);
+            for (OWLAxiom ax : computeAxioms) {
+                Set<OWLEntity> sig = ax.getSignature();
+                for (OWLEntity e : sig) {
+                    axiomMap.put(e, ax);
+                    if (!e.isOWLObjectProperty()) {
+                        signature.add(e);
+                    }
+                }
+            }
+            // signature.add(c);
+        }
+    }
 
-			computeAxioms.addAll(getNamedSubClassAxioms(root, c));
-			System.out.println(computeAxioms);
-			for (OWLAxiom ax : computeAxioms) {
-				Set<OWLEntity> sig = ax.getSignature();
-				for (OWLEntity e : sig) {
-					axiomMap.put(e, ax);
-					if (!e.isOWLObjectProperty()) {
-						signature.add(e);
-					}
-				}
-			}
-			// signature.add(c);
-		}
-	}
-
-	private Set<OWLAxiom> computeAxioms(RootNode root, OWLClass rootClass) {
-		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-
-		Node<? extends OWLObjectPropertyExpression> objectNeighbours = r
-				.getObjectNeighbours(root, false);
-		Set<? extends OWLObjectPropertyExpression> entities = objectNeighbours
-				.getEntities();
-		for (OWLObjectPropertyExpression prop : entities) {
-			if (prop instanceof OWLObjectProperty) {
-				Collection<RootNode> objectRootNodes = r.getObjectNeighbours(
-						root, prop.asOWLObjectProperty());
-				Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
-				fillers.add(dataFactory.getOWLThing());
-				for (RootNode objectRootNode : objectRootNodes) {
-					fillers.addAll(getMaxFillers(objectRootNode,
-							new HashSet<RootNode>(), rootClass));
-				}
-				axioms.addAll(check(rootClass, prop, fillers));
-			}
-		}
-
-		return axioms;
-	}
+    private Set<OWLAxiom> computeAxioms(RootNode root, OWLClass rootClass) {
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Node<? extends OWLObjectPropertyExpression> objectNeighbours = r
+                .getObjectNeighbours(root, false);
+        Set<? extends OWLObjectPropertyExpression> entities = objectNeighbours
+                .getEntities();
+        for (OWLObjectPropertyExpression prop : entities) {
+            if (prop instanceof OWLObjectProperty) {
+                Collection<RootNode> objectRootNodes = r.getObjectNeighbours(root,
+                        prop.asOWLObjectProperty());
+                Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
+                fillers.add(dataFactory.getOWLThing());
+                for (RootNode objectRootNode : objectRootNodes) {
+                    fillers.addAll(getMaxFillers(objectRootNode, new HashSet<RootNode>(),
+                            rootClass));
+                }
+                axioms.addAll(check(rootClass, prop, fillers));
+            }
+        }
+        return axioms;
+    }
 
     // private Set<OWLClassExpression> getFillers(RootNode node) {
     // Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
@@ -126,150 +124,139 @@ public class ChainsawKnowledgeExplorerMaxFillersImpl implements
     // }
     // return fillers;
     // }
+    private Set<OWLClassExpression> getMaxFillers(RootNode node, Set<RootNode> visited,
+            OWLClass rootClass) {
+        Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
+        Set<OWLClassExpression> label = new HashSet<OWLClassExpression>();
+        // XXX: I do not if this is correct; need to check with Igni.
+        r.getRoot(rootClass);
+        for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities()) {
+            // all in the label is a filler
+            label.add(c);
+            r.getRoot(rootClass);
+        }
+        OWLClassExpression LabC;
+        if (label.size() == 0) {
+            LabC = null;
+        } else if (label.size() == 1) {
+            LabC = label.iterator().next();
+        } else {
+            LabC = dataFactory.getOWLObjectIntersectionOf(label);
+        }
+        visited.add(node);
+        for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node, false)
+                .getEntities()) {
+            for (RootNode n : r.getObjectNeighbours(node, prop.asOWLObjectProperty())) {
+                if (!visited.contains(n)) {
+                    for (OWLClassExpression f : getMaxFillers(n, visited, rootClass)) {
+                        OWLClassExpression exists = dataFactory
+                                .getOWLObjectSomeValuesFrom(prop, f);
+                        if (LabC != null) {
+                            exists = dataFactory.getOWLObjectIntersectionOf(LabC, exists);
+                        }
+                        fillers.add(exists);
+                    }
+                }
+            }
+        }
+        if (fillers.isEmpty()) {
+            if (LabC == null) {
+                LabC = dataFactory.getOWLThing();
+            }
+            fillers.add(LabC);
+        }
+        return fillers;
+    }
 
-	private Set<OWLClassExpression> getMaxFillers(RootNode node,
-			Set<RootNode> visited, OWLClass rootClass) {
-		Set<OWLClassExpression> fillers = new HashSet<OWLClassExpression>();
-		Set<OWLClassExpression> label = new HashSet<OWLClassExpression>();
-		// XXX: I do not if this is correct; need to check with Igni.
-		r.getRoot(rootClass);
-		for (OWLClassExpression c : r.getObjectLabel(node, false).getEntities()) {
-			// all in the label is a filler
-			label.add(c);
-			r.getRoot(rootClass);
-		}
-		OWLClassExpression LabC;
-		if (label.size() == 0) {
-			LabC = null;
-		} else if (label.size() == 1) {
-			LabC = label.iterator().next();
-		} else {
-			LabC = dataFactory.getOWLObjectIntersectionOf(label);
-		}
+    private Set<OWLAxiom> check(OWLClass c, OWLObjectPropertyExpression prop,
+            Set<OWLClassExpression> fillers) {
+        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        for (OWLClassExpression properyFiller : fillers) {
+            OWLObjectSomeValuesFrom somePClass = dataFactory.getOWLObjectSomeValuesFrom(
+                    prop, properyFiller);
+            OWLSubClassOfAxiom existentialRestriction = dataFactory
+                    .getOWLSubClassOfAxiom(c, somePClass);
+            final boolean containsEntity = reasoner.isEntailed(existentialRestriction);
+            if (containsEntity) {
+                axioms.add(existentialRestriction);
+            }
+            // equivalent
+            OWLEquivalentClassesAxiom equivalentRestr = dataFactory
+                    .getOWLEquivalentClassesAxiom(c, somePClass);
+            final boolean containsEntityEq1 = reasoner.isEntailed(equivalentRestr);
+            if (containsEntityEq1) {
+                axioms.add(equivalentRestr);
+            }
+            if (!properyFiller.equals(dataFactory.getOWLThing())) {
+                OWLObjectAllValuesFrom allPClass = dataFactory.getOWLObjectAllValuesFrom(
+                        prop, properyFiller);
+                OWLSubClassOfAxiom universalRestriction = dataFactory
+                        .getOWLSubClassOfAxiom(c, allPClass);
+                final boolean containsEntity2 = reasoner.isEntailed(universalRestriction);
+                if (containsEntity2) {
+                    axioms.add(universalRestriction);
+                }
+                // equivalent classes
+                OWLEquivalentClassesAxiom equivUniversalRestriction = dataFactory
+                        .getOWLEquivalentClassesAxiom(c, allPClass);
+                final boolean containsEntityEq2 = reasoner
+                        .isEntailed(equivUniversalRestriction);
+                if (containsEntityEq2) {
+                    axioms.add(equivUniversalRestriction);
+                }
+            }
+        }
+        return axioms;
+    }
 
-		visited.add(node);
-		for (OWLObjectPropertyExpression prop : r.getObjectNeighbours(node,
-				false).getEntities()) {
-			for (RootNode n : r.getObjectNeighbours(node,
-					prop.asOWLObjectProperty())) {
-				if (!visited.contains(n)) {
-					for (OWLClassExpression f : getMaxFillers(n, visited,
-							rootClass)) {
-						OWLClassExpression exists = dataFactory
-								.getOWLObjectSomeValuesFrom(prop, f);
-						if (LabC != null) {
-							exists = dataFactory.getOWLObjectIntersectionOf(
-									LabC, exists);
-						}
-						fillers.add(exists);
-					}
-				}
-			}
-		}
-		if (fillers.isEmpty()) {
-			if (LabC == null) {
-				LabC = dataFactory.getOWLThing();
-			}
-			fillers.add(LabC);
-		}
-		return fillers;
-	}
+    private Collection<? extends OWLAxiom> getNamedSubClassAxioms(RootNode root,
+            OWLClass c) {
+        Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
+        Node<? extends OWLClassExpression> classes = r.getObjectLabel(root, false);
+        for (OWLClassExpression ex : classes) {
+            if (ex instanceof OWLClass && !ex.asOWLClass().equals(c)) {
+                OWLSubClassOfAxiom ax = dataFactory.getOWLSubClassOfAxiom(c, ex);
+                if (reasoner.isEntailed(ax)) {
+                    toReturn.add(ax);
+                }
+                OWLEquivalentClassesAxiom ax2 = dataFactory.getOWLEquivalentClassesAxiom(
+                        c, ex);
+                if (reasoner.isEntailed(ax2)) {
+                    toReturn.add(ax2);
+                }
+            }
+        }
+        return toReturn;
+    }
 
-	private Set<OWLAxiom> check(OWLClass c, OWLObjectPropertyExpression prop,
-			Set<OWLClassExpression> fillers) {
-		Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-		for (OWLClassExpression properyFiller : fillers) {
-			OWLObjectSomeValuesFrom somePClass = dataFactory
-					.getOWLObjectSomeValuesFrom(prop, properyFiller);
-			OWLSubClassOfAxiom existentialRestriction = dataFactory
-					.getOWLSubClassOfAxiom(c, somePClass);
-			final boolean containsEntity = reasoner
-					.isEntailed(existentialRestriction);
+    @Override
+    public Collection<OWLAxiom> getAxioms(OWLEntity entity) {
+        return axiomMap.get(entity);
+    }
 
-			if (containsEntity) {
-				axioms.add(existentialRestriction);
-			}
-			// equivalent
-			OWLEquivalentClassesAxiom equivalentRestr = dataFactory
-					.getOWLEquivalentClassesAxiom(c, somePClass);
-			final boolean containsEntityEq1 = reasoner
-					.isEntailed(equivalentRestr);
-			if (containsEntityEq1) {
-				axioms.add(equivalentRestr);
-			}
-			if (!properyFiller.equals(dataFactory.getOWLThing())) {
-				OWLObjectAllValuesFrom allPClass = dataFactory
-						.getOWLObjectAllValuesFrom(prop, properyFiller);
-				OWLSubClassOfAxiom universalRestriction = dataFactory
-						.getOWLSubClassOfAxiom(c, allPClass);
-				final boolean containsEntity2 = reasoner
-						.isEntailed(universalRestriction);
-				if (containsEntity2) {
-					axioms.add(universalRestriction);
-				}
-				// equivalent classes
-				OWLEquivalentClassesAxiom equivUniversalRestriction = dataFactory
-						.getOWLEquivalentClassesAxiom(c, allPClass);
-				final boolean containsEntityEq2 = reasoner
-						.isEntailed(equivUniversalRestriction);
-				if (containsEntityEq2) {
-					axioms.add(equivUniversalRestriction);
-				}
-			}
+    @Override
+    public Set<OWLAxiom> getAxioms() {
+        return axiomMap.getAllValues();
+    }
 
-		}
-		return axioms;
-	}
+    @Override
+    public OWLKnowledgeExplorerReasoner getKnowledgeExplorerReasoner() {
+        return r;
+    }
 
-	private Collection<? extends OWLAxiom> getNamedSubClassAxioms(
-			RootNode root, OWLClass c) {
-		Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
-		Node<? extends OWLClassExpression> classes = r.getObjectLabel(root,
-				false);
-		for (OWLClassExpression ex : classes) {
-			if (ex instanceof OWLClass && !ex.asOWLClass().equals(c)) {
-				OWLSubClassOfAxiom ax = dataFactory
-						.getOWLSubClassOfAxiom(c, ex);
-				if (reasoner.isEntailed(ax)) {
-					toReturn.add(ax);
-				}
-				OWLEquivalentClassesAxiom ax2 = dataFactory
-						.getOWLEquivalentClassesAxiom(c, ex);
-				if (reasoner.isEntailed(ax2)) {
-					toReturn.add(ax2);
-				}
-			}
-		}
-		return toReturn;
-	}
+    @Override
+    public Set<OWLEntity> getEntities() {
+        return signature;
+    }
 
-	@Override
-	public Collection<OWLAxiom> getAxioms(OWLEntity entity) {
-		return axiomMap.get(entity);
-	}
-
-	@Override
-	public Set<OWLAxiom> getAxioms() {
-		return axiomMap.getAllValues();
-	}
-
-	@Override
-	public OWLKnowledgeExplorerReasoner getKnowledgeExplorerReasoner() {
-		return r;
-	}
-
-	@Override
-	public Set<OWLEntity> getEntities() {
-		return signature;
-	}
-
-	public Set<OWLClass> getOWLClasses() {
-		Set<OWLClass> toReturn = new HashSet<OWLClass>();
-		for (OWLEntity e : signature) {
-			if (e.isOWLClass()) {
-				toReturn.add(e.asOWLClass());
-			}
-		}
-		return toReturn;
-	}
+    /** @return classes */
+    public Set<OWLClass> getOWLClasses() {
+        Set<OWLClass> toReturn = new HashSet<OWLClass>();
+        for (OWLEntity e : signature) {
+            if (e.isOWLClass()) {
+                toReturn.add(e.asOWLClass());
+            }
+        }
+        return toReturn;
+    }
 }

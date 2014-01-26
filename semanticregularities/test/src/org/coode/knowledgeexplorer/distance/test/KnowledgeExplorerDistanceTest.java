@@ -37,6 +37,8 @@ import uk.ac.manchester.cs.factplusplus.owlapiv3.FaCTPlusPlusReasoner;
 import uk.ac.manchester.cs.factplusplus.owlapiv3.OWLKnowledgeExplorationReasonerWrapper;
 import uk.ac.manchester.cs.jfact.JFactReasoner;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class KnowledgeExplorerDistanceTest {
     private OWLOntology o;
     private OWLOntologyManager m;

@@ -11,7 +11,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.mahout.math.DenseVector;
 import org.apache.mahout.math.NamedVector;
 import org.apache.mahout.math.VectorWritable;
-
+/** @author eleni */
 public class MahoutMultipleVectorTest {
 
 	public static void main(String args[]) throws Exception {

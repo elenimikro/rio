@@ -74,7 +74,9 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
     }
 
     /** @param ontology
-     * @param explorer */
+     *            ontology
+     * @param explorer
+     *            explorer */
     public KnowledgeExplorerOWLEntityRelevanceBasedDistance(OWLOntology ontology,
             KnowledgeExplorer explorer) {
         ke = explorer;
@@ -95,7 +97,8 @@ public class KnowledgeExplorerOWLEntityRelevanceBasedDistance extends
     }
 
     /** @param owlEntity
-     * @return */
+     *            owlEntity
+     * @return axioms */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);

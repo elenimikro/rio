@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-
+/** @author eleni */
 public class MahoutTest {
 
 	public static final double[][] points = { { 1, 1 }, { 2, 1 }, { 1, 2 },

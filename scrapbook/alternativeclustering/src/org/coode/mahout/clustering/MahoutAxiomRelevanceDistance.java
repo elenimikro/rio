@@ -10,7 +10,7 @@ import org.apache.mahout.math.Vector;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.semanticweb.owlapi.model.OWLOntology;
-
+/** @author eleni */
 public class MahoutAxiomRelevanceDistance implements DistanceMeasure {
 
 	private final AxiomRelevanceAxiomBasedDistance delegate;
