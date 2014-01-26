@@ -24,6 +24,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import experiments.ExperimentHelper;
 import experiments.ExperimentUtils;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class ChronicAndAcuteSnomedQualityTest {
     private final String chronic_snomed_2013 = "snomed/chronic_inferred_usage_2013.owl";
     private final String acute_snomed_2013 = "snomed/acute_inferred_usage_2013.owl";

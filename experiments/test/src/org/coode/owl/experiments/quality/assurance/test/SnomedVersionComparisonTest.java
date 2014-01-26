@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import experiments.ExperimentUtils;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class SnomedVersionComparisonTest {
     public SnomedVersionComparisonTest() {
         // TODO Auto-generated constructor stub
