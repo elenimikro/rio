@@ -1,12 +1,10 @@
 package org.coode.lexical.pattern.clustering;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,25 +24,25 @@ import org.coode.owl.generalise.UnwrappedOWLObjectGeneralisation;
 import org.coode.proximitymatrix.cluster.LexicalClusterModel;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.model.AxiomType;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.ShortFormProvider;
 
 import experiments.ExperimentHelper;
 
+/** @author eleni */
 public class AbstractLexicalPatternRegularities {
     private final OWLOntology onto;
     private final MultiMap<String, OWLEntity> keyMap = new MultiMap<String, OWLEntity>();
     private final LexicalClusterModel model;
 
+    /** @param ontology
+     *            ontology
+     * @param lexicalPatternMap
+     *            lexicalPatternMap */
     public AbstractLexicalPatternRegularities(OWLOntology ontology,
             MultiMap<String, OWLEntity> lexicalPatternMap) {
         onto = ontology;
@@ -52,6 +50,10 @@ public class AbstractLexicalPatternRegularities {
         model = new LexicalClusterModel(keyMap, onto);
     }
 
+    /** @param ontology
+     *            ontology
+     * @param lexicalPatterns
+     *            lexicalPatterns */
     public AbstractLexicalPatternRegularities(OWLOntology ontology,
             Set<String> lexicalPatterns) {
         onto = ontology;
@@ -65,6 +67,9 @@ public class AbstractLexicalPatternRegularities {
         }
     }
 
+    /** @param keyword
+     *            keyword
+     * @return entities */
     public Collection<OWLEntity> extractKeywordEntities(String keyword) {
         ManchesterSyntaxRenderer renderer = ExperimentHelper
                 .setManchesterSyntaxWithLabelRendering(onto.getOWLOntologyManager());
@@ -78,27 +83,26 @@ public class AbstractLexicalPatternRegularities {
         return target;
     }
 
-    public LexicalClusterModel getAxiomRegularitiesFromLexicalPatterns() {
+    /** @return lexical cluster model
+     * @throws OPPLException
+     *             oppl exception */
+    public LexicalClusterModel getAxiomRegularitiesFromLexicalPatterns()
+            throws OPPLException {
         OPPLFactory opplfactory = new OPPLFactory(onto.getOWLOntologyManager(), onto,
                 null);
         ConstraintSystem constraintSystem = opplfactory.createConstraintSystem();
-        final Map<String, MultiMap<OWLAxiom, OWLAxiomInstantiation>> toReturn = new HashMap<String, MultiMap<OWLAxiom, OWLAxiomInstantiation>>();
-        try {
-            Set<BindingNode> bindings = preloadConstants(constraintSystem);
-            Set<OWLAxiom> axioms = extractLexicalPatternsUsage();
-            OWLObjectGeneralisation owlObjectGeneralisation = getOWLObjectGeneralisation(
-                    constraintSystem, bindings);
-            for (String keyword : keyMap.keySet()) {
-                Collection<OWLEntity> cluster = keyMap.get(keyword);
-                MultiMap<OWLAxiom, OWLAxiomInstantiation> map = buildGeneralisationMap(
-                        cluster, axioms, owlObjectGeneralisation);
-                MultiMap<OWLAxiom, OWLAxiomInstantiation> sortedGeneralisationMap = sortGeneralisations(map);
-                toReturn.put(keyword, sortedGeneralisationMap);
-                model.put(keyword, sortedGeneralisationMap);
-            }
-        } catch (OPPLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        Map<String, MultiMap<OWLAxiom, OWLAxiomInstantiation>> toReturn = new HashMap<String, MultiMap<OWLAxiom, OWLAxiomInstantiation>>();
+        Set<BindingNode> bindings = preloadConstants(constraintSystem);
+        Set<OWLAxiom> axioms = extractLexicalPatternsUsage();
+        OWLObjectGeneralisation owlObjectGeneralisation = getOWLObjectGeneralisation(
+                constraintSystem, bindings);
+        for (String keyword : keyMap.keySet()) {
+            Collection<OWLEntity> cluster = keyMap.get(keyword);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> map = buildGeneralisationMap(
+                    cluster, axioms, owlObjectGeneralisation);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> sortedGeneralisationMap = sortGeneralisations(map);
+            toReturn.put(keyword, sortedGeneralisationMap);
+            model.put(keyword, sortedGeneralisationMap);
         }
         return model;
     }
@@ -129,6 +133,9 @@ public class AbstractLexicalPatternRegularities {
         return bindings;
     }
 
+    /** @param map
+     *            map
+     * @return sorted generalizations */
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> sortGeneralisations(
             final MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         // order the generalisation map according to size
@@ -151,13 +158,17 @@ public class AbstractLexicalPatternRegularities {
         return toReturn;
     }
 
+    /** @param cluster
+     *            cluster
+     * @param axioms
+     *            axioms
+     * @param generalisation
+     *            generalisation
+     * @return generalization map */
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
             Collection<OWLEntity> cluster, Set<OWLAxiom> axioms,
             OWLObjectGeneralisation generalisation) {
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-        // OWLOntologyAnnotationClusterDetector visitor = new
-        // OWLOntologyAnnotationClusterDetector(
-        // cluster, ontologies);
         // TODO: put a cache here.
         for (OWLAxiom axiom : axioms) {
             if (axiom.getAxiomType() != AxiomType.DECLARATION
@@ -185,6 +196,13 @@ public class AbstractLexicalPatternRegularities {
         return usage;
     }
 
+    /** @param constraintSystem
+     *            constraintSystem
+     * @param bindings
+     *            bindings
+     * @return generalisation
+     * @throws OPPLException
+     *             OPPLException */
     public OWLObjectGeneralisation getOWLObjectGeneralisation(
             ConstraintSystem constraintSystem, Set<BindingNode> bindings)
             throws OPPLException {
@@ -216,18 +234,5 @@ public class AbstractLexicalPatternRegularities {
             }
         }
         return new UnwrappedOWLObjectGeneralisation(bindings, constraintSystem);
-    }
-
-    private static ManchesterSyntaxRenderer enableLabelRendering(
-            OWLOntologyManager manager) {
-        OWLDataFactory dataFactory = manager.getOWLDataFactory();
-        ManchesterSyntaxRenderer renderer = new ManchesterSyntaxRenderer();
-        ShortFormProvider shortFormProvider = new AnnotationValueShortFormProvider(
-                Arrays.asList(dataFactory.getRDFSLabel()),
-                Collections.<OWLAnnotationProperty, List<String>> emptyMap(), manager);
-        renderer.setShortFormProvider(shortFormProvider);
-        // //
-        // ToStringRenderer.getInstance().setRenderer(renderer);
-        return renderer;
     }
 }

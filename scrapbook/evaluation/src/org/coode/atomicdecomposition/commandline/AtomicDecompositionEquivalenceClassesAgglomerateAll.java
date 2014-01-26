@@ -19,9 +19,12 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
 public class AtomicDecompositionEquivalenceClassesAgglomerateAll extends AgglomeratorBase {
     /** @param args
-     * @throws OWLOntologyCreationException */
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
     public static void main(final String[] args) throws OWLOntologyCreationException {
         AtomicDecompositionEquivalenceClassesAgglomerateAll agglomerator = new AtomicDecompositionEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);

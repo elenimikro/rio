@@ -17,10 +17,15 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/** @author eleni */
 public class LexicalPatternParser {
     private final MultiMap<String, OWLEntity> lexicalPatternMap = new MultiMap<String, OWLEntity>();
     private final OWLOntology o;
 
+    /** @param xml
+     *            xml
+     * @param ontology
+     *            ontology */
     public LexicalPatternParser(String xml, OWLOntology ontology) {
         o = ontology;
         try {
@@ -52,10 +57,12 @@ public class LexicalPatternParser {
         }
     }
 
+    /** @return lexical pattern map */
     public MultiMap<String, OWLEntity> getLexicalPatternMap() {
         return lexicalPatternMap;
     }
 
+    /** @author ignazio */
     public class XMLHandler extends DefaultHandler {
         private final MultiMap<String, String> lexicalPatterns = new MultiMap<String, String>();
         private String currentPattern;
@@ -76,6 +83,7 @@ public class LexicalPatternParser {
         public void endElement(String uri, String localName, String qName)
                 throws SAXException {}
 
+        /** @return map */
         public MultiMap<String, String> getLexicalPatternMap() {
             return lexicalPatterns;
         }

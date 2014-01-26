@@ -23,6 +23,7 @@ import uk.ac.manchester.cs.atomicdecomposition.Atom;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 
+/** @author eleni */
 public class OWLAtomicDecompositionMap {
     private final AtomicDecomposition atomicDecomposition;
     private final OWLOntologyManager ontologyManger;
@@ -31,6 +32,10 @@ public class OWLAtomicDecompositionMap {
     MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
     MultiMap<OWLEntity, Atom> entityAtomInfluences = new MultiMap<OWLEntity, Atom>();
 
+    /** @param ontology
+     *            ontology
+     * @param manager
+     *            manager */
     public OWLAtomicDecompositionMap(OWLOntology ontology, OWLOntologyManager manager) {
         if (ontology == null) {
             throw new NullPointerException("The ontolgies canont be null");
@@ -85,18 +90,22 @@ public class OWLAtomicDecompositionMap {
         }
     }
 
+    /** @return AD */
     public AtomicDecomposition getAtomicDecomposition() {
         return atomicDecomposition;
     }
 
+    /** @return dependencies */
     public MultiMap<OWLEntity, Atom> getEntityAtomDependencies() {
         return entityAtomDependencies;
     }
 
+    /** @return manager */
     public OWLOntologyManager getOntologyManger() {
         return ontologyManger;
     }
 
+    /** @return ontology */
     public OWLOntology getOntologies() {
         return ontology;
     }

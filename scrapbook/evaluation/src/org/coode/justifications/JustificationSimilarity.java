@@ -25,8 +25,6 @@ import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
-//import uk.ac.manchester.cs.owl.explanation.ordering.DefaultExplanationOrderer;
-//import uk.ac.manchester.cs.owl.explanation.ordering.ExplanationOrdererImpl;
 
 /** @author eleni mikroyannidi Class for checking isomorphic justifications
  *         between entailments that are abstracted by the same generalisation. */
@@ -37,9 +35,12 @@ public class JustificationSimilarity {
     private final MultiMap<Set<OWLAxiom>, OWLAxiom> isomorphicJustifications = new MultiMap<Set<OWLAxiom>, OWLAxiom>();
     private final Set<OWLAxiom> entailments = new HashSet<OWLAxiom>();
 
-    /**
-	 * 
-	 */
+    /** @param entailments
+     *            entailments
+     * @param rfactory
+     *            rfactory
+     * @param ontology
+     *            ontology */
     public JustificationSimilarity(Set<OWLAxiom> entailments,
             OWLReasonerFactory rfactory, OWLOntology ontology) {
         this.ontology = ontology;
@@ -78,7 +79,7 @@ public class JustificationSimilarity {
 
     /** Implements Jaccard's index and returns the justification similarity
      * 
-     * @return */
+     * @return similarity */
     public double getJustificationSimilarity() {
         // computeJustifications(entailments, 1);
         // computeIsomorphicJustifications();
@@ -110,14 +111,19 @@ public class JustificationSimilarity {
         }
     }
 
+    /** @param entailment
+     *            entailment
+     * @return explanations */
     public Collection<Explanation<OWLAxiom>> getJustification(OWLAxiom entailment) {
         return justificationMap.get(entailment);
     }
 
+    /** @return explanations */
     public Set<Set<OWLAxiom>> getIsomorphicJustifications() {
         return isomorphicJustifications.keySet();
     }
 
+    /** @return justification map */
     public MultiMap<OWLAxiom, Explanation<OWLAxiom>> getJustificationMap() {
         return justificationMap;
     }

@@ -21,32 +21,31 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+/** @author eleni */
 public class AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll extends
-		AgglomeratorBase {
-	/**
-	 * @param args
-	 * @throws OWLOntologyCreationException
-	 */
-	public static void main(final String[] args)
-			throws OWLOntologyCreationException {
-		AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll agglomerator = new AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll();
-		agglomerator.checkArgumentsAndRun(args);
-	}
+        AgglomeratorBase {
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
+    public static void main(final String[] args) throws OWLOntologyCreationException {
+        AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll agglomerator = new AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll();
+        agglomerator.checkArgumentsAndRun(args);
+    }
 
-	@Override
-	public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-		final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-				manager.getOWLDataFactory(), new ReplacementByKindStrategy(
-						manager.getOWLDataFactory()));
-		final Distance<OWLEntity> distance = new AxiomRelevanceAtomicDecompositionBasedDistance(
-				manager.getOntologies().iterator().next(),
-				manager.getOWLDataFactory(), manager, owlEntityReplacer);
-		return distance;
-	}
+    @Override
+    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
+        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+                manager.getOWLDataFactory(), new ReplacementByKindStrategy(
+                        manager.getOWLDataFactory()));
+        final Distance<OWLEntity> distance = new AxiomRelevanceAtomicDecompositionBasedDistance(
+                manager.getOntologies().iterator().next(), manager.getOWLDataFactory(),
+                manager, owlEntityReplacer);
+        return distance;
+    }
 
-	@Override
-	public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
-		Utility.print1(clusteringMatrix);
-	}
-
+    @Override
+    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+        Utility.print1(clusteringMatrix);
+    }
 }

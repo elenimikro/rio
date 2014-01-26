@@ -36,6 +36,8 @@ import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposerOWLAPITOOLS;
 import uk.ac.manchester.cs.atomicdecomposition.AtomicDecomposition;
 import uk.ac.manchester.cs.owlapi.modularity.ModuleType;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class AtomiDecompositionGeneralisationEvaluatorPizzaTest {
     private ClusterDecompositionModel<OWLEntity> model;
     private AtomicDecomposerOWLAPITOOLS ad;

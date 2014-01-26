@@ -39,10 +39,15 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
     MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
 
     /** @param axiom
+     *            axiom
      * @param dataFactory
+     *            dataFactory
      * @param ontologies
+     *            ontologies
      * @param axiomMap
-     * @param entityAtomDependencies */
+     *            axiomMap
+     * @param entityAtomDependencies
+     *            entityAtomDependencies */
     public AtomicDecompositionRelevancePolicy(final OWLAxiom axiom,
             final OWLDataFactory dataFactory,
             final Collection<? extends OWLOntology> ontologies, final AxiomMap axiomMap,
@@ -97,8 +102,6 @@ public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEn
         return toReturn;
     }
 
-    /** @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
-     *      .Object) */
     @Override
     public boolean isRelevant(final OWLEntity object) {
         return relevance.isRelevant(object);

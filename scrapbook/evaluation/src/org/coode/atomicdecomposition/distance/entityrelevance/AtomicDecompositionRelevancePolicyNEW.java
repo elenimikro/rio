@@ -26,19 +26,23 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
+/** @author eleni */
 public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OWLEntity> {
     private final OWLAxiom axiom;
     private final OWLDataFactory dataFactory;
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-    // private final OWLEntityReplacer replacer;
     private final AbstractRanking<OWLEntity> ranking;
     private final RelevancePolicy<OWLEntity> relevance;
     MultiMap<OWLEntity, Atom> entityAtomDependencies = new MultiMap<OWLEntity, Atom>();
 
     /** @param axiom
+     *            axiom
      * @param dataFactory
+     *            dataFactory
      * @param ontologies
-     * @param map */
+     *            ontologies
+     * @param map
+     *            map */
     public AtomicDecompositionRelevancePolicyNEW(final OWLAxiom axiom,
             final OWLDataFactory dataFactory, final Collection<OWLOntology> ontologies,
             final OWLAtomicDecompositionMap map) {
@@ -56,8 +60,6 @@ public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OW
         }
         this.dataFactory = dataFactory;
         this.ontologies.addAll(ontologies);
-        // this.replacer = new OWLEntityReplacer(dataFactory,
-        // new ReplacementByKindStrategy(this.getDataFactory()));
         this.axiom = axiom;
         entityAtomDependencies.putAll(map.getEntityAtomDependencies());
         ranking = AtomicDecompositionRanking.buildRanking(ontologies, map);
@@ -66,8 +68,6 @@ public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OW
                 .getAbstractRankingRelevancePolicy(ranking);
     }
 
-    /** @see org.coode.distance.entityrelevance.RelevancePolicy#isRelevant(java.lang
-     *      .Object) */
     @Override
     public boolean isRelevant(final OWLEntity object) {
         return relevance.isRelevant(object);

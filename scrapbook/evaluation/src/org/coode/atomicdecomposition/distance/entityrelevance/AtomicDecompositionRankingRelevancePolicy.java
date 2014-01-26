@@ -18,6 +18,7 @@ import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.metrics.AbstractRanking;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+/** @author eleni */
 public final class AtomicDecompositionRankingRelevancePolicy implements
         RelevancePolicy<OWLEntity> {
     private final AbstractRanking<OWLEntity> ranking;
@@ -28,7 +29,8 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
     protected final double upperLimit;
     protected final double lowerLimit;
 
-    /** @param ranking */
+    /** @param ranking
+     *            ranking */
     private AtomicDecompositionRankingRelevancePolicy(AbstractRanking<OWLEntity> ranking) {
         if (ranking == null) {
             throw new NullPointerException("The ranking cannot be null");
@@ -58,6 +60,9 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
      * 5.841 4 2.776 4.604 5 2.571 4.032 8 2.306 3.355 10 2.228 3.169 20 2.086
      * 2.845 50 2.009 2.678 100 1.984 2.626
      */
+    /** @param sample
+     *            sample
+     * @return zeta */
     public static double getZeta(final int sample) {
         if (sample <= 2) {
             return 4.303d;
@@ -93,7 +98,8 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
     }
 
     /** @param object
-     * @return */
+     *            object
+     * @return true if relevant */
     public boolean computeIsRelevant(OWLEntity object) {
         // boolean isRelevant = !this.anyRelenant;
         // if (!isRelevant) {
@@ -140,6 +146,9 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
         return mean;
     }
 
+    /** @param ranking
+     *            ranking
+     * @return relevance policy */
     public static AtomicDecompositionRankingRelevancePolicy
             getAbstractRankingRelevancePolicy(AbstractRanking<OWLEntity> ranking) {
         return new AtomicDecompositionRankingRelevancePolicy(ranking);
@@ -160,6 +169,7 @@ public final class AtomicDecompositionRankingRelevancePolicy implements
         return upperLimit;
     }
 
+    /** @return interval */
     public Interval getConfidenceInterval() {
         return new Interval() {
             @Override

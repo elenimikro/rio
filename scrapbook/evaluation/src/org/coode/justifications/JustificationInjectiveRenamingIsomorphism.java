@@ -35,9 +35,12 @@ public class JustificationInjectiveRenamingIsomorphism {
     private final MultiMap<Set<OWLAxiom>, OWLAxiom> isomorphicJustifications = new MultiMap<Set<OWLAxiom>, OWLAxiom>();
     private final Set<OWLAxiom> entailments = new HashSet<OWLAxiom>();
 
-    /**
-	 * 
-	 */
+    /** @param entailments
+     *            entailments
+     * @param rfactory
+     *            rfactory
+     * @param ontology
+     *            ontology */
     public JustificationInjectiveRenamingIsomorphism(Set<OWLAxiom> entailments,
             OWLReasonerFactory rfactory, OWLOntology ontology) {
         this.ontology = ontology;
@@ -97,7 +100,7 @@ public class JustificationInjectiveRenamingIsomorphism {
 
     /** Implements Jaccard's index and returns the justification similarity
      * 
-     * @return */
+     * @return similarity */
     public double getJustificationSimilarity() {
         computeJustifications(entailments, 1);
         computeIsomorphicJustifications();
@@ -129,6 +132,9 @@ public class JustificationInjectiveRenamingIsomorphism {
         }
     }
 
+    /** @param entailment
+     *            entailment
+     * @return explanations */
     public Collection<Explanation<OWLAxiom>> getJustification(OWLAxiom entailment) {
         if (justificationMap.size() == 0) {
             computeJustifications(entailments, 1);
@@ -136,6 +142,7 @@ public class JustificationInjectiveRenamingIsomorphism {
         return justificationMap.get(entailment);
     }
 
+    /** @return axioms */
     public Set<Set<OWLAxiom>> getIsomorphicJustifications() {
         if (isomorphicJustifications.size() == 0) {
             computeIsomorphicJustifications();
@@ -143,6 +150,7 @@ public class JustificationInjectiveRenamingIsomorphism {
         return isomorphicJustifications.keySet();
     }
 
+    /** @return justification map */
     public MultiMap<OWLAxiom, Explanation<OWLAxiom>> getJustificationMap() {
         if (justificationMap.size() == 0) {
             computeJustifications(entailments, 1);

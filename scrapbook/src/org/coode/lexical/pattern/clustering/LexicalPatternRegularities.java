@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,26 +32,26 @@ import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.MultiMap;
-import org.semanticweb.owlapi.util.ShortFormProvider;
 
 import experiments.ExperimentHelper;
 
+/** @author eleni */
 public class LexicalPatternRegularities {
     private final OWLOntology onto;
     private final MultiMap<String, OWLEntity> keyMap = new MultiMap<String, OWLEntity>();
     private final LexicalClusterModel model;
 
+    /** @param ontology
+     *            ontology
+     * @param lexicalPatterns
+     *            lexicalPatterns */
     public LexicalPatternRegularities(OWLOntology ontology, Set<String> lexicalPatterns) {
         onto = ontology;
         buildKeyMap(lexicalPatterns);
@@ -65,6 +64,9 @@ public class LexicalPatternRegularities {
         }
     }
 
+    /** @param keyword
+     *            keyword
+     * @return entities */
     public Collection<OWLEntity> extractKeywordEntities(String keyword) {
         ManchesterSyntaxRenderer renderer = ExperimentHelper
                 .setManchesterSyntaxWithLabelRendering(onto.getOWLOntologyManager());
@@ -78,7 +80,8 @@ public class LexicalPatternRegularities {
         return target;
     }
 
-    /** @param args */
+    /** @param args
+     *            args */
     public static void main(String[] args) {
         try {
             OWLOntology o = OWLManager
@@ -113,6 +116,7 @@ public class LexicalPatternRegularities {
         }
     }
 
+    /** @return lexical cluster model */
     public LexicalClusterModel getAxiomRegularitiesFromLexicalPatterns() {
         OPPLFactory opplfactory = new OPPLFactory(onto.getOWLOntologyManager(), onto,
                 null);
@@ -160,6 +164,9 @@ public class LexicalPatternRegularities {
         return model;
     }
 
+    /** @param map
+     *            map
+     * @return gemeralisation map */
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> sortGeneralisations(
             final MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         // order the generalisation map according to size
@@ -182,6 +189,13 @@ public class LexicalPatternRegularities {
         return toReturn;
     }
 
+    /** @param cluster
+     *            cluster
+     * @param axioms
+     *            axioms
+     * @param generalisation
+     *            generalisation
+     * @return generalisation map */
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
             Collection<OWLEntity> cluster, Set<OWLAxiom> axioms,
             OWLObjectGeneralisation generalisation) {
@@ -216,6 +230,15 @@ public class LexicalPatternRegularities {
         return usage;
     }
 
+    /** @param constraintSystem
+     *            constraintSystem
+     * @param keyword
+     *            keyword
+     * @param bindings
+     *            bindings
+     * @return generalisation
+     * @throws OPPLException
+     *             OPPLException */
     public OWLObjectGeneralisation getOWLObjectGeneralisation(
             ConstraintSystem constraintSystem, String keyword, Set<BindingNode> bindings)
             throws OPPLException {
@@ -243,45 +266,5 @@ public class LexicalPatternRegularities {
             }
         }
         return new UnwrappedOWLObjectGeneralisation(bindings, constraintSystem);
-    }
-
-    private static ManchesterSyntaxRenderer enableLabelRendering(
-            OWLOntologyManager manager) {
-        OWLDataFactory dataFactory = manager.getOWLDataFactory();
-        ManchesterSyntaxRenderer renderer = new ManchesterSyntaxRenderer();
-        ShortFormProvider shortFormProvider = new AnnotationValueShortFormProvider(
-                Arrays.asList(dataFactory.getRDFSLabel()),
-                Collections.<OWLAnnotationProperty, List<String>> emptyMap(), manager);
-        renderer.setShortFormProvider(shortFormProvider);
-        // //
-        // ToStringRenderer.getInstance().setRenderer(renderer);
-        return renderer;
-    }
-
-    private static String createName(String string, Set<String> names,
-            Set<String> rootNames) {
-        if (!rootNames.contains(string)) {
-            if (names.contains(string)) {
-                String[] split = string.split("_");
-                if (split != null && split.length >= 2) {
-                    try {
-                        return createName(
-                                String.format("%s_%d", split[0],
-                                        Integer.parseInt(split[split.length - 1]) + 1),
-                                names, rootNames);
-                    } catch (NumberFormatException e) {
-                        return createName(String.format("%s_%d", string, 1), names,
-                                rootNames);
-                    }
-                } else {
-                    return createName(String.format("%s_1", string), names, rootNames);
-                }
-            } else {
-                names.add(string);
-                return string;
-            }
-        } else {
-            return createName("cluster_1", names, rootNames);
-        }
     }
 }

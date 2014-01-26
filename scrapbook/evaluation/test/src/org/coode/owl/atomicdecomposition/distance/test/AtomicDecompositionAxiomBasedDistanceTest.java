@@ -21,6 +21,8 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class AtomicDecompositionAxiomBasedDistanceTest extends DistanceTestCase {
     @Override
     protected DistanceBuilder getDistanceBuilder() {

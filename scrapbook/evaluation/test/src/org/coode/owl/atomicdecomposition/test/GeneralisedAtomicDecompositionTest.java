@@ -32,6 +32,8 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
+/** @author eleni */
+@SuppressWarnings("javadoc")
 public class GeneralisedAtomicDecompositionTest {
     private ClusterDecompositionModel<OWLEntity> model;
     // private AtomicDecomposer ad;

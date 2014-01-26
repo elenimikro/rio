@@ -19,24 +19,28 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll
-		extends AgglomeratorBase {
-	public static void main(final String[] args)
-			throws OWLOntologyCreationException {
-		AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll runner = new AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll();
-		runner.checkArgumentsAndRun(args);
-	}
+/** @author eleni */
+public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll extends
+        AgglomeratorBase {
+    /** @param args
+     *            args
+     * @throws OWLOntologyCreationException
+     *             OWLOntologyCreationException */
+    public static void main(final String[] args) throws OWLOntologyCreationException {
+        AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll runner = new AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll();
+        runner.checkArgumentsAndRun(args);
+    }
 
-	@Override
-	public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
-		Utility.print2(clusteringMatrix);
-	}
+    @Override
+    public void print(final ClusteringProximityMatrix<?> clusteringMatrix) {
+        Utility.print2(clusteringMatrix);
+    }
 
-	@Override
-	public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
-		final Distance<OWLEntity> distance = new AtomicDecompositionGeneralisationTreeBasedDistance(
-				manager.getOntologies().iterator().next(),
-				manager.getOWLDataFactory(), manager);
-		return distance;
-	}
+    @Override
+    public Distance<OWLEntity> getDistance(final OWLOntologyManager manager) {
+        final Distance<OWLEntity> distance = new AtomicDecompositionGeneralisationTreeBasedDistance(
+                manager.getOntologies().iterator().next(), manager.getOWLDataFactory(),
+                manager);
+        return distance;
+    }
 }

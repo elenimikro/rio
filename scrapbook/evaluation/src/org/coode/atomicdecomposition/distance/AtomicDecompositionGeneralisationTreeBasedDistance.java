@@ -113,8 +113,11 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
     }
 
     /** @param ontology
+     *            ontology
      * @param dataFactory
-     * @param manager */
+     *            dataFactory
+     * @param manager
+     *            manager */
     public AtomicDecompositionGeneralisationTreeBasedDistance(OWLOntology ontology,
             OWLDataFactory dataFactory, OWLOntologyManager manager) {
         if (ontology == null) {
@@ -153,8 +156,6 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
                 getOntologyManger()), constraintSystem, atomicDecomposition);
     }
 
-    /** @see org.coode.distance.Distance#getDistance(java.lang.Object,
-     *      java.lang.Object) */
     @Override
     public double getDistance(final OWLEntity a, final OWLEntity b) {
         double toReturn = a.equals(b) ? 0 : 1;
@@ -187,7 +188,8 @@ public class AtomicDecompositionGeneralisationTreeBasedDistance implements
     }
 
     /** @param owlEntity
-     * @return */
+     *            owlEntity
+     * @return axioms */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);

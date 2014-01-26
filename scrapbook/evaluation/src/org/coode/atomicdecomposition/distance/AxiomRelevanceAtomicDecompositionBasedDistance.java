@@ -70,7 +70,7 @@ public class AxiomRelevanceAtomicDecompositionBasedDistance extends
         }
     };
 
-    private void buildAxiomEntityMap() {
+    protected void buildAxiomEntityMap() {
         Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         for (OWLOntology ont : ontology.getImportsClosure()) {
@@ -84,7 +84,7 @@ public class AxiomRelevanceAtomicDecompositionBasedDistance extends
         }
     }
 
-    private void buildOntologySignature() {
+    protected void buildOntologySignature() {
         ontologySignature.clear();
         for (OWLOntology ont : ontology.getImportsClosure()) {
             ontologySignature.addAll(ont.getSignature());
@@ -107,6 +107,14 @@ public class AxiomRelevanceAtomicDecompositionBasedDistance extends
         }
     }
 
+    /** @param ontology
+     *            ontology
+     * @param dataFactory
+     *            dataFactory
+     * @param manager
+     *            manager
+     * @param replacer
+     *            replacer */
     public AxiomRelevanceAtomicDecompositionBasedDistance(final OWLOntology ontology,
             final OWLDataFactory dataFactory, final OWLOntologyManager manager,
             final OWLEntityReplacer replacer) {
@@ -138,7 +146,8 @@ public class AxiomRelevanceAtomicDecompositionBasedDistance extends
     }
 
     /** @param owlEntity
-     * @return */
+     *            owlEntity
+     * @return axioms */
     protected Set<OWLAxiom> computeAxiomsForEntity(final OWLEntity owlEntity) {
         // Set<AxiomType<?>> types = new
         // HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
@@ -188,6 +197,7 @@ public class AxiomRelevanceAtomicDecompositionBasedDistance extends
         return dataFactory;
     }
 
+    /** dispose */
     public void dispose() {
         ontologyManger.removeOntologyChangeListener(listener);
     }
