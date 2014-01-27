@@ -19,7 +19,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 
 /** Hashing function that takes into account only the structure of an OWL Object.
  * OWL entities of the same kind will have the same hash code. For instance
- * <code>this.hasCode(owl:Thing) == this.hashCode(owl:Nothing)</code>
+ * {@code this.hasCode(owl:Thing) == this.hashCode(owl:Nothing)}
  * 
  * @author Luigi Iannone */
 public class StructuralHashCode implements HashCode {

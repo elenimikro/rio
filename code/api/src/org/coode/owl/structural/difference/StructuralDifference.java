@@ -187,14 +187,14 @@ public class StructuralDifference {
     }
 
     /** Determines if the structural difference makes sense for the pair of input
-     * OWLObjects. It returns <code>true</code> if the input objects are fo the
-     * same kind.
+     * OWLObjects. It returns {@code true} if the input objects are fo the same
+     * kind.
      * 
      * @param anOWLObject
      *            An input object
      * @param anotherOWLObject
      *            Another input object
-     * @return <code>true</code> if the input objects are of the same kind. */
+     * @return {@code true} if the input objects are of the same kind. */
     @SuppressWarnings("boxing")
     public boolean areComparable(OWLObject anOWLObject, final OWLObject anotherOWLObject) {
         boolean toReturn = false;

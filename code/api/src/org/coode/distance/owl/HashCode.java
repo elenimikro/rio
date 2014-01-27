@@ -12,20 +12,15 @@ package org.coode.distance.owl;
 
 import org.semanticweb.owlapi.model.OWLObject;
 
-/**
- * @author Luigi Iannone
- * 
- */
+/** @author Luigi Iannone */
 public interface HashCode {
-	/**
-	 * Returns the hash code for the input OWLObject
-	 * 
-	 * @param owlObject
-	 *            The OWL Object whose hash code will be computed. Cannot be
-	 *            <code>null</code>.
-	 * @return an <code>int</code>.
-	 * @throws NullPointerException
-	 *             if the input is <code>null</code>.
-	 */
-	public int hashCode(OWLObject owlObject);
+    /** Returns the hash code for the input OWLObject
+     * 
+     * @param owlObject
+     *            The OWL Object whose hash code will be computed. Cannot be
+     *            {@code null}.
+     * @return an {@code int}.
+     * @throws NullPointerException
+     *             if the input is {@code null}. */
+    public int hashCode(OWLObject owlObject);
 }

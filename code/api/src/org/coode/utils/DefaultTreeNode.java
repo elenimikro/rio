@@ -73,9 +73,9 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
     /** Adds the input TreeNode as the last of this TreeNode children.
      * 
      * @param child
-     *            The child TreeNode to add. cannot be <code>null</code>.
+     *            The child TreeNode to add. cannot be {@code null}.
      * @throws NullPointerException
-     *             if the input child is <code>null</code>. */
+     *             if the input child is {@code null}. */
     public void addChild(TreeNode<?> child) {
         if (child == null) {
             throw new NullPointerException("The child node cannot be null");
@@ -90,9 +90,9 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
      *            The desired position of the list of children. It must be
      *            greater than 0 and less than the current children size.
      * @param child
-     *            The TreeNode to add as child. Cannot be <code>null</code>.
+     *            The TreeNode to add as child. Cannot be {@code null}.
      * @throws NullPointerException
-     *             if the input child is <code>null</code>.
+     *             if the input child is {@code null}.
      * @throws IllegalArgumentException
      *             if {@literal i<0 || i>getChildren().size()}.
      * @see TreeNode#getChildren() */
@@ -108,13 +108,13 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
     }
 
     /** Removes the input TreeNode from this TreeNode children. Returns
-     * <code>true</code> if the removed TreeNode was actually amongst the
-     * children of this TreeNode.
+     * {@code true} if the removed TreeNode was actually amongst the children of
+     * this TreeNode.
      * 
      * @param child
      *            The TreeNode to remove.
-     * @return <code>true</code> if the removed node was in fact a child of this
-     *         TreeNode. <code>false</code> otherwise. */
+     * @return {@code true} if the removed node was in fact a child of this
+     *         TreeNode. {@code false} otherwise. */
     public boolean removeChild(TreeNode<?> child) {
         return this.children.remove(child);
     }

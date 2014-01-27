@@ -23,11 +23,11 @@ public interface HistoryItemFactory<O> {
      * 
      * @param pair
      *            The pair merged in order to create the clustering represented
-     *            by the output HistoryItem. Cannot be <code>null</code>.
+     *            by the output HistoryItem. Cannot be {@code null}.
      * @param clusters
-     *            The resulting clustering. Cannot be <code>null</code>.
+     *            The resulting clustering. Cannot be {@code null}.
      * @return an HistoryItem
      * @throws NullPointerException
-     *             if either input is <code>null</code>. */
+     *             if either input is {@code null}. */
     HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters);
 }

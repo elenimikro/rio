@@ -28,7 +28,7 @@ public interface TreeNode<O> {
 
     /** Determines whether this TreeNode has children.
      * 
-     * @return {@code true} if this TreeNode has no children. <code>false</code>
+     * @return {@code true} if this TreeNode has no children. {@code false}
      *         otherwise. */
     boolean isLeaf();
 
