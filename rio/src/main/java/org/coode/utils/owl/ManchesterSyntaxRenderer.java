@@ -19,6 +19,8 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
+
 /** @author Eleni Mikroyannidi */
 public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
     private ManchesterOWLSyntaxObjectRenderer ren;
@@ -42,8 +44,10 @@ public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
     }
 
     @Override
-    public synchronized void setShortFormProvider(ShortFormProvider shortFormProvider) {
-        ren = new ManchesterOWLSyntaxObjectRenderer(writerDelegate, shortFormProvider);
+    public synchronized void setShortFormProvider(
+            ShortFormProvider shortFormProvider) {
+        ren = new ManchesterOWLSyntaxObjectRenderer(writerDelegate,
+                shortFormProvider);
     }
 
     private static class WriterDelegate extends Writer {
