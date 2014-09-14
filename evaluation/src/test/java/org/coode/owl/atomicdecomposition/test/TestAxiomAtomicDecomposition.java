@@ -19,7 +19,7 @@ import java.util.Set;
 
 
 
-import org.coode.atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
+import atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
 import org.coode.basetest.TestHelper;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;

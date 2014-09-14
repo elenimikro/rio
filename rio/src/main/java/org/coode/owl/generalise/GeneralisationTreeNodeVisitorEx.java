@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-import org.coode.atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
+import atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
 
 /** @author eleni
  * @param <O>

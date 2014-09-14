@@ -8,10 +8,12 @@
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
-package org.coode.atomicdecomposition.commandline;
+package atomicdecomposition.commandline;
 
-import org.coode.atomicdecomposition.distance.AtomicDecompositionGeneralisationTreeBasedDistance;
+import atomicdecomposition.distance.AxiomRelevanceAtomicDecompositionBasedDistance;
 import org.coode.distance.Distance;
+import org.coode.distance.owl.OWLEntityReplacer;
+import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.commandline.AgglomeratorBase;
 import org.coode.proximitymatrix.cluster.commandline.Utility;
@@ -20,27 +22,30 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
-public class AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll extends
+public class AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll extends
         AgglomeratorBase {
     /** @param args
      *            args
      * @throws OWLOntologyCreationException
      *             OWLOntologyCreationException */
     public static void main(String[] args) throws OWLOntologyCreationException {
-        AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll runner = new AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll();
-        runner.checkArgumentsAndRun(args);
-    }
-
-    @Override
-    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
-        Utility.print2(clusteringMatrix);
+        AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll agglomerator = new AtomicDecompositionWrappingEquivalenceClassesAgglomerateAll();
+        agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
     public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
-        Distance<OWLEntity> distance = new AtomicDecompositionGeneralisationTreeBasedDistance(
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
+                manager.getOWLDataFactory(), new ReplacementByKindStrategy(
+                        manager.getOWLDataFactory()));
+        Distance<OWLEntity> distance = new AxiomRelevanceAtomicDecompositionBasedDistance(
                 manager.getOntologies().iterator().next(), manager.getOWLDataFactory(),
-                manager);
+                manager, owlEntityReplacer);
         return distance;
+    }
+
+    @Override
+    public void print(ClusteringProximityMatrix<?> clusteringMatrix) {
+        Utility.print1(clusteringMatrix);
     }
 }

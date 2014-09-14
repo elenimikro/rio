@@ -11,13 +11,13 @@
 /**
  *
  */
-package org.coode.atomicdecomposition.metrics;
+package atomicdecomposition.metrics;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.coode.atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
+import atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
 import org.coode.metrics.AbstractRanking;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;

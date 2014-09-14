@@ -12,8 +12,8 @@ package experiments;
  ******************************************************************************/
 import java.io.File;
 
-import org.coode.atomicdecomposition.commandline.AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll;
-import org.coode.atomicdecomposition.commandline.AtomicDecompositionEquivalenceClassesAgglomerateAll;
+import atomicdecomposition.commandline.AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll;
+import atomicdecomposition.commandline.AtomicDecompositionEquivalenceClassesAgglomerateAll;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 /** @author eleni */

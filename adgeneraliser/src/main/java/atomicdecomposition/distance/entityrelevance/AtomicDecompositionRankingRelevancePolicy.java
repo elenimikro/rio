@@ -8,7 +8,7 @@
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
-package org.coode.atomicdecomposition.distance.entityrelevance;
+package atomicdecomposition.distance.entityrelevance;
 
 import java.util.HashMap;
 import java.util.Map;

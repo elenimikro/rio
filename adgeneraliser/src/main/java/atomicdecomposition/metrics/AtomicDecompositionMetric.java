@@ -11,7 +11,7 @@
 /**
  *
  */
-package org.coode.atomicdecomposition.metrics;
+package atomicdecomposition.metrics;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.coode.atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
+import atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
 import org.coode.metrics.Metric;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;

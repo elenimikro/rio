@@ -8,9 +8,9 @@
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
-package org.coode.atomicdecomposition.commandline;
+package atomicdecomposition.commandline;
 
-import org.coode.atomicdecomposition.distance.AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance;
+import atomicdecomposition.distance.AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance;
 import org.coode.distance.Distance;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.cluster.commandline.AgglomeratorBase;

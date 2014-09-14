@@ -11,7 +11,7 @@
 /**
  *
  */
-package org.coode.atomicdecomposition.distance;
+package atomicdecomposition.distance;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,8 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.coode.atomicdecomposition.distance.entityrelevance.AtomicDecompositionRelevancePolicyNEW;
-import org.coode.atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
+import atomicdecomposition.distance.entityrelevance.AtomicDecompositionRelevancePolicyNEW;
+import atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
 import org.coode.distance.entityrelevance.owl.Utils;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;

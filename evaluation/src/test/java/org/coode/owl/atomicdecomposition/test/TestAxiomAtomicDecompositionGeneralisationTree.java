@@ -18,7 +18,7 @@ import java.util.Set;
 
 
 
-import org.coode.atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
+import atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
 import org.coode.basetest.TestHelper;
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
@@ -26,10 +26,8 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.structural.StructuralOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
 import org.coode.utils.Utils;
-import org.coode.utils.owl.ManchesterSyntaxRenderer;
 import org.junit.Before;
 import org.junit.Test;
-import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;

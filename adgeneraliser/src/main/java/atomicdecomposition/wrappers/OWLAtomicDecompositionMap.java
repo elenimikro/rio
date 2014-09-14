@@ -8,7 +8,7 @@
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
-package org.coode.atomicdecomposition.wrappers;
+package atomicdecomposition.wrappers;
 
 import java.util.HashSet;
 import java.util.Map;

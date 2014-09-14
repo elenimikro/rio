@@ -8,16 +8,19 @@
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
-package org.coode.atomicdecomposition.distance.entityrelevance;
+/**
+ *
+ */
+package atomicdecomposition.distance.entityrelevance;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.coode.atomicdecomposition.metrics.AtomicDecompositionRanking;
-import org.coode.atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
 import org.coode.distance.entityrelevance.RelevancePolicy;
+import org.coode.distance.entityrelevance.owl.AxiomMap;
 import org.coode.metrics.AbstractRanking;
+import org.coode.metrics.Metric;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -26,8 +29,8 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
-/** @author eleni */
-public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OWLEntity> {
+/** @author Luigi Iannone */
+public class AtomicDecompositionRelevancePolicy implements RelevancePolicy<OWLEntity> {
     private final OWLAxiom axiom;
     private final OWLDataFactory dataFactory;
     private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
@@ -41,11 +44,13 @@ public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OW
      *            dataFactory
      * @param ontologies
      *            ontologies
-     * @param map
-     *            map */
-    public AtomicDecompositionRelevancePolicyNEW(OWLAxiom axiom,
-            OWLDataFactory dataFactory, Collection<OWLOntology> ontologies,
-            OWLAtomicDecompositionMap map) {
+     * @param axiomMap
+     *            axiomMap
+     * @param entityAtomDependencies
+     *            entityAtomDependencies */
+    public AtomicDecompositionRelevancePolicy(OWLAxiom axiom, OWLDataFactory dataFactory,
+            Collection<? extends OWLOntology> ontologies, AxiomMap axiomMap,
+            MultiMap<OWLEntity, Atom> entityAtomDependencies) {
         if (axiom == null) {
             throw new NullPointerException("The axiom cannot be null");
         }
@@ -55,17 +60,44 @@ public class AtomicDecompositionRelevancePolicyNEW implements RelevancePolicy<OW
         if (ontologies == null) {
             throw new NullPointerException("The ontolgy collection cannot be null");
         }
+        if (axiomMap == null) {
+            throw new NullPointerException("The axiom map cannot be null");
+        }
         if (entityAtomDependencies == null) {
             throw new NullPointerException("The axiom map cannot be null");
         }
         this.dataFactory = dataFactory;
         this.ontologies.addAll(ontologies);
+        // replacer = new OWLEntityReplacer(dataFactory, new
+        // ReplacementByKindStrategy(
+        // getDataFactory()));
+        // this.axiomMap = axiomMap;
         this.axiom = axiom;
-        entityAtomDependencies.putAll(map.getEntityAtomDependencies());
-        ranking = AtomicDecompositionRanking.buildRanking(ontologies, map);
+        this.entityAtomDependencies.putAll(entityAtomDependencies);
+        ranking = buildRanking();
         // change relevance
         relevance = AtomicDecompositionRankingRelevancePolicy
                 .getAbstractRankingRelevancePolicy(ranking);
+    }
+
+    private AbstractRanking<OWLEntity> buildRanking() {
+        Metric<OWLEntity> m = new Metric<OWLEntity>() {
+            @Override
+            public double getValue(OWLEntity object) {
+                double value = entityAtomDependencies.get(object).size();
+                // edit this metric and add the one for the atomic decomposition
+                // double total = entityAtomDependencies.getAllValues().size();
+                return value;
+            }
+        };
+        AbstractRanking<OWLEntity> toReturn = new AbstractRanking<OWLEntity>(m,
+                entityAtomDependencies.keySet(), OWLEntity.class) {
+            @Override
+            public boolean isAverageable() {
+                return true;
+            }
+        };
+        return toReturn;
     }
 
     @Override

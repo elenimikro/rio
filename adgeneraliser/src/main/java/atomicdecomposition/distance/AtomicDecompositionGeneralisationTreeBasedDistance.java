@@ -11,14 +11,14 @@
 /**
  *
  */
-package org.coode.atomicdecomposition.distance;
+package atomicdecomposition.distance;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.coode.atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
+import atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
 import org.coode.distance.entityrelevance.CollectionBasedRelevantPolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;

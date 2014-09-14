@@ -8,7 +8,7 @@
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
-package org.coode.atomicdecomposition.generalise;
+package atomicdecomposition.generalise;
 
 import java.util.Collection;
 import java.util.Collections;

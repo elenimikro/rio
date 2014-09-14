@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.coode.owl.atomicdecomposition.distance.test;
 
-import org.coode.atomicdecomposition.distance.AtomicDecompositionGeneralisationTreeBasedDistance;
+import atomicdecomposition.distance.AtomicDecompositionGeneralisationTreeBasedDistance;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;

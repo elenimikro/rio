@@ -16,10 +16,10 @@ package org.coode.owl.atomicdecomposition.distance.test;
 import java.io.File;
 import java.util.Arrays;
 
-import org.coode.atomicdecomposition.distance.AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance;
-import org.coode.atomicdecomposition.distance.entityrelevance.AtomicDecompositionRankingRelevancePolicy;
-import org.coode.atomicdecomposition.metrics.AtomicDecompositionRanking;
-import org.coode.atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
+import atomicdecomposition.distance.AxiomRelevanceAtomicDecompositionDepedenciesBasedDistance;
+import atomicdecomposition.distance.entityrelevance.AtomicDecompositionRankingRelevancePolicy;
+import atomicdecomposition.metrics.AtomicDecompositionRanking;
+import atomicdecomposition.wrappers.OWLAtomicDecompositionMap;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
