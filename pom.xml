@@ -18,7 +18,7 @@
 	<artifactId>rio-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>RIO</name>
+	<name>RIO Parent</name>
 	<description>RIO is a framework for regularity finding</description>
 	<url>https://github.com/elenimikro/rio</url>
 	<modules>
@@ -98,8 +98,8 @@
 	<developers>
 		<developer>
 			<id>elenimikro</id>
-			<name>Eleni Mikroyannidi Palmisano</name>
-			<email>ignazio1977@users.sourceforge.net</email>
+			<name>Eleni Mikroyannidi</name>
+			<email>mikrohelen@gmail.com</email>
 		</developer>
 		<developer>
 			<id>ignazio1977</id>
