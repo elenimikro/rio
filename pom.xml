@@ -28,6 +28,7 @@
 		<!--module>scrapbook</module -->
 		<!--module>semanticregularities</module -->
 		<!-- module>alternativeclustering</module -->
+		<module>rio-cli</module>
 	</modules>
 
 	<issueManagement>
