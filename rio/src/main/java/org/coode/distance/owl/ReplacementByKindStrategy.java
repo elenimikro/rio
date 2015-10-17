@@ -42,7 +42,7 @@ public class ReplacementByKindStrategy implements ReplacementStrategy {
     static {
         try {
             properties.load(ReplacementByKindStrategy.class
-                    .getResourceAsStream(ReplacementByKindStrategy.class.getName()
+                    .getResourceAsStream("/"+ReplacementByKindStrategy.class.getName()
                             + ".properties"));
         } catch (IOException e) {
             e.printStackTrace();
