@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-import atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
-
 /** @author eleni
  * @param <O>
  *            type */
@@ -20,12 +18,6 @@ public interface GeneralisationTreeNodeVisitorEx<O> {
      *            node
      * @return visitor value */
     O visitAxiomGeneralisationTreeNode(AxiomGeneralisationTreeNode node);
-
-    /** @param node
-     *            node
-     * @return visitor value */
-    O visitAxiomAtomicDecompositionGeneralisationTreeNode(
-            AxiomAtomicDecompositionGeneralisationTreeNode node);
 
     /** @param node
      *            node

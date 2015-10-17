@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-import atomicdecomposition.generalise.AxiomAtomicDecompositionGeneralisationTreeNode;
-
 /** @author eleni */
 public abstract class GeneralisationTreeNodeVisitorAdapter implements
         GeneralisationTreeNodeVisitor {
@@ -27,9 +25,4 @@ public abstract class GeneralisationTreeNodeVisitorAdapter implements
     public void visitBindingNodeGeneralisationTreeNode(
             final BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {}
 
-    @Override
-    public
-            void
-            visitAxiomAtomicDecompositionGeneralisationTreeNode(
-                    final AxiomAtomicDecompositionGeneralisationTreeNode axiomAtomicDecompositionGeneralisationTreeNode) {}
 }
