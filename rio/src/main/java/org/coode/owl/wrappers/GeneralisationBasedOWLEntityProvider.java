@@ -15,30 +15,28 @@ import java.util.List;
 import java.util.Set;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
-public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase implements
-        OWLEntityProvider {
+public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase
+    implements OWLEntityProvider {
     private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
-                throws OWLException {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             clear();
             GeneralisationBasedOWLEntityProvider.this.loadDelegate();
         }
     };
 
-    /** @param ontologyManager
-     *            ontologyManager
-     * @param generalisations
-     *            generalisations */
+    /**
+     * @param ontologyManager ontologyManager
+     * @param generalisations generalisations
+     */
     public GeneralisationBasedOWLEntityProvider(OWLOntologyManager ontologyManager,
-            Set<OWLAxiom> generalisations) {
+        Set<OWLAxiom> generalisations) {
         super(ontologyManager);
         axioms.addAll(generalisations);
         getOntologyManager().addOntologyChangeListener(listener);

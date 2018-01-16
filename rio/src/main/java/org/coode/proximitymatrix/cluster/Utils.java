@@ -113,18 +113,17 @@ import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLOb
 //import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
 /** @author ignazio */
 public class Utils {
-    private final static class OWLOntologyAnnotationClusterDetector extends
-            OWLObjectVisitorExAdapter<Boolean> {
+    private final static class OWLOntologyAnnotationClusterDetector
+        extends OWLObjectVisitorExAdapter<Boolean> {
         private final List<OWLOntology> ontologies = new ArrayList<OWLOntology>();
         private final Set<OWLEntity> cluster = new HashSet<OWLEntity>();
 
-        /** @param cluster
-         *            cluster
-         * @param ontologies
-         *            ontologies */
-        public OWLOntologyAnnotationClusterDetector(
-                Collection<? extends OWLEntity> cluster,
-                Collection<? extends OWLOntology> ontologies) {
+        /**
+         * @param cluster cluster
+         * @param ontologies ontologies
+         */
+        public OWLOntologyAnnotationClusterDetector(Collection<? extends OWLEntity> cluster,
+            Collection<? extends OWLOntology> ontologies) {
             super(false);
             if (ontologies == null) {
                 throw new NullPointerException("The ontology cannot be null");
@@ -154,8 +153,9 @@ public class Utils {
         private OWLOntologyManager manager;
         protected Set<Set<OWLEntity>> clusters = new LinkedHashSet<Set<OWLEntity>>();
 
-        /** @param manager
-         *            manager */
+        /**
+         * @param manager manager
+         */
         public Handler(OWLOntologyManager manager) {
             if (manager == null) {
                 throw new NullPointerException("The manager cannot be null");
@@ -164,13 +164,13 @@ public class Utils {
         }
 
         private final LinkedList<Set<OWLEntity>> stack = new LinkedList<Set<OWLEntity>>();
-        private final LinkedList<Collection<OWLEntity>> pairStack = new LinkedList<Collection<OWLEntity>>();
+        private final LinkedList<Collection<OWLEntity>> pairStack =
+            new LinkedList<Collection<OWLEntity>>();
         private final LinkedList<Set<OWLEntity>> itemsStack = new LinkedList<Set<OWLEntity>>();
         private final History<Collection<OWLEntity>> history = new History<Collection<OWLEntity>>();
 
         @Override
-        public void endElement(String uri, String localName, String qName)
-                throws SAXException {
+        public void endElement(String uri, String localName, String qName) throws SAXException {
             if (qName.compareToIgnoreCase("Cluster") == 0) {
                 if (!stack.isEmpty()) {
                     clusters.add(stack.pop());
@@ -178,12 +178,12 @@ public class Utils {
             } else if (qName.compareToIgnoreCase("HistoryItem") == 0) {
                 Collection<OWLEntity> second = pairStack.pop();
                 Collection<OWLEntity> first = pairStack.pop();
-                Pair<Collection<OWLEntity>> mergedPair = new SimplePair<Collection<OWLEntity>>(
-                        first, second);
-                Collection<? extends Collection<OWLEntity>> historyItemClusters = new ArrayList<Collection<OWLEntity>>(
-                        itemsStack);
-                HistoryItem<Collection<OWLEntity>> newItem = new HistoryItem<Collection<OWLEntity>>(
-                        mergedPair, historyItemClusters);
+                Pair<Collection<OWLEntity>> mergedPair =
+                    new SimplePair<Collection<OWLEntity>>(first, second);
+                Collection<? extends Collection<OWLEntity>> historyItemClusters =
+                    new ArrayList<Collection<OWLEntity>>(itemsStack);
+                HistoryItem<Collection<OWLEntity>> newItem =
+                    new HistoryItem<Collection<OWLEntity>>(mergedPair, historyItemClusters);
                 history.add(newItem);
             }
         }
@@ -193,8 +193,7 @@ public class Utils {
             Iterator<OWLOntology> iterator = manager.getOntologies().iterator();
             while (iterator.hasNext()) {
                 OWLOntology owlOntology = iterator.next();
-                Set<OWLEntity> entitiesInSignature = owlOntology
-                        .getEntitiesInSignature(iri);
+                Set<OWLEntity> entitiesInSignature = owlOntology.getEntitiesInSignature(iri);
                 if (!entitiesInSignature.isEmpty()) {
                     toReturn.addAll(entitiesInSignature);
                 }
@@ -203,8 +202,8 @@ public class Utils {
         }
 
         @Override
-        public void startElement(String uri, String localName, String qName,
-                Attributes attributes) throws SAXException {
+        public void startElement(String uri, String localName, String qName, Attributes attributes)
+            throws SAXException {
             if (qName.compareToIgnoreCase("Cluster") == 0) {
                 Set<OWLEntity> cluster = new HashSet<OWLEntity>();
                 stack.push(cluster);
@@ -220,7 +219,7 @@ public class Utils {
             } else if (qName.compareToIgnoreCase("HistoryItem") == 0) {
                 pairStack.clear();
             } else if (qName.compareToIgnoreCase("First") == 0
-                    || qName.compareToIgnoreCase("Second") == 0) {
+                || qName.compareToIgnoreCase("Second") == 0) {
                 pairStack.push(new HashSet<OWLEntity>());
             } else if (qName.compareToIgnoreCase("PairItem") == 0) {
                 if (!pairStack.isEmpty()) {
@@ -258,21 +257,18 @@ public class Utils {
         }
     }
 
-    /** @param set
-     *            set
-     * @param ontologies
-     *            ontologies
-     * @param constraintSystem
-     *            constraintSystem
-     * @param <O>
-     *            type
+    /**
+     * @param set set
+     * @param ontologies ontologies
+     * @param constraintSystem constraintSystem
+     * @param <O> type
      * @return generalisation
-     * @throws OPPLException
-     *             OPPLException */
-    public static <O extends OWLObject> OWLObjectGeneralisation
-            getOWLObjectGeneralisation(Collection<? extends Collection<? extends O>> set,
-                    Collection<? extends OWLOntology> ontologies,
-                    ConstraintSystem constraintSystem) throws OPPLException {
+     * @throws OPPLException OPPLException
+     */
+    public static <O extends OWLObject> OWLObjectGeneralisation getOWLObjectGeneralisation(
+        Collection<? extends Collection<? extends O>> set,
+        Collection<? extends OWLOntology> ontologies, ConstraintSystem constraintSystem)
+        throws OPPLException {
         // int i = 0;
         Set<BindingNode> bindings = new HashSet<BindingNode>(set.size());
         // I need to preload all the constants into a variable before I start
@@ -286,8 +282,7 @@ public class Utils {
         if (!constants.isEmpty()) {
             String constantVariableName = "?constant";
             InputVariable<?> constantVariable = constraintSystem.createVariable(
-                    constantVariableName, VariableTypeFactory.getCONSTANTVariableType(),
-                    null);
+                constantVariableName, VariableTypeFactory.getCONSTANTVariableType(), null);
             for (OWLLiteral owlLiteral : constants) {
                 BindingNode bindingNode = BindingNode.createNewEmptyBindingNode();
                 bindingNode.addAssignment(new Assignment(constantVariable, owlLiteral));
@@ -296,18 +291,17 @@ public class Utils {
         }
         Set<String> names = new HashSet<String>();
         Set<String> rootNames = new HashSet<String>(Arrays.asList(null, "Thing",
-                "topObjectProperty", "topDataProperty", "topAnnotationProperty"));
-        OWLAxiomProvider axiomProvider = new OWLOntologyManagerBasedOWLAxiomProvider(
-                constraintSystem.getOntologyManager());
+            "topObjectProperty", "topDataProperty", "topAnnotationProperty"));
+        OWLAxiomProvider axiomProvider =
+            new OWLOntologyManagerBasedOWLAxiomProvider(constraintSystem.getOntologyManager());
         for (Collection<? extends O> cluster : set) {
             checkForPuns(cluster);
             if (!cluster.isEmpty()) {
-                LeastCommonSubsumer<O, ?> lcs = LeastCommonSubsumer.build(cluster,
-                        axiomProvider, constraintSystem.getOntologyManager()
-                                .getOWLDataFactory());
+                LeastCommonSubsumer<O, ?> lcs = LeastCommonSubsumer.build(cluster, axiomProvider,
+                    constraintSystem.getOntologyManager().getOWLDataFactory());
                 String name;
-                ManchesterSyntaxRenderer renderer = constraintSystem.getOPPLFactory()
-                        .getManchesterSyntaxRenderer(constraintSystem);
+                ManchesterSyntaxRenderer renderer =
+                    constraintSystem.getOPPLFactory().getManchesterSyntaxRenderer(constraintSystem);
                 // the next condition seems to create problems
                 if (lcs != null) {
                     OWLObject x = lcs.get(cluster);
@@ -317,16 +311,12 @@ public class Utils {
                     name = createName(null, names, rootNames);
                 }
                 O object = cluster.iterator().next();
-                VariableType<?> variableType = VariableTypeFactory
-                        .getVariableType(object);
+                VariableType<?> variableType = VariableTypeFactory.getVariableType(object);
                 if (variableType != null) {
-                    String variableName = String
-                            .format("?%s", name.replaceAll("\\?", "_"))
-                            .replaceAll(
-                                    ConstraintSystem.VARIABLE_NAME_INVALID_CHARACTERS_REGEXP,
-                                    "_");
-                    InputVariable<?> variable = constraintSystem.createVariable(
-                            variableName, variableType, null);
+                    String variableName = String.format("?%s", name.replaceAll("\\?", "_"))
+                        .replaceAll(ConstraintSystem.VARIABLE_NAME_INVALID_CHARACTERS_REGEXP, "_");
+                    InputVariable<?> variable =
+                        constraintSystem.createVariable(variableName, variableType, null);
                     for (O o : cluster) {
                         BindingNode bindingNode = BindingNode.createNewEmptyBindingNode();
                         if (VariableTypeFactory.getVariableType(o) == variable.getType()) {
@@ -341,27 +331,22 @@ public class Utils {
         return new OWLObjectGeneralisation(bindings, constraintSystem);
     }
 
-    /** @param string
-     *            string
-     * @param names
-     *            names
-     * @param rootNames
-     *            rootNames
-     * @return name */
-    public static String createName(String string, Set<String> names,
-            Set<String> rootNames) {
+    /**
+     * @param string string
+     * @param names names
+     * @param rootNames rootNames
+     * @return name
+     */
+    public static String createName(String string, Set<String> names, Set<String> rootNames) {
         if (!rootNames.contains(string)) {
             if (names.contains(string)) {
                 String[] split = string.split("_");
                 if (split != null && split.length >= 2) {
                     try {
-                        return createName(
-                                String.format("%s_%d", split[0],
-                                        Integer.parseInt(split[split.length - 1]) + 1),
-                                names, rootNames);
+                        return createName(String.format("%s_%d", split[0],
+                            Integer.parseInt(split[split.length - 1]) + 1), names, rootNames);
                     } catch (NumberFormatException e) {
-                        return createName(String.format("%s_%d", string, 1), names,
-                                rootNames);
+                        return createName(String.format("%s_%d", string, 1), names, rootNames);
                     }
                 } else {
                     return createName(String.format("%s_1", string), names, rootNames);
@@ -375,12 +360,11 @@ public class Utils {
         }
     }
 
-    /** @param cluster
-     *            cluster
-     * @param <O>
-     *            type */
-    public static <O extends OWLObject> void
-            checkForPuns(Collection<? extends O> cluster) {
+    /**
+     * @param cluster cluster
+     * @param <O> type
+     */
+    public static <O extends OWLObject> void checkForPuns(Collection<? extends O> cluster) {
         // String name = cluster.iterator().next().getClass().getName();
         Set<String> otherNames = new HashSet<String>();
         for (OWLObject o : cluster) {
@@ -391,25 +375,19 @@ public class Utils {
         }
     }
 
-    /** @param clusters
-     *            clusters
-     * @param ontologies
-     *            ontologies
-     * @param renderer
-     *            renderer
-     * @param generalisation
-     *            generalisation
-     * @param <O>
-     *            type
+    /**
+     * @param clusters clusters
+     * @param ontologies ontologies
+     * @param renderer renderer
+     * @param generalisation generalisation
+     * @param <O> type
      * @return document
-     * @throws ParserConfigurationException
-     *             ParserConfigurationException */
-    public static <O extends OWLEntity> Document toXML(
-            Collection<? extends Cluster<O>> clusters,
-            Collection<? extends OWLOntology> ontologies, OWLObjectRenderer renderer,
-            OWLObjectGeneralisation generalisation) throws ParserConfigurationException {
-        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .newDocument();
+     * @throws ParserConfigurationException ParserConfigurationException
+     */
+    public static <O extends OWLEntity> Document toXML(Collection<? extends Cluster<O>> clusters,
+        Collection<? extends OWLOntology> ontologies, OWLObjectRenderer renderer,
+        OWLObjectGeneralisation generalisation) throws ParserConfigurationException {
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Element root = document.createElement("Clusters");
         document.appendChild(root);
         for (Cluster<O> cluster : clusters) {
@@ -422,24 +400,21 @@ public class Utils {
             }
             clusterNode.setAttribute("size", String.format("%d", cluster.size()));
             Element generalisations = document.createElement("Generalisations");
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = buildGeneralisationMap(
-                    cluster, ontologies, generalisation);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
+                buildGeneralisationMap(cluster, ontologies, generalisation);
             for (OWLAxiom generalisedAxiom : generalisationMap.keySet()) {
                 Element generalisedAxiomNode = document.createElement("Generalisation");
-                generalisedAxiomNode.setAttribute("axiom",
-                        renderer.render(generalisedAxiom));
-                Collection<OWLAxiomInstantiation> generalisationChildren = generalisationMap
-                        .get(generalisedAxiom);
+                generalisedAxiomNode.setAttribute("axiom", renderer.render(generalisedAxiom));
+                Collection<OWLAxiomInstantiation> generalisationChildren =
+                    generalisationMap.get(generalisedAxiom);
                 generalisedAxiomNode.setAttribute("count",
-                        Integer.toString(generalisationChildren.size()));
-                generalisedAxiomNode
-                        .setAttribute(
-                                "instantiationStats",
-                                Utils.renderInstantiationsStats(buildAssignmentMap(generalisationChildren)));
+                    Integer.toString(generalisationChildren.size()));
+                generalisedAxiomNode.setAttribute("instantiationStats",
+                    Utils.renderInstantiationsStats(buildAssignmentMap(generalisationChildren)));
                 for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
                     Element axiomNode = document.createElement("Axiom");
                     axiomNode.setAttribute("axiom",
-                            renderer.render(owlAxiomInstantiation.getAxiom()));
+                        renderer.render(owlAxiomInstantiation.getAxiom()));
                     generalisedAxiomNode.appendChild(axiomNode);
                 }
                 generalisations.appendChild(generalisedAxiomNode);
@@ -449,30 +424,23 @@ public class Utils {
         return document;
     }
 
-    /** @param in
-     *            in
-     * @param manager
-     *            manager
+    /**
+     * @param in in
+     * @param manager manager
      * @return set of entities
-     * @throws ParserConfigurationException
-     *             ParserConfigurationException
-     * @throws SAXException
-     *             SAXException
-     * @throws IOException
-     *             IOException */
-    public static Set<Set<OWLEntity>> readFromXML(InputStream in,
-            OWLOntologyManager manager) throws ParserConfigurationException,
-            SAXException, IOException {
-        Comparator<Set<OWLEntity>> sizeComparator = new Comparator<Set<OWLEntity>>() {
-            @Override
-            public int compare(Set<OWLEntity> o1, Set<OWLEntity> o2) {
-                int difference = o1.size() - o2.size();
-                return difference != 0 ? difference : o1.toString().hashCode()
-                        - o2.toString().hashCode();
-            }
+     * @throws ParserConfigurationException ParserConfigurationException
+     * @throws SAXException SAXException
+     * @throws IOException IOException
+     */
+    public static Set<Set<OWLEntity>> readFromXML(InputStream in, OWLOntologyManager manager)
+        throws ParserConfigurationException, SAXException, IOException {
+        Comparator<Set<OWLEntity>> sizeComparator = (o1, o2) -> {
+            int difference = o1.size() - o2.size();
+            return difference != 0 ? difference
+                : o1.toString().hashCode() - o2.toString().hashCode();
         };
-        Set<Set<OWLEntity>> toReturn = new TreeSet<Set<OWLEntity>>(
-                Collections.reverseOrder(sizeComparator));
+        Set<Set<OWLEntity>> toReturn =
+            new TreeSet<Set<OWLEntity>>(Collections.reverseOrder(sizeComparator));
         SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
         Handler handler = new Handler(manager);
         parser.parse(new InputSource(in), handler);
@@ -483,20 +451,16 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param in
-     *            in
-     * @param manager
-     *            manager
+    /**
+     * @param in in
+     * @param manager manager
      * @return history
-     * @throws ParserConfigurationException
-     *             ParserConfigurationException
-     * @throws SAXException
-     *             SAXException
-     * @throws IOException
-     *             IOException */
+     * @throws ParserConfigurationException ParserConfigurationException
+     * @throws SAXException SAXException
+     * @throws IOException IOException
+     */
     public static History<Collection<OWLEntity>> readHistoryFromXML(InputStream in,
-            OWLOntologyManager manager) throws ParserConfigurationException,
-            SAXException, IOException {
+        OWLOntologyManager manager) throws ParserConfigurationException, SAXException, IOException {
         SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
         Handler handler = new Handler(manager);
         parser.parse(new InputSource(in), handler);
@@ -542,8 +506,7 @@ public class Utils {
             int count = 1;
             for (OWLEntity anotherEntity : collection) {
                 if (anotherEntity != owlEntity
-                        && variableType.equals(anotherEntity
-                                .accept(owlEntityClassExtractor))) {
+                    && variableType.equals(anotherEntity.accept(owlEntityClassExtractor))) {
                     count++;
                 }
             }
@@ -561,23 +524,20 @@ public class Utils {
         }
     }
 
-    /** @param cluster
-     *            cluster
-     * @param ontologies
-     *            ontologies
-     * @param generalisation
-     *            generalisation
-     * @return generalisation map */
+    /**
+     * @param cluster cluster
+     * @param ontologies ontologies
+     * @param generalisation generalisation
+     * @return generalisation map
+     */
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
-            Collection<? extends OWLEntity> cluster,
-            Collection<? extends OWLOntology> ontologies,
-            OWLObjectGeneralisation generalisation) {
+        Collection<? extends OWLEntity> cluster, Collection<? extends OWLOntology> ontologies,
+        OWLObjectGeneralisation generalisation) {
         Set<OWLAxiom> ontologyAxioms = new HashSet<OWLAxiom>();
         for (OWLOntology ontology : ontologies) {
-            Set<OWLAnnotationAssertionAxiom> axioms = ontology
-                    .getAxioms(AxiomType.ANNOTATION_ASSERTION);
-            Set<OWLDeclarationAxiom> declaxioms = ontology
-                    .getAxioms(AxiomType.DECLARATION);
+            Set<OWLAnnotationAssertionAxiom> axioms =
+                ontology.getAxioms(AxiomType.ANNOTATION_ASSERTION);
+            Set<OWLDeclarationAxiom> declaxioms = ontology.getAxioms(AxiomType.DECLARATION);
             ontologyAxioms.addAll(ontology.getAxioms());
             ontologyAxioms.removeAll(axioms);
             ontologyAxioms.removeAll(declaxioms);
@@ -586,12 +546,12 @@ public class Utils {
     }
 
     private static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
-            Collection<? extends OWLEntity> cluster,
-            Collection<? extends OWLOntology> ontologies,
-            OWLObjectGeneralisation generalisation, Set<OWLAxiom> ontologyAxioms) {
-        OWLOntologyAnnotationClusterDetector visitor = new OWLOntologyAnnotationClusterDetector(
-                cluster, ontologies);
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        Collection<? extends OWLEntity> cluster, Collection<? extends OWLOntology> ontologies,
+        OWLObjectGeneralisation generalisation, Set<OWLAxiom> ontologyAxioms) {
+        OWLOntologyAnnotationClusterDetector visitor =
+            new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
+            new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
         for (OWLAxiom axiom : ontologyAxioms) {
             Set<OWLEntity> signature = axiom.getSignature();
             boolean intersection = false;
@@ -602,25 +562,24 @@ public class Utils {
             if (intersection || axiom.accept(visitor)) {
                 generalisation.clearSubstitutions();
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-                generalisationMap.put(generalised, new OWLAxiomInstantiation(axiom,
-                        generalisation.getSubstitutions()));
+                generalisationMap.put(generalised,
+                    new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
             }
         }
         return generalisationMap;
     }
 
-    /** @param cluster
-     *            cluster
-     * @param generalisation
-     *            generalisation
-     * @param axioms
-     *            axioms
-     * @return generalisation map */
-    public static MultiMap<OWLAxiom, OWLAxiomInstantiation>
-            buildKnowledgeExplorerGeneralisationMap(
-                    Collection<? extends OWLEntity> cluster,
-                    OWLObjectGeneralisation generalisation, Set<OWLAxiom> axioms) {
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+    /**
+     * @param cluster cluster
+     * @param generalisation generalisation
+     * @param axioms axioms
+     * @return generalisation map
+     */
+    public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildKnowledgeExplorerGeneralisationMap(
+        Collection<? extends OWLEntity> cluster, OWLObjectGeneralisation generalisation,
+        Set<OWLAxiom> axioms) {
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
+            new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
         for (OWLAxiom axiom : axioms) {
             Set<OWLEntity> signature = axiom.getSignature();
             boolean intersection = false;
@@ -631,8 +590,8 @@ public class Utils {
             if (intersection) {
                 generalisation.clearSubstitutions();
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-                generalisationMap.put(generalised, new OWLAxiomInstantiation(axiom,
-                        generalisation.getSubstitutions()));
+                generalisationMap.put(generalised,
+                    new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
             }
         }
         return generalisationMap;
@@ -667,45 +626,43 @@ public class Utils {
     // }
     // return generalisationMap;
     // }
-    /** @param cluster
-     *            cluster
-     * @param ontologies
-     *            ontologies
-     * @param axioms
-     *            axioms
-     * @param generalisation
-     *            generalisation
-     * @return generalisation map */
+    /**
+     * @param cluster cluster
+     * @param ontologies ontologies
+     * @param axioms axioms
+     * @param generalisation generalisation
+     * @return generalisation map
+     */
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
-            Collection<? extends OWLEntity> cluster,
-            Collection<? extends OWLOntology> ontologies, Set<OWLAxiom> axioms,
-            OWLObjectGeneralisation generalisation) {
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        Collection<? extends OWLEntity> cluster, Collection<? extends OWLOntology> ontologies,
+        Set<OWLAxiom> axioms, OWLObjectGeneralisation generalisation) {
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
+            new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
         for (OWLAxiom axiom : axioms) {
             if (axiom.getAxiomType() != AxiomType.DECLARATION
-                    && axiom.getAxiomType() != AxiomType.ANNOTATION_ASSERTION) {
-                OWLOntologyAnnotationClusterDetector visitor = new OWLOntologyAnnotationClusterDetector(
-                        cluster, ontologies);
+                && axiom.getAxiomType() != AxiomType.ANNOTATION_ASSERTION) {
+                OWLOntologyAnnotationClusterDetector visitor =
+                    new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
                 Set<OWLEntity> signature = new HashSet<OWLEntity>(axiom.getSignature());
                 signature.retainAll(cluster);
                 if (!signature.isEmpty() || axiom.accept(visitor)) {
                     generalisation.clearSubstitutions();
                     OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-                    generalisationMap.put(generalised, new OWLAxiomInstantiation(axiom,
-                            generalisation.getSubstitutions()));
+                    generalisationMap.put(generalised,
+                        new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
                 }
             }
         }
         return generalisationMap;
     }
 
-    /** @param owlObject
-     *            owlObject
-     * @param instantiations
-     *            instantiations
-     * @return true if appears */
+    /**
+     * @param owlObject owlObject
+     * @param instantiations instantiations
+     * @return true if appears
+     */
     public static boolean appears(OWLObject owlObject,
-            Collection<? extends OWLAxiomInstantiation> instantiations) {
+        Collection<? extends OWLAxiomInstantiation> instantiations) {
         if (owlObject == null) {
             throw new NullPointerException("The owlObject cannot be null");
         }
@@ -727,20 +684,19 @@ public class Utils {
         return found;
     }
 
-    /** @param cluster
-     *            cluster
-     * @param generalisationMap
-     *            generalisationMap
-     * @return cluster breakdown */
+    /**
+     * @param cluster cluster
+     * @param generalisationMap generalisationMap
+     * @return cluster breakdown
+     */
     public static MultiMap<OWLObject, OWLAxiom> buildClusterAppearanceBreakdown(
-            Collection<? extends OWLObject> cluster,
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
+        Collection<? extends OWLObject> cluster,
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
         MultiMap<OWLObject, OWLAxiom> toReturn = new MultiMap<OWLObject, OWLAxiom>();
         Set<OWLAxiom> keySet = generalisationMap.keySet();
         for (OWLObject owlObject : cluster) {
             for (OWLAxiom owlAxiom : keySet) {
-                Collection<OWLAxiomInstantiation> instantiations = generalisationMap
-                        .get(owlAxiom);
+                Collection<OWLAxiomInstantiation> instantiations = generalisationMap.get(owlAxiom);
                 if (appears(owlObject, instantiations)) {
                     toReturn.put(owlObject, owlAxiom);
                 }
@@ -749,24 +705,23 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param constraintSystem
-     *            constraintSystem
-     * @param runtimeExceptionHandler
-     *            runtimeExceptionHandler
-     * @param generalisationMap
-     *            generalisationMap */
+    /**
+     * @param constraintSystem constraintSystem
+     * @param runtimeExceptionHandler runtimeExceptionHandler
+     * @param generalisationMap generalisationMap
+     */
     public static void pruneGeneralisationMap(ConstraintSystem constraintSystem,
-            RuntimeExceptionHandler runtimeExceptionHandler,
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
+        RuntimeExceptionHandler runtimeExceptionHandler,
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
         Set<OWLAxiom> generalisations = new HashSet<OWLAxiom>(generalisationMap.keySet());
-        ToStringRenderer.getInstance().setRenderer(
-                new ManchesterOWLSyntaxOWLObjectRendererImpl());
+        ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
+            new ManchesterOWLSyntaxOWLObjectRendererImpl();
+        ToStringRenderer.setRenderer(() -> renderer);
         for (OWLAxiom axiom : generalisations) {
             // if (axiom.toString().contains("cluster_1 ")) {
             // System.out.println(axiom);
             // }
-            Collection<OWLAxiomInstantiation> instantiations = generalisationMap
-                    .get(axiom);
+            Collection<OWLAxiomInstantiation> instantiations = generalisationMap.get(axiom);
             if (instantiations.size() == 1) {
                 // A single instantiation is not a generalisation hence I
                 // will
@@ -792,18 +747,18 @@ public class Utils {
                 for (Variable<?> variable : map.keySet()) {
                     Set<OWLObject> values = map.get(variable);
                     if (values.size() == 1) {
-                        bindingNode.addAssignment(new Assignment(variable, values
-                                .iterator().next()));
+                        bindingNode
+                            .addAssignment(new Assignment(variable, values.iterator().next()));
                     }
                 }
                 if (!bindingNode.getAssignments().isEmpty()) {
                     constraintSystem.setLeaves(Collections.singleton(bindingNode));
-                    PartialOWLObjectInstantiator instantiator = new PartialOWLObjectInstantiator(
-                            new SimpleValueComputationParameters(constraintSystem,
-                                    bindingNode, runtimeExceptionHandler));
+                    PartialOWLObjectInstantiator instantiator =
+                        new PartialOWLObjectInstantiator(new SimpleValueComputationParameters(
+                            constraintSystem, bindingNode, runtimeExceptionHandler));
                     OWLAxiom instantiation = (OWLAxiom) axiom.accept(instantiator);
-                    VariableExtractor variableExtractor = new VariableExtractor(
-                            constraintSystem, false);
+                    VariableExtractor variableExtractor =
+                        new VariableExtractor(constraintSystem, false);
                     // If after replacing the only values of the variables
                     // we
                     // obtain a variable-free axiom we remove it from the
@@ -816,14 +771,12 @@ public class Utils {
                     generalisationMap.remove(axiom);
                     if (!variableExtractor.extractVariables(instantiation).isEmpty()) {
                         for (OWLAxiomInstantiation oldInstantiation : instantiations) {
-                            AssignmentMap substitutions = oldInstantiation
-                                    .getSubstitutions();
+                            AssignmentMap substitutions = oldInstantiation.getSubstitutions();
                             for (Variable<?> v : bindingNode.getAssignedVariables()) {
                                 substitutions.remove(v);
                             }
-                            generalisationMap.put(instantiation,
-                                    new OWLAxiomInstantiation(
-                                            oldInstantiation.getAxiom(), substitutions));
+                            generalisationMap.put(instantiation, new OWLAxiomInstantiation(
+                                oldInstantiation.getAxiom(), substitutions));
                         }
                     }
                     // Clean up the constraint system
@@ -833,22 +786,18 @@ public class Utils {
         }
     }
 
-    /** Flattens out a collection of collections of items turning it into the
-     * union of its members.
+    /**
+     * Flattens out a collection of collections of items turning it into the union of its members.
      * 
-     * @param <P>
-     *            type
-     * @param collections
-     *            collections The collection of collections. Cannot be
-     *            {@code null}.
+     * @param <P> type
+     * @param collections collections The collection of collections. Cannot be {@code null}.
      * @return A Set.
-     * @throws NullPointerException
-     *             NullPointerException if the input is {@code null}. */
+     * @throws NullPointerException NullPointerException if the input is {@code null}.
+     */
     public static <P extends OWLObject> Set<P> flatten(
-            Collection<? extends Collection<? extends P>> collections) {
+        Collection<? extends Collection<? extends P>> collections) {
         if (collections == null) {
-            throw new NullPointerException(
-                    "The starting colleciton of collections cannot be null");
+            throw new NullPointerException("The starting colleciton of collections cannot be null");
         }
         Set<P> toReturn = new HashSet<P>();
         for (Collection<? extends P> collection : collections) {
@@ -857,32 +806,33 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param assignmentMap
-     *            assignmentMap
-     * @return rendering */
+    /**
+     * @param assignmentMap assignmentMap
+     * @return rendering
+     */
     public static String renderInstantiationsStats(AssignmentMap assignmentMap) {
         Formatter formatter = new Formatter();
         Iterator<Variable<?>> iterator = assignmentMap.keySet().iterator();
         while (iterator.hasNext()) {
             Variable<?> v = iterator.next();
             formatter.format("%s count: %d%s", v.getName(), assignmentMap.get(v).size(),
-                    iterator.hasNext() ? "; " : "");
+                iterator.hasNext() ? "; " : "");
         }
         return formatter.toString();
     }
 
-    /** @param instantiations
-     *            instantiations
-     * @return assignment map */
+    /**
+     * @param instantiations instantiations
+     * @return assignment map
+     */
     public static AssignmentMap buildAssignmentMap(
-            Collection<? extends OWLAxiomInstantiation> instantiations) {
-        AssignmentMap toReturn = new AssignmentMap(Collections.<BindingNode> emptySet());
+        Collection<? extends OWLAxiomInstantiation> instantiations) {
+        AssignmentMap toReturn = new AssignmentMap(Collections.<BindingNode>emptySet());
         for (OWLAxiomInstantiation instantiation : instantiations) {
             AssignmentMap substitutions = instantiation.getSubstitutions();
             Set<Variable<?>> variables = substitutions.getVariables();
             for (Variable<?> variable : variables) {
-                Set<OWLObject> substitutionValuesForVariable = substitutions
-                        .get(variable);
+                Set<OWLObject> substitutionValuesForVariable = substitutions.get(variable);
                 Set<OWLObject> set = toReturn.get(variable);
                 if (set == null) {
                     set = new HashSet<OWLObject>();
@@ -894,11 +844,12 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param instantiations
-     *            instantiations
-     * @return axioms */
+    /**
+     * @param instantiations instantiations
+     * @return axioms
+     */
     public static Set<OWLAxiom> extractAxioms(
-            Collection<? extends OWLAxiomInstantiation> instantiations) {
+        Collection<? extends OWLAxiomInstantiation> instantiations) {
         if (instantiations == null) {
             throw new NullPointerException("The instantiation collection cannot be null");
         }
@@ -909,43 +860,42 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param model
-     *            model
-     * @param <C>
-     *            type
-     * @return generalisation map */
-    public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation>
-            extractGeneralisationMap(RegularitiesDecompositionModel<C, OWLEntity> model) {
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+    /**
+     * @param model model
+     * @param <C> type
+     * @return generalisation map
+     */
+    public static <C extends Set<OWLEntity>> MultiMap<OWLAxiom, OWLAxiomInstantiation> extractGeneralisationMap(
+        RegularitiesDecompositionModel<C, OWLEntity> model) {
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn =
+            new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
         for (C c : model.getClusterList()) {
             toReturn.putAll(model.get(c));
         }
         return toReturn;
     }
 
-    /** @param cluster
-     *            cluster
-     * @param generalisationMap
-     *            generalisationMap
-     * @return variable */
+    /**
+     * @param cluster cluster
+     * @param generalisationMap generalisationMap
+     * @return variable
+     */
     public static Variable<?> getVariable(Collection<? extends OWLEntity> cluster,
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
         boolean found = false;
         Variable<?> toReturn = null;
         Iterator<OWLAxiom> iterator = generalisationMap.keySet().iterator();
         while (!found && iterator.hasNext()) {
             OWLAxiom generalisation = iterator.next();
-            Iterator<OWLAxiomInstantiation> anotherIterator = generalisationMap.get(
-                    generalisation).iterator();
+            Iterator<OWLAxiomInstantiation> anotherIterator =
+                generalisationMap.get(generalisation).iterator();
             while (!found && anotherIterator.hasNext()) {
                 OWLAxiomInstantiation owlAxiomInstantiation = anotherIterator.next();
                 AssignmentMap substitutions = owlAxiomInstantiation.getSubstitutions();
-                Iterator<Variable<?>> yetAnotherIterator = substitutions.keySet()
-                        .iterator();
+                Iterator<Variable<?>> yetAnotherIterator = substitutions.keySet().iterator();
                 while (!found && yetAnotherIterator.hasNext()) {
                     Variable<?> variable = yetAnotherIterator.next();
-                    Set<OWLObject> values = new HashSet<OWLObject>(
-                            substitutions.get(variable));
+                    Set<OWLObject> values = new HashSet<OWLObject>(substitutions.get(variable));
                     values.retainAll(cluster);
                     found = !values.isEmpty();
                     if (found) {
@@ -957,54 +907,55 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param cluster
-     *            cluster
-     * @return rendering */
-    public static String render(
-            Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
+    /**
+     * @param cluster cluster
+     * @return rendering
+     */
+    public static String render(Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
         Formatter out = new Formatter();
         Iterator<? extends DistanceTableObject<OWLEntity>> iterator = cluster.iterator();
         while (iterator.hasNext()) {
-            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
+            ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
+                new ManchesterOWLSyntaxOWLObjectRendererImpl();
             OWLEntity owlEntity = iterator.next().getObject();
             out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
         }
         return out.toString();
     }
 
-    /** @param cluster
-     *            cluster
-     * @return rendering */
+    /**
+     * @param cluster cluster
+     * @return rendering
+     */
     public static String renderManchester(
-            Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
+        Collection<? extends DistanceTableObject<OWLEntity>> cluster) {
         Formatter out = new Formatter();
         Iterator<? extends DistanceTableObject<OWLEntity>> iterator = cluster.iterator();
         while (iterator.hasNext()) {
-            ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
+            ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
+                new ManchesterOWLSyntaxOWLObjectRendererImpl();
             OWLEntity owlEntity = iterator.next().getObject();
             out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
         }
         return out.toString();
     }
 
-    /** @param clusteringMatrix
-     *            clusteringMatrix
-     * @param distanceMatrix
-     *            distanceMatrix
-     * @param equivalenceClasses
-     *            equivalenceClasses
-     * @param <P>
-     *            type
-     * @return clusters */
+    /**
+     * @param clusteringMatrix clusteringMatrix
+     * @param distanceMatrix distanceMatrix
+     * @param equivalenceClasses equivalenceClasses
+     * @param <P> type
+     * @return clusters
+     */
     public static <P> Set<Cluster<P>> buildClusters(
-            ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
-            ProximityMatrix<P> distanceMatrix, MultiMap<P, P> equivalenceClasses) {
-        Collection<Collection<? extends DistanceTableObject<P>>> objects = clusteringMatrix
-                .getObjects();
+        ClusteringProximityMatrix<DistanceTableObject<P>> clusteringMatrix,
+        ProximityMatrix<P> distanceMatrix, MultiMap<P, P> equivalenceClasses) {
+        Collection<Collection<? extends DistanceTableObject<P>>> objects =
+            clusteringMatrix.getObjects();
         Set<Cluster<P>> clusters = new HashSet<Cluster<P>>(objects.size());
         for (Collection<? extends DistanceTableObject<P>> collection : objects) {
-            clusters.add(new SimpleCluster<P>(Utility.unwrapObjects(collection,
-                    equivalenceClasses), distanceMatrix));
+            clusters.add(new SimpleCluster<P>(Utility.unwrapObjects(collection, equivalenceClasses),
+                distanceMatrix));
         }
         for (P key : equivalenceClasses.keySet()) {
             Collection<P> set = equivalenceClasses.get(key);
@@ -1029,28 +980,22 @@ public class Utils {
         return toReturn;
     }
 
-    /** @param model
-     *            model
-     * @param file
-     *            file
-     * @param <P>
-     *            type
-     * @param <C>
-     *            set
-     * @throws ParserConfigurationException
-     *             ParserConfigurationException
-     * @throws TransformerFactoryConfigurationError
-     *             TransformerFactoryConfigurationError
-     * @throws TransformerException
-     *             TransformerException */
+    /**
+     * @param model model
+     * @param file file
+     * @param <P> type
+     * @param <C> set
+     * @throws ParserConfigurationException ParserConfigurationException
+     * @throws TransformerFactoryConfigurationError TransformerFactoryConfigurationError
+     * @throws TransformerException TransformerException
+     */
     public static <C extends Set<P>, P extends OWLEntity> void saveToXML(
-            RegularitiesDecompositionModel<C, P> model, File file)
-            throws ParserConfigurationException, TransformerFactoryConfigurationError,
-            TransformerException {
+        RegularitiesDecompositionModel<C, P> model, File file) throws ParserConfigurationException,
+        TransformerFactoryConfigurationError, TransformerException {
         List<C> clusterList = model.getClusterList();
-        ManchesterOWLSyntaxOWLObjectRendererImpl renderer = new ManchesterOWLSyntaxOWLObjectRendererImpl();
-        renderer.setShortFormProvider(new OPPLShortFormProvider(
-                new SimpleShortFormProvider()));
+        ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
+            new ManchesterOWLSyntaxOWLObjectRendererImpl();
+        renderer.setShortFormProvider(new OPPLShortFormProvider(new SimpleShortFormProvider()));
         Document document = toXML(model, clusterList, renderer);
         Transformer t = TransformerFactory.newInstance().newTransformer();
         StreamResult result = new StreamResult(file);
@@ -1061,11 +1006,9 @@ public class Utils {
     }
 
     private static <C extends Set<P>, P extends OWLEntity> Document toXML(
-            RegularitiesDecompositionModel<C, P> model, List<C> clusterList,
-            ManchesterOWLSyntaxOWLObjectRendererImpl renderer)
-            throws ParserConfigurationException {
-        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .newDocument();
+        RegularitiesDecompositionModel<C, P> model, List<C> clusterList,
+        ManchesterOWLSyntaxOWLObjectRendererImpl renderer) throws ParserConfigurationException {
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         Element root = document.createElement("Clusters");
         document.appendChild(root);
         for (C cluster : clusterList) {
@@ -1078,24 +1021,20 @@ public class Utils {
             }
             clusterNode.setAttribute("size", String.format("%d", cluster.size()));
             Element generalisations = document.createElement("Generalisations");
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = model
-                    .get(cluster);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = model.get(cluster);
             for (OWLAxiom generalisedAxiom : generalisationMap.keySet()) {
                 Element generalisedAxiomNode = document.createElement("Generalisation");
-                generalisedAxiomNode.setAttribute("axiom",
-                        renderer.render(generalisedAxiom));
-                Collection<OWLAxiomInstantiation> generalisationChildren = generalisationMap
-                        .get(generalisedAxiom);
+                generalisedAxiomNode.setAttribute("axiom", renderer.render(generalisedAxiom));
+                Collection<OWLAxiomInstantiation> generalisationChildren =
+                    generalisationMap.get(generalisedAxiom);
                 generalisedAxiomNode.setAttribute("count",
-                        Integer.toString(generalisationChildren.size()));
-                generalisedAxiomNode
-                        .setAttribute(
-                                "instantiationStats",
-                                Utils.renderInstantiationsStats(buildAssignmentMap(generalisationChildren)));
+                    Integer.toString(generalisationChildren.size()));
+                generalisedAxiomNode.setAttribute("instantiationStats",
+                    Utils.renderInstantiationsStats(buildAssignmentMap(generalisationChildren)));
                 for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
                     Element axiomNode = document.createElement("Axiom");
                     axiomNode.setAttribute("axiom",
-                            renderer.render(owlAxiomInstantiation.getAxiom()));
+                        renderer.render(owlAxiomInstantiation.getAxiom()));
                     generalisedAxiomNode.appendChild(axiomNode);
                 }
                 generalisations.appendChild(generalisedAxiomNode);
@@ -1105,20 +1044,16 @@ public class Utils {
         return document;
     }
 
-    /** It saves the clusters in an xml. In this version the history is not
-     * saved.
+    /**
+     * It saves the clusters in an xml. In this version the history is not saved.
      * 
-     * @param _clusters
-     *            _clusters
-     * @param manager
-     *            manager
-     * @param file
-     *            file
-     * @param <P>
-     *            type */
-    public static <P extends OWLEntity> void save(
-            Collection<? extends Cluster<P>> _clusters, OWLOntologyManager manager,
-            File file) {
+     * @param _clusters _clusters
+     * @param manager manager
+     * @param file file
+     * @param <P> type
+     */
+    public static <P extends OWLEntity> void save(Collection<? extends Cluster<P>> _clusters,
+        OWLOntologyManager manager, File file) {
         try {
             List<Cluster<P>> sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
             for (Cluster<P> c : _clusters) {
@@ -1128,20 +1063,19 @@ public class Utils {
             }
             Collections.sort(sortedClusters, ClusterStatisticsTableModel.SIZE_COMPARATOR);
             OWLOntology ontology = manager.getOntologies().iterator().next();
-            ConstraintSystem constraintSystem = new OPPLFactory(manager, ontology, null)
-                    .createConstraintSystem();
+            ConstraintSystem constraintSystem =
+                new OPPLFactory(manager, ontology, null).createConstraintSystem();
             OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                    sortedClusters, manager.getOntologies(), constraintSystem);
+                sortedClusters, manager.getOntologies(), constraintSystem);
             printExtraStats(file, sortedClusters);
             Document xml = Utils.toXML(sortedClusters, manager.getOntologies(),
-                    new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation);
+                new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation);
             Transformer t = TransformerFactory.newInstance().newTransformer();
             StreamResult result = new StreamResult(file);
             t.setOutputProperty(OutputKeys.INDENT, "yes");
             t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
             t.transform(new DOMSource(xml), result);
-            System.out.println(String.format("Results saved in %s",
-                    file.getAbsolutePath()));
+            System.out.println(String.format("Results saved in %s", file.getAbsolutePath()));
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (TransformerConfigurationException e) {
@@ -1155,99 +1089,85 @@ public class Utils {
         }
     }
 
-    /** @param file
-     *            file
-     * @param sortedClusters
-     *            sortedClusters
-     * @param <P>
-     *            type */
-    public static <P> void printExtraStats(File file,
-            Collection<Cluster<P>> sortedClusters) {
+    /**
+     * @param file file
+     * @param sortedClusters sortedClusters
+     * @param <P> type
+     */
+    public static <P> void printExtraStats(File file, Collection<Cluster<P>> sortedClusters) {
         try {
             PrintStream out = new PrintStream(file.getName() + ".csv");
             int index = 0;
             out.println("cluster index, cluster size, "
-                    + "average internal distance, average external distance, "
-                    + "max internal distance, min internal distance, "
-                    + "max external distance, min external distance, homogeneity");
+                + "average internal distance, average external distance, "
+                + "max internal distance, min internal distance, "
+                + "max external distance, min external distance, homogeneity");
             for (Cluster<P> cluster : sortedClusters) {
                 ClusterStatistics<P> stats = ClusterStatistics.buildStatistics(cluster);
                 out.print("cluster " + index);
                 index++;
-                out.println("," + cluster.size() + ","
-                        + stats.getAverageInternalDistance() + ","
-                        + stats.getAverageExternalDistance() + ","
-                        + stats.getMaxInternalDistance() + ","
-                        + stats.getMinInternalDistance() + ","
-                        + stats.getMaxExternalDistance() + ","
-                        + stats.getMinExternalDistance() + ","
-                        + (1 - stats.getAverageInternalDistance()));
+                out.println("," + cluster.size() + "," + stats.getAverageInternalDistance() + ","
+                    + stats.getAverageExternalDistance() + "," + stats.getMaxInternalDistance()
+                    + "," + stats.getMinInternalDistance() + "," + stats.getMaxExternalDistance()
+                    + "," + stats.getMinExternalDistance() + ","
+                    + (1 - stats.getAverageInternalDistance()));
             }
             out.close();
         } catch (IOException e) {
-            System.out
-                    .println("AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll.save() Cannot save extra metrics for "
-                            + file.getName());
+            System.out.println(
+                "AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll.save() Cannot save extra metrics for "
+                    + file.getName());
             e.printStackTrace(System.out);
         }
     }
 
-    /** Builds the cluster decomposition model when detecting syntactic
-     * regularities
+    /**
+     * Builds the cluster decomposition model when detecting syntactic regularities
      * 
-     * @param _clusters
-     *            _clusters
-     * @param ontologies
-     *            ontologies
-     * @param generalisation
-     *            generalisation
-     * @param <P>
-     *            type
-     * @return cluster decomposition model */
-    public static <P extends OWLEntity> ClusterDecompositionModel<P>
-            toClusterDecompositionModel(Collection<? extends Cluster<P>> _clusters,
-                    Collection<? extends OWLOntology> ontologies,
-                    OWLObjectGeneralisation generalisation) {
-        ClusterDecompositionModel<P> model = new ClusterDecompositionModel<P>(_clusters,
-                ontologies);
+     * @param _clusters _clusters
+     * @param ontologies ontologies
+     * @param generalisation generalisation
+     * @param <P> type
+     * @return cluster decomposition model
+     */
+    public static <P extends OWLEntity> ClusterDecompositionModel<P> toClusterDecompositionModel(
+        Collection<? extends Cluster<P>> _clusters, Collection<? extends OWLOntology> ontologies,
+        OWLObjectGeneralisation generalisation) {
+        ClusterDecompositionModel<P> model =
+            new ClusterDecompositionModel<P>(_clusters, ontologies);
         for (Cluster<P> cluster : _clusters) {
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
-                    .buildGeneralisationMap(cluster, ontologies, generalisation);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
+                Utils.buildGeneralisationMap(cluster, ontologies, generalisation);
             model.put(cluster, generalisationMap);
         }
         return model;
     }
 
-    /** @param _clusters
-     *            _clusters
-     * @param ontologies
-     *            ontologies
-     * @param axioms
-     *            axioms
-     * @param generalisation
-     *            generalisation
-     * @param <P>
-     *            type
-     * @return cluster decomposition model */
-    public static <P extends OWLEntity> ClusterDecompositionModel<P>
-            toKnowledgeExplorerClusterDecompositionModel(
-                    Collection<? extends Cluster<P>> _clusters,
-                    Collection<? extends OWLOntology> ontologies, Set<OWLAxiom> axioms,
-                    OWLObjectGeneralisation generalisation) {
-        ClusterDecompositionModel<P> model = new ClusterDecompositionModel<P>(_clusters,
-                ontologies);
+    /**
+     * @param _clusters _clusters
+     * @param ontologies ontologies
+     * @param axioms axioms
+     * @param generalisation generalisation
+     * @param <P> type
+     * @return cluster decomposition model
+     */
+    public static <P extends OWLEntity> ClusterDecompositionModel<P> toKnowledgeExplorerClusterDecompositionModel(
+        Collection<? extends Cluster<P>> _clusters, Collection<? extends OWLOntology> ontologies,
+        Set<OWLAxiom> axioms, OWLObjectGeneralisation generalisation) {
+        ClusterDecompositionModel<P> model =
+            new ClusterDecompositionModel<P>(_clusters, ontologies);
         for (Cluster<P> cluster : _clusters) {
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
-                    .buildKnowledgeExplorerGeneralisationMap(cluster, generalisation,
-                            axioms);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
+                Utils.buildKnowledgeExplorerGeneralisationMap(cluster, generalisation, axioms);
             model.put(cluster, generalisationMap);
         }
         return model;
     }
 
-    /** @param o
-     *            o
-     * @return signature */
+    /**
+     * @param o o
+     * @return signature
+     */
     public static Set<OWLEntity> getSortedSignature(OWLOntology o) {
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLOntology onto : o.getImportsClosure()) {
@@ -1256,9 +1176,10 @@ public class Utils {
         return entities;
     }
 
-    /** @param axioms
-     *            axioms
-     * @return signature */
+    /**
+     * @param axioms axioms
+     * @return signature
+     */
     public static Set<OWLEntity> getSortedSignature(Set<OWLAxiom> axioms) {
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         for (OWLAxiom ax : axioms) {
@@ -1267,27 +1188,28 @@ public class Utils {
         return entities;
     }
 
-    /** @param _entities
-     *            _entities
-     * @return sgnature */
+    /**
+     * @param _entities _entities
+     * @return sgnature
+     */
     public static Set<OWLEntity> sortSignature(Set<OWLEntity> _entities) {
         Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
         entities.addAll(_entities);
         return entities;
     }
 
-    /** @param manager
-     *            manager
-     * @return renderer */
+    /**
+     * @param manager manager
+     * @return renderer
+     */
     public static org.coode.utils.owl.ManchesterSyntaxRenderer enableLabelRendering(
-            OWLOntologyManager manager) {
+        OWLOntologyManager manager) {
         OWLDataFactory dataFactory = manager.getOWLDataFactory();
         ShortFormProvider shortFormProvider = new OPPLShortFormProvider(
-                new AnnotationValueShortFormProvider(Arrays.asList(dataFactory
-                        .getRDFSLabel()),
-                        Collections.<OWLAnnotationProperty, List<String>> emptyMap(),
-                        manager));
-        org.coode.utils.owl.ManchesterSyntaxRenderer renderer = new org.coode.utils.owl.ManchesterSyntaxRenderer();
+            new AnnotationValueShortFormProvider(Arrays.asList(dataFactory.getRDFSLabel()),
+                Collections.<OWLAnnotationProperty, List<String>>emptyMap(), manager));
+        org.coode.utils.owl.ManchesterSyntaxRenderer renderer =
+            new org.coode.utils.owl.ManchesterSyntaxRenderer();
         // ManchesterOWLSyntaxObjectRenderer renderer = new
         // ManchesterOWLSyntaxObjectRenderer(
         // new OutputStreamWriter(System.out),

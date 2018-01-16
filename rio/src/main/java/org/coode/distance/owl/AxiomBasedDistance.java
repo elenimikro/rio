@@ -31,7 +31,6 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -47,11 +46,11 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
-    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantiationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantiationMap =
+        new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
-                throws OWLException {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             AxiomBasedDistance.this.buildAxiomMap(ontologies);
         }
     };
@@ -73,17 +72,15 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
         }
     }
 
-    /** @param ontologies
-     *            ontologies
-     * @param dataFactory
-     *            dataFactory
-     * @param relevancePolicy
-     *            relevancePolicy
-     * @param manager
-     *            manager */
+    /**
+     * @param ontologies ontologies
+     * @param dataFactory dataFactory
+     * @param relevancePolicy relevancePolicy
+     * @param manager manager
+     */
     public AxiomBasedDistance(Collection<? extends OWLOntology> ontologies,
-            OWLDataFactory dataFactory, RelevancePolicy<OWLEntity> relevancePolicy,
-            OWLOntologyManager manager) {
+        OWLDataFactory dataFactory, RelevancePolicy<OWLEntity> relevancePolicy,
+        OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
@@ -102,12 +99,10 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
         this.relevancePolicy = relevancePolicy;
         this.dataFactory = dataFactory;
         entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
-        factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(),
-                null);
-        replacer = new RelevancePolicyOWLObjectGeneralisation(
-                org.coode.distance.entityrelevance.owl.Utils
-                        .toOWLObjectRelevancePolicy(getRelevancePolicy()),
-                getEntityProvider());
+        factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(), null);
+        replacer =
+            new RelevancePolicyOWLObjectGeneralisation(org.coode.distance.entityrelevance.owl.Utils
+                .toOWLObjectRelevancePolicy(getRelevancePolicy()), getEntityProvider());
     }
 
     @Override
@@ -137,17 +132,18 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     @Override
     public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
-                .getCopyOnRequestSetFromImmutableCollection(cached);
+        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
+            : CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
-    /** @param owlEntity
-     *            owlEntity
-     * @return axioms */
+    /**
+     * @param owlEntity owlEntity
+     * @return axioms
+     */
     protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             ((SingleOWLEntityReplacementVariableProvider) replacer.getVariableProvider())
-                    .setOWLObject(owlEntity);
+                .setOWLObject(owlEntity);
             ConstraintSystem createConstraintSystem = factory.createConstraintSystem();
             replacer.setConstraintSystem(createConstraintSystem);
             replacer.getVariableProvider().setConstraintSystem(createConstraintSystem);
@@ -157,15 +153,15 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
             }
             // XXX: put method for the instantiationMap.
             instantiationMap.put(replaced,
-                    new OWLAxiomInstantiation(axiom, replacer.getSubstitutions()));
+                new OWLAxiomInstantiation(axiom, replacer.getSubstitutions()));
         }
-        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
-                .get(owlEntity));
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache.get(owlEntity));
     }
 
-    /** @param ax
-     *            ax
-     * @return instantiations */
+    /**
+     * @param ax ax
+     * @return instantiations
+     */
     public Collection<OWLAxiomInstantiation> getInstantiations(OWLAxiom ax) {
         return instantiationMap.get(ax);
     }

@@ -21,7 +21,6 @@ import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.AddOntologyAnnotation;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -40,8 +39,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     final Set<OWLAxiom> axiomsDelegate = new HashSet<OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
-                throws OWLException {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             for (OWLOntologyChange change : changes) {
                 change.accept(new OWLOntologyChangeVisitor() {
                     @Override
@@ -118,8 +116,9 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
         }
     };
 
-    /** @param ontologyManager
-     *            ontologyManager */
+    /**
+     * @param ontologyManager ontologyManager
+     */
     public OWLOntologyManagerBasedOWLAxiomProvider(OWLOntologyManager ontologyManager) {
         if (ontologyManager == null) {
             throw new NullPointerException("The manager cannot be null");

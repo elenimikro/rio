@@ -11,6 +11,7 @@
 package org.coode.owl.distance.test;
 
 import java.io.File;
+import java.util.List;
 
 import org.coode.basetest.TestHelper;
 import org.coode.distance.entityrelevance.RelevancePolicy;
@@ -28,14 +29,13 @@ public class StructuralAxiomRelevanceAxiomBasedBasedDistanceTest extends Distanc
         return new DistanceBuilder() {
             @Override
             public AbstractAxiomBasedDistance getDistance(OWLOntology o) {
-                return new StructuralAxiomRelevanceAxiomBasedDistance(
-                        o.getImportsClosure(), o.getOWLOntologyManager()
-                                .getOWLDataFactory(), o.getOWLOntologyManager());
+                return new StructuralAxiomRelevanceAxiomBasedDistance(o.getImportsClosure(),
+                    o.getOWLOntologyManager().getOWLDataFactory(), o.getOWLOntologyManager());
             }
 
             @Override
             public AbstractAxiomBasedDistance getDistance(OWLOntology o,
-                    RelevancePolicy<OWLEntity> rp) {
+                RelevancePolicy<OWLEntity> rp) {
                 return null;
             }
         };
@@ -44,14 +44,14 @@ public class StructuralAxiomRelevanceAxiomBasedBasedDistanceTest extends Distanc
     public void testAminoAcid() {
         String ns = "http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#";
         OWLOntology o = getOntology(new File("eswc-ontologies/amino-acid-original.owl"));
-        OWLClass[] classes = getClasses(ns + "Non-Polar", ns + "A");
+        List<OWLClass> classes = getClasses(ns + "Non-Polar", ns + "A");
         properTest(getDistanceBuilder().getDistance(o), classes);
     }
 
     public void testGetDistance() {
         OWLOntology o = TestHelper.getPizza();
-        OWLClass[] classes = getClasses(pizza_ns + "Margherita",
-                pizza_ns + "Capricciosa", pizza_ns + "MozzarellaTopping");
+        List<OWLClass> classes = getClasses(pizza_ns + "Margherita", pizza_ns + "Capricciosa",
+            pizza_ns + "MozzarellaTopping");
         properTest(getDistanceBuilder().getDistance(o), classes);
     }
 }

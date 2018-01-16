@@ -10,11 +10,14 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.junit.Before;
@@ -49,49 +52,49 @@ public abstract class DistanceTestCase {
         // ManchesterSyntaxRenderer());
     }
 
-    public void properTest(AbstractAxiomBasedDistance distance, OWLEntity... entities) {
+    public void properTest(AbstractAxiomBasedDistance distance,
+        List<? extends OWLEntity> entities) {
         for (OWLEntity c : entities) {
             System.out.println(c.toString());
             System.out.println(distance.getAxioms(c));
         }
-        for (int i = 0; i < entities.length; i++) {
-            for (int j = 0; j < entities.length; j++) {
-                double d = distance.getDistance(entities[i], entities[j]);
+        for (int i = 0; i < entities.size(); i++) {
+            for (int j = 0; j < entities.size(); j++) {
+                double d = distance.getDistance(entities.get(i), entities.get(j));
                 if (i == j) {
                     assertTrue(Double.compare(d, 0D) == 0);
-                    assertTrue(Double.compare(
-                            distance.getDistance(entities[j], entities[i]), 0D) == 0);
+                    assertTrue(Double
+                        .compare(distance.getDistance(entities.get(j), entities.get(i)), 0D) == 0);
                 } else {
-                    Collection<OWLAxiom> axioms_i = distance.getAxioms(entities[i]);
-                    Collection<OWLAxiom> axioms_j = distance.getAxioms(entities[j]);
-                    Collection<OWLAxiom> union = new HashSet<OWLAxiom>(
-                            distance.getAxioms(entities[i]));
+                    Collection<OWLAxiom> axioms_i = distance.getAxioms(entities.get(i));
+                    Collection<OWLAxiom> axioms_j = distance.getAxioms(entities.get(j));
+                    Collection<OWLAxiom> union =
+                        new HashSet<OWLAxiom>(distance.getAxioms(entities.get(i)));
                     union.addAll(axioms_j);
                     axioms_i.retainAll(axioms_j);
                     if (axioms_i.isEmpty()) {
-                        assertTrue(entities[i] + "\t" + entities[j]
-                                + " expected: 1; actual: " + d,
-                                Double.compare(d, 1D) == 0);
+                        assertTrue(
+                            entities.get(i) + "\t" + entities.get(j) + " expected: 1; actual: " + d,
+                            Double.compare(d, 1D) == 0);
                         assertTrue(Double.compare(
-                                distance.getDistance(entities[j], entities[i]), 1D) == 0);
+                            distance.getDistance(entities.get(j), entities.get(i)), 1D) == 0);
                     } else {
-                        double inverse_d = distance.getDistance(entities[j], entities[i]);
-                        System.out.println("Intersection between " + entities[i]
-                                + " and " + entities[j] + " of size " + axioms_i.size());
+                        double inverse_d = distance.getDistance(entities.get(j), entities.get(i));
+                        System.out.println("Intersection between " + entities.get(i) + " and "
+                            + entities.get(j) + " of size " + axioms_i.size());
                         for (OWLAxiom ax : axioms_i) {
                             System.out.println(ax);
                         }
                         System.out.println();
-                        System.out.println("Union between " + entities[i] + " and "
-                                + entities[j] + " of size " + union.size());
+                        System.out.println("Union between " + entities.get(i) + " and "
+                            + entities.get(j) + " of size " + union.size());
                         for (OWLAxiom ax : union) {
                             System.out.println(ax);
                         }
-                        assertTrue("Expected positive was " + d,
-                                Double.compare(0D, d) <= 0);
+                        assertTrue("Expected positive was " + d, Double.compare(0D, d) <= 0);
                         assertTrue("Expected <1 was " + d, Double.compare(d, 1D) < 0);
                         assertTrue("Expected equal was " + d + " " + inverse_d,
-                                Double.compare(d, inverse_d) == 0);
+                            Double.compare(d, inverse_d) == 0);
                     }
                 }
             }
@@ -120,11 +123,11 @@ public abstract class DistanceTestCase {
         }
     }
 
-    protected OWLClass[] getClasses(String... strings) {
+    protected List<OWLClass> getClasses(String... strings) {
         OWLDataFactory f = OWLManager.getOWLDataFactory();
-        OWLClass[] toReturn = new OWLClass[strings.length];
+        List<OWLClass> toReturn = new ArrayList<>(strings.length);
         for (int i = 0; i < strings.length; i++) {
-            toReturn[i] = f.getOWLClass(IRI.create(strings[i]));
+            toReturn.add(f.getOWLClass(IRI.create(strings[i])));
         }
         return toReturn;
     }
@@ -147,11 +150,11 @@ public abstract class DistanceTestCase {
         return toReturn;
     }
 
-    protected OWLNamedIndividual[] getNamedIndividuals(String... strings) {
+    protected List<OWLNamedIndividual> getNamedIndividuals(String... strings) {
         OWLDataFactory f = OWLManager.getOWLDataFactory();
-        OWLNamedIndividual[] toReturn = new OWLNamedIndividual[strings.length];
+        List<OWLNamedIndividual> toReturn = new ArrayList<>(strings.length);
         for (int i = 0; i < strings.length; i++) {
-            toReturn[i] = f.getOWLNamedIndividual(IRI.create(strings[i]));
+            toReturn.add(f.getOWLNamedIndividual(IRI.create(strings[i])));
         }
         return toReturn;
     }

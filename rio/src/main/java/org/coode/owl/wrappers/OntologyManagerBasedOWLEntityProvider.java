@@ -13,7 +13,6 @@ package org.coode.owl.wrappers;
 import java.util.List;
 import java.util.Set;
 
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -21,18 +20,18 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
 public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
-        implements OWLEntityProvider {
+    implements OWLEntityProvider {
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
-                throws OWLException {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             clear();
             OntologyManagerBasedOWLEntityProvider.this.loadDelegate();
         }
     };
 
-    /** @param ontologyManager
-     *            ontologyManager */
+    /**
+     * @param ontologyManager ontologyManager
+     */
     public OntologyManagerBasedOWLEntityProvider(OWLOntologyManager ontologyManager) {
         super(ontologyManager);
         loadDelegate();

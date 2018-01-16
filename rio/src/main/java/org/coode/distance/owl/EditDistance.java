@@ -20,7 +20,6 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -37,8 +36,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes)
-                throws OWLException {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             EditDistance.this.buildAxiomMap(ontologies);
         }
     };
@@ -57,14 +55,13 @@ public class EditDistance implements AbstractAxiomBasedDistance {
         }
     }
 
-    /** @param ontologies
-     *            ontologies
-     * @param dataFactory
-     *            dataFactory
-     * @param manager
-     *            manager */
-    public EditDistance(Collection<? extends OWLOntology> ontologies,
-            OWLDataFactory dataFactory, OWLOntologyManager manager) {
+    /**
+     * @param ontologies ontologies
+     * @param dataFactory dataFactory
+     * @param manager manager
+     */
+    public EditDistance(Collection<? extends OWLOntology> ontologies, OWLDataFactory dataFactory,
+        OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
@@ -126,11 +123,11 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     }
 
     private MultiMap<OWLAxiom, OWLAxiom> buildMap(OWLEntity owlEntity,
-            Collection<? extends OWLAxiom> axioms) {
+        Collection<? extends OWLAxiom> axioms) {
         MultiMap<OWLAxiom, OWLAxiom> toReturn = new MultiMap<OWLAxiom, OWLAxiom>();
         OWLEntityReplacer replacer = new OWLEntityReplacer(getDataFactory(),
-                new SingleOWLObjectReplacementByKindStrategy(owlEntity, getDataFactory(),
-                        DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy()));
+            new SingleOWLObjectReplacementByKindStrategy(owlEntity, getDataFactory(),
+                DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy()));
         for (OWLAxiom axiom : axioms) {
             OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
             toReturn.put(replaced, axiom);
@@ -141,13 +138,14 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     @Override
     public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
         Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity) : CollectionFactory
-                .getCopyOnRequestSetFromImmutableCollection(cached);
+        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
+            : CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cached);
     }
 
-    /** @param owlEntity
-     *            owlEntity
-     * @return axioms */
+    /**
+     * @param owlEntity owlEntity
+     * @return axioms
+     */
     protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
         if (!cache.get(owlEntity).isEmpty()) {
@@ -161,8 +159,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
                 }
             }
         }
-        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache
-                .get(owlEntity));
+        return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache.get(owlEntity));
     }
 
     /** @return the ontologies */
