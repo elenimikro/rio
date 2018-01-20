@@ -19,20 +19,18 @@ import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 /** @author eleni */
-public class OWLEntityReplacementVariableProvider extends
-        SingleOWLEntityReplacementVariableProvider {
-    /** @param relevancePolicy
-     *            relevancePolicy
-     * @param entityProvider
-     *            entityProvider
-     * @param constraintSystem
-     *            constraintSystem */
-    public OWLEntityReplacementVariableProvider(
-            RelevancePolicy<OWLEntity> relevancePolicy, OWLEntityProvider entityProvider,
-            ConstraintSystem constraintSystem) {
+public class OWLEntityReplacementVariableProvider
+    extends SingleOWLEntityReplacementVariableProvider {
+    /**
+     * @param relevancePolicy relevancePolicy
+     * @param entityProvider entityProvider
+     * @param constraintSystem constraintSystem
+     */
+    public OWLEntityReplacementVariableProvider(RelevancePolicy<OWLEntity> relevancePolicy,
+        OWLEntityProvider entityProvider, ConstraintSystem constraintSystem) {
         super(relevancePolicy, entityProvider);
         setConstraintSystem(constraintSystem);
     }
@@ -42,22 +40,20 @@ public class OWLEntityReplacementVariableProvider extends
         if (owlObject == null) {
             throw new NullPointerException("The owlObject cannot be null");
         }
-        return owlObject.accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
+        return owlObject.accept(new OWLObjectVisitorEx<Variable<?>>() {
             @Override
-            protected Variable<?> getDefaultReturnValue(OWLObject _object) {
+            public <T> Variable<?> doDefault(T _object) {
                 OWLEntity object = (OWLEntity) _object;
-                return object.equals(OWLEntityReplacementVariableProvider.this
-                        .getOWLObject()) ? null
-                        : OWLEntityReplacementVariableProvider.this.getRelevancePolicy()
-                                .isRelevant(object) ? null
-                                : OWLEntityReplacementVariableProvider.this
-                                        .getVariable(object);
+                return object.equals(OWLEntityReplacementVariableProvider.this.getOWLObject())
+                    ? null
+                    : OWLEntityReplacementVariableProvider.this.getRelevancePolicy()
+                        .isRelevant(object) ? null
+                            : OWLEntityReplacementVariableProvider.this.getVariable(object);
             }
 
             @Override
             public Variable<?> visit(IRI iri) {
-                OWLObject owlEntity = OWLEntityReplacementVariableProvider.this
-                        .getOWLEntity(iri);
+                OWLObject owlEntity = OWLEntityReplacementVariableProvider.this.getOWLEntity(iri);
                 return owlEntity != null ? owlEntity.accept(this) : null;
             }
         });
@@ -65,17 +61,18 @@ public class OWLEntityReplacementVariableProvider extends
 
     @Override
     public Variable<?> getVariable(OWLObject owlObject) {
-        VariableType<?> type = owlObject
-                .accept(new OWLObjectVisitorExAdapter<VariableType<?>>(
-                        VariableTypeFactory.getVariableType(owlObject)) {
-                    @Override
-                    public VariableType<?> visit(IRI iri) {
-                        OWLObject owlEntity = OWLEntityReplacementVariableProvider.this
-                                .getOWLEntity(iri);
-                        return owlEntity != null ? VariableTypeFactory
-                                .getVariableType(owlEntity) : null;
-                    }
-                });
+        VariableType<?> type = owlObject.accept(new OWLObjectVisitorEx<VariableType<?>>() {
+            @Override
+            public <T> VariableType<?> doDefault(T object) {
+                return VariableTypeFactory.getVariableType(owlObject);
+            }
+
+            @Override
+            public VariableType<?> visit(IRI iri) {
+                OWLObject owlEntity = OWLEntityReplacementVariableProvider.this.getOWLEntity(iri);
+                return owlEntity != null ? VariableTypeFactory.getVariableType(owlEntity) : null;
+            }
+        });
         Variable<?> toReturn = null;
         if (type != null) {
             newVariable(type);

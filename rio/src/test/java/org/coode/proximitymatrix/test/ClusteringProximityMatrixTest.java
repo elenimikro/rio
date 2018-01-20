@@ -42,53 +42,35 @@ public class ClusteringProximityMatrixTest {
     @Test
     public void testReduce() {
         OWLOntology ontology = TestHelper.getPizza();
-        final AxiomBasedDistance distance = new AxiomBasedDistance(
-                Collections.singleton(ontology), ontology.getOWLOntologyManager()
-                        .getOWLDataFactory(),
-                DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(),
-                ontology.getOWLOntologyManager());
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        final AxiomBasedDistance distance = new AxiomBasedDistance(Collections.singleton(ontology),
+            ontology.getOWLOntologyManager().getOWLDataFactory(),
+            DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(),
+            ontology.getOWLOntologyManager());
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         entities.addAll(ontology.getSignature());
-        SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        System.out.println(String.format(
-                "Finished computing distance between %d entities", distanceMatrix
-                        .getObjects().size()));
-        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
+        SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        System.out.println(String.format("Finished computing distance between %d entities",
+            distanceMatrix.getObjects().size()));
+        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singleton(object));
         }
-        Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
-            @Override
-            public double getDistance(Collection<? extends OWLEntity> a,
-                    Collection<? extends OWLEntity> b) {
-                return distance.getDistance(a.iterator().next(), b.iterator().next());
-            }
-        };
+        Distance<Collection<? extends OWLEntity>> singletonDistance =
+            (a, b) -> distance.getDistance(a.iterator().next(), b.iterator().next());
         PairFilter<Collection<? extends OWLEntity>> filter = DistanceThresholdBasedFilter
-                .build(new TableDistance<OWLEntity>(entities, distanceMatrix.getData()),
-                        1);
+            .build(new TableDistance<>(entities, distanceMatrix.getData()), 1);
         System.out.println("Building clustering matrix....");
-        ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
-                .build(distanceMatrix, new CentroidProximityMeasureFactory(), filter,
-                        PairFilterBasedComparator.build(filter, newObjects,
-                                singletonDistance));
-        ClusteringProximityMatrix<OWLEntity> reducedSingleFilter = clusteringMatrix
-                .reduce(filter);
+        ClusteringProximityMatrix<OWLEntity> clusteringMatrix =
+            ClusteringProximityMatrix.build(distanceMatrix, new CentroidProximityMeasureFactory(),
+                filter, PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
+        ClusteringProximityMatrix<OWLEntity> reducedSingleFilter = clusteringMatrix.reduce(filter);
         ClusteringProximityMatrix<OWLEntity> reducedMultipleFilter = clusteringMatrix
-                .reduce(OrPairFilter.build(
-                        new PairFilter<Collection<? extends OWLEntity>>() {
-                            @Override
-                            public boolean accept(Collection<? extends OWLEntity> first,
-                                    Collection<? extends OWLEntity> second) {
-                                return first.size() > 1;
-                            }
-                        }, filter));
-        Set<Collection<? extends OWLEntity>> difference = new HashSet<Collection<? extends OWLEntity>>(
-                reducedMultipleFilter.getObjects());
+            .reduce(OrPairFilter.build((first, second) -> first.size() > 1, filter));
+        Set<Collection<? extends OWLEntity>> difference =
+            new HashSet<>(reducedMultipleFilter.getObjects());
         difference.removeAll(reducedSingleFilter.getObjects());
         assertTrue(String.format("Non identical, the difference is %s", difference),
-                reducedSingleFilter.getObjects().size() == reducedMultipleFilter
-                        .getObjects().size());
+            reducedSingleFilter.getObjects().size() == reducedMultipleFilter.getObjects().size());
     }
 }

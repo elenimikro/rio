@@ -12,12 +12,11 @@ package org.coode.proximitymatrix;
 
 /** @author eleni */
 public interface ProximityMeasureFactory {
-    /** @param mA
-     *            mA
-     * @param mB
-     *            mB
-     * @param mQ
-     *            mQ
-     * @return formula measure */
+    /**
+     * @param mA mA
+     * @param mB mB
+     * @param mQ mQ
+     * @return formula measure
+     */
     LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ);
 }

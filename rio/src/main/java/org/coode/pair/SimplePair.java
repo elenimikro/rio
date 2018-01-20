@@ -13,17 +13,18 @@
  */
 package org.coode.pair;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public class SimplePair<O> implements Pair<O> {
     private final O first;
     private final O second;
 
-    /** @param first
-     *            first
-     * @param second
-     *            second */
+    /**
+     * @param first first
+     * @param second second
+     */
     public SimplePair(O first, O second) {
         if (first == null) {
             throw new IllegalArgumentException("first cannot be null");
@@ -35,8 +36,9 @@ public class SimplePair<O> implements Pair<O> {
         this.second = second;
     }
 
-    /** @param pair
-     *            pair */
+    /**
+     * @param pair pair
+     */
     public SimplePair(Pair<O> pair) {
         this(pair.getFirst(), pair.getSecond());
     }
@@ -46,15 +48,14 @@ public class SimplePair<O> implements Pair<O> {
         return first.equals(o) || second.equals(o);
     }
 
-    /** @param object
-     *            object
-     * @param anotherObject
-     *            anotherObject
-     * @param <P>
-     *            type
-     * @return pair */
+    /**
+     * @param object object
+     * @param anotherObject anotherObject
+     * @param <P> type
+     * @return pair
+     */
     public static <P> SimplePair<P> build(P object, P anotherObject) {
-        return new SimplePair<P>(object, anotherObject);
+        return new SimplePair<>(object, anotherObject);
     }
 
     @Override
@@ -94,6 +95,6 @@ public class SimplePair<O> implements Pair<O> {
         }
         SimplePair<?> other = (SimplePair<?>) obj;
         return this.first.equals(other.first) && this.second.equals(other.second)
-                || this.second.equals(other.first) && this.first.equals(other.second);
+            || this.second.equals(other.first) && this.first.equals(other.second);
     }
 }

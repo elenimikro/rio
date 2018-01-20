@@ -1,16 +1,17 @@
 package org.coode.utils;
 
-/** @author eleni
- * @param <M>
- *            type */
+/**
+ * @author eleni
+ * @param <M> type
+ */
 public class SimpleMetric<M> {
     private final M value;
     private final String name;
 
-    /** @param name
-     *            name
-     * @param value
-     *            value */
+    /**
+     * @param name name
+     * @param value value
+     */
     public SimpleMetric(String name, M value) {
         this.value = value;
         this.name = name;

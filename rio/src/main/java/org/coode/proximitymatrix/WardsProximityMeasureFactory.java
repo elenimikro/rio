@@ -9,12 +9,13 @@
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.proximitymatrix;
+
 /** @author eleni */
 public class WardsProximityMeasureFactory implements ProximityMeasureFactory {
-	@Override
+    @Override
     public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
-		return new LanceWilliamsFormula((double) (mA + mQ) / (double) (mA + mB + mQ),
-				(double) (mB + mQ) / (double) (mA + mB + mQ), (double) -mQ
-						/ (double) (mA + mB + mQ), 0);
-	}
+        return new LanceWilliamsFormula((double) (mA + mQ) / (double) (mA + mB + mQ),
+            (double) (mB + mQ) / (double) (mA + mB + mQ), (double) -mQ / (double) (mA + mB + mQ),
+            0);
+    }
 }

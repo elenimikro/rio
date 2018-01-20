@@ -423,8 +423,7 @@ public class OWLFunctionalSyntaxAxiomFactory {
 
     public OWLEquivalentClassesAxiom EquivalentClasses(Set<OWLAnnotation> a,
         OWLClassExpression... classExpressions) {
-        return df.getOWLEquivalentClassesAxiom(
-            new HashSet<OWLClassExpression>(Arrays.asList(classExpressions)), a);
+        return df.getOWLEquivalentClassesAxiom(new HashSet<>(Arrays.asList(classExpressions)), a);
     }
 
     public OWLDisjointClassesAxiom DisjointClasses(OWLClassExpression... classExpressions) {
@@ -448,8 +447,7 @@ public class OWLFunctionalSyntaxAxiomFactory {
 
     public OWLDisjointClassesAxiom DisjointClasses(Set<OWLAnnotation> a,
         OWLClassExpression... classExpressions) {
-        return df.getOWLDisjointClassesAxiom(
-            new HashSet<OWLClassExpression>(Arrays.asList(classExpressions)), a);
+        return df.getOWLDisjointClassesAxiom(new HashSet<>(Arrays.asList(classExpressions)), a);
     }
 
     public OWLSubObjectPropertyOfAxiom SubObjectPropertyOf(OWLObjectPropertyExpression subProperty,
@@ -481,8 +479,8 @@ public class OWLFunctionalSyntaxAxiomFactory {
 
     public OWLEquivalentObjectPropertiesAxiom EquivalentObjectProperties(Set<OWLAnnotation> a,
         OWLObjectPropertyExpression... properties) {
-        return df.getOWLEquivalentObjectPropertiesAxiom(
-            new HashSet<OWLObjectPropertyExpression>(Arrays.asList(properties)), a);
+        return df.getOWLEquivalentObjectPropertiesAxiom(new HashSet<>(Arrays.asList(properties)),
+            a);
     }
 
     public OWLDisjointObjectPropertiesAxiom DisjointObjectProperties(
@@ -492,8 +490,7 @@ public class OWLFunctionalSyntaxAxiomFactory {
 
     public OWLDisjointObjectPropertiesAxiom DisjointObjectProperties(Set<OWLAnnotation> a,
         OWLObjectPropertyExpression... properties) {
-        return df.getOWLDisjointObjectPropertiesAxiom(
-            new HashSet<OWLObjectPropertyExpression>(Arrays.asList(properties)), a);
+        return df.getOWLDisjointObjectPropertiesAxiom(new HashSet<>(Arrays.asList(properties)), a);
     }
 
     public OWLInverseObjectPropertiesAxiom InverseObjectProperties(OWLObjectPropertyExpression peA,
@@ -608,8 +605,7 @@ public class OWLFunctionalSyntaxAxiomFactory {
 
     public OWLEquivalentDataPropertiesAxiom EquivalentDataProperties(Set<OWLAnnotation> a,
         OWLDataPropertyExpression... properties) {
-        return df.getOWLEquivalentDataPropertiesAxiom(
-            new HashSet<OWLDataPropertyExpression>(Arrays.asList(properties)), a);
+        return df.getOWLEquivalentDataPropertiesAxiom(new HashSet<>(Arrays.asList(properties)), a);
     }
 
     public OWLDisjointDataPropertiesAxiom DisjointDataProperties(
@@ -619,8 +615,7 @@ public class OWLFunctionalSyntaxAxiomFactory {
 
     public OWLDisjointDataPropertiesAxiom DisjointDataProperties(Set<OWLAnnotation> a,
         OWLDataPropertyExpression... properties) {
-        return df.getOWLDisjointDataPropertiesAxiom(
-            new HashSet<OWLDataPropertyExpression>(Arrays.asList(properties)), a);
+        return df.getOWLDisjointDataPropertiesAxiom(new HashSet<>(Arrays.asList(properties)), a);
     }
 
     public OWLDataPropertyDomainAxiom DataPropertyDomain(OWLDataPropertyExpression property,
@@ -666,7 +661,7 @@ public class OWLFunctionalSyntaxAxiomFactory {
     public OWLHasKeyAxiom HasKey(Set<OWLAnnotation> a, OWLClassExpression classExpression,
         OWLPropertyExpression... propertyExpressions) {
         return df.getOWLHasKeyAxiom(classExpression,
-            new HashSet<OWLPropertyExpression>(Arrays.asList(propertyExpressions)), a);
+            new HashSet<>(Arrays.asList(propertyExpressions)), a);
     }
 
     public OWLSameIndividualAxiom SameIndividual(OWLIndividual... individuals) {

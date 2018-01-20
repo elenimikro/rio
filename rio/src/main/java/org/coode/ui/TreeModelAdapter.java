@@ -25,8 +25,9 @@ import org.coode.utils.TreeNode;
 public class TreeModelAdapter implements TreeModel {
     private final TreeModel delegate;
 
-    /** @param tree
-     *            tree */
+    /**
+     * @param tree tree
+     */
     public TreeModelAdapter(Tree tree) {
         TreeNode<?> currentTreeNode = tree.getRoot();
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(currentTreeNode);

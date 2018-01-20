@@ -16,11 +16,11 @@ import java.util.Iterator;
 import org.coode.distance.Distance;
 import org.coode.pair.filter.PairFilter;
 
-/** @author eleni
- * @param <O>
- *            type */
-public class DistanceThresholdBasedFilter<O> implements
-        PairFilter<Collection<? extends O>> {
+/**
+ * @author eleni
+ * @param <O> type
+ */
+public class DistanceThresholdBasedFilter<O> implements PairFilter<Collection<? extends O>> {
     private final Distance<O> distance;
     private final double threshold;
 
@@ -41,23 +41,22 @@ public class DistanceThresholdBasedFilter<O> implements
             Iterator<? extends O> anotherIterator = second.iterator();
             while (!found && anotherIterator.hasNext()) {
                 O anotherObject = anotherIterator.next();
-                found = this.getDistance().getDistance(object, anotherObject) >= this
-                        .getThreshold();
+                found =
+                    this.getDistance().getDistance(object, anotherObject) >= this.getThreshold();
             }
         }
         return !found;
     }
 
-    /** @param distance
-     *            distance
-     * @param threshold
-     *            threshold
-     * @param <P>
-     *            type
-     * @return distance filter */
+    /**
+     * @param distance distance
+     * @param threshold threshold
+     * @param <P> type
+     * @return distance filter
+     */
     public static <P> DistanceThresholdBasedFilter<P> build(Distance<P> distance,
-            double threshold) {
-        return new DistanceThresholdBasedFilter<P>(distance, threshold);
+        double threshold) {
+        return new DistanceThresholdBasedFilter<>(distance, threshold);
     }
 
     /** @return the threshold */

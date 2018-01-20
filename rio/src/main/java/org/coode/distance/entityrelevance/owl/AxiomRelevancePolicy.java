@@ -27,22 +27,22 @@ import org.semanticweb.owlapi.model.OWLEntity;
 public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
     private final RelevancePolicy<OWLEntity> relevance;
 
-    /** @param replacedAxiom
-     *            replacedAxiom
-     * @param axiomMap
-     *            axiomMap */
+    /**
+     * @param replacedAxiom replacedAxiom
+     * @param axiomMap axiomMap
+     */
     public AxiomRelevancePolicy(OWLAxiom replacedAxiom, AxiomMap axiomMap) {
         relevance = AbstractRankingRelevancePolicy
-                .getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom, axiomMap));
+            .getAbstractRankingRelevancePolicy(buildRanking(replacedAxiom, axiomMap));
     }
 
-    /** @param replacedAxiom
-     *            replacedAxiom
-     * @param axiomMap
-     *            axiomMap
-     * @return ranking */
+    /**
+     * @param replacedAxiom replacedAxiom
+     * @param axiomMap axiomMap
+     * @return ranking
+     */
     public static AbstractRanking<OWLEntity> buildRanking(final OWLAxiom replacedAxiom,
-            final AxiomMap axiomMap) {
+        final AxiomMap axiomMap) {
         final Map<OWLEntity, AtomicInteger> entityMap = axiomMap.get(replacedAxiom);
         Metric<OWLEntity> m = new Metric<OWLEntity>() {
             @Override
@@ -56,13 +56,13 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
                 return d / total;
             }
         };
-        AbstractRanking<OWLEntity> ranking = new AbstractRanking<OWLEntity>(m,
-                entityMap.keySet(), OWLEntity.class) {
-            @Override
-            public boolean isAverageable() {
-                return true;
-            }
-        };
+        AbstractRanking<OWLEntity> ranking =
+            new AbstractRanking<OWLEntity>(m, entityMap.keySet(), OWLEntity.class) {
+                @Override
+                public boolean isAverageable() {
+                    return true;
+                }
+            };
         return ranking;
     }
 

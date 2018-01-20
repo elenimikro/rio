@@ -11,36 +11,38 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author Eleni Mikroyannidi */
 public class DistanceCreator {
-    /** @param manager
-     *            manager
-     * @return distance */
+    /**
+     * @param manager manager
+     * @return distance
+     */
     public static Distance<OWLEntity> createAxiomRelevanceAxiomBasedDistance(
-            OWLOntologyManager manager) {
-        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-                manager.getOWLDataFactory(), new ReplacementByKindStrategy(
-                        manager.getOWLDataFactory()));
-        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-                manager.getOntologies(), owlEntityReplacer, manager);
+        OWLOntologyManager manager) {
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(manager.getOWLDataFactory(),
+            new ReplacementByKindStrategy(manager.getOWLDataFactory()));
+        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(manager.getOntologies(),
+            owlEntityReplacer, manager);
         return distance;
     }
 
-    /** @param manager
-     *            manager
-     * @return distance */
+    /**
+     * @param manager manager
+     * @return distance
+     */
     public static Distance<OWLEntity> createOWLEntityRelevanceAxiomBasedDistance(
-            OWLOntologyManager manager) {
-        Distance<OWLEntity> distance = new OWLEntityRelevanceAxiomBasedDistance(
-                manager.getOntologies(), manager);
+        OWLOntologyManager manager) {
+        Distance<OWLEntity> distance =
+            new OWLEntityRelevanceAxiomBasedDistance(manager.getOntologies(), manager);
         return distance;
     }
 
-    /** @param manager
-     *            manager
-     * @return distance */
+    /**
+     * @param manager manager
+     * @return distance
+     */
     public static Distance<OWLEntity> createStructuralAxiomRelevanceAxiomBasedDistance(
-            OWLOntologyManager manager) {
+        OWLOntologyManager manager) {
         Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
-                manager.getOntologies(), manager.getOWLDataFactory(), manager);
+            manager.getOntologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
 }

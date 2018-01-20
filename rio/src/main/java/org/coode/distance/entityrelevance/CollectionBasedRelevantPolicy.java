@@ -18,10 +18,11 @@ import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author eleni */
 public abstract class CollectionBasedRelevantPolicy implements RelevancePolicy<OWLEntity> {
-    protected final Set<OWLEntity> objects = new HashSet<OWLEntity>();
+    protected final Set<OWLEntity> objects = new HashSet<>();
 
-    /** @param c
-     *            c */
+    /**
+     * @param c c
+     */
     public CollectionBasedRelevantPolicy(Collection<? extends OWLEntity> c) {
         if (c == null) {
             throw new NullPointerException("The collection of objects cannot be null");
@@ -29,9 +30,10 @@ public abstract class CollectionBasedRelevantPolicy implements RelevancePolicy<O
         objects.addAll(c);
     }
 
-    /** @param c
-     *            c
-     * @return relevance policy */
+    /**
+     * @param c c
+     * @return relevance policy
+     */
     public static CollectionBasedRelevantPolicy allOf(Collection<? extends OWLEntity> c) {
         return new CollectionBasedRelevantPolicy(c) {
             @Override
@@ -41,9 +43,10 @@ public abstract class CollectionBasedRelevantPolicy implements RelevancePolicy<O
         };
     }
 
-    /** @param c
-     *            c
-     * @return relevance policy */
+    /**
+     * @param c c
+     * @return relevance policy
+     */
     public static CollectionBasedRelevantPolicy noneOf(Collection<? extends OWLEntity> c) {
         return new CollectionBasedRelevantPolicy(c) {
             @Override
@@ -55,6 +58,6 @@ public abstract class CollectionBasedRelevantPolicy implements RelevancePolicy<O
 
     /** @return the objects */
     public Set<OWLEntity> getObjects() {
-        return new HashSet<OWLEntity>(objects);
+        return new HashSet<>(objects);
     }
 }

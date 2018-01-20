@@ -9,15 +9,17 @@ public class FederateMatrix implements SparseMatrix {
     private final SparseMatrixSmallSize actual;
     private final SparseMatrixListImpl test;
 
-    /** @param i
-     *            i */
+    /**
+     * @param i i
+     */
     public FederateMatrix(int i) {
         actual = new SparseMatrixSmallSize(i);
         test = new SparseMatrixListImpl(i);
     }
 
-    /** @param m
-     *            m */
+    /**
+     * @param m m
+     */
     public FederateMatrix(FederateMatrix m) {
         for (int i = 0; i < m.length(); i++) {
             for (int j = 0; j < m.length(); j++) {
@@ -47,8 +49,7 @@ public class FederateMatrix implements SparseMatrix {
     public int length() {
         int toReturn = actual.length();
         if (toReturn != test.length()) {
-            System.out.println("FederateMatrix.length() " + toReturn + " " + " "
-                    + test.length());
+            System.out.println("FederateMatrix.length() " + toReturn + " " + " " + test.length());
         }
         return toReturn;
     }
@@ -58,9 +59,8 @@ public class FederateMatrix implements SparseMatrix {
         double toReturn = actual.get(i, j);
         if (toReturn != test.get(i, j)) {
             printDiff(test.getPosition(i));
-            System.out.println("FederateMatrix.get Object() " + toReturn + "\t "
-                    + test.get(i, j) + "\t" + test.getPosition(i) + "\t"
-                    + test.getPosition(j));
+            System.out.println("FederateMatrix.get Object() " + toReturn + "\t " + test.get(i, j)
+                + "\t" + test.getPosition(i) + "\t" + test.getPosition(j));
         }
         return toReturn;
     }
@@ -73,8 +73,9 @@ public class FederateMatrix implements SparseMatrix {
         // printDiff(_i);
     }
 
-    /** @param _i
-     *            _i */
+    /**
+     * @param _i _i
+     */
     public void printDiff(int _i) {
         double[] d1 = actual.getRow(_i);
         double[] d2 = test.getRow(_i);

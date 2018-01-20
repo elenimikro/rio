@@ -1,6 +1,8 @@
 package org.coode.proximitymatrix.cluster.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.util.List;
 import java.util.Set;
@@ -27,57 +29,55 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 @SuppressWarnings("javadoc")
 public class GeneralisationStatisticsTest {
     @Test
-    public void testAminoClusterCoverage() throws OWLOntologyCreationException,
-            OPPLException {
+    public void testAminoClusterCoverage() throws OWLOntologyCreationException, OPPLException {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         // OWLOntology o = TestHelper.loadFileMappers(new File(amino_iri), m);
-        OWLOntology o = m.loadOntologyFromOntologyDocument(getClass()
-                .getResourceAsStream("/amino-acid-original.owl"));
+        OWLOntology o = m.loadOntologyFromOntologyDocument(
+            getClass().getResourceAsStream("/amino-acid-original.owl"));
         ClusterCreator clusterer = new ClusterCreator();
-        Distance<OWLEntity> distance = DistanceCreator
-                .createAxiomRelevanceAxiomBasedDistance(m);
-        Set<Cluster<OWLEntity>> agglomerateAll = clusterer.agglomerateAll(distance,
-                o.getSignature());
-        ClusterDecompositionModel<OWLEntity> model = clusterer
-                .buildClusterDecompositionModel(o, agglomerateAll);
-        GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats = GeneralisationStatistics
-                .buildStatistics(model);
-        double meanClusterCoveragePerGeneralisation = stats
-                .getMeanClusterCoveragePerGeneralisation();
-        assertTrue(meanClusterCoveragePerGeneralisation < 1);
+        Distance<OWLEntity> distance = DistanceCreator.createAxiomRelevanceAxiomBasedDistance(m);
+        Set<Cluster<OWLEntity>> agglomerateAll =
+            clusterer.agglomerateAll(distance, asList(o.signature()));
+        ClusterDecompositionModel<OWLEntity> model =
+            clusterer.buildClusterDecompositionModel(o, agglomerateAll);
+        GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats =
+            GeneralisationStatistics.buildStatistics(model);
+        double meanClusterCoveragePerGeneralisation =
+            stats.getMeanClusterCoveragePerGeneralisation();
         System.out.println("GeneralisationStatisticsTest.testClusterCoverage() "
-                + meanClusterCoveragePerGeneralisation);
+            + meanClusterCoveragePerGeneralisation);
+        assertTrue(Double.toString(meanClusterCoveragePerGeneralisation),
+            meanClusterCoveragePerGeneralisation < 1);
     }
 
     @Test
     public void testSmallOntologyClusterCoverage() {
         OWLOntology o = OntologyTestHelper.getSmallTestOntology();
         for (OWLAxiom a : o.getAxioms()) {
-            System.out
-                    .println("GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() axiom: "
-                            + a);
+            System.out.println(
+                "GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() axiom: " + a);
         }
-        ClusterDecompositionModel<OWLEntity> model = ClusteringHelper
-                .getSyntacticPopularityClusterModel(o);
+        ClusterDecompositionModel<OWLEntity> model =
+            ClusteringHelper.getSyntacticPopularityClusterModel(o);
         List<Cluster<OWLEntity>> clusterList = model.getClusterList();
         for (Cluster<OWLEntity> c : clusterList) {
             Variable<?> var = model.getVariableRepresentative(c);
             if (var != null) {
-                System.out
-                        .println("GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() Cluster "
-                                + var.getName() + " \t size " + c.size());
-                System.out
-                        .println("GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() "
-                                + c);
+                System.out.println(
+                    "GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() Cluster "
+                        + var.getName() + " \t size " + c.size());
+                System.out.println(
+                    "GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() " + c);
             }
         }
-        GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats = GeneralisationStatistics
-                .buildStatistics(model);
-        double meanClusterCoveragePerGeneralisation = stats
-                .getMeanClusterCoveragePerGeneralisation();
-        assertTrue(meanClusterCoveragePerGeneralisation < 1);
-        assertEquals(0.875, meanClusterCoveragePerGeneralisation, 0.001);
+        GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats =
+            GeneralisationStatistics.buildStatistics(model);
+        double meanClusterCoveragePerGeneralisation =
+            stats.getMeanClusterCoveragePerGeneralisation();
         System.out.println("GeneralisationStatisticsTest.testClusterCoverage() "
-                + meanClusterCoveragePerGeneralisation);
+            + meanClusterCoveragePerGeneralisation);
+        assertTrue(Double.toString(meanClusterCoveragePerGeneralisation),
+            meanClusterCoveragePerGeneralisation < 1);
+        assertEquals(0.875, meanClusterCoveragePerGeneralisation, 0.001);
     }
 }

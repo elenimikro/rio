@@ -12,14 +12,16 @@ package org.coode.metrics;
 
 import java.util.Comparator;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public class MetricComparator<O> implements Comparator<O> {
     private final Metric<O> metric;
 
-    /** @param metric
-     *            metric */
+    /**
+     * @param metric metric
+     */
     private MetricComparator(Metric<O> metric) {
         if (metric == null) {
             throw new NullPointerException("The metric cannot be null");
@@ -29,8 +31,8 @@ public class MetricComparator<O> implements Comparator<O> {
 
     @Override
     public int compare(O o1, O o2) {
-        int difference = (int) Math.signum(this.getMetric().getValue(o1)
-                - this.getMetric().getValue(o2));
+        int difference =
+            (int) Math.signum(this.getMetric().getValue(o1) - this.getMetric().getValue(o2));
         return difference == 0 ? o1.hashCode() - o2.hashCode() : difference;
     }
 
@@ -39,12 +41,12 @@ public class MetricComparator<O> implements Comparator<O> {
         return this.metric;
     }
 
-    /** @param metric
-     *            metric
-     * @param <R>
-     *            type
-     * @return metric comparator */
+    /**
+     * @param metric metric
+     * @param <R> type
+     * @return metric comparator
+     */
     public static <R> MetricComparator<R> build(Metric<R> metric) {
-        return new MetricComparator<R>(metric);
+        return new MetricComparator<>(metric);
     }
 }

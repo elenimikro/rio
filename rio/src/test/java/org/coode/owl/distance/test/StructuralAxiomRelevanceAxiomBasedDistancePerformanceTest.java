@@ -22,7 +22,6 @@ import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -30,30 +29,27 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
 public class StructuralAxiomRelevanceAxiomBasedDistancePerformanceTest {
-    /** @param args
-     *            args */
+    /**
+     * @param args args
+     */
     public static void main(String[] args) {
         OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
         try {
-            OWLOntology ontology = ontologyManager.loadOntology(IRI
-                    .create("http://purl.obolibrary.org/obo/obi.owl"));
-            Set<OWLDisjointClassesAxiom> axioms = ontology
-                    .getAxioms(AxiomType.DISJOINT_CLASSES);
+            OWLOntology ontology =
+                ontologyManager.loadOntology(IRI.create("http://purl.obolibrary.org/obo/obi.owl"));
+            Set<OWLDisjointClassesAxiom> axioms = ontology.getAxioms(AxiomType.DISJOINT_CLASSES);
             OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
             ConstraintSystem constraintSystem = factory.createConstraintSystem();
-            OWLEntityProvider entityProvider = new OntologyManagerBasedOWLEntityProvider(
-                    ontologyManager);
-            OWLAxiom generalisedAxiom = null;
-            Set<OWLAxiomInstantiation> instantiations = new HashSet<OWLAxiomInstantiation>(
-                    axioms.size());
+            OWLEntityProvider entityProvider =
+                new OntologyManagerBasedOWLEntityProvider(ontologyManager);
+            Set<OWLAxiomInstantiation> instantiations = new HashSet<>(axioms.size());
             System.out.println(String.format("Axiom size: %d", axioms.size()));
             for (OWLDisjointClassesAxiom owlDisjointClassesAxiom : axioms) {
-                StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
-                        entityProvider, constraintSystem);
-                generalisedAxiom = (OWLAxiom) owlDisjointClassesAxiom
-                        .accept(generalisation);
+                StructuralOWLObjectGeneralisation generalisation =
+                    new StructuralOWLObjectGeneralisation(entityProvider, constraintSystem);
+                owlDisjointClassesAxiom.accept(generalisation);
                 instantiations.add(new OWLAxiomInstantiation(owlDisjointClassesAxiom,
-                        generalisation.getSubstitutions()));
+                    generalisation.getSubstitutions()));
             }
             // AxiomGeneralisationTreeNode generalisationTreeNode = new
             // AxiomGeneralisationTreeNode(

@@ -17,23 +17,22 @@ public class TestHelper {
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o;
         try {
-            o = m.loadOntologyFromOntologyDocument(TestHelper.class
-                    .getResourceAsStream("/pizza.owl"));
+            o = m.loadOntologyFromOntologyDocument(
+                TestHelper.class.getResourceAsStream("/pizza.owl"));
             return o;
         } catch (OWLOntologyCreationException e) {
             throw new RuntimeException(e);
         }
     }
 
-    /** @param iri
-     *            iri
-     * @param manager
-     *            manager
+    /**
+     * @param iri iri
+     * @param manager manager
      * @return ontology
-     * @throws OWLOntologyCreationException
-     *             OWLOntologyCreationException */
+     * @throws OWLOntologyCreationException OWLOntologyCreationException
+     */
     public static OWLOntology loadIRIMappers(IRI iri, OWLOntologyManager manager)
-            throws OWLOntologyCreationException {
+        throws OWLOntologyCreationException {
         URI uri = iri.toURI();
         if (uri.getScheme().startsWith("file") && uri.isAbsolute()) {
             File file = new File(uri);
@@ -45,15 +44,14 @@ public class TestHelper {
         return manager.loadOntology(iri);
     }
 
-    /** @param file
-     *            file
-     * @param manager
-     *            manager
+    /**
+     * @param file file
+     * @param manager manager
      * @return ontology
-     * @throws OWLOntologyCreationException
-     *             OWLOntologyCreationException */
+     * @throws OWLOntologyCreationException OWLOntologyCreationException
+     */
     public static OWLOntology loadFileMappers(File file, OWLOntologyManager manager)
-            throws OWLOntologyCreationException {
+        throws OWLOntologyCreationException {
         File parentFile = file.getParentFile();
         if (parentFile.isDirectory()) {
             manager.addIRIMapper(new AutoIRIMapper(parentFile, true));

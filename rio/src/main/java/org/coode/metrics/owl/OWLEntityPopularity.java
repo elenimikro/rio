@@ -28,12 +28,13 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
 public class OWLEntityPopularity implements Metric<OWLEntity> {
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-    private final Map<OWLEntity, Double> cache = new HashMap<OWLEntity, Double>();
-    MultiMap<OWLEntity, OWLAxiom> multimapFromOntologies = new MultiMap<OWLEntity, OWLAxiom>();
+    private final Set<OWLOntology> ontologies = new HashSet<>();
+    private final Map<OWLEntity, Double> cache = new HashMap<>();
+    MultiMap<OWLEntity, OWLAxiom> multimapFromOntologies = new MultiMap<>();
 
-    /** @param ontologies
-     *            ontologies */
+    /**
+     * @param ontologies ontologies
+     */
     public OWLEntityPopularity(Collection<? extends OWLOntology> ontologies) {
         if (ontologies == null) {
             throw new NullPointerException("The ontology collection cannot be null");
@@ -53,7 +54,7 @@ public class OWLEntityPopularity implements Metric<OWLEntity> {
         // made
         int size = getAxiomSet(ontologies).size();
         MultiMap<OWLEntity, OWLAxiom> axioms = getAxiomMap();
-        Set<OWLEntity> entities = new HashSet<OWLEntity>();
+        Set<OWLEntity> entities = new HashSet<>();
         for (OWLOntology ontology : ontologies) {
             entities.addAll(ontology.getSignature());
         }
@@ -67,11 +68,12 @@ public class OWLEntityPopularity implements Metric<OWLEntity> {
         return multimapFromOntologies;
     }
 
-    /** @param ontos
-     *            ontos
-     * @return axioms */
+    /**
+     * @param ontos ontos
+     * @return axioms
+     */
     public Set<OWLAxiom> getAxiomSet(Collection<? extends OWLOntology> ontos) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (OWLOntology ontology : ontos) {
             for (AxiomType<?> t : AxiomType.AXIOM_TYPES) {
                 axioms.addAll(ontology.getAxioms(t));
@@ -83,12 +85,12 @@ public class OWLEntityPopularity implements Metric<OWLEntity> {
     @Override
     public double getValue(OWLEntity object) {
         Double toReturn = cache.get(object);
-        return toReturn == null ? computeValue(object, getAxiomMap(),
-                getAxiomSet(ontologies).size()) : toReturn;
+        return toReturn == null
+            ? computeValue(object, getAxiomMap(), getAxiomSet(ontologies).size())
+            : toReturn;
     }
 
-    private double computeValue(OWLEntity object, MultiMap<OWLEntity, OWLAxiom> axioms,
-            int size) {
+    private double computeValue(OWLEntity object, MultiMap<OWLEntity, OWLAxiom> axioms, int size) {
         double toReturn = axioms.get(object).size();
         // Eliminated the duplicates by putting everything in the same set
         double value = toReturn / size;
@@ -98,6 +100,6 @@ public class OWLEntityPopularity implements Metric<OWLEntity> {
 
     /** @return the ontologies */
     public Set<OWLOntology> getOntologies() {
-        return new HashSet<OWLOntology>(ontologies);
+        return new HashSet<>(ontologies);
     }
 }

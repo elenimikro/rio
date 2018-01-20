@@ -15,8 +15,7 @@ import uk.ac.manchester.cs.atomicdecomposition.Atom;
 public class GeneralisedAtomicDecompositionMetrics {
     private final GeneralisedAtomicDecomposition<OWLEntity> gad;
 
-    private GeneralisedAtomicDecompositionMetrics(
-            GeneralisedAtomicDecomposition<OWLEntity> gad) {
+    private GeneralisedAtomicDecompositionMetrics(GeneralisedAtomicDecomposition<OWLEntity> gad) {
         this.gad = gad;
     }
 
@@ -46,9 +45,9 @@ public class GeneralisedAtomicDecompositionMetrics {
     }
 
     private MultiMap<OWLAxiom, OWLAxiomInstantiation> getLogicalRegularities() {
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> logicalRegularities = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> syntacticRegularitiesMap = gad
-                .getSyntacticRegularities();
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> logicalRegularities = new MultiMap<>();
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> syntacticRegularitiesMap =
+            gad.getSyntacticRegularities();
         for (OWLAxiom ax : syntacticRegularitiesMap.keySet()) {
             if (ax.isLogicalAxiom()) {
                 logicalRegularities.putAll(ax, syntacticRegularitiesMap.get(ax));
@@ -57,15 +56,16 @@ public class GeneralisedAtomicDecompositionMetrics {
         return logicalRegularities;
     }
 
-    /** It computes the number of instantiations that belong to the atoms that
-     * got merged
+    /**
+     * It computes the number of instantiations that belong to the atoms that got merged
      * 
-     * @return mean merged axioms per generalization */
+     * @return mean merged axioms per generalization
+     */
     public double getMeanMergedAxiomsPerGeneralisation() {
         MultiMap<OWLAxiom, OWLAxiomInstantiation> logicalRegularities = getLogicalRegularities();
         MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad.getMergedAtoms();
         Set<Atom> atoms = mergedAtoms.getAllValues();
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (Atom a : atoms) {
             axioms.addAll(a.getAxioms());
         }
@@ -80,11 +80,12 @@ public class GeneralisedAtomicDecompositionMetrics {
         return (double) mergedAxiomsNo / logicalRegularities.size();
     }
 
-    /** @param gad
-     *            gad
-     * @return AD metric */
+    /**
+     * @param gad gad
+     * @return AD metric
+     */
     public static GeneralisedAtomicDecompositionMetrics buildMetrics(
-            GeneralisedAtomicDecomposition<OWLEntity> gad) {
+        GeneralisedAtomicDecomposition<OWLEntity> gad) {
         return new GeneralisedAtomicDecompositionMetrics(gad);
     }
 }

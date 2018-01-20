@@ -1,5 +1,7 @@
 package org.coode.proximitymatrix.cluster;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,33 +17,32 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
-public class LexicalClusterModel implements
-        RegularitiesDecompositionModel<Set<OWLEntity>, OWLEntity> {
+public class LexicalClusterModel
+    implements RegularitiesDecompositionModel<Set<OWLEntity>, OWLEntity> {
     private final OWLOntology onto;
-    private final MultiMap<String, OWLEntity> lexicalClustersMap = new MultiMap<String, OWLEntity>();
-    private final Map<String, MultiMap<OWLAxiom, OWLAxiomInstantiation>> lexicalGeneralisationMap = new HashMap<String, MultiMap<OWLAxiom, OWLAxiomInstantiation>>();
+    private final MultiMap<String, OWLEntity> lexicalClustersMap = new MultiMap<>();
+    private final Map<String, MultiMap<OWLAxiom, OWLAxiomInstantiation>> lexicalGeneralisationMap =
+        new HashMap<>();
 
-    /** @param clusterMap
-     *            clusterMap
-     * @param ontology
-     *            ontology */
-    public LexicalClusterModel(MultiMap<String, OWLEntity> clusterMap,
-            OWLOntology ontology) {
+    /**
+     * @param clusterMap clusterMap
+     * @param ontology ontology
+     */
+    public LexicalClusterModel(MultiMap<String, OWLEntity> clusterMap, OWLOntology ontology) {
         lexicalClustersMap.putAll(clusterMap);
         onto = ontology;
     }
 
-    /** @param keyword
-     *            keyword
-     * @param map
-     *            map */
+    /**
+     * @param keyword keyword
+     * @param map map
+     */
     public void put(String keyword, MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         lexicalGeneralisationMap.put(keyword, map);
     }
 
     @Override
-    public void
-            put(Set<OWLEntity> cluster, MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
+    public void put(Set<OWLEntity> cluster, MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         for (String s : lexicalClustersMap.keySet()) {
             if (lexicalClustersMap.get(s).containsAll(cluster)) {
                 lexicalGeneralisationMap.put(s, map);
@@ -51,16 +52,17 @@ public class LexicalClusterModel implements
 
     @Override
     public List<Set<OWLEntity>> getClusterList() {
-        List<Set<OWLEntity>> toReturn = new ArrayList<Set<OWLEntity>>();
+        List<Set<OWLEntity>> toReturn = new ArrayList<>();
         for (String s : lexicalClustersMap.keySet()) {
             toReturn.add((Set<OWLEntity>) lexicalClustersMap.get(s));
         }
         return toReturn;
     }
 
-    /** @param keyword
-     *            keyword
-     * @return lexical generalisation map */
+    /**
+     * @param keyword keyword
+     * @return lexical generalisation map
+     */
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> get(String keyword) {
         return lexicalGeneralisationMap.get(keyword);
     }
@@ -72,18 +74,18 @@ public class LexicalClusterModel implements
                 return lexicalGeneralisationMap.get(s);
             }
         }
-        return new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        return new MultiMap<>();
     }
 
     @Override
-    public Set<OWLOntology> getOntologies() {
-        return onto.getImportsClosure();
+    public List<OWLOntology> getOntologies() {
+        return asList(onto.importsClosure());
     }
 
     @Override
     public Variable<?> getVariableRepresentative(Set<OWLEntity> c) {
         Set<String> keySet = lexicalClustersMap.keySet();
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = new MultiMap<>();
         for (String keyword : keySet) {
             if (lexicalClustersMap.get(keyword).containsAll(c)) {
                 multiMap = lexicalGeneralisationMap.get(keyword);
@@ -101,20 +103,21 @@ public class LexicalClusterModel implements
 
     @Override
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap() {
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> toReturn = new MultiMap<>();
         return toReturn;
     }
 
-    /** @return the map that has lexical patterns as keys and entities from the
-     *         ontology as */
+    /**
+     * @return the map that has lexical patterns as keys and entities from the ontology as
+     */
     public MultiMap<String, OWLEntity> getLexicalPatternBasedClusters() {
         return lexicalClustersMap;
     }
 
     @Override
     public String toString() {
-        org.coode.utils.owl.ManchesterSyntaxRenderer renderer = Utils
-                .enableLabelRendering(onto.getOWLOntologyManager());
+        org.coode.utils.owl.ManchesterSyntaxRenderer renderer =
+            Utils.enableLabelRendering(onto.getOWLOntologyManager());
         StringBuilder sb = new StringBuilder();
         Set<String> keySet = lexicalClustersMap.keySet();
         for (String s : keySet) {
@@ -125,8 +128,7 @@ public class LexicalClusterModel implements
             }
             sb.append("]" + "\n");
             sb.append("Generalisations: \n");
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = lexicalGeneralisationMap
-                    .get(s);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = lexicalGeneralisationMap.get(s);
             for (OWLAxiom ax : multiMap.keySet()) {
                 sb.append(renderer.render(ax) + "\n");
                 sb.append("\t Instantiations: " + "(" + multiMap.get(ax).size() + ") \n");

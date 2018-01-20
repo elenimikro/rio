@@ -13,15 +13,18 @@ package org.coode.owl.generalise;
 
 /** @author eleni */
 public interface GeneralisationTreeNodeVisitor {
-    /** @param node
-     *            node */
+    /**
+     * @param node node
+     */
     void visitAxiomGeneralisationTreeNode(AxiomGeneralisationTreeNode node);
 
-    /** @param node
-     *            node */
+    /**
+     * @param node node
+     */
     void visitVariableGeneralisationTreeNode(VariableGeneralisationTreeNode node);
 
-    /** @param node
-     *            node */
+    /**
+     * @param node node
+     */
     void visitBindingNodeGeneralisationTreeNode(BindingNodeGeneralisationTreeNode node);
 }

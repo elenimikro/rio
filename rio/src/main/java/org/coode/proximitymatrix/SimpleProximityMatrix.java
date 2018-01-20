@@ -27,28 +27,27 @@ import org.coode.pair.Pair;
 import org.coode.pair.SimplePair;
 import org.coode.pair.filter.PairFilter;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
     private final SparseMatrix delegate;
-    private final List<O> objects = new ArrayList<O>();
+    private final List<O> objects = new ArrayList<>();
     private final Comparator<? super Pair<O>> comparator;
     private double minimumDistance = Double.MAX_VALUE;
     private Pair<O> minimumDistancePair = null;
     private final PairFilter<O> filter;
     private final Map<O, Integer> objectIndex;
 
-    /** @param objects
-     *            objects
-     * @param distances
-     *            distances
-     * @param filter
-     *            filter
-     * @param comparator
-     *            comparator */
+    /**
+     * @param objects objects
+     * @param distances distances
+     * @param filter filter
+     * @param comparator comparator
+     */
     public SimpleProximityMatrix(Collection<? extends O> objects, SparseMatrix distances,
-            PairFilter<O> filter, Comparator<? super Pair<O>> comparator) {
+        PairFilter<O> filter, Comparator<? super Pair<O>> comparator) {
         if (objects == null) {
             throw new NullPointerException("The object colleciton cannot be null");
         }
@@ -59,8 +58,8 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
             throw new NullPointerException("The distances cannot be null");
         }
         if (distances.length() != objects.size()) {
-            throw new IllegalArgumentException(String.format(
-                    "The object collection size %d != distances dimension %d",
+            throw new IllegalArgumentException(
+                String.format("The object collection size %d != distances dimension %d",
                     objects.size(), distances.length()));
         }
         if (filter == null) {
@@ -72,7 +71,7 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         this.comparator = comparator;
         this.objects.addAll(objects);
         this.filter = filter;
-        this.objectIndex = new HashMap<O, Integer>();
+        this.objectIndex = new HashMap<>();
         int size = this.objects.size();
         for (int i = 0; i < size; i++) {
             O object = this.objects.get(i);
@@ -80,13 +79,11 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
             for (int j = 0; j < size; j++) {
                 O anotherObject = this.objects.get(j);
                 double distanceValue = distances.get(i, j);
-                SimplePair<O> pair = new SimplePair<O>(object, anotherObject);
-                if (anotherObject != object
-                        && filter.accept(object, anotherObject)
-                        && (distanceValue < this.minimumDistance || distanceValue == this.minimumDistance
-                                && this.minimumDistancePair != null
-                                && this.comparator
-                                        .compare(pair, this.minimumDistancePair) < 0)) {
+                SimplePair<O> pair = new SimplePair<>(object, anotherObject);
+                if (anotherObject != object && filter.accept(object, anotherObject)
+                    && (distanceValue < this.minimumDistance
+                        || distanceValue == this.minimumDistance && this.minimumDistancePair != null
+                            && this.comparator.compare(pair, this.minimumDistancePair) < 0)) {
                     this.minimumDistance = distanceValue;
                     this.minimumDistancePair = pair;
                 }
@@ -95,10 +92,10 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         this.delegate = SparseMatrixFactory.create(distances);
     }
 
-    /** @param objects
-     *            objects
-     * @param distance
-     *            distance */
+    /**
+     * @param objects objects
+     * @param distance distance
+     */
     public SimpleProximityMatrix(Collection<? extends O> objects, Distance<O> distance) {
         this(objects, distance, new PairFilter<O>() {
             @Override
@@ -113,16 +110,14 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         });
     }
 
-    /** @param objects
-     *            objects
-     * @param distance
-     *            distance
-     * @param filter
-     *            filter
-     * @param comparator
-     *            comparator */
+    /**
+     * @param objects objects
+     * @param distance distance
+     * @param filter filter
+     * @param comparator comparator
+     */
     public SimpleProximityMatrix(Collection<? extends O> objects, Distance<O> distance,
-            PairFilter<O> filter, Comparator<? super Pair<O>> comparator) {
+        PairFilter<O> filter, Comparator<? super Pair<O>> comparator) {
         if (objects == null) {
             throw new NullPointerException("The object colleciton cannot be null");
         }
@@ -143,20 +138,19 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         this.filter = filter;
         SparseMatrix distances = SparseMatrixFactory.create(objects.size());
         int i = 0;
-        this.objectIndex = new HashMap<O, Integer>();
+        this.objectIndex = new HashMap<>();
         for (O object : objects) {
             int j = 0;
             this.objectIndex.put(object, i);
             for (O anotherObject : objects) {
                 double distanceValue = distance.getDistance(object, anotherObject);
                 distances.set(i, j, distanceValue);
-                SimplePair<O> pair = new SimplePair<O>(object, anotherObject);
-                if (!anotherObject.equals(object)
-                        && filter.accept(object, anotherObject)
-                        && (distanceValue < this.minimumDistance || distanceValue == this.minimumDistance
-                                && this.getMinimumDistancePair() != null
-                                && this.comparator
-                                        .compare(pair, this.minimumDistancePair) < 0)) {
+                SimplePair<O> pair = new SimplePair<>(object, anotherObject);
+                if (!anotherObject.equals(object) && filter.accept(object, anotherObject)
+                    && (distanceValue < this.minimumDistance
+                        || distanceValue == this.minimumDistance
+                            && this.getMinimumDistancePair() != null
+                            && this.comparator.compare(pair, this.minimumDistancePair) < 0)) {
                     this.minimumDistance = distanceValue;
                     this.minimumDistancePair = pair;
                 }
@@ -169,7 +163,7 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
 
     @Override
     public ProximityMatrix<O> reduce(PairFilter<O> f) {
-        Set<O> reducedObjects = new HashSet<O>();
+        Set<O> reducedObjects = new HashSet<>();
         Iterator<O> iterator = this.getObjects().iterator();
         boolean found = false;
         while (iterator.hasNext()) {
@@ -186,7 +180,7 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         }
         if (!reducedObjects.isEmpty()) {
             SparseMatrix newDistances = SparseMatrixFactory.create(reducedObjects.size());
-            List<O> list = new ArrayList<O>(reducedObjects);
+            List<O> list = new ArrayList<>(reducedObjects);
             int size = list.size();
             for (int i = 0; i < size; i++) {
                 O a = list.get(i);
@@ -195,8 +189,8 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
                     newDistances.set(i, j, a == b ? 0 : this.getDistance(a, b));
                 }
             }
-            return new SimpleProximityMatrix<O>(reducedObjects, newDistances,
-                    this.getFilter(), comparator);
+            return new SimpleProximityMatrix<>(reducedObjects, newDistances, this.getFilter(),
+                comparator);
         }
         // the proximity matrix cannot be reduced any more so return the same
         // instance
@@ -219,8 +213,7 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
 
     @Override
     public Pair<O> getMinimumDistancePair() {
-        return this.minimumDistancePair == null ? null : new SimplePair<O>(
-                this.minimumDistancePair);
+        return this.minimumDistancePair == null ? null : new SimplePair<>(this.minimumDistancePair);
     }
 
     @Override
@@ -230,23 +223,22 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
             StringBuilder b = new StringBuilder();
             for (O e : objectIndex.keySet()) {
                 b.append(e.toString()).append(" [type ").append(e.getClass().getName())
-                        .append("] ");
+                    .append("] ");
             }
             throw new IllegalArgumentException(String.format(
-                    "The object %s [type %s] is not contained in this matrix "
-                            + b.toString(), anObject, anObject.getClass().getName()));
+                "The object %s [type %s] is not contained in this matrix " + b.toString(), anObject,
+                anObject.getClass().getName()));
         }
         int column = this.getColumnIndex(anotherObject);
         if (column == -1) {
             StringBuilder b = new StringBuilder();
             for (O e : objectIndex.keySet()) {
                 b.append(e.toString()).append(" [type ").append(e.getClass().getName())
-                        .append("] ");
+                    .append("] ");
             }
             throw new IllegalArgumentException(String.format(
-                    "The object %s [type %s] is not contained in this matrix "
-                            + b.toString(), anotherObject, anotherObject.getClass()
-                            .getName()));
+                "The object %s [type %s] is not contained in this matrix " + b.toString(),
+                anotherObject, anotherObject.getClass().getName()));
         }
         return this.getDistance(row, column);
     }
@@ -258,15 +250,13 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
 
     @Override
     public int[] getColumns(Pair<O> pair) {
-        int[] cols = new int[] { getColumnIndex(pair.getFirst()),
-                getColumnIndex(pair.getSecond()) };
+        int[] cols = new int[] {getColumnIndex(pair.getFirst()), getColumnIndex(pair.getSecond())};
         return cols;
     }
 
     @Override
     public int[] getRows(Pair<O> pair) {
-        int[] rows = new int[] { getRowIndex(pair.getFirst()),
-                getRowIndex(pair.getSecond()) };
+        int[] rows = new int[] {getRowIndex(pair.getFirst()), getRowIndex(pair.getSecond())};
         return rows;
     }
 

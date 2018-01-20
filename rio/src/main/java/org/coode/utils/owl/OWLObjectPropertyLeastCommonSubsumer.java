@@ -21,40 +21,37 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 /** @author Eleni Mikroyannidi */
-public class OWLObjectPropertyLeastCommonSubsumer extends
-        LeastCommonSubsumer<OWLObjectProperty, OWLObjectProperty> {
-    /** @param axiomProvider
-     *            axiomProvider
-     * @param dataFactory
-     *            dataFactory */
+public class OWLObjectPropertyLeastCommonSubsumer
+    extends LeastCommonSubsumer<OWLObjectProperty, OWLObjectProperty> {
+    /**
+     * @param axiomProvider axiomProvider
+     * @param dataFactory dataFactory
+     */
     public OWLObjectPropertyLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
-            OWLDataFactory dataFactory) {
+        OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory.getOWLTopObjectProperty());
     }
 
     @Override
     protected void rebuild() {
-        for (OWLAxiom ax : getAxiomProvider()) {
-            ax.accept(new OWLAxiomVisitorAdapter() {
-                @Override
-                public void visit(OWLSubObjectPropertyOfAxiom axiom) {
-                    if (!axiom.getSubProperty().isAnonymous()
-                            && !axiom.getSuperProperty().isAnonymous()) {
-                        OWLObjectPropertyLeastCommonSubsumer.this.addParent(axiom
-                                .getSubProperty().asOWLObjectProperty(), axiom
-                                .getSuperProperty().asOWLObjectProperty());
-                    }
-                }
-            });
+        getAxiomProvider().stream().filter(ax -> ax instanceof OWLSubObjectPropertyOfAxiom)
+            .forEach(this::handleSubObjectProperty);
+    }
+
+    private void handleSubObjectProperty(OWLAxiom ax) {
+        OWLSubObjectPropertyOfAxiom axiom = (OWLSubObjectPropertyOfAxiom) ax;
+        if (!axiom.getSubProperty().isAnonymous() && !axiom.getSuperProperty().isAnonymous()) {
+            OWLObjectPropertyLeastCommonSubsumer.this.addParent(
+                axiom.getSubProperty().asOWLObjectProperty(),
+                axiom.getSuperProperty().asOWLObjectProperty());
         }
     }
 
     @Override
     public OWLObjectProperty get(Collection<? extends OWLObjectProperty> c) {
-        List<OWLObjectProperty> results = new ArrayList<OWLObjectProperty>(c);
+        List<OWLObjectProperty> results = new ArrayList<>(c);
         while (results.size() > 1) {
             OWLObject obj = results.get(0);
             if (obj instanceof OWLObjectProperty) {

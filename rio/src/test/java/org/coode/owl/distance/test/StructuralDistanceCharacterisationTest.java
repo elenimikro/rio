@@ -1,6 +1,7 @@
 package org.coode.owl.distance.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
 import org.coode.utils.owl.DistanceCreator;
@@ -50,15 +51,11 @@ public class StructuralDistanceCharacterisationTest {
             OWLObjectSomeValuesFrom p1_some_c1 = df.getOWLObjectSomeValuesFrom(p1, c1);
             OWLObjectSomeValuesFrom p2_some_c2 = df.getOWLObjectSomeValuesFrom(p2, c2);
             OWLObjectSomeValuesFrom p1_some_d1 = df.getOWLObjectSomeValuesFrom(p1, d1);
-            OWLSubClassOfAxiom aSub = createOWLSubClassOfAxiom(a,
-                    df.getOWLObjectIntersectionOf(p1_some_a1, p2_some_a2));
-            OWLSubClassOfAxiom bSub = createOWLSubClassOfAxiom(b,
-                    df.getOWLObjectIntersectionOf(p1_some_a2, p2_some_a1));
-            OWLSubClassOfAxiom cSub = createOWLSubClassOfAxiom(c,
-                    df.getOWLObjectIntersectionOf(p1_some_c1, p2_some_c2));
-            OWLSubClassOfAxiom dSub = createOWLSubClassOfAxiom(d,
-                    df.getOWLObjectIntersectionOf(p1_some_d1, p1_some_c1, p2_some_c2, a1,
-                            a2));
+            createOWLSubClassOfAxiom(a, df.getOWLObjectIntersectionOf(p1_some_a1, p2_some_a2));
+            createOWLSubClassOfAxiom(b, df.getOWLObjectIntersectionOf(p1_some_a2, p2_some_a1));
+            createOWLSubClassOfAxiom(c, df.getOWLObjectIntersectionOf(p1_some_c1, p2_some_c2));
+            createOWLSubClassOfAxiom(d,
+                df.getOWLObjectIntersectionOf(p1_some_d1, p1_some_c1, p2_some_c2, a1, a2));
         } catch (OWLOntologyCreationException e) {
             throw new RuntimeException(e);
         }
@@ -76,15 +73,15 @@ public class StructuralDistanceCharacterisationTest {
     }
 
     public OWLObjectProperty createOWLObjectProperty(String propertyName) {
-        OWLObjectProperty owlObjectProperty = df.getOWLObjectProperty(IRI
-                .create("urn:test#" + propertyName));
+        OWLObjectProperty owlObjectProperty =
+            df.getOWLObjectProperty(IRI.create("urn:test#" + propertyName));
         OWLDeclarationAxiom axiom = df.getOWLDeclarationAxiom(owlObjectProperty);
         addAxiom(axiom);
         return owlObjectProperty;
     }
 
     public OWLSubClassOfAxiom createOWLSubClassOfAxiom(OWLClassExpression subClass,
-            OWLClassExpression superClass) {
+        OWLClassExpression superClass) {
         OWLSubClassOfAxiom axiom = df.getOWLSubClassOfAxiom(subClass, superClass);
         addAxiom(axiom);
         return axiom;
@@ -92,9 +89,9 @@ public class StructuralDistanceCharacterisationTest {
 
     @Test
     public void testStructuralDistance() {
-        StructuralAxiomRelevanceAxiomBasedDistance distance = (StructuralAxiomRelevanceAxiomBasedDistance) DistanceCreator
-                .createStructuralAxiomRelevanceAxiomBasedDistance(o
-                        .getOWLOntologyManager());
+        StructuralAxiomRelevanceAxiomBasedDistance distance =
+            (StructuralAxiomRelevanceAxiomBasedDistance) DistanceCreator
+                .createStructuralAxiomRelevanceAxiomBasedDistance(o.getOWLOntologyManager());
         OWLClass a = df.getOWLClass(IRI.create("urn:test#a"));
         OWLClass b = df.getOWLClass(IRI.create("urn:test#b"));
         OWLClass c = df.getOWLClass(IRI.create("urn:test#c"));

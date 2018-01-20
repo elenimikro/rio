@@ -18,15 +18,15 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
-/** @author eleni
- * @param <C>
- *            set
- * @param <P>
- *            type */
+/**
+ * @author eleni
+ * @param <C> set
+ * @param <P> type
+ */
 public class GeneralisationStatistics<C extends Set<P>, P> {
     private final RegularitiesDecompositionModel<C, P> model;
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> genMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+    private final Set<OWLOntology> ontologies = new HashSet<>();
+    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> genMap = new MultiMap<>();
 
     private GeneralisationStatistics(RegularitiesDecompositionModel<C, P> model) {
         this.model = model;
@@ -54,10 +54,10 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
     /** @return mean cluster coverage */
     public double getMeanClusterCoveragePerGeneralisation() {
         List<C> clusterList = this.model.getClusterList();
-        Map<Variable<?>, C> variableMap = new HashMap<Variable<?>, C>();
+        Map<Variable<?>, C> variableMap = new HashMap<>();
         for (int i = 0; i < clusterList.size(); i++) {
             C cluster = clusterList.get(i);
-            Set<OWLEntity> clusterSet = new HashSet<OWLEntity>();
+            Set<OWLEntity> clusterSet = new HashSet<>();
             for (P e : cluster) {
                 clusterSet.add((OWLEntity) e);
             }
@@ -71,7 +71,7 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
         double genCoverage = 0;
         for (OWLAxiom ax : genMap.keySet()) {
             Collection<OWLAxiomInstantiation> instantiations = genMap.get(ax);
-            MultiMap<Variable<?>, OWLObject> map = new MultiMap<Variable<?>, OWLObject>();
+            MultiMap<Variable<?>, OWLObject> map = new MultiMap<>();
             for (OWLAxiomInstantiation inst : instantiations) {
                 AssignmentMap substitutions = inst.getSubstitutions();
                 Set<Variable<?>> variables = substitutions.getVariables();
@@ -127,31 +127,28 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
 
     /** @return stats */
     public List<SimpleMetric<?>> getStats() {
-        List<SimpleMetric<?>> stats = new ArrayList<SimpleMetric<?>>();
-        stats.add(new SimpleMetric<Integer>("# Generalisations", this
-                .getNumberOfGeneralisations()));
-        stats.add(new SimpleMetric<Integer>("# Instantiations", this
-                .getNumberOfInstantiations()));
-        stats.add(new SimpleMetric<Double>("# Generalised Axioms", this
-                .getRatioOfGeneralisedAxiomsToTotalAxioms()));
-        stats.add(new SimpleMetric<Double>("Mean instantiations per generalisation", this
-                .getMeanOWLAxiomInstantiationsPerGeneralisation()));
-        stats.add(new SimpleMetric<Double>("Mean entities per cluster", this
-                .getMeanEntitiesPerCluster()));
-        stats.add(new SimpleMetric<Double>("Mean cluster coverage", this
-                .getMeanClusterCoveragePerGeneralisation()));
+        List<SimpleMetric<?>> stats = new ArrayList<>();
+        stats.add(new SimpleMetric<>("# Generalisations", this.getNumberOfGeneralisations()));
+        stats.add(new SimpleMetric<>("# Instantiations", this.getNumberOfInstantiations()));
+        stats.add(new SimpleMetric<>("# Generalised Axioms",
+            this.getRatioOfGeneralisedAxiomsToTotalAxioms()));
+        stats.add(new SimpleMetric<>("Mean instantiations per generalisation",
+            this.getMeanOWLAxiomInstantiationsPerGeneralisation()));
+        stats
+            .add(new SimpleMetric<>("Mean entities per cluster", this.getMeanEntitiesPerCluster()));
+        stats.add(new SimpleMetric<>("Mean cluster coverage",
+            this.getMeanClusterCoveragePerGeneralisation()));
         return stats;
     }
 
-    /** @param model
-     *            model
-     * @param <P>
-     *            type
-     * @param <C>
-     *            set of type
-     * @return generalisation stats */
-    public static <C extends Set<P>, P extends OWLEntity> GeneralisationStatistics<C, P>
-            buildStatistics(RegularitiesDecompositionModel<C, P> model) {
-        return new GeneralisationStatistics<C, P>(model);
+    /**
+     * @param model model
+     * @param <P> type
+     * @param <C> set of type
+     * @return generalisation stats
+     */
+    public static <C extends Set<P>, P extends OWLEntity> GeneralisationStatistics<C, P> buildStatistics(
+        RegularitiesDecompositionModel<C, P> model) {
+        return new GeneralisationStatistics<>(model);
     }
 }

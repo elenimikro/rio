@@ -18,14 +18,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -86,6 +84,7 @@ import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.ui.GlassPane;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -94,17 +93,14 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.w3c.dom.Document;
 
-import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
-
 /** @author Luigi Iannone */
 public class ClusteringGUI extends JFrame {
-    private final class Reducer
-            extends
-            SwingWorker<ClusteringProximityMatrix<OWLEntity>, ClusteringProximityMatrix<OWLEntity>> {
+    private final class Reducer extends
+        SwingWorker<ClusteringProximityMatrix<OWLEntity>, ClusteringProximityMatrix<OWLEntity>> {
         public Reducer() {}
 
         @Override
-        protected ClusteringProximityMatrix<OWLEntity> doInBackground() throws Exception {
+        protected ClusteringProximityMatrix<OWLEntity> doInBackground() {
             return clusteringMatrix.reduce(filter);
         }
 
@@ -123,19 +119,18 @@ public class ClusteringGUI extends JFrame {
         }
     }
 
-    private abstract class Agglomerator
-            extends
-            SwingWorker<ClusteringProximityMatrix<OWLEntity>, ClusteringProximityMatrix<OWLEntity>> {
+    private abstract class Agglomerator extends
+        SwingWorker<ClusteringProximityMatrix<OWLEntity>, ClusteringProximityMatrix<OWLEntity>> {
         private final ClusteringProximityMatrix<OWLEntity> start;
         private final PairFilter<Collection<? extends OWLEntity>> pairFilter;
         private int count = 0;
 
-        /** @param start
-         *            start
-         * @param filter
-         *            filter */
+        /**
+         * @param start start
+         * @param filter filter
+         */
         public Agglomerator(ClusteringProximityMatrix<OWLEntity> start,
-                PairFilter<Collection<? extends OWLEntity>> filter) {
+            PairFilter<Collection<? extends OWLEntity>> filter) {
             if (start == null) {
                 throw new NullPointerException("The start cannot be null");
             }
@@ -149,7 +144,7 @@ public class ClusteringGUI extends JFrame {
         protected abstract boolean stop(ClusteringProximityMatrix<OWLEntity> matrix);
 
         @Override
-        protected ClusteringProximityMatrix<OWLEntity> doInBackground() throws Exception {
+        protected ClusteringProximityMatrix<OWLEntity> doInBackground() {
             ClusteringProximityMatrix<OWLEntity> toReturn = getStart();
             do {
                 toReturn = toReturn.agglomerate(getFilter());
@@ -166,16 +161,15 @@ public class ClusteringGUI extends JFrame {
                 for (ClusteringProximityMatrix<OWLEntity> clusteringProximityMatrix : chunks) {
                     clusterCount = clusteringProximityMatrix.getData().length();
                 }
-                glassPane.setMessage(String.format(
-                        "%d agglomerations so far %d clusters", count, clusterCount));
+                glassPane.setMessage(
+                    String.format("%d agglomerations so far %d clusters", count, clusterCount));
             }
         }
 
         @Override
         protected void done() {
             try {
-                ClusteringProximityMatrix<OWLEntity> clusteringProximityMatrix = this
-                        .get();
+                ClusteringProximityMatrix<OWLEntity> clusteringProximityMatrix = this.get();
                 clusteringMatrix = clusteringProximityMatrix;
                 updateGUI();
             } catch (InterruptedException e) {
@@ -208,8 +202,7 @@ public class ClusteringGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save",
-                    FileDialog.SAVE);
+            FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save", FileDialog.SAVE);
             dialog.setVisible(true);
             String fileName = dialog.getFile();
             if (fileName != null) {
@@ -217,18 +210,16 @@ public class ClusteringGUI extends JFrame {
                     OWLOntology ontology = manager.getOntologies().iterator().next();
                     OPPLFactory factory = new OPPLFactory(manager, ontology, null);
                     ConstraintSystem constraintSystem = factory.createConstraintSystem();
-                    SortedSet<Cluster<OWLEntity>> sortedClusters = new TreeSet<Cluster<OWLEntity>>(
-                            ClusterStatisticsTableModel.SIZE_COMPARATOR);
+                    SortedSet<Cluster<OWLEntity>> sortedClusters =
+                        new TreeSet<>(ClusterStatisticsTableModel.SIZE_COMPARATOR);
                     sortedClusters.addAll(buildClusters());
-                    OWLObjectGeneralisation generalisation = Utils
-                            .getOWLObjectGeneralisation(sortedClusters,
-                                    manager.getOntologies(), constraintSystem);
+                    OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
+                        sortedClusters, manager.getOntologies(), constraintSystem);
                     Document xml = Utils.toXML(sortedClusters, manager.getOntologies(),
-                            new ManchesterOWLSyntaxOWLObjectRendererImpl(),
-                            generalisation);
+                        new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation);
                     Transformer t = TransformerFactory.newInstance().newTransformer();
-                    StreamResult result = new StreamResult(new File(new File(
-                            dialog.getDirectory()), fileName));
+                    StreamResult result =
+                        new StreamResult(new File(new File(dialog.getDirectory()), fileName));
                     t.setOutputProperty(OutputKeys.INDENT, "yes");
                     t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "3");
                     t.transform(new DOMSource(xml), result);
@@ -261,8 +252,7 @@ public class ClusteringGUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save",
-                    FileDialog.SAVE);
+            FileDialog dialog = new FileDialog(ClusteringGUI.this, "Save", FileDialog.SAVE);
             dialog.setVisible(true);
             String fileName = dialog.getFile();
             if (fileName != null) {
@@ -289,10 +279,10 @@ public class ClusteringGUI extends JFrame {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
-                boolean isSelected, boolean hasFocus, int row, int column) {
+            boolean isSelected, boolean hasFocus, int row, int column) {
             DefaultTableCellRenderer defaultTableCellRenderer = new DefaultTableCellRenderer();
-            Pair<Collection<? extends OWLEntity>> minimumDistancePair = clusteringMatrix
-                    .getMinimumDistancePair();
+            Pair<Collection<? extends OWLEntity>> minimumDistancePair =
+                clusteringMatrix.getMinimumDistancePair();
             if (minimumDistancePair != null && table == proximityTable) {
                 int[] rows = clusteringMatrix.getRows(minimumDistancePair);
                 for (int i = 0; i < rows.length; i++) {
@@ -303,15 +293,15 @@ public class ClusteringGUI extends JFrame {
             }
             String rendering = value == null ? "" : value.toString();
             if (value instanceof Set<?>) {
-                Set<String> members = new HashSet<String>(((Set<?>) value).size());
+                Set<String> members = new HashSet<>(((Set<?>) value).size());
                 for (Object object : (Set<?>) value) {
                     members.add(render(object));
                 }
-                rendering = String.format(" Cluster %d) %s, size %d", row + 1,
-                        members.toString(), members.size());
+                rendering = String.format(" Cluster %d) %s, size %d", row + 1, members.toString(),
+                    members.size());
             }
-            Component toReturn = defaultTableCellRenderer.getTableCellRendererComponent(
-                    table, rendering, isSelected, hasFocus, row, column);
+            Component toReturn = defaultTableCellRenderer.getTableCellRendererComponent(table,
+                rendering, isSelected, hasFocus, row, column);
             return toReturn;
         }
 
@@ -326,8 +316,8 @@ public class ClusteringGUI extends JFrame {
 
     private static final long serialVersionUID = 3154241412745213737L;
     protected final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-    protected final ClusterSummaryPanel<OWLEntity> clusterSummaryPanel = ClusterSummaryPanel
-            .buildOWLEntityClusterSummaryPanel(new SimpleShortFormProvider());
+    protected final ClusterSummaryPanel<OWLEntity> clusterSummaryPanel =
+        ClusterSummaryPanel.buildOWLEntityClusterSummaryPanel(new SimpleShortFormProvider());
     protected ClusterAxiomPanel<OWLEntity> clusterAxiomPanel;
     protected final JTable proximityTable = new JTable();
     protected final JTable clusterStatisticsTable = new JTable();
@@ -335,163 +325,138 @@ public class ClusteringGUI extends JFrame {
     protected final SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
     protected final JButton reduceButton = new JButton("Reduce");
     protected final JButton agglomerateButton = new JButton("Agglomerate");
-    protected final JButton agglomerateAllZerosButton = new JButton(
-            "Agglomerate All Zeros");
+    protected final JButton agglomerateAllZerosButton = new JButton("Agglomerate All Zeros");
     protected final JButton agglomerateAllButton = new JButton("Agglomerate All");
     protected final GlassPane glassPane = new GlassPane();
     protected final Action saveAction = new SaveAction();
     protected final Action saveClusteringAction = new SaveClustering();
-    protected final ClusteringTableCellRenderer clusteringTableCellRenderer = new ClusteringTableCellRenderer();
+    protected final ClusteringTableCellRenderer clusteringTableCellRenderer =
+        new ClusteringTableCellRenderer();
     protected ProximityMatrix<OWLEntity> distanceMatrix;
     protected PairFilter<Collection<? extends OWLEntity>> filter;
 
-    /** @param iris
-     *            iris */
+    /**
+     * @param iris iris
+     */
     public ClusteringGUI(Collection<? extends IRI> iris) {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
         }
         try {
-            Collection<IRI> collection = new ArrayList<IRI>(iris);
+            Collection<IRI> collection = new ArrayList<>(iris);
             IOUtils.loadIRIMappers(collection, manager);
         } catch (OWLOntologyCreationException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(),
-                    "Error in loading ontology", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error in loading ontology",
+                JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-        System.out.println(String.format("Loaded %d ontologies ", manager.getOntologies()
-                .size()));
+        System.out.println(String.format("Loaded %d ontologies ", manager.getOntologies().size()));
         reset();
         initGUI();
     }
 
     private void reset() {
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new Comparator<OWLEntity>() {
-            @Override
-            public int compare(OWLEntity o1, OWLEntity o2) {
-                return shortFormProvider.getShortForm(o1).compareTo(
-                        shortFormProvider.getShortForm(o2));
-            }
-        });
+        Set<OWLEntity> entities = new TreeSet<>((o1, o2) -> shortFormProvider.getShortForm(o1)
+            .compareTo(shortFormProvider.getShortForm(o2)));
         for (OWLOntology ontology : manager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
-        System.out.println(String.format("Computing distance between %d entities ...",
-                entities.size()));
+        System.out
+            .println(String.format("Computing distance between %d entities ...", entities.size()));
         // ByKindOWLEntityPopularityBasedRelevantPolicy policy = new
         // ByKindOWLEntityPopularityBasedRelevantPolicy(
         // entities, this.manager.getOntologies());
         // Distance<OWLEntity> distance = new AxiomBasedDistance(
         // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
         // policy, this.manager);
-        final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-                manager.getOWLDataFactory(), new ReplacementByKindStrategy(
-                        manager.getOWLDataFactory()));
+        final OWLEntityReplacer owlEntityReplacer =
+            new OWLEntityReplacer(manager.getOWLDataFactory(),
+                new ReplacementByKindStrategy(manager.getOWLDataFactory()));
         final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-                manager.getOntologies(), owlEntityReplacer, manager);
+            manager.getOntologies(), owlEntityReplacer, manager);
         // final Distance<OWLEntity> distance = new EditDistance(
         // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
         // this.manager);
-        distanceMatrix = new SimpleProximityMatrix<OWLEntity>(entities, distance);
-        System.out.println(String.format(
-                "Computing distance between %d entities finished", entities.size()));
-        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
+        distanceMatrix = new SimpleProximityMatrix<>(entities, distance);
+        System.out.println(
+            String.format("Computing distance between %d entities finished", entities.size()));
+        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singleton(object));
         }
-        Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
-            @Override
-            public double getDistance(Collection<? extends OWLEntity> a,
-                    Collection<? extends OWLEntity> b) {
-                return distance.getDistance(a.iterator().next(), b.iterator().next());
-            }
-        };
-        filter = DistanceThresholdBasedFilter.build(new TableDistance<OWLEntity>(
-                entities, distanceMatrix.getData()), 1);
-        clusteringMatrix = ClusteringProximityMatrix.build(distanceMatrix,
-                new CentroidProximityMeasureFactory(), filter,
-                PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
+        Distance<Collection<? extends OWLEntity>> singletonDistance =
+            (a, b) -> distance.getDistance(a.iterator().next(), b.iterator().next());
+        filter = DistanceThresholdBasedFilter
+            .build(new TableDistance<>(entities, distanceMatrix.getData()), 1);
+        clusteringMatrix =
+            ClusteringProximityMatrix.build(distanceMatrix, new CentroidProximityMeasureFactory(),
+                filter, PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
         updateGUI();
-        reduceButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Reducer reducer = new Reducer();
-                glassPane.setMessage("Reducing...");
-                glassPane.setVisible(true);
-                reducer.execute();
-            }
+        reduceButton.addActionListener(e -> {
+            Reducer reducer = new Reducer();
+            glassPane.setMessage("Reducing...");
+            glassPane.setVisible(true);
+            reducer.execute();
         });
-        agglomerateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
-                    @Override
-                    protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
-                        return true;
-                    }
-                };
-                glassPane.setMessage("Agglomerating...");
-                glassPane.setVisible(true);
-                agglomerator.execute();
-            }
+        agglomerateButton.addActionListener(e -> {
+            Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
+                @Override
+                protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
+                    return true;
+                }
+            };
+            glassPane.setMessage("Agglomerating...");
+            glassPane.setVisible(true);
+            agglomerator.execute();
         });
-        agglomerateAllZerosButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
-                    @Override
-                    protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
-                        return matrix.getMinimumDistancePair() == null
-                                || matrix.getMinimumDistance() > 0;
-                    }
-                };
-                glassPane.setMessage("Agglomerating...");
-                glassPane.setVisible(true);
-                agglomerator.execute();
-            }
+        agglomerateAllZerosButton.addActionListener(e -> {
+            Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
+                @Override
+                protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
+                    return matrix.getMinimumDistancePair() == null
+                        || matrix.getMinimumDistance() > 0;
+                }
+            };
+            glassPane.setMessage("Agglomerating...");
+            glassPane.setVisible(true);
+            agglomerator.execute();
         });
-        agglomerateAllButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
-                    @Override
-                    protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
-                        return matrix.getMinimumDistancePair() == null
-                                || !getFilter().accept(
-                                        matrix.getMinimumDistancePair().getFirst(),
-                                        matrix.getMinimumDistancePair().getSecond());
-                    }
-                };
-                glassPane.setMessage("Agglomerating...");
-                glassPane.setVisible(true);
-                agglomerator.execute();
-            }
+        agglomerateAllButton.addActionListener(e -> {
+            Agglomerator agglomerator = new Agglomerator(clusteringMatrix, filter) {
+                @Override
+                protected boolean stop(ClusteringProximityMatrix<OWLEntity> matrix) {
+                    return matrix.getMinimumDistancePair() == null
+                        || !getFilter().accept(matrix.getMinimumDistancePair().getFirst(),
+                            matrix.getMinimumDistancePair().getSecond());
+                }
+            };
+            glassPane.setMessage("Agglomerating...");
+            glassPane.setVisible(true);
+            agglomerator.execute();
         });
     }
 
     protected void updateGUI() {
         List<String> columnNames = getColumnNames(clusteringMatrix.getObjects());
         proximityTable.setModel(new ProximityMatrixTableModel(clusteringMatrix,
-                columnNames.toArray(new String[columnNames.size()])));
+            columnNames.toArray(new String[columnNames.size()])));
         clusterStatisticsTable.setModel(new ClusterStatisticsTableModel(buildClusters()));
-        proximityTable.getColumn("*").setCellRenderer(
-                ClusteringGUI.this.clusteringTableCellRenderer);
-        clusterStatisticsTable.getColumn("Cluster").setCellRenderer(
-                clusteringTableCellRenderer);
-        agglomerateButton.setEnabled(ClusteringGUI.this.clusteringMatrix
-                .getMinimumDistancePair() != null);
+        proximityTable.getColumn("*")
+            .setCellRenderer(ClusteringGUI.this.clusteringTableCellRenderer);
+        clusterStatisticsTable.getColumn("Cluster").setCellRenderer(clusteringTableCellRenderer);
+        agglomerateButton
+            .setEnabled(ClusteringGUI.this.clusteringMatrix.getMinimumDistancePair() != null);
         agglomerateAllZerosButton.setEnabled(clusteringMatrix.getMinimumDistance() == 0);
-        agglomerateAllButton.setEnabled(ClusteringGUI.this.clusteringMatrix
-                .getMinimumDistancePair() != null);
+        agglomerateAllButton
+            .setEnabled(ClusteringGUI.this.clusteringMatrix.getMinimumDistancePair() != null);
         glassPane.setVisible(false);
     }
 
     protected Set<Cluster<OWLEntity>> buildClusters() {
-        Collection<Collection<? extends OWLEntity>> objects = clusteringMatrix
-                .getObjects();
-        Set<Cluster<OWLEntity>> toReturn = new HashSet<Cluster<OWLEntity>>(objects.size());
+        Collection<Collection<? extends OWLEntity>> objects = clusteringMatrix.getObjects();
+        Set<Cluster<OWLEntity>> toReturn = new HashSet<>(objects.size());
         for (Collection<? extends OWLEntity> collection : objects) {
-            toReturn.add(new SimpleCluster<OWLEntity>(collection, distanceMatrix));
+            toReturn.add(new SimpleCluster<>(collection, distanceMatrix));
         }
         return toReturn;
     }
@@ -514,14 +479,12 @@ public class ClusteringGUI extends JFrame {
         JSplitPane clusteringPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         proximityTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         proximityTable.getColumn("*").setCellRenderer(clusteringTableCellRenderer);
-        clusterStatisticsTable.getColumn("Cluster").setCellRenderer(
-                clusteringTableCellRenderer);
+        clusterStatisticsTable.getColumn("Cluster").setCellRenderer(clusteringTableCellRenderer);
         JPanel rightPane = new JPanel(new BorderLayout());
         rightPane.add(new JScrollPane(proximityTable), BorderLayout.CENTER);
         clusteringPane.setLeftComponent(new JScrollPane(clusterStatisticsTable));
         clusteringPane.setRightComponent(rightPane);
-        clusterAxiomPanel = ClusterAxiomPanel
-                .build(new ManchesterOWLSyntaxOWLObjectRendererImpl());
+        clusterAxiomPanel = ClusterAxiomPanel.build(new ManchesterOWLSyntaxOWLObjectRendererImpl());
         JSplitPane clusterPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         clusterPanel.setResizeWeight(.5);
         clusterPanel.setDividerLocation(.5);
@@ -536,66 +499,61 @@ public class ClusteringGUI extends JFrame {
         buttonPanel.add(agglomerateAllZerosButton);
         buttonPanel.add(agglomerateAllButton);
         this.add(buttonPanel, BorderLayout.SOUTH);
-        clusterStatisticsTable.getSelectionModel().addListSelectionListener(
-                new ListSelectionListener() {
-                    @Override
-                    @SuppressWarnings("unchecked")
-                    public void valueChanged(ListSelectionEvent e) {
-                        int selectedRow = clusterStatisticsTable.getSelectedRow();
-                        Object valueAt = selectedRow == -1 ? null
-                                : clusterStatisticsTable.getModel().getValueAt(
-                                        selectedRow, 0);
-                        if (valueAt instanceof Cluster<?>) {
-                            clusterSummaryPanel.setCluster((Cluster<OWLEntity>) valueAt);
-                            OWLObjectGeneralisation generalisation;
-                            try {
-                                OWLOntology ontology = manager.getOntologies().iterator()
-                                        .next();
-                                OPPLFactory factory = new OPPLFactory(manager, ontology,
-                                        null);
-                                ConstraintSystem constraintSystem = factory
-                                        .createConstraintSystem();
-                                SortedSet<Cluster<OWLEntity>> sortedClusters = new TreeSet<Cluster<OWLEntity>>(
-                                        ClusterStatisticsTableModel.SIZE_COMPARATOR);
-                                sortedClusters.addAll(ClusteringGUI.this.buildClusters());
-                                generalisation = Utils.getOWLObjectGeneralisation(
-                                        sortedClusters, manager.getOntologies(),
-                                        constraintSystem);
-                                clusterAxiomPanel.setCluster(
-                                        (Cluster<OWLEntity>) valueAt,
-                                        manager.getOntologies(), generalisation);
-                            } catch (Exception exception) {
-                                JOptionPane.showMessageDialog(ClusteringGUI.this,
-                                        exception.getMessage());
-                                exception.printStackTrace();
-                            }
+        clusterStatisticsTable.getSelectionModel()
+            .addListSelectionListener(new ListSelectionListener() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public void valueChanged(ListSelectionEvent e) {
+                    int selectedRow = clusterStatisticsTable.getSelectedRow();
+                    Object valueAt = selectedRow == -1 ? null
+                        : clusterStatisticsTable.getModel().getValueAt(selectedRow, 0);
+                    if (valueAt instanceof Cluster<?>) {
+                        clusterSummaryPanel.setCluster((Cluster<OWLEntity>) valueAt);
+                        OWLObjectGeneralisation generalisation;
+                        try {
+                            OWLOntology ontology = manager.getOntologies().iterator().next();
+                            OPPLFactory factory = new OPPLFactory(manager, ontology, null);
+                            ConstraintSystem constraintSystem = factory.createConstraintSystem();
+                            SortedSet<Cluster<OWLEntity>> sortedClusters =
+                                new TreeSet<>(ClusterStatisticsTableModel.SIZE_COMPARATOR);
+                            sortedClusters.addAll(ClusteringGUI.this.buildClusters());
+                            generalisation = Utils.getOWLObjectGeneralisation(sortedClusters,
+                                manager.getOntologies(), constraintSystem);
+                            clusterAxiomPanel.setCluster((Cluster<OWLEntity>) valueAt,
+                                manager.getOntologies(), generalisation);
+                        } catch (Exception exception) {
+                            JOptionPane.showMessageDialog(ClusteringGUI.this,
+                                exception.getMessage());
+                            exception.printStackTrace();
                         }
                     }
-                });
+                }
+            });
     }
 
-    /** @param objects
-     *            objects
-     * @return column names */
+    /**
+     * @param objects objects
+     * @return column names
+     */
     public List<String> getColumnNames(
-            Collection<? extends Collection<? extends OWLEntity>> objects) {
-        List<String> columnNames = new ArrayList<String>(objects.size());
+        Collection<? extends Collection<? extends OWLEntity>> objects) {
+        List<String> columnNames = new ArrayList<>(objects.size());
         columnNames.add("*");
         for (Collection<? extends OWLEntity> entities : objects) {
-            Set<String> objectNames = new HashSet<String>(entities.size());
+            Set<String> objectNames = new HashSet<>(entities.size());
             for (OWLEntity owlEntity : entities) {
-                objectNames.add(ClusteringGUI.this.shortFormProvider
-                        .getShortForm(owlEntity));
+                objectNames.add(ClusteringGUI.this.shortFormProvider.getShortForm(owlEntity));
             }
             columnNames.add(objectNames.toString());
         }
         return columnNames;
     }
 
-    /** @param args
-     *            args */
+    /**
+     * @param args args
+     */
     public static void main(String[] args) {
-        List<IRI> iris = new ArrayList<IRI>(args.length);
+        List<IRI> iris = new ArrayList<>(args.length);
         for (String string : args) {
             if (string.startsWith("http")) {
                 IRI iri = IRI.create(string);

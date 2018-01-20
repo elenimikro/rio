@@ -23,14 +23,14 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 /** @author Luigi Iannone */
 public class OWLAxiomListItem {
     private final OWLAxiom axiom;
-    private final Set<OWLAxiomInstantiation> instantiations = new HashSet<OWLAxiomInstantiation>();
+    private final Set<OWLAxiomInstantiation> instantiations = new HashSet<>();
 
-    /** @param axiom
-     *            axiom
-     * @param instantiations
-     *            instantiations */
+    /**
+     * @param axiom axiom
+     * @param instantiations instantiations
+     */
     public OWLAxiomListItem(OWLAxiom axiom,
-            Collection<? extends OWLAxiomInstantiation> instantiations) {
+        Collection<? extends OWLAxiomInstantiation> instantiations) {
         if (axiom == null) {
             throw new NullPointerException("The axiom cannot be null");
         }
@@ -58,6 +58,6 @@ public class OWLAxiomListItem {
 
     /** @return the instantiations */
     public Set<OWLAxiomInstantiation> getInstantiations() {
-        return new HashSet<OWLAxiomInstantiation>(instantiations);
+        return new HashSet<>(instantiations);
     }
 }

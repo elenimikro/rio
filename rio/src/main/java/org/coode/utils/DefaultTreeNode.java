@@ -15,23 +15,25 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public class DefaultTreeNode<O> implements TreeNode<O> {
     private final O userObject;
-    private final List<TreeNode<?>> children = new ArrayList<TreeNode<?>>();
+    private final List<TreeNode<?>> children = new ArrayList<>();
 
-    /** @param userObject
-     *            userObject */
+    /**
+     * @param userObject userObject
+     */
     public DefaultTreeNode(O userObject) {
-        this(userObject, Collections.<TreeNode<?>> emptyList());
+        this(userObject, Collections.<TreeNode<?>>emptyList());
     }
 
-    /** @param userObject
-     *            userObject
-     * @param children
-     *            children */
+    /**
+     * @param userObject userObject
+     * @param children children
+     */
     public DefaultTreeNode(O userObject, Collection<? extends TreeNode<?>> children) {
         if (children == null) {
             throw new NullPointerException("The children colleciton cannot be null");
@@ -49,7 +51,7 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
     /** @return the children */
     @Override
     public List<TreeNode<?>> getChildren() {
-        return new ArrayList<TreeNode<?>>(this.children);
+        return new ArrayList<>(this.children);
     }
 
     @Override
@@ -70,12 +72,12 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
         return i;
     }
 
-    /** Adds the input TreeNode as the last of this TreeNode children.
+    /**
+     * Adds the input TreeNode as the last of this TreeNode children.
      * 
-     * @param child
-     *            The child TreeNode to add. cannot be {@code null}.
-     * @throws NullPointerException
-     *             if the input child is {@code null}. */
+     * @param child The child TreeNode to add. cannot be {@code null}.
+     * @throws NullPointerException if the input child is {@code null}.
+     */
     public void addChild(TreeNode<?> child) {
         if (child == null) {
             throw new NullPointerException("The child node cannot be null");
@@ -83,38 +85,35 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
         this.addChild(this.children.size(), child);
     }
 
-    /** Adds the input TreeNode as child of this TreeNode at the input position i
-     * to this TreeNode.
+    /**
+     * Adds the input TreeNode as child of this TreeNode at the input position i to this TreeNode.
      * 
-     * @param i
-     *            The desired position of the list of children. It must be
-     *            greater than 0 and less than the current children size.
-     * @param child
-     *            The TreeNode to add as child. Cannot be {@code null}.
-     * @throws NullPointerException
-     *             if the input child is {@code null}.
-     * @throws IllegalArgumentException
-     *             if {@literal i<0 || i>getChildren().size()}.
-     * @see TreeNode#getChildren() */
+     * @param i The desired position of the list of children. It must be greater than 0 and less
+     *        than the current children size.
+     * @param child The TreeNode to add as child. Cannot be {@code null}.
+     * @throws NullPointerException if the input child is {@code null}.
+     * @throws IllegalArgumentException if {@literal i<0 || i>getChildren().size()}.
+     * @see TreeNode#getChildren()
+     */
     public void addChild(int i, TreeNode<?> child) {
         if (child == null) {
             throw new NullPointerException("The child node cannot be null");
         }
         if (i < 0 || i > this.children.size()) {
-            throw new IllegalArgumentException(String.format(
-                    "%d not in the allowed range [0,%d] ", i, this.children.size()));
+            throw new IllegalArgumentException(
+                String.format("%d not in the allowed range [0,%d] ", i, this.children.size()));
         }
         this.children.add(i, child);
     }
 
-    /** Removes the input TreeNode from this TreeNode children. Returns
-     * {@code true} if the removed TreeNode was actually amongst the children of
-     * this TreeNode.
+    /**
+     * Removes the input TreeNode from this TreeNode children. Returns {@code true} if the removed
+     * TreeNode was actually amongst the children of this TreeNode.
      * 
-     * @param child
-     *            The TreeNode to remove.
-     * @return {@code true} if the removed node was in fact a child of this
-     *         TreeNode. {@code false} otherwise. */
+     * @param child The TreeNode to remove.
+     * @return {@code true} if the removed node was in fact a child of this TreeNode. {@code false}
+     *         otherwise.
+     */
     public boolean removeChild(TreeNode<?> child) {
         return this.children.remove(child);
     }

@@ -17,18 +17,19 @@ import java.util.List;
 
 import org.coode.pair.Pair;
 
-/** HistoryItems are immutable
+/**
+ * HistoryItems are immutable
  * 
- * @param <O>
- *            type */
+ * @param <O> type
+ */
 public class HistoryItem<O> {
     private final Pair<O> pair;
-    private final List<O> items = new ArrayList<O>();
+    private final List<O> items = new ArrayList<>();
 
-    /** @param pair
-     *            pair
-     * @param clusters
-     *            clusters */
+    /**
+     * @param pair pair
+     * @param clusters clusters
+     */
     public HistoryItem(Pair<O> pair, Collection<? extends O> clusters) {
         if (pair == null) {
             throw new NullPointerException("The pair cannot be null");

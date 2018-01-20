@@ -21,43 +21,40 @@ import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 /** @author Eleni Mikroyannidi */
-public class OWLAnnotationPropertyLeastCommonSubsumer extends
-        LeastCommonSubsumer<OWLAnnotationProperty, OWLAnnotationProperty> {
+public class OWLAnnotationPropertyLeastCommonSubsumer
+    extends LeastCommonSubsumer<OWLAnnotationProperty, OWLAnnotationProperty> {
     /**
      * 
      */
-    public static final IRI TOP_ANNOTATION_PROPERTY_IRI = IRI
-            .create("http://www.coode.org#topAnnotationProperty");
+    public static final IRI TOP_ANNOTATION_PROPERTY_IRI =
+        IRI.create("http://www.coode.org#topAnnotationProperty");
 
-    /** @param axiomProvider
-     *            axiomProvider
-     * @param dataFactory
-     *            dataFactory */
+    /**
+     * @param axiomProvider axiomProvider
+     * @param dataFactory dataFactory
+     */
     public OWLAnnotationPropertyLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
-            OWLDataFactory dataFactory) {
-        super(axiomProvider, dataFactory
-                .getOWLAnnotationProperty(TOP_ANNOTATION_PROPERTY_IRI));
+        OWLDataFactory dataFactory) {
+        super(axiomProvider, dataFactory.getOWLAnnotationProperty(TOP_ANNOTATION_PROPERTY_IRI));
     }
 
     @Override
     protected void rebuild() {
-        for (OWLAxiom axiom : getAxiomProvider()) {
-            axiom.accept(new OWLAxiomVisitorAdapter() {
-                @Override
-                public void visit(OWLSubAnnotationPropertyOfAxiom ax) {
-                    OWLAnnotationPropertyLeastCommonSubsumer.this.addParent(
-                            ax.getSubProperty(), ax.getSuperProperty());
-                }
-            });
-        }
+        getAxiomProvider().stream().filter(ax -> ax instanceof OWLSubAnnotationPropertyOfAxiom)
+            .forEach(this::handleSubAnnotationProperty);
+    }
+
+    protected void handleSubAnnotationProperty(OWLAxiom ax) {
+        OWLAnnotationPropertyLeastCommonSubsumer.this.addParent(
+            ((OWLSubAnnotationPropertyOfAxiom) ax).getSubProperty(),
+            ((OWLSubAnnotationPropertyOfAxiom) ax).getSuperProperty());
     }
 
     @Override
     public OWLAnnotationProperty get(Collection<? extends OWLAnnotationProperty> c) {
-        List<OWLAnnotationProperty> results = new ArrayList<OWLAnnotationProperty>(c);
+        List<OWLAnnotationProperty> results = new ArrayList<>(c);
         while (results.size() > 1) {
             OWLAnnotationProperty OWLDataProperty = results.get(0);
             results.remove(OWLDataProperty);

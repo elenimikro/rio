@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.io.File;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class StructuralAxiomRelevanceAxiomBasedBasedDistanceTest extends Distanc
         return new DistanceBuilder() {
             @Override
             public AbstractAxiomBasedDistance getDistance(OWLOntology o) {
-                return new StructuralAxiomRelevanceAxiomBasedDistance(o.getImportsClosure(),
+                return new StructuralAxiomRelevanceAxiomBasedDistance(asList(o.importsClosure()),
                     o.getOWLOntologyManager().getOWLDataFactory(), o.getOWLOntologyManager());
             }
 

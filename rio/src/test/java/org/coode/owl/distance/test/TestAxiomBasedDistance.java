@@ -14,6 +14,7 @@
 package org.coode.owl.distance.test;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.io.File;
 import java.util.Arrays;
@@ -48,14 +49,14 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
                 OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                     o.getOWLOntologyManager().getOWLDataFactory(),
                     new ReplacementByKindStrategy(o.getOWLOntologyManager().getOWLDataFactory()));
-                return new AxiomRelevanceAxiomBasedDistance(o.getImportsClosure(),
+                return new AxiomRelevanceAxiomBasedDistance(asList(o.importsClosure()),
                     owlEntityReplacer, o.getOWLOntologyManager());
             }
 
             @Override
             public AbstractAxiomBasedDistance getDistance(OWLOntology o,
                 RelevancePolicy<OWLEntity> rp) {
-                return new AxiomBasedDistance(o.getImportsClosure(),
+                return new AxiomBasedDistance(asList(o.importsClosure()),
                     o.getOWLOntologyManager().getOWLDataFactory(), rp, o.getOWLOntologyManager());
             }
         };
@@ -100,7 +101,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
             AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(o.getSignature(), o.getImportsClosure())));
+                new OWLEntityPopularityRanking(asSet(o.signature()), asList(o.importsClosure()))));
         List<OWLClass> classes = getClasses(pizza_ns + "UnclosedPizza", pizza_ns + "IceCream");
         properTest(distance, classes);
     }
@@ -108,7 +109,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     public void testMargheritaSicilianaPopularityRelevance() {
         OWLOntology o = TestHelper.getPizza();
         OWLEntityPopularityRanking ranking =
-            OWLEntityPopularityRanking.buildRanking(o.getImportsClosure());
+            OWLEntityPopularityRanking.buildRanking(asList(o.importsClosure()));
         RelevancePolicy<OWLEntity> policy =
             AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
@@ -127,7 +128,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     public void testSpicinessSauceToppingPopularityRelevance() {
         OWLOntology o = TestHelper.getPizza();
         OWLEntityPopularityRanking ranking =
-            OWLEntityPopularityRanking.buildRanking(o.getImportsClosure());
+            OWLEntityPopularityRanking.buildRanking(asList(o.importsClosure()));
         RelevancePolicy<OWLEntity> policy =
             AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
@@ -147,7 +148,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         OWLOntology o = getOntology(
             "http://owl.cs.manchester.ac.uk/repository/download?ontology=http://sweet.jpl.nasa.gov/ontology/units.owl&format=RDF/XML");
         OWLEntityPopularityRanking ranking =
-            OWLEntityPopularityRanking.buildRanking(o.getImportsClosure());
+            OWLEntityPopularityRanking.buildRanking(asList(o.importsClosure()));
         RelevancePolicy<OWLEntity> policy =
             AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
@@ -167,7 +168,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
     public void testToyOntology() {
         OWLOntology o = getOntology(new File("code/api/test/resources/RegularToyOntology.owl"));
         OWLEntityPopularityRanking ranking =
-            OWLEntityPopularityRanking.buildRanking(o.getImportsClosure());
+            OWLEntityPopularityRanking.buildRanking(asList(o.importsClosure()));
         AbstractRankingRelevancePolicy<OWLEntity> policy =
             AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(ranking);
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);

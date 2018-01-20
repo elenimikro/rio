@@ -11,51 +11,16 @@
 package org.coode.distance.entityrelevance.owl;
 
 import org.coode.distance.entityrelevance.RelevancePolicy;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 /** @author eleni */
 public class Utils {
-    /** @param policy
-     *            policy
-     * @return relevance policy */
+    /**
+     * @param policy policy
+     * @return relevance policy
+     */
     public static RelevancePolicy<OWLEntity> toOWLObjectRelevancePolicy(
-            final RelevancePolicy<OWLEntity> policy) {
-        return new RelevancePolicy<OWLEntity>() {
-            @Override
-            public boolean isRelevant(OWLEntity object) {
-                return object.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                    @Override
-                    public Boolean visit(OWLClass desc) {
-                        return policy.isRelevant(desc);
-                    }
-
-                    @Override
-                    public Boolean visit(OWLAnnotationProperty property) {
-                        return policy.isRelevant(property);
-                    }
-
-                    @Override
-                    public Boolean visit(OWLDataProperty property) {
-                        return policy.isRelevant(property);
-                    }
-
-                    @Override
-                    public Boolean visit(OWLObjectProperty property) {
-                        return policy.isRelevant(property);
-                    }
-
-                    @Override
-                    public Boolean visit(OWLNamedIndividual individual) {
-                        return policy.isRelevant(individual);
-                    }
-                });
-            }
-        };
+        final RelevancePolicy<OWLEntity> policy) {
+        return object -> policy.isRelevant(object);
     }
 }

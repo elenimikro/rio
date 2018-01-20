@@ -1,10 +1,14 @@
 package org.coode.utils.owl;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.coode.distance.Distance;
@@ -33,95 +37,77 @@ import org.semanticweb.owlapi.util.MultiMap;
 public class ClusterCreator {
     private ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix;
 
-    /** @param distance
-     *            distance
-     * @param entities
-     *            entities
-     * @param <P>
-     *            type
-     * @return clusters */
+    /**
+     * @param distance distance
+     * @param entities entities
+     * @param <P> type
+     * @return clusters
+     */
     public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(
-            Distance<OWLEntity> distance, Set<OWLEntity> entities) {
-        SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        MultiMap<OWLEntity, OWLEntity> equivalenceClasses = org.coode.distance.Utils
-                .getEquivalenceClasses(entities, distance);
+        Distance<OWLEntity> distance, List<OWLEntity> entities) {
+        SimpleProximityMatrix<OWLEntity> baseDistanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
+            org.coode.distance.Utils.getEquivalenceClasses(entities, distance);
         // XXX: to remove
         System.out.println("Computed equivalent classes...");
-        entities = new HashSet<OWLEntity>(equivalenceClasses.keySet());
-        final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        System.out.println(String.format(
-                "Finished computing distance between %d entities", distanceMatrix
-                        .getObjects().size()));
-        final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix = new SimpleProximityMatrix<DistanceTableObject<OWLEntity>>(
+        entities = new ArrayList<>(equivalenceClasses.keySet());
+        final SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        System.out.println(String.format("Finished computing distance between %d entities",
+            distanceMatrix.getObjects().size()));
+        final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix =
+            new SimpleProximityMatrix<>(
                 DistanceTableObject.createDistanceTableObjectSet(distance,
-                        distanceMatrix.getObjects()),
-                new Distance<DistanceTableObject<OWLEntity>>() {
-                    @Override
-                    public double getDistance(DistanceTableObject<OWLEntity> a,
-                            DistanceTableObject<OWLEntity> b) {
-                        return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
-                    }
-                });
-        Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects = new LinkedHashSet<Collection<? extends DistanceTableObject<OWLEntity>>>();
+                    distanceMatrix.getObjects()),
+                (a, b) -> distanceMatrix.getDistance(a.getIndex(), b.getIndex()));
+        Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects =
+            new LinkedHashSet<>();
         for (DistanceTableObject<OWLEntity> object : wrappedMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
         }
-        Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
-            @Override
-            public double getDistance(
-                    Collection<? extends DistanceTableObject<OWLEntity>> a,
-                    Collection<? extends DistanceTableObject<OWLEntity>> b) {
-                return wrappedMatrix
-                        .getDistance(a.iterator().next(), b.iterator().next());
-            }
-        };
+        Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance =
+            (a, b) -> wrappedMatrix.getDistance(a.iterator().next(), b.iterator().next());
         // it passes the threshold for the distance (criterion for stopping
         // clustering)
         // In this case is 1.
-        PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter = DistanceThresholdBasedFilter
-                .build(distanceMatrix.getData(), 1);
-        Set<Cluster<OWLEntity>> clusters = runClustering(wrappedMatrix, filter,
-                singletonDistance, newObjects, equivalenceClasses, baseDistanceMatrix);
+        PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter =
+            DistanceThresholdBasedFilter.build(distanceMatrix.getData(), 1);
+        Set<Cluster<OWLEntity>> clusters = runClustering(wrappedMatrix, filter, singletonDistance,
+            newObjects, equivalenceClasses, baseDistanceMatrix);
         return clusters;
     }
 
-    private
-            <P extends OWLEntity>
-            Set<Cluster<OWLEntity>>
-            runClustering(
-                    SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix,
-                    PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter,
-                    Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance,
-                    Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects,
-                    MultiMap<OWLEntity, OWLEntity> equivalenceClasses,
-                    SimpleProximityMatrix<OWLEntity> baseDistanceMatrix) {
+    private <P extends OWLEntity> Set<Cluster<OWLEntity>> runClustering(
+        SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix,
+        PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter,
+        Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance,
+        Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects,
+        MultiMap<OWLEntity, OWLEntity> equivalenceClasses,
+        SimpleProximityMatrix<OWLEntity> baseDistanceMatrix) {
         // OWLOntologyManager manager = o.getOWLOntologyManager();
         System.out.println("Building clustering matrix....");
-        clusteringMatrix = ClusteringProximityMatrix.build(wrappedMatrix,
-                new CentroidProximityMeasureFactory(), filter,
-                PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
+        clusteringMatrix =
+            ClusteringProximityMatrix.build(wrappedMatrix, new CentroidProximityMeasureFactory(),
+                filter, PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
         System.out.println("Start clustering");
         int i = 1;
-        Set<Collection<? extends DistanceTableObject<OWLEntity>>> leftOvers = new HashSet<Collection<? extends DistanceTableObject<OWLEntity>>>(
-                clusteringMatrix.getObjects());
+        Set<Collection<? extends DistanceTableObject<OWLEntity>>> leftOvers =
+            new HashSet<>(clusteringMatrix.getObjects());
         clusteringMatrix = clusteringMatrix.reduce(filter);
         leftOvers.removeAll(clusteringMatrix.getObjects());
-        Iterator<Collection<? extends DistanceTableObject<OWLEntity>>> iterator = leftOvers
-                .iterator();
+        Iterator<Collection<? extends DistanceTableObject<OWLEntity>>> iterator =
+            leftOvers.iterator();
         while (iterator.hasNext()) {
-            Collection<? extends DistanceTableObject<OWLEntity>> collection = iterator
-                    .next();
-            Set<OWLEntity> unwrappedObjects = Utility.unwrapObjects(collection,
-                    equivalenceClasses);
+            Collection<? extends DistanceTableObject<OWLEntity>> collection = iterator.next();
+            Set<OWLEntity> unwrappedObjects = Utility.unwrapObjects(collection, equivalenceClasses);
             if (unwrappedObjects.size() <= 1) {
                 iterator.remove();
             }
         }
         while (clusteringMatrix.getMinimumDistancePair() != null
-                && filter.accept(clusteringMatrix.getMinimumDistancePair().getFirst(),
-                        clusteringMatrix.getMinimumDistancePair().getSecond())) {
+            && filter.accept(clusteringMatrix.getMinimumDistancePair().getFirst(),
+                clusteringMatrix.getMinimumDistancePair().getSecond())) {
             clusteringMatrix = clusteringMatrix.agglomerate(filter);
             Utility.printAgglomeration(clusteringMatrix, i);
             i++;
@@ -129,128 +115,104 @@ public class ClusterCreator {
                 print(clusteringMatrix);
             }
         }
-        Set<Cluster<OWLEntity>> clusters = Utils.buildClusters(clusteringMatrix,
-                baseDistanceMatrix, equivalenceClasses);
+        Set<Cluster<OWLEntity>> clusters =
+            Utils.buildClusters(clusteringMatrix, baseDistanceMatrix, equivalenceClasses);
         System.out.println(String.format(
-                "Finished clustering after %d agglomerations no of clusters %d", i,
-                clusters.size()));
+            "Finished clustering after %d agglomerations no of clusters %d", i, clusters.size()));
         return clusters;
     }
 
-    /** @param o
-     *            o
-     * @param clusters
-     *            clusters
+    /**
+     * @param o o
+     * @param clusters clusters
      * @return cluster decomposition model
-     * @param <P>
-     *            type
-     * @throws OPPLException
-     *             OPPLException */
-    public
-            <P extends OWLEntity>
-            ClusterDecompositionModel<P>
-            buildClusterDecompositionModel(OWLOntology o, Set<Cluster<OWLEntity>> clusters)
-                    throws OPPLException {
-        ConstraintSystem constraintSystem = new OPPLFactory(o.getOWLOntologyManager(), o,
-                null).createConstraintSystem();
-        System.out.println("ClusterCreator.buildClusterDecompositionModel() clusters "
-                + clusters);
-        OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                clusters, o.getImportsClosure(), constraintSystem);
+     * @param <P> type
+     * @throws OPPLException OPPLException
+     */
+    public <P extends OWLEntity> ClusterDecompositionModel<P> buildClusterDecompositionModel(
+        OWLOntology o, Set<Cluster<OWLEntity>> clusters) throws OPPLException {
+        ConstraintSystem constraintSystem =
+            new OPPLFactory(o.getOWLOntologyManager(), o, null).createConstraintSystem();
+        System.out.println("ClusterCreator.buildClusterDecompositionModel() clusters " + clusters);
+        List<OWLOntology> importsClosure = asList(o.importsClosure());
+        OWLObjectGeneralisation generalisation =
+            Utils.getOWLObjectGeneralisation(clusters, importsClosure, constraintSystem);
         ClusterDecompositionModel<P> clusterModel = (ClusterDecompositionModel<P>) Utils
-                .toClusterDecompositionModel(clusters, o.getImportsClosure(),
-                        generalisation);
+            .toClusterDecompositionModel(clusters, importsClosure, generalisation);
         return clusterModel;
     }
 
-    /** @param o
-     *            o
-     * @param entailements
-     *            entailements
-     * @param manager
-     *            manager
-     * @param clusters
-     *            clusters
+    /**
+     * @param o o
+     * @param entailements entailements
+     * @param manager manager
+     * @param clusters clusters
      * @return cluster decomposition model
-     * @param <P>
-     *            type
-     * @throws OPPLException
-     *             OPPLException */
-    public <P extends OWLEntity> ClusterDecompositionModel<P>
-            buildKnowledgeExplorerClusterDecompositionModel(OWLOntology o,
-                    Set<OWLAxiom> entailements, OWLOntologyManager manager,
-                    Set<Cluster<OWLEntity>> clusters) throws OPPLException {
-        ConstraintSystem constraintSystem = new OPPLFactory(manager, o, null)
-                .createConstraintSystem();
-        OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                clusters, o.getImportsClosure(), constraintSystem);
-        ClusterDecompositionModel<P> clusterModel = (ClusterDecompositionModel<P>) Utils
-                .toKnowledgeExplorerClusterDecompositionModel(clusters,
-                        o.getImportsClosure(), entailements, generalisation);
+     * @param <P> type
+     * @throws OPPLException OPPLException
+     */
+    public <P extends OWLEntity> ClusterDecompositionModel<P> buildKnowledgeExplorerClusterDecompositionModel(
+        OWLOntology o, Set<OWLAxiom> entailements, OWLOntologyManager manager,
+        Set<Cluster<OWLEntity>> clusters) throws OPPLException {
+        ConstraintSystem constraintSystem =
+            new OPPLFactory(manager, o, null).createConstraintSystem();
+        List<OWLOntology> importsClosure = asList(o.importsClosure());
+        OWLObjectGeneralisation generalisation =
+            Utils.getOWLObjectGeneralisation(clusters, importsClosure, constraintSystem);
+        ClusterDecompositionModel<P> clusterModel =
+            (ClusterDecompositionModel<P>) Utils.toKnowledgeExplorerClusterDecompositionModel(
+                clusters, importsClosure, entailements, generalisation);
         return clusterModel;
     }
 
-    /** @param distance
-     *            distance
-     * @param entities
-     *            entities
-     * @param <P>
-     *            type
-     * @return clusters */
+    /**
+     * @param distance distance
+     * @param entities entities
+     * @param <P> type
+     * @return clusters
+     */
     public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateZeros(
-            Distance<OWLEntity> distance, Set<OWLEntity> entities) {
-        SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        MultiMap<OWLEntity, OWLEntity> equivalenceClasses = org.coode.distance.Utils
-                .getEquivalenceClasses(entities, distance);
-        entities = new HashSet<OWLEntity>(equivalenceClasses.keySet());
-        final SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        System.out.println(String.format(
-                "Finished computing distance between %d entities", distanceMatrix
-                        .getObjects().size()));
-        final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix = new SimpleProximityMatrix<DistanceTableObject<OWLEntity>>(
+        Distance<OWLEntity> distance, Set<OWLEntity> entities) {
+        SimpleProximityMatrix<OWLEntity> baseDistanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
+            org.coode.distance.Utils.getEquivalenceClasses(entities, distance);
+        entities = new HashSet<>(equivalenceClasses.keySet());
+        final SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        System.out.println(String.format("Finished computing distance between %d entities",
+            distanceMatrix.getObjects().size()));
+        final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix =
+            new SimpleProximityMatrix<>(
                 DistanceTableObject.createDistanceTableObjectSet(distance,
-                        distanceMatrix.getObjects()),
-                new Distance<DistanceTableObject<OWLEntity>>() {
-                    @Override
-                    public double getDistance(DistanceTableObject<OWLEntity> a,
-                            DistanceTableObject<OWLEntity> b) {
-                        return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
-                    }
-                });
-        Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects = new LinkedHashSet<Collection<? extends DistanceTableObject<OWLEntity>>>();
+                    distanceMatrix.getObjects()),
+                (a, b) -> distanceMatrix.getDistance(a.getIndex(), b.getIndex()));
+        Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects =
+            new LinkedHashSet<>();
         for (DistanceTableObject<OWLEntity> object : wrappedMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
         }
-        Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance = new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
-            @Override
-            public double getDistance(
-                    Collection<? extends DistanceTableObject<OWLEntity>> a,
-                    Collection<? extends DistanceTableObject<OWLEntity>> b) {
-                return wrappedMatrix
-                        .getDistance(a.iterator().next(), b.iterator().next());
-            }
-        };
+        Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance =
+            (a, b) -> wrappedMatrix.getDistance(a.iterator().next(), b.iterator().next());
         // it passes the threshold for the distance (criterion for stopping
         // clustering)
         // In this case is 0. -> mapped to agglomerateZeros
-        PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter = DistanceThresholdBasedFilter
-                .build(distanceMatrix.getData(), 0);
-        Set<Cluster<OWLEntity>> clusters = runClustering(wrappedMatrix, filter,
-                singletonDistance, newObjects, equivalenceClasses, baseDistanceMatrix);
+        PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter =
+            DistanceThresholdBasedFilter.build(distanceMatrix.getData(), 0);
+        Set<Cluster<OWLEntity>> clusters = runClustering(wrappedMatrix, filter, singletonDistance,
+            newObjects, equivalenceClasses, baseDistanceMatrix);
         return clusters;
     }
 
-    /** @param cm
-     *            cm */
+    /**
+     * @param cm cm
+     */
     public void print(ClusteringProximityMatrix<?> cm) {
         Utility.print1(cm);
     }
 
     /** @return cluster matrix */
-    public ClusteringProximityMatrix<DistanceTableObject<OWLEntity>>
-            getClusteringMatrix() {
+    public ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> getClusteringMatrix() {
         return clusteringMatrix;
     }
 }

@@ -68,8 +68,7 @@ public abstract class DistanceTestCase {
                 } else {
                     Collection<OWLAxiom> axioms_i = distance.getAxioms(entities.get(i));
                     Collection<OWLAxiom> axioms_j = distance.getAxioms(entities.get(j));
-                    Collection<OWLAxiom> union =
-                        new HashSet<OWLAxiom>(distance.getAxioms(entities.get(i)));
+                    Collection<OWLAxiom> union = new HashSet<>(distance.getAxioms(entities.get(i)));
                     union.addAll(axioms_j);
                     axioms_i.retainAll(axioms_j);
                     if (axioms_i.isEmpty()) {

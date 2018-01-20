@@ -20,23 +20,23 @@ import org.coode.distance.Distance;
 import org.coode.pair.Pair;
 import org.coode.pair.filter.PairFilter;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
     private final PairFilter<O> filter;
-    private final Set<O> objects = new LinkedHashSet<O>();
+    private final Set<O> objects = new LinkedHashSet<>();
     private final Distance<O> distance;
-    private final static WeakHashMap<Pair<?>, Integer> scores = new WeakHashMap<Pair<?>, Integer>();
+    private final static WeakHashMap<Pair<?>, Integer> scores = new WeakHashMap<>();
 
-    /** @param filter
-     *            filter
-     * @param objects
-     *            objects
-     * @param distance
-     *            distance */
-    private PairFilterBasedComparator(PairFilter<O> filter,
-            Collection<? extends O> objects, Distance<O> distance) {
+    /**
+     * @param filter filter
+     * @param objects objects
+     * @param distance distance
+     */
+    private PairFilterBasedComparator(PairFilter<O> filter, Collection<? extends O> objects,
+        Distance<O> distance) {
         if (filter == null) {
             throw new NullPointerException("The filter cannot be null");
         }
@@ -85,17 +85,15 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
         return cached;
     }
 
-    /** @param filter
-     *            filter
-     * @param objects
-     *            objects
-     * @param distance
-     *            distance
-     * @param <P>
-     *            type
-     * @return comparator */
+    /**
+     * @param filter filter
+     * @param objects objects
+     * @param distance distance
+     * @param <P> type
+     * @return comparator
+     */
     public static <P> PairFilterBasedComparator<P> build(PairFilter<P> filter,
-            Collection<? extends P> objects, Distance<P> distance) {
-        return new PairFilterBasedComparator<P>(filter, objects, distance);
+        Collection<? extends P> objects, Distance<P> distance) {
+        return new PairFilterBasedComparator<>(filter, objects, distance);
     }
 }

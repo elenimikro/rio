@@ -27,12 +27,11 @@ import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 /** @author eleni */
 public class SingleOWLEntityReplacementVariableProvider extends VariableProvider {
-    private static final class AbstractingVisitor extends
-            OWLObjectVisitorExAdapter<Variable<?>> {
+    private static final class AbstractingVisitor implements OWLObjectVisitorEx<Variable<?>> {
         private SingleOWLEntityReplacementVariableProvider _this;
 
         public AbstractingVisitor(SingleOWLEntityReplacementVariableProvider _object) {
@@ -40,15 +39,15 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         }
 
         @Override
-        protected Variable<?> getDefaultReturnValue(OWLObject _object) {
+        public <T> Variable<?> doDefault(T _object) {
             if (_object.equals(_this.getOWLObject())) {
-                return _this.getStar(_object);
+                return _this.getStar((OWLObject) _object);
             }
             if (_object instanceof OWLEntity
-                    && _this.getRelevancePolicy().isRelevant((OWLEntity) _object)) {
+                && _this.getRelevancePolicy().isRelevant((OWLEntity) _object)) {
                 return null;
             } else {
-                return _this.getVariable(_object);
+                return _this.getVariable((OWLObject) _object);
             }
         }
 
@@ -63,12 +62,12 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
     private final RelevancePolicy<OWLEntity> relevancePolicy;
     private final AbstractingVisitor abstracter;
 
-    /** @param relevancePolicy
-     *            relevancePolicy
-     * @param entityProvider
-     *            entityProvider */
-    public SingleOWLEntityReplacementVariableProvider(
-            RelevancePolicy<OWLEntity> relevancePolicy, OWLEntityProvider entityProvider) {
+    /**
+     * @param relevancePolicy relevancePolicy
+     * @param entityProvider entityProvider
+     */
+    public SingleOWLEntityReplacementVariableProvider(RelevancePolicy<OWLEntity> relevancePolicy,
+        OWLEntityProvider entityProvider) {
         super(entityProvider);
         if (relevancePolicy == null) {
             throw new NullPointerException("The relevance policy cannot be null");
@@ -91,19 +90,18 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         if (variableType != null) {
             toReturn = variableType.accept(new VariableTypeVisitorEx<Variable<?>>() {
                 @Override
-                public Variable<?> visitCLASSVariableType(
-                        CLASSVariableType classVariableType) {
+                public Variable<?> visitCLASSVariableType(CLASSVariableType classVariableType) {
                     return createVariable("?owlClass", classVariableType);
                 }
 
-                /** @param type
-                 *            type
-                 * @return variable */
+                /**
+                 * @param type type
+                 * @return variable
+                 */
                 protected Variable<?> createVariable(String name, VariableType<?> type) {
                     try {
-                        return SingleOWLEntityReplacementVariableProvider.this
-                                .getConstraintSystem().createVariableWithVerifiedName(
-                                        name, type, null);
+                        return SingleOWLEntityReplacementVariableProvider.this.getConstraintSystem()
+                            .createVariableWithVerifiedName(name, type, null);
                     } catch (OPPLException e) {
                         e.printStackTrace();
                         return null;
@@ -112,35 +110,32 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
 
                 @Override
                 public Variable<?> visitOBJECTPROPERTYVariableType(
-                        OBJECTPROPERTYVariableType objectpropertyVariableType) {
-                    return createVariable("?owlObjectproperty",
-                            objectpropertyVariableType);
+                    OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                    return createVariable("?owlObjectproperty", objectpropertyVariableType);
                 }
 
                 @Override
                 public Variable<?> visitDATAPROPERTYVariableType(
-                        DATAPROPERTYVariableType datapropertyVariableType) {
-                    return createVariable("?owlDatatypeProperty",
-                            datapropertyVariableType);
+                    DATAPROPERTYVariableType datapropertyVariableType) {
+                    return createVariable("?owlDatatypeProperty", datapropertyVariableType);
                 }
 
                 @Override
                 public Variable<?> visitINDIVIDUALVariableType(
-                        INDIVIDUALVariableType individualVariableType) {
+                    INDIVIDUALVariableType individualVariableType) {
                     return createVariable("?owlIndividual", individualVariableType);
                 }
 
                 @Override
                 public Variable<?> visitCONSTANTVariableType(
-                        CONSTANTVariableType constantVariableType) {
+                    CONSTANTVariableType constantVariableType) {
                     return createVariable("?owlLiteral", constantVariableType);
                 }
 
                 @Override
                 public Variable<?> visitANNOTATIONPROPERTYVariableType(
-                        ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
-                    return createVariable("?owlAnnotationProperty",
-                            annotationpropertyVariableType);
+                    ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                    return createVariable("?owlAnnotationProperty", annotationpropertyVariableType);
                 }
             });
         }
@@ -150,7 +145,7 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
     Variable<?> getStar(OWLObject o) {
         try {
             return getConstraintSystem().createVariableWithVerifiedName("?star",
-                    VariableTypeFactory.getVariableType(o), null);
+                VariableTypeFactory.getVariableType(o), null);
         } catch (OPPLException e) {
             e.printStackTrace();
             return null;
@@ -165,8 +160,9 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         return owlObject;
     }
 
-    /** @param o
-     *            o */
+    /**
+     * @param o o
+     */
     public void setOWLObject(OWLObject o) {
         owlObject = o;
     }

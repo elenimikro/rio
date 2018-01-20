@@ -10,52 +10,13 @@
  ******************************************************************************/
 package org.coode.distance.owl;
 
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /** @author eleni */
 public class Utils {
-    private final static OWLObjectVisitorEx<Boolean> ENTITY_RECOGNISER = new OWLObjectVisitorExAdapter<Boolean>(
-            false) {
-        @Override
-        public Boolean visit(OWLClass desc) {
-            return true;
-        }
-
-        @Override
-        public Boolean visit(OWLAnnotationProperty property) {
-            return true;
-        }
-
-        @Override
-        public Boolean visit(OWLDataProperty property) {
-            return true;
-        }
-
-        @Override
-        public Boolean visit(OWLObjectProperty property) {
-            return true;
-        }
-
-        @Override
-        public Boolean visit(OWLDatatype node) {
-            return true;
-        }
-
-        @Override
-        public Boolean visit(OWLNamedIndividual individual) {
-            return true;
-        }
-    };
-
     /** @return entity recognizer */
-    public static OWLObjectVisitorEx<Boolean> getOWLEntityRecogniser() {
-        return ENTITY_RECOGNISER;
+    public static boolean isEntity(OWLObject o) {
+        return o instanceof OWLEntity;
     }
 }

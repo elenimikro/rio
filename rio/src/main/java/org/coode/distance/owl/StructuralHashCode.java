@@ -17,22 +17,23 @@ import org.coode.distance.ReplacementStrategy;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
 
-/** Hashing function that takes into account only the structure of an OWL Object.
- * OWL entities of the same kind will have the same hash code. For instance
+/**
+ * Hashing function that takes into account only the structure of an OWL Object. OWL entities of the
+ * same kind will have the same hash code. For instance
  * {@code this.hasCode(owl:Thing) == this.hashCode(owl:Nothing)}
  * 
- * @author Luigi Iannone */
+ * @author Luigi Iannone
+ */
 public class StructuralHashCode implements HashCode {
     private final OWLEntityReplacer replacer;
     private final OWLDataFactory dataFactory;
     private final ReplacementStrategy replacementStrategy;
 
-    /** @param dataFactory
-     *            dataFactory
-     * @param replacementStrategy
-     *            replacementStrategy */
-    public StructuralHashCode(OWLDataFactory dataFactory,
-            ReplacementStrategy replacementStrategy) {
+    /**
+     * @param dataFactory dataFactory
+     * @param replacementStrategy replacementStrategy
+     */
+    public StructuralHashCode(OWLDataFactory dataFactory, ReplacementStrategy replacementStrategy) {
         if (dataFactory == null) {
             throw new NullPointerException("The OWL data factory cannot be null");
         }
@@ -45,9 +46,8 @@ public class StructuralHashCode implements HashCode {
     }
 
     /*
-     * Computes the hash code of the object only by looking at its structure.
-     * Can only distinguish between different kinds of OWL entities, nut not
-     * between entities of the same kind.
+     * Computes the hash code of the object only by looking at its structure. Can only distinguish
+     * between different kinds of OWL entities, nut not between entities of the same kind.
      */
     @Override
     public int hashCode(OWLObject owlObject) {

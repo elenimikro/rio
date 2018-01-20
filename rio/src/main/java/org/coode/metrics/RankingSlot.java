@@ -12,19 +12,20 @@ package org.coode.metrics;
 
 import java.util.Arrays;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public class RankingSlot<O> {
     private final double value;
     private final O[] toReturn;
     private final int size;
     private int hashCode = 0;
 
-    /** @param value
-     *            value
-     * @param members
-     *            members */
+    /**
+     * @param value value
+     * @param members members
+     */
     public RankingSlot(double value, O... members) {
         if (members == null) {
             throw new NullPointerException("The members collection cannot be null");

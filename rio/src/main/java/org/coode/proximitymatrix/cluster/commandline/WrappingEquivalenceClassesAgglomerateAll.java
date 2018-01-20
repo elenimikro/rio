@@ -19,27 +19,29 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-/** Class for computing syntactic similarities, using the AxiomBased distance
- * with the objproperties always relevant policy.
+/**
+ * Class for computing syntactic similarities, using the AxiomBased distance with the objproperties
+ * always relevant policy.
  * 
- * @author elenimikroyannidi */
+ * @author elenimikroyannidi
+ */
 public class WrappingEquivalenceClassesAgglomerateAll extends AgglomeratorBase {
-    /** @param args
-     *            args
-     * @throws OWLOntologyCreationException
-     *             OWLOntologyCreationException */
+    /**
+     * @param args args
+     * @throws OWLOntologyCreationException OWLOntologyCreationException
+     */
     public static void main(String[] args) throws OWLOntologyCreationException {
-        WrappingEquivalenceClassesAgglomerateAll agglomerator = new WrappingEquivalenceClassesAgglomerateAll();
+        WrappingEquivalenceClassesAgglomerateAll agglomerator =
+            new WrappingEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
     public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
-        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-                manager.getOWLDataFactory(), new ReplacementByKindStrategy(
-                        manager.getOWLDataFactory()));
-        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-                manager.getOntologies(), owlEntityReplacer, manager);
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(manager.getOWLDataFactory(),
+            new ReplacementByKindStrategy(manager.getOWLDataFactory()));
+        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(manager.getOntologies(),
+            owlEntityReplacer, manager);
         return distance;
     }
 

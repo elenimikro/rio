@@ -26,12 +26,13 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 
 /** @author Luigi Iannone */
-public class ClusterListOWLObjectCellRenderer implements
-        ListCellRenderer<Collection<? extends OWLEntity>> {
+public class ClusterListOWLObjectCellRenderer
+    implements ListCellRenderer<Collection<? extends OWLEntity>> {
     private final ShortFormProvider shortFormProvider;
 
-    /** @param shortFormProvider
-     *            shortFormProvider */
+    /**
+     * @param shortFormProvider shortFormProvider
+     */
     public ClusterListOWLObjectCellRenderer(ShortFormProvider shortFormProvider) {
         if (shortFormProvider == null) {
             throw new NullPointerException("The short form provider cannot be null");
@@ -41,19 +42,19 @@ public class ClusterListOWLObjectCellRenderer implements
 
     @Override
     public Component getListCellRendererComponent(
-            JList<? extends Collection<? extends OWLEntity>> list,
-            Collection<? extends OWLEntity> value, int index, boolean isSelected,
-            boolean cellHasFocus) {
+        JList<? extends Collection<? extends OWLEntity>> list,
+        Collection<? extends OWLEntity> value, int index, boolean isSelected,
+        boolean cellHasFocus) {
         DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
-        Component toReturn = defaultListCellRenderer.getListCellRendererComponent(list,
-                value, index, isSelected, cellHasFocus);
+        Component toReturn = defaultListCellRenderer.getListCellRendererComponent(list, value,
+            index, isSelected, cellHasFocus);
         if (value instanceof Set<?>) {
-            Set<String> values = new HashSet<String>(((Set<?>) value).size());
+            Set<String> values = new HashSet<>(((Set<?>) value).size());
             for (Object object : (Set<?>) value) {
                 values.add(render(object));
             }
-            toReturn = defaultListCellRenderer.getListCellRendererComponent(list, values,
-                    index, isSelected, cellHasFocus);
+            toReturn = defaultListCellRenderer.getListCellRendererComponent(list, values, index,
+                isSelected, cellHasFocus);
         }
         return toReturn;
     }

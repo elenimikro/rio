@@ -2,9 +2,10 @@ package org.coode.distance;
 
 /** @author eleni */
 public class SparseMatrixFactory {
-    /** @param size
-     *            size
-     * @return sparse matrix */
+    /**
+     * @param size size
+     * @return sparse matrix
+     */
     public static SparseMatrix create(int size) {
         // if (size > 2000) {
         // return new SparseMatrixImpl(size);
@@ -12,9 +13,10 @@ public class SparseMatrixFactory {
         return new SparseMatrixListImpl(size);
     }
 
-    /** @param m
-     *            m
-     * @return sparse matrix */
+    /**
+     * @param m m
+     * @return sparse matrix
+     */
     public static SparseMatrix create(SparseMatrix m) {
         // if (m.length() > 2000) {
         // return new SparseMatrixImpl((SparseMatrixImpl) m);

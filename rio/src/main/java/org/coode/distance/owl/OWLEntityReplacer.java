@@ -165,8 +165,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDisjointClassesAxiom axiom) {
-        Set<OWLClassExpression> operands =
-            new HashSet<OWLClassExpression>(axiom.getClassExpressions().size());
+        Set<OWLClassExpression> operands = new HashSet<>(axiom.getClassExpressions().size());
         for (OWLClassExpression owlClassExpression : axiom.getClassExpressions()) {
             operands.add((OWLClassExpression) owlClassExpression.accept(this));
         }
@@ -189,8 +188,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-        Set<OWLObjectPropertyExpression> properties =
-            new HashSet<OWLObjectPropertyExpression>(axiom.getProperties().size());
+        Set<OWLObjectPropertyExpression> properties = new HashSet<>(axiom.getProperties().size());
         for (OWLObjectPropertyExpression owlObjectPropertyExpression : axiom.getProperties()) {
             properties.add((OWLObjectPropertyExpression) owlObjectPropertyExpression.accept(this));
         }
@@ -207,7 +205,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDifferentIndividualsAxiom axiom) {
-        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>(axiom.getIndividuals().size());
+        Set<OWLIndividual> individuals = new HashSet<>(axiom.getIndividuals().size());
         for (OWLIndividual owlIndividual : axiom.getIndividuals()) {
             individuals.add((OWLIndividual) owlIndividual.accept(this));
         }
@@ -216,8 +214,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDisjointDataPropertiesAxiom axiom) {
-        Set<OWLDataPropertyExpression> individuals =
-            new HashSet<OWLDataPropertyExpression>(axiom.getProperties().size());
+        Set<OWLDataPropertyExpression> individuals = new HashSet<>(axiom.getProperties().size());
         for (OWLDataPropertyExpression owlDataPropertyExpression : axiom.getProperties()) {
             individuals.add((OWLDataPropertyExpression) owlDataPropertyExpression.accept(this));
         }
@@ -227,7 +224,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
     @Override
     public OWLObject visit(OWLDisjointObjectPropertiesAxiom axiom) {
         Set<OWLObjectPropertyExpression> owlObjectPropertyExpressions =
-            new HashSet<OWLObjectPropertyExpression>(axiom.getProperties().size());
+            new HashSet<>(axiom.getProperties().size());
         for (OWLObjectPropertyExpression owlObjectPropertyExpression : axiom.getProperties()) {
             owlObjectPropertyExpressions
                 .add((OWLObjectPropertyExpression) owlObjectPropertyExpression.accept(this));
@@ -265,8 +262,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDisjointUnionAxiom axiom) {
-        Set<OWLClassExpression> expressions =
-            new HashSet<OWLClassExpression>(axiom.getClassExpressions().size());
+        Set<OWLClassExpression> expressions = new HashSet<>(axiom.getClassExpressions().size());
         for (OWLClassExpression owlClassExpression : axiom.getClassExpressions()) {
             expressions.add((OWLClassExpression) owlClassExpression.accept(this));
         }
@@ -307,8 +303,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLEquivalentDataPropertiesAxiom axiom) {
-        Set<OWLDataPropertyExpression> properties =
-            new HashSet<OWLDataPropertyExpression>(axiom.getProperties().size());
+        Set<OWLDataPropertyExpression> properties = new HashSet<>(axiom.getProperties().size());
         for (OWLDataPropertyExpression owlDataPropertyExpression : axiom.getProperties()) {
             properties.add((OWLDataPropertyExpression) owlDataPropertyExpression.accept(this));
         }
@@ -325,7 +320,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
     @Override
     public OWLObject visit(OWLEquivalentClassesAxiom axiom) {
         Set<OWLClassExpression> classExpressions =
-            new HashSet<OWLClassExpression>(axiom.getClassExpressions().size());
+            new HashSet<>(axiom.getClassExpressions().size());
         for (OWLClassExpression owlClassExpression : axiom.getClassExpressions()) {
             classExpressions.add((OWLClassExpression) owlClassExpression.accept(this));
         }
@@ -367,7 +362,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLSameIndividualAxiom axiom) {
-        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>(axiom.getIndividuals().size());
+        Set<OWLIndividual> individuals = new HashSet<>(axiom.getIndividuals().size());
         for (OWLIndividual owlIndividual : axiom.getIndividuals()) {
             individuals.add((OWLIndividual) owlIndividual.accept(this));
         }
@@ -377,7 +372,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
     @Override
     public OWLObject visit(OWLSubPropertyChainOfAxiom axiom) {
         List<OWLObjectPropertyExpression> properties =
-            new ArrayList<OWLObjectPropertyExpression>(axiom.getPropertyChain().size());
+            new ArrayList<>(axiom.getPropertyChain().size());
         for (OWLObjectPropertyExpression owlObjectPropertyExpression : axiom.getPropertyChain()) {
             properties.add((OWLObjectPropertyExpression) owlObjectPropertyExpression.accept(this));
         }
@@ -395,7 +390,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
     @Override
     public OWLObject visit(OWLHasKeyAxiom axiom) {
         Set<OWLPropertyExpression> properties =
-            new HashSet<OWLPropertyExpression>(axiom.getPropertyExpressions().size());
+            new HashSet<>(axiom.getPropertyExpressions().size());
         for (OWLPropertyExpression owlPropertyExpression : axiom.getPropertyExpressions()) {
             properties.add((OWLPropertyExpression) owlPropertyExpression.accept(this));
         }
@@ -412,8 +407,8 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(SWRLRule rule) {
-        Set<SWRLAtom> body = new HashSet<SWRLAtom>(rule.getBody().size());
-        Set<SWRLAtom> head = new HashSet<SWRLAtom>(rule.getHead().size());
+        Set<SWRLAtom> body = new HashSet<>(rule.getBody().size());
+        Set<SWRLAtom> head = new HashSet<>(rule.getHead().size());
         for (SWRLAtom swrlAtom : rule.getHead()) {
             head.add((SWRLAtom) swrlAtom.accept(this));
         }
@@ -449,7 +444,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLObjectIntersectionOf ce) {
-        Set<OWLClassExpression> operands = new HashSet<OWLClassExpression>(ce.getOperands().size());
+        Set<OWLClassExpression> operands = new HashSet<>(ce.getOperands().size());
         for (OWLClassExpression owlClassExpression : ce.getOperands()) {
             operands.add((OWLClassExpression) owlClassExpression.accept(this));
         }
@@ -458,7 +453,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLObjectUnionOf ce) {
-        Set<OWLClassExpression> operands = new HashSet<OWLClassExpression>(ce.getOperands().size());
+        Set<OWLClassExpression> operands = new HashSet<>(ce.getOperands().size());
         for (OWLClassExpression owlClassExpression : ce.getOperands()) {
             operands.add((OWLClassExpression) owlClassExpression.accept(this));
         }
@@ -530,7 +525,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLObjectOneOf ce) {
-        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>(ce.getIndividuals().size());
+        Set<OWLIndividual> individuals = new HashSet<>(ce.getIndividuals().size());
         for (OWLIndividual owlIndividual : ce.getIndividuals()) {
             individuals.add((OWLIndividual) owlIndividual.accept(this));
         }
@@ -601,7 +596,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDataOneOf node) {
-        Set<OWLLiteral> literals = new HashSet<OWLLiteral>(node.getValues().size());
+        Set<OWLLiteral> literals = new HashSet<>(node.getValues().size());
         for (OWLLiteral owlLiteral : node.getValues()) {
             literals.add((OWLLiteral) owlLiteral.accept(this));
         }
@@ -610,7 +605,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDataIntersectionOf node) {
-        Set<OWLDataRange> operands = new HashSet<OWLDataRange>(node.getOperands().size());
+        Set<OWLDataRange> operands = new HashSet<>(node.getOperands().size());
         for (OWLDataRange owlDataRange : node.getOperands()) {
             operands.add((OWLDataRange) owlDataRange.accept(this));
         }
@@ -619,7 +614,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDataUnionOf node) {
-        Set<OWLDataRange> operands = new HashSet<OWLDataRange>(node.getOperands().size());
+        Set<OWLDataRange> operands = new HashSet<>(node.getOperands().size());
         for (OWLDataRange owlDataRange : node.getOperands()) {
             operands.add((OWLDataRange) owlDataRange.accept(this));
         }
@@ -629,7 +624,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
     @Override
     public OWLObject visit(OWLDatatypeRestriction node) {
         Set<OWLFacetRestriction> facetRestrictions =
-            new HashSet<OWLFacetRestriction>(node.getFacetRestrictions().size());
+            new HashSet<>(node.getFacetRestrictions().size());
         for (OWLFacetRestriction owlFacetRestriction : node.getFacetRestrictions()) {
             facetRestrictions.add((OWLFacetRestriction) owlFacetRestriction.accept(this));
         }
@@ -723,7 +718,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(SWRLBuiltInAtom node) {
-        List<SWRLDArgument> arguments = new ArrayList<SWRLDArgument>(node.getArguments().size());
+        List<SWRLDArgument> arguments = new ArrayList<>(node.getArguments().size());
         for (SWRLDArgument swrldArgument : node.getArguments()) {
             arguments.add((SWRLDArgument) swrldArgument.accept(this));
         }

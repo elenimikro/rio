@@ -7,8 +7,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author eleni */
-public abstract class AbstractAxiomBasedDistanceImpl implements
-        AbstractAxiomBasedDistance {
+public abstract class AbstractAxiomBasedDistanceImpl implements AbstractAxiomBasedDistance {
     OWLEntity last;
     Set<OWLAxiom> lastset;
 

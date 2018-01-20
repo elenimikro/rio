@@ -12,9 +12,10 @@ package org.coode.metrics;
 
 import java.util.List;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public interface Ranking<O> {
     /** @return top value */
     double getTopValue();

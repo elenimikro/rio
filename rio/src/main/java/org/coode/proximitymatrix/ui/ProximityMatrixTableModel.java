@@ -25,14 +25,13 @@ import org.coode.proximitymatrix.ProximityMatrix;
 public class ProximityMatrixTableModel implements TableModel {
     private final ProximityMatrix<?> proximityMatrix;
     private final String[] columnNames;
-    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<>();
 
-    /** @param proximityMatrix
-     *            proximityMatrix
-     * @param columnNames
-     *            columnNames */
-    public ProximityMatrixTableModel(ProximityMatrix<?> proximityMatrix,
-            String[] columnNames) {
+    /**
+     * @param proximityMatrix proximityMatrix
+     * @param columnNames columnNames
+     */
+    public ProximityMatrixTableModel(ProximityMatrix<?> proximityMatrix, String[] columnNames) {
         if (proximityMatrix == null) {
             throw new NullPointerException("Proximity matrix cannot be null");
         }

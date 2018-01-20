@@ -58,8 +58,7 @@ public class OntologyTestHelper {
             OWLClass a = factory.getOWLClass(IRI.create("urn:test#Freestyle_swimming"));
             OWLClass b = factory.getOWLClass(IRI.create("urn:test#Swimming"));
             OWLClass c = factory.getOWLClass(IRI.create("urn:test#Sport"));
-            OWLClass d = factory
-                    .getOWLClass(IRI.create("urn:test#Breaststroke_swimming"));
+            OWLClass d = factory.getOWLClass(IRI.create("urn:test#Breaststroke_swimming"));
             OWLClass e = factory.getOWLClass(IRI.create("urn:test#Cycling"));
             OWLClass f = factory.getOWLClass(IRI.create("urn:test#Watercolor_painting"));
             OWLClass g = factory.getOWLClass(IRI.create("urn:test#Painting"));

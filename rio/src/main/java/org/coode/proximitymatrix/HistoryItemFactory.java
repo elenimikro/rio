@@ -14,20 +14,19 @@ import java.util.Collection;
 
 import org.coode.pair.Pair;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public interface HistoryItemFactory<O> {
-    /** Creates a new HistoryItem give the input merged pair and the resulting
-     * input clustering.
+    /**
+     * Creates a new HistoryItem give the input merged pair and the resulting input clustering.
      * 
-     * @param pair
-     *            The pair merged in order to create the clustering represented
-     *            by the output HistoryItem. Cannot be {@code null}.
-     * @param clusters
-     *            The resulting clustering. Cannot be {@code null}.
+     * @param pair The pair merged in order to create the clustering represented by the output
+     *        HistoryItem. Cannot be {@code null}.
+     * @param clusters The resulting clustering. Cannot be {@code null}.
      * @return an HistoryItem
-     * @throws NullPointerException
-     *             if either input is {@code null}. */
+     * @throws NullPointerException if either input is {@code null}.
+     */
     HistoryItem<O> create(Pair<O> pair, Collection<? extends O> clusters);
 }

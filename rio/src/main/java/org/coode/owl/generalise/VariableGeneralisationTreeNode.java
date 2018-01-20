@@ -25,23 +25,20 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
 public class VariableGeneralisationTreeNode extends DefaultTreeNode<Variable<?>>
-        implements GeneralisationTreeNode<Variable<?>> {
+    implements GeneralisationTreeNode<Variable<?>> {
     private final OWLAxiom generalisation;
     private final ConstraintSystem constraintSystem;
-    private final MultiMap<BindingNode, OWLAxiomInstantiation> bindingNodes = new MultiMap<BindingNode, OWLAxiomInstantiation>();
+    private final MultiMap<BindingNode, OWLAxiomInstantiation> bindingNodes = new MultiMap<>();
 
-    /** @param userObject
-     *            userObject
-     * @param generalisation
-     *            generalisation
-     * @param bindingNodes
-     *            bindingNodes
-     * @param constraintSystem
-     *            constraintSystem */
-    public VariableGeneralisationTreeNode(Variable<?> userObject,
-            OWLAxiom generalisation,
-            MultiMap<BindingNode, OWLAxiomInstantiation> bindingNodes,
-            ConstraintSystem constraintSystem) {
+    /**
+     * @param userObject userObject
+     * @param generalisation generalisation
+     * @param bindingNodes bindingNodes
+     * @param constraintSystem constraintSystem
+     */
+    public VariableGeneralisationTreeNode(Variable<?> userObject, OWLAxiom generalisation,
+        MultiMap<BindingNode, OWLAxiomInstantiation> bindingNodes,
+        ConstraintSystem constraintSystem) {
         super(userObject);
         if (bindingNodes == null) {
             throw new NullPointerException("The binding nodes collection cannot be null");
@@ -58,12 +55,12 @@ public class VariableGeneralisationTreeNode extends DefaultTreeNode<Variable<?>>
         Set<BindingNode> keySet = bindingNodes.keySet();
         for (BindingNode bindingNode : keySet) {
             SimpleValueComputationParameters parameters = new SimpleValueComputationParameters(
-                    constraintSystem, bindingNode, new QuickFailRuntimeExceptionHandler());
-            PartialOWLObjectInstantiator instantiator = new PartialOWLObjectInstantiator(
-                    parameters);
+                constraintSystem, bindingNode, new QuickFailRuntimeExceptionHandler());
+            PartialOWLObjectInstantiator instantiator =
+                new PartialOWLObjectInstantiator(parameters);
             OWLAxiom instantiation = (OWLAxiom) generalisation.accept(instantiator);
-            this.addChild(new BindingNodeGeneralisationTreeNode(bindingNode,
-                    instantiation, bindingNodes.get(bindingNode), constraintSystem));
+            this.addChild(new BindingNodeGeneralisationTreeNode(bindingNode, instantiation,
+                bindingNodes.get(bindingNode), constraintSystem));
         }
     }
 
@@ -84,7 +81,7 @@ public class VariableGeneralisationTreeNode extends DefaultTreeNode<Variable<?>>
 
     /** @return the bindingNodes */
     public Set<BindingNode> getBindingNodes() {
-        return new HashSet<BindingNode>(bindingNodes.keySet());
+        return new HashSet<>(bindingNodes.keySet());
     }
 
     /** @return the constraintSystem */

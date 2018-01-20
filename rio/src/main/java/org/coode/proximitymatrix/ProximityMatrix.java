@@ -16,9 +16,10 @@ import org.coode.distance.SparseMatrix;
 import org.coode.pair.Pair;
 import org.coode.pair.filter.PairFilter;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public interface ProximityMatrix<O> {
     /** @return objects */
     Collection<O> getObjects();
@@ -29,43 +30,48 @@ public interface ProximityMatrix<O> {
     /** @return min distance */
     public double getMinimumDistance();
 
-    /** @param o
-     *            o
-     * @return row index */
+    /**
+     * @param o o
+     * @return row index
+     */
     public int getRowIndex(O o);
 
-    /** @param o
-     *            o
-     * @return column index */
+    /**
+     * @param o o
+     * @return column index
+     */
     public int getColumnIndex(O o);
 
-    /** @param anObject
-     *            anObject
-     * @param anotherObject
-     *            anotherObject
-     * @return distance */
+    /**
+     * @param anObject anObject
+     * @param anotherObject anotherObject
+     * @return distance
+     */
     public double getDistance(O anObject, O anotherObject);
 
-    /** @param anObject
-     *            anObject
-     * @param anotherObject
-     *            anotherObject
-     * @return distance */
+    /**
+     * @param anObject anObject
+     * @param anotherObject anotherObject
+     * @return distance
+     */
     public double getDistance(int anObject, int anotherObject);
 
-    /** @param pair
-     *            pair
-     * @return rows */
+    /**
+     * @param pair pair
+     * @return rows
+     */
     public int[] getRows(Pair<O> pair);
 
-    /** @param pair
-     *            pair
-     * @return columns */
+    /**
+     * @param pair pair
+     * @return columns
+     */
     public int[] getColumns(Pair<O> pair);
 
-    /** @param filter
-     *            filter
-     * @return filter */
+    /**
+     * @param filter filter
+     * @return filter
+     */
     public ProximityMatrix<O> reduce(PairFilter<O> filter);
 
     /** @return data */

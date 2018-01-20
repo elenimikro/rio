@@ -29,11 +29,11 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
 public class EditDistance implements AbstractAxiomBasedDistance {
-    protected final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    protected final Set<OWLOntology> ontologies = new HashSet<>();
     private final OWLDataFactory dataFactory;
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
+    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
@@ -42,7 +42,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     };
 
     protected void buildAxiomMap(Collection<? extends OWLOntology> ontos) {
-        Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
+        Set<AxiomType<?>> types = new HashSet<>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         for (OWLOntology ontology : ontos) {
             for (AxiomType<?> t : types) {
@@ -84,8 +84,8 @@ public class EditDistance implements AbstractAxiomBasedDistance {
         Set<OWLAxiom> axiomsForB = getAxioms(b);
         MultiMap<OWLAxiom, OWLAxiom> partitionForB = buildMap(b, axiomsForB);
         double total = partitionForA.keySet().size() + partitionForB.keySet().size();
-        Set<OWLAxiom> intersection = new HashSet<OWLAxiom>(partitionForA.keySet());
-        Set<OWLAxiom> leftOut = new HashSet<OWLAxiom>(partitionForA.keySet());
+        Set<OWLAxiom> intersection = new HashSet<>(partitionForA.keySet());
+        Set<OWLAxiom> leftOut = new HashSet<>(partitionForA.keySet());
         leftOut.addAll(partitionForB.keySet());
         intersection.retainAll(partitionForB.keySet());
         leftOut.removeAll(intersection);
@@ -115,7 +115,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     }
 
     private Set<OWLEntity> extractOWLEntities(Collection<? extends OWLAxiom> axioms) {
-        Set<OWLEntity> toReturn = new HashSet<OWLEntity>();
+        Set<OWLEntity> toReturn = new HashSet<>();
         for (OWLAxiom axiom : axioms) {
             toReturn.addAll(axiom.getSignature());
         }
@@ -124,7 +124,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 
     private MultiMap<OWLAxiom, OWLAxiom> buildMap(OWLEntity owlEntity,
         Collection<? extends OWLAxiom> axioms) {
-        MultiMap<OWLAxiom, OWLAxiom> toReturn = new MultiMap<OWLAxiom, OWLAxiom>();
+        MultiMap<OWLAxiom, OWLAxiom> toReturn = new MultiMap<>();
         OWLEntityReplacer replacer = new OWLEntityReplacer(getDataFactory(),
             new SingleOWLObjectReplacementByKindStrategy(owlEntity, getDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy()));
@@ -147,11 +147,11 @@ public class EditDistance implements AbstractAxiomBasedDistance {
      * @return axioms
      */
     protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
-        Set<OWLAxiom> toReturn = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> toReturn = new HashSet<>();
         if (!cache.get(owlEntity).isEmpty()) {
             toReturn.addAll(cache.get(owlEntity));
         } else {
-            Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
+            Set<AxiomType<?>> types = new HashSet<>(AxiomType.AXIOM_TYPES);
             types.remove(AxiomType.DECLARATION);
             for (OWLAxiom owlAxiom : candidates.get(owlEntity)) {
                 if (types.contains(owlAxiom.getAxiomType())) {
@@ -164,7 +164,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
 
     /** @return the ontologies */
     public Set<OWLOntology> getOntologies() {
-        return new HashSet<OWLOntology>(ontologies);
+        return new HashSet<>(ontologies);
     }
 
     /** @return the dataFactory */

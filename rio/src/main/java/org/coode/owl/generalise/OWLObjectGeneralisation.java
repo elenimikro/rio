@@ -42,21 +42,23 @@ import org.coode.oppl.bindingtree.BindingNode;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
-/** Visitor that abstracts OWLObjects into variables.
+/**
+ * Visitor that abstracts OWLObjects into variables.
  * 
- * @author Luigi Iannone */
-public class OWLObjectGeneralisation extends AbstractOWLObjectGeneralisation implements
-        OWLObjectVisitorEx<OWLObject> {
-    private final Set<BindingNode> bindingNodes = new HashSet<BindingNode>();
+ * @author Luigi Iannone
+ */
+public class OWLObjectGeneralisation extends AbstractOWLObjectGeneralisation
+    implements OWLObjectVisitorEx<OWLObject> {
+    private final Set<BindingNode> bindingNodes = new HashSet<>();
 
-    /** @param bindingNodes
-     *            bindingNodes
-     * @param constraintSystem
-     *            constraintSystem */
+    /**
+     * @param bindingNodes bindingNodes
+     * @param constraintSystem constraintSystem
+     */
     public OWLObjectGeneralisation(Collection<? extends BindingNode> bindingNodes,
-            ConstraintSystem constraintSystem) {
+        ConstraintSystem constraintSystem) {
         super(new AssignmentMapBasedVariableProvider(new AssignmentMap(bindingNodes),
-                constraintSystem));
+            constraintSystem));
         setConstraintSystem(constraintSystem);
         getVariableProvider().setConstraintSystem(constraintSystem);
         if (bindingNodes == null) {

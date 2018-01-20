@@ -44,11 +44,11 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
 public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
-    protected final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+    protected final Set<OWLOntology> ontologies = new HashSet<>();
+    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
-    private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
+    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
+    private final Set<OWLEntity> ontologySignature = new HashSet<>();
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
@@ -58,8 +58,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
             OWLEntityRelevanceAxiomBasedDistance.this.buildAxiomEntityMap(ontologies);
         }
     };
-    private final static List<AxiomType<?>> types =
-        new ArrayList<AxiomType<?>>(AxiomType.AXIOM_TYPES);
+    private final static List<AxiomType<?>> types = new ArrayList<>(AxiomType.AXIOM_TYPES);
     static {
         types.remove(AxiomType.DECLARATION);
     }
@@ -83,8 +82,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
         }
     }
 
-    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers =
-        new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
+    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<>();
     private RelevancePolicy<OWLEntity> policy;
 
     /**

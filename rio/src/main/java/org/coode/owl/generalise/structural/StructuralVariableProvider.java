@@ -18,33 +18,34 @@ import org.coode.owl.generalise.VariableProvider;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 /** @author eleni */
 public class StructuralVariableProvider extends VariableProvider {
-    /** @param entityProvider
-     *            entityProvider
-     * @param constraintSystem
-     *            constraintSystem */
+    /**
+     * @param entityProvider entityProvider
+     * @param constraintSystem constraintSystem
+     */
     public StructuralVariableProvider(OWLEntityProvider entityProvider,
-            ConstraintSystem constraintSystem) {
+        ConstraintSystem constraintSystem) {
         super(entityProvider);
         setConstraintSystem(constraintSystem);
     }
 
     @Override
     protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
-        VariableType<?> type = owlObject
-                .accept(new OWLObjectVisitorExAdapter<VariableType<?>>(
-                        VariableTypeFactory.getVariableType(owlObject)) {
-                    @Override
-                    public VariableType<?> visit(IRI iri) {
-                        OWLObject owlEntity = StructuralVariableProvider.this
-                                .getOWLEntity(iri);
-                        return owlEntity != null ? VariableTypeFactory
-                                .getVariableType(owlEntity) : null;
-                    }
-                });
+        VariableType<?> type = owlObject.accept(new OWLObjectVisitorEx<VariableType<?>>() {
+            @Override
+            public <T> VariableType<?> doDefault(T object) {
+                return VariableTypeFactory.getVariableType(owlObject);
+            }
+
+            @Override
+            public VariableType<?> visit(IRI iri) {
+                OWLObject owlEntity = StructuralVariableProvider.this.getOWLEntity(iri);
+                return owlEntity != null ? VariableTypeFactory.getVariableType(owlEntity) : null;
+            }
+        });
         Variable<?> toReturn = null;
         if (type != null) {
             newVariable(type);

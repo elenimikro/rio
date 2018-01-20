@@ -13,13 +13,15 @@
  */
 package org.coode.pair;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public interface Pair<O> {
-    /** @param o
-     *            o
-     * @return true if contains */
+    /**
+     * @param o o
+     * @return true if contains
+     */
     boolean contains(Object o);
 
     /** @return first */

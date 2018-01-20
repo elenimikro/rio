@@ -16,14 +16,13 @@ import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author eleni */
-public class RelevancePolicyOWLObjectGeneralisation extends
-        AbstractOWLObjectGeneralisation {
-    /** @param policy
-     *            policy
-     * @param entityProvider
-     *            entityProvider */
+public class RelevancePolicyOWLObjectGeneralisation extends AbstractOWLObjectGeneralisation {
+    /**
+     * @param policy policy
+     * @param entityProvider entityProvider
+     */
     public RelevancePolicyOWLObjectGeneralisation(RelevancePolicy<OWLEntity> policy,
-            OWLEntityProvider entityProvider) {
+        OWLEntityProvider entityProvider) {
         super(new SingleOWLEntityReplacementVariableProvider(policy, entityProvider));
     }
 }

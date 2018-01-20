@@ -20,9 +20,10 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public class ClusterSummaryPanel<O> extends JPanel {
     private static final long serialVersionUID = 3944683574925844955L;
     private Cluster<O> cluster = null;
@@ -55,10 +56,10 @@ public class ClusterSummaryPanel<O> extends JPanel {
                 first = false;
                 i++;
             }
-            this.clusterMembers.setText(String.format("%s %s",
-                    this.clusterMembers.getText(), formatter.toString()));
-            this.clusterSize.setText(String.format("%s %d", this.clusterSize.getText(),
-                    this.getCluster().size()));
+            this.clusterMembers.setText(
+                String.format("%s %s", this.clusterMembers.getText(), formatter.toString()));
+            this.clusterSize.setText(
+                String.format("%s %d", this.clusterSize.getText(), this.getCluster().size()));
         }
     }
 
@@ -71,18 +72,20 @@ public class ClusterSummaryPanel<O> extends JPanel {
         return this.cluster;
     }
 
-    /** @param cluster
-     *            the cluster to set */
+    /**
+     * @param cluster the cluster to set
+     */
     public void setCluster(Cluster<O> cluster) {
         this.cluster = cluster;
         this.reset();
     }
 
-    /** @param shortFormProvider
-     *            shortFormProvider
-     * @return cluster summary panel */
+    /**
+     * @param shortFormProvider shortFormProvider
+     * @return cluster summary panel
+     */
     public static ClusterSummaryPanel<OWLEntity> buildOWLEntityClusterSummaryPanel(
-            final ShortFormProvider shortFormProvider) {
+        final ShortFormProvider shortFormProvider) {
         return new ClusterSummaryPanel<OWLEntity>() {
             private static final long serialVersionUID = 7324747611311810954L;
 

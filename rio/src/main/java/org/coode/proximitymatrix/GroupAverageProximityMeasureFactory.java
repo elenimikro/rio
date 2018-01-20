@@ -9,11 +9,12 @@
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.proximitymatrix;
+
 /** @author eleni */
 public class GroupAverageProximityMeasureFactory implements ProximityMeasureFactory {
-	@Override
+    @Override
     public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
-		return new LanceWilliamsFormula((double) mA / (double) (mA + mB), (double) mB
-				/ (double) (mA + mB), 0, 0);
-	}
+        return new LanceWilliamsFormula((double) mA / (double) (mA + mB),
+            (double) mB / (double) (mA + mB), 0, 0);
+    }
 }

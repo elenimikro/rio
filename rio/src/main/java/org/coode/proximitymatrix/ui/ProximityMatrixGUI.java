@@ -49,20 +49,21 @@ public class ProximityMatrixGUI extends JFrame {
     private static final long serialVersionUID = 3154241412745213737L;
     private final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
     private final JTable table = new JTable();
-    private final JList<Collection<? extends OWLEntity>> clusterList = new JList<Collection<? extends OWLEntity>>();
+    private final JList<Collection<? extends OWLEntity>> clusterList = new JList<>();
 
-    /** @param iris
-     *            iris */
+    /**
+     * @param iris iris
+     */
     public ProximityMatrixGUI(Collection<? extends IRI> iris) {
         if (iris == null) {
             throw new NullPointerException("The IRI collection cannot be null");
         }
         try {
-            Collection<IRI> collection = new ArrayList<IRI>(iris);
+            Collection<IRI> collection = new ArrayList<>(iris);
             IOUtils.loadIRIMappers(collection, manager);
         } catch (OWLOntologyCreationException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(),
-                    "Error in loading ontology", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error in loading ontology",
+                JOptionPane.ERROR_MESSAGE);
         }
         reset();
         initGUI();
@@ -70,36 +71,35 @@ public class ProximityMatrixGUI extends JFrame {
 
     private void reset() {
         SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         for (OWLOntology ontology : manager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
-        Distance<OWLEntity> distance = new AxiomBasedDistance(manager.getOntologies(),
-                manager.getOWLDataFactory(),
+        Distance<OWLEntity> distance =
+            new AxiomBasedDistance(manager.getOntologies(), manager.getOWLDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
-        ProximityMatrix<OWLEntity> matrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
+        ProximityMatrix<OWLEntity> matrix = new SimpleProximityMatrix<>(entities, distance);
         Collection<OWLEntity> objects = matrix.getObjects();
-        List<String> columnNames = new ArrayList<String>(objects.size());
+        List<String> columnNames = new ArrayList<>(objects.size());
         columnNames.add("*");
         for (OWLEntity owlEntity : objects) {
             columnNames.add(shortFormProvider.getShortForm(owlEntity));
         }
-        Set<Set<OWLEntity>> clusters = new HashSet<Set<OWLEntity>>(objects.size());
+        Set<Set<OWLEntity>> clusters = new HashSet<>(objects.size());
         for (OWLEntity owlEntity : objects) {
             clusters.add(Collections.singleton(owlEntity));
         }
-        table.setModel(new ProximityMatrixTableModel(matrix, columnNames
-                .toArray(new String[columnNames.size()])));
-        clusterList.setModel(new ClusterListModel<OWLEntity>(clusters));
+        table.setModel(new ProximityMatrixTableModel(matrix,
+            columnNames.toArray(new String[columnNames.size()])));
+        clusterList.setModel(new ClusterListModel<>(clusters));
     }
 
     private void initGUI() {
         setLayout(new BorderLayout());
         JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        clusterList.setCellRenderer(new ClusterListOWLObjectCellRenderer(
-                new SimpleShortFormProvider()));
+        clusterList
+            .setCellRenderer(new ClusterListOWLObjectCellRenderer(new SimpleShortFormProvider()));
         mainPane.setLeftComponent(new JScrollPane(clusterList));
         mainPane.setRightComponent(new JScrollPane(table));
         mainPane.setResizeWeight(.5);
@@ -107,10 +107,11 @@ public class ProximityMatrixGUI extends JFrame {
         this.add(mainPane, BorderLayout.CENTER);
     }
 
-    /** @param args
-     *            args */
+    /**
+     * @param args args
+     */
     public static void main(String[] args) {
-        List<IRI> iris = new ArrayList<IRI>(args.length);
+        List<IRI> iris = new ArrayList<>(args.length);
         for (String string : args) {
             iris.add(IRI.create(string));
         }

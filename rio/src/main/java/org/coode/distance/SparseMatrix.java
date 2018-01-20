@@ -8,35 +8,35 @@ public interface SparseMatrix {
     /** @return length */
     public int length();
 
-    /** @param _i
-     *            _i
-     * @param _j
-     *            _j
-     * @return element */
+    /**
+     * @param _i _i
+     * @param _j _j
+     * @return element
+     */
     public double get(int _i, int _j);
 
-    /** @param i
-     *            i
-     * @param j
-     *            j
-     * @return element */
+    /**
+     * @param i i
+     * @param j j
+     * @return element
+     */
     public double get(Object i, Object j);
 
-    /** @param _i
-     *            _i
-     * @param _j
-     *            _j
-     * @param d
-     *            d */
+    /**
+     * @param _i _i
+     * @param _j _j
+     * @param d d
+     */
     public void set(int _i, int _j, double d);
 
-    /** @param i
-     *            i
-     * @param out
-     *            out */
+    /**
+     * @param i i
+     * @param out out
+     */
     public void printLine(int i, PrintWriter out);
 
-    /** @param objects
-     *            objects */
+    /**
+     * @param objects objects
+     */
     public void setKeys(Collection<?> objects);
 }

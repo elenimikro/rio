@@ -10,12 +10,14 @@
  ******************************************************************************/
 package org.coode.metrics;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public interface Metric<O> {
-    /** @param object
-     *            object
-     * @return value */
+    /**
+     * @param object object
+     * @return value
+     */
     double getValue(O object);
 }

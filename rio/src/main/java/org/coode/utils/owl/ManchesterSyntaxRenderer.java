@@ -31,9 +31,7 @@ public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
      */
     public ManchesterSyntaxRenderer() {
         writerDelegate = new WriterDelegate();
-        ren = new ManchesterOWLSyntaxObjectRenderer(writerDelegate,
-                new SimpleShortFormProvider());
-        ren.setUseWrapping(false);
+        ren = new ManchesterOWLSyntaxObjectRenderer(writerDelegate, new SimpleShortFormProvider());
     }
 
     @Override
@@ -44,10 +42,8 @@ public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
     }
 
     @Override
-    public synchronized void setShortFormProvider(
-            ShortFormProvider shortFormProvider) {
-        ren = new ManchesterOWLSyntaxObjectRenderer(writerDelegate,
-                shortFormProvider);
+    public synchronized void setShortFormProvider(ShortFormProvider shortFormProvider) {
+        ren = new ManchesterOWLSyntaxObjectRenderer(writerDelegate, shortFormProvider);
     }
 
     private static class WriterDelegate extends Writer {
@@ -70,12 +66,12 @@ public class ManchesterSyntaxRenderer implements OWLObjectRenderer {
         }
 
         @Override
-        public void flush() throws IOException {
+        public void flush() {
             delegate.flush();
         }
 
         @Override
-        public void write(char cbuf[], int off, int len) throws IOException {
+        public void write(char cbuf[], int off, int len) {
             delegate.write(cbuf, off, len);
         }
     }

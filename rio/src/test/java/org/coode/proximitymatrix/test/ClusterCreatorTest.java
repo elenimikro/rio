@@ -3,6 +3,7 @@ package org.coode.proximitymatrix.test;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.coode.basetest.TestHelper;
@@ -31,19 +32,19 @@ public class ClusterCreatorTest {
     public void setUp() {
         ontology = TestHelper.getPizza();
         clusterer = new ClusterCreator();
-        distance = DistanceCreator.createAxiomRelevanceAxiomBasedDistance(ontology
-                .getOWLOntologyManager());
-        Set<OWLEntity> entities = Utils.getSortedSignature(ontology);
+        distance = DistanceCreator
+            .createAxiomRelevanceAxiomBasedDistance(ontology.getOWLOntologyManager());
+        List<OWLEntity> entities = Utils.getSortedSignature(ontology);
         clusters = clusterer.agglomerateAll(distance, entities);
     }
 
     @Test
     public void testClusteringMatrix() {
-        ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix = clusterer
-                .getClusteringMatrix();
+        ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix =
+            clusterer.getClusteringMatrix();
         assertFalse(clusteringMatrix.getObjects().equals(0));
-        Collection<Collection<? extends DistanceTableObject<OWLEntity>>> objects = clusteringMatrix
-                .getObjects();
+        Collection<Collection<? extends DistanceTableObject<OWLEntity>>> objects =
+            clusteringMatrix.getObjects();
         for (Collection<? extends DistanceTableObject<OWLEntity>> anObject : objects) {
             for (Collection<? extends DistanceTableObject<OWLEntity>> anotherObject : objects) {
                 double d = clusteringMatrix.getDistance(anObject, anotherObject);
@@ -58,8 +59,7 @@ public class ClusterCreatorTest {
         double totalAverageHomogeneity = 0;
         int clNo = clusters.size();
         for (Cluster<OWLEntity> cluster : clusters) {
-            ClusterStatistics<OWLEntity> stats = ClusterStatistics
-                    .buildStatistics(cluster);
+            ClusterStatistics<OWLEntity> stats = ClusterStatistics.buildStatistics(cluster);
             assertFalse(stats.getAverageExternalDistance() < 0);
             assertFalse(stats.getAverageInternalDistance() < 0);
             totalAverageInternalDistance += stats.getAverageInternalDistance();
@@ -73,13 +73,12 @@ public class ClusterCreatorTest {
             assertFalse(stats.getMinInternalDistance() < 0);
         }
         double avgInternalDistanceFinal = totalAverageInternalDistance / clNo;
-        System.out
-                .println("ClusterCreatorTest.testClusteringStats() totalAverageInternalDistance "
-                        + avgInternalDistanceFinal);
+        System.out.println("ClusterCreatorTest.testClusteringStats() totalAverageInternalDistance "
+            + avgInternalDistanceFinal);
         assertFalse(avgInternalDistanceFinal < 0);
         totalAverageHomogeneity = 1 - avgInternalDistanceFinal;
         assertFalse(totalAverageHomogeneity < 0);
-        System.out.println("ClusterCreatorTest.testClusteringStats() Homogeneity "
-                + totalAverageHomogeneity);
+        System.out.println(
+            "ClusterCreatorTest.testClusteringStats() Homogeneity " + totalAverageHomogeneity);
     }
 }

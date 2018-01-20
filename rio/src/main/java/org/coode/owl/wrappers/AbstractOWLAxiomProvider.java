@@ -15,7 +15,7 @@ import java.util.List;
 
 /** @author eleni */
 public abstract class AbstractOWLAxiomProvider implements OWLAxiomProvider {
-    private final List<OWLAxiomsChangedListener> listeners = new ArrayList<OWLAxiomsChangedListener>();
+    private final List<OWLAxiomsChangedListener> listeners = new ArrayList<>();
 
     @Override
     public void addOWLAxiomsChangedListener(OWLAxiomsChangedListener l) {

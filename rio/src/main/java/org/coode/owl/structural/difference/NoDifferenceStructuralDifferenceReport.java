@@ -9,24 +9,26 @@
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.owl.structural.difference;
+
 /** @author eleni */
 public class NoDifferenceStructuralDifferenceReport implements StructuralDifferenceReport {
-	final static NoDifferenceStructuralDifferenceReport INSTANCE = new NoDifferenceStructuralDifferenceReport();
+    final static NoDifferenceStructuralDifferenceReport INSTANCE =
+        new NoDifferenceStructuralDifferenceReport();
 
-	private NoDifferenceStructuralDifferenceReport() {}
+    private NoDifferenceStructuralDifferenceReport() {}
 
-	@Override
+    @Override
     public void accept(StructuralDifferenceReportVisitor visitor) {
-		visitor.visitNoDifferenceStructuralDifferenceReport(this);
-	}
+        visitor.visitNoDifferenceStructuralDifferenceReport(this);
+    }
 
-	@Override
+    @Override
     public <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor) {
-		return visitor.visitNoDifferenceStructuralDifferenceReport(this);
-	}
+        return visitor.visitNoDifferenceStructuralDifferenceReport(this);
+    }
 
-	@Override
-	public String toString() {
-		return "No difference";
-	}
+    @Override
+    public String toString() {
+        return "No difference";
+    }
 }

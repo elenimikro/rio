@@ -13,12 +13,14 @@
  */
 package org.coode.pair.filter;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public class AndPairFilter<O> extends BooleanExpressionFilter<O> {
-    /** @param filters
-     *            filters */
+    /**
+     * @param filters filters
+     */
     public AndPairFilter(PairFilter<O>... filters) {
         super(filters);
     }
@@ -32,12 +34,12 @@ public class AndPairFilter<O> extends BooleanExpressionFilter<O> {
         return toReturn;
     }
 
-    /** @param filters
-     *            filters
-     * @param <P>
-     *            type
-     * @return and filter */
+    /**
+     * @param filters filters
+     * @param <P> type
+     * @return and filter
+     */
     public static <P> AndPairFilter<P> build(PairFilter<P>... filters) {
-        return new AndPairFilter<P>(filters);
+        return new AndPairFilter<>(filters);
     }
 }

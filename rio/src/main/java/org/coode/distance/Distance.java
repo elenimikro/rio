@@ -13,14 +13,15 @@
  */
 package org.coode.distance;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public interface Distance<O> {
-    /** @param a
-     *            a
-     * @param b
-     *            b
-     * @return distance */
+    /**
+     * @param a a
+     * @param b b
+     * @return distance
+     */
     double getDistance(O a, O b);
 }

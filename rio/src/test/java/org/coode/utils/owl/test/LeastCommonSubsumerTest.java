@@ -31,8 +31,9 @@ import org.xml.sax.SAXException;
 
 /** @author eleni */
 public class LeastCommonSubsumerTest {
-    /** @param args
-     *            args */
+    /**
+     * @param args args
+     */
     public static void main(String[] args) {
         // ToStringRenderer.getInstance().setRenderer(new
         // ManchesterSyntaxRenderer());
@@ -40,17 +41,16 @@ public class LeastCommonSubsumerTest {
         try {
             ontologyManager.loadOntology(IRI.create(args[1]));
             Set<Set<OWLEntity>> clusters = Utils.readFromXML(
-                    LeastCommonSubsumerTest.class.getResourceAsStream(args[0]),
-                    ontologyManager);
-            Set<String> names = new HashSet<String>();
-            Set<String> rootNames = new HashSet<String>(Arrays.asList(null, "Thing",
-                    "topObjectProperty", "topDataProperty", "topAnnotationProperty"));
+                LeastCommonSubsumerTest.class.getResourceAsStream(args[0]), ontologyManager);
+            Set<String> names = new HashSet<>();
+            Set<String> rootNames = new HashSet<>(Arrays.asList(null, "Thing", "topObjectProperty",
+                "topDataProperty", "topAnnotationProperty"));
             for (Set<OWLEntity> set : clusters) {
                 if (!set.isEmpty()) {
-                    OWLAxiomProvider axiomProvider = new OWLOntologyManagerBasedOWLAxiomProvider(
-                            ontologyManager);
-                    LeastCommonSubsumer<OWLEntity, ?> lcs = LeastCommonSubsumer.build(
-                            set, axiomProvider, ontologyManager.getOWLDataFactory());
+                    OWLAxiomProvider axiomProvider =
+                        new OWLOntologyManagerBasedOWLAxiomProvider(ontologyManager);
+                    LeastCommonSubsumer<OWLEntity, ?> lcs = LeastCommonSubsumer.build(set,
+                        axiomProvider, ontologyManager.getOWLDataFactory());
                     if (lcs != null) {
                         OWLObject x = lcs.get(set);
                         System.out.println(String.format("lcs for %s is %s", set, x));
@@ -73,14 +73,13 @@ public class LeastCommonSubsumerTest {
         }
     }
 
-    private static void
-            createName(String string, Set<String> names, Set<String> rootNames) {
+    private static void createName(String string, Set<String> names, Set<String> rootNames) {
         if (!rootNames.contains(string)) {
             if (names.contains(string)) {
                 String[] split = string.split("__");
                 if (split != null && split.length >= 2) {
-                    createName(String.format("%s__%d", split[0],
-                            Integer.parseInt(split[1]) + 1), names, rootNames);
+                    createName(String.format("%s__%d", split[0], Integer.parseInt(split[1]) + 1),
+                        names, rootNames);
                 } else {
                     createName(String.format("%s__1", string), names, rootNames);
                 }

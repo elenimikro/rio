@@ -20,14 +20,16 @@ import java.util.Set;
 import org.coode.pair.Pair;
 import org.coode.pair.SimplePair;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public class ClusterStatistics<O> {
     private final Cluster<O> cluster;
 
-    /** @param cluster
-     *            cluster */
+    /**
+     * @param cluster cluster
+     */
     private ClusterStatistics(Cluster<O> cluster) {
         if (cluster == null) {
             throw new NullPointerException("The cluster cannot be null");
@@ -46,8 +48,8 @@ public class ClusterStatistics<O> {
         for (O object : this.getCluster()) {
             for (O anotherObject : this.getCluster()) {
                 if (object != anotherObject) {
-                    double distance = this.getCluster().getProximityMatrix()
-                            .getDistance(object, anotherObject);
+                    double distance =
+                        this.getCluster().getProximityMatrix().getDistance(object, anotherObject);
                     min = min < distance ? min : distance;
                 }
             }
@@ -61,8 +63,8 @@ public class ClusterStatistics<O> {
         Set<O> externalObjects = this.getExternalObjects();
         for (O object : this.getCluster()) {
             for (O anotherObject : externalObjects) {
-                double distance = this.getCluster().getProximityMatrix()
-                        .getDistance(object, anotherObject);
+                double distance =
+                    this.getCluster().getProximityMatrix().getDistance(object, anotherObject);
                 min = min < distance ? min : distance;
             }
         }
@@ -70,8 +72,8 @@ public class ClusterStatistics<O> {
     }
 
     private Set<O> getExternalObjects() {
-        Set<O> externalObjects = new LinkedHashSet<O>(this.getCluster()
-                .getProximityMatrix().getObjects());
+        Set<O> externalObjects =
+            new LinkedHashSet<>(this.getCluster().getProximityMatrix().getObjects());
         externalObjects.removeAll(this.getCluster());
         return externalObjects;
     }
@@ -82,8 +84,8 @@ public class ClusterStatistics<O> {
         for (O object : this.getCluster()) {
             for (O anotherObject : this.getCluster()) {
                 if (object != anotherObject) {
-                    double distance = this.getCluster().getProximityMatrix()
-                            .getDistance(object, anotherObject);
+                    double distance =
+                        this.getCluster().getProximityMatrix().getDistance(object, anotherObject);
                     max = max > distance ? max : distance;
                 }
             }
@@ -96,8 +98,8 @@ public class ClusterStatistics<O> {
         double max = 0;
         for (O object : this.getCluster()) {
             for (O anotherObject : this.getExternalObjects()) {
-                double distance = this.getCluster().getProximityMatrix()
-                        .getDistance(object, anotherObject);
+                double distance =
+                    this.getCluster().getProximityMatrix().getDistance(object, anotherObject);
                 max = max > distance ? max : distance;
             }
         }
@@ -107,13 +109,13 @@ public class ClusterStatistics<O> {
     /** @return average internal distance */
     public double getAverageInternalDistance() {
         double sum = 0;
-        Set<Pair<O>> pairs = new HashSet<Pair<O>>();
+        Set<Pair<O>> pairs = new HashSet<>();
         for (O object : this.getCluster()) {
             for (O anotherObject : this.getCluster()) {
                 SimplePair<O> pair = SimplePair.build(object, anotherObject);
                 if (object != anotherObject && !pairs.contains(pair)) {
-                    double distance = this.getCluster().getProximityMatrix()
-                            .getDistance(object, anotherObject);
+                    double distance =
+                        this.getCluster().getProximityMatrix().getDistance(object, anotherObject);
                     sum += distance;
                     pairs.add(pair);
                 }
@@ -125,13 +127,13 @@ public class ClusterStatistics<O> {
     /** @return average external distance */
     public double getAverageExternalDistance() {
         double sum = 0;
-        Set<Pair<O>> pairs = new HashSet<Pair<O>>();
+        Set<Pair<O>> pairs = new HashSet<>();
         for (O object : this.getCluster()) {
             for (O anotherObject : this.getExternalObjects()) {
                 SimplePair<O> pair = SimplePair.build(object, anotherObject);
                 if (!pairs.contains(pair)) {
-                    double distance = this.getCluster().getProximityMatrix()
-                            .getDistance(object, anotherObject);
+                    double distance =
+                        this.getCluster().getProximityMatrix().getDistance(object, anotherObject);
                     sum += distance;
                     pairs.add(pair);
                 }
@@ -140,12 +142,12 @@ public class ClusterStatistics<O> {
         return pairs.size() <= 1 ? 0 : sum / pairs.size();
     }
 
-    /** @param cluster
-     *            cluster
-     * @param <P>
-     *            type
-     * @return ststistics */
+    /**
+     * @param cluster cluster
+     * @param <P> type
+     * @return ststistics
+     */
     public static <P> ClusterStatistics<P> buildStatistics(Cluster<P> cluster) {
-        return new ClusterStatistics<P>(cluster);
+        return new ClusterStatistics<>(cluster);
     }
 }

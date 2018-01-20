@@ -13,7 +13,7 @@ package org.coode.owl.wrappers;
 /** @author eleni */
 public interface OWLAxiomsChangedListener {
     /**
-	 * 
-	 */
+     * 
+     */
     public void axiomsChanged();
 }

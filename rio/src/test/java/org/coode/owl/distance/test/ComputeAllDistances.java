@@ -27,31 +27,31 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-/** @author elenimikroyannidi Class which takes as argument an ontology and
- *         computes all distances. */
+/**
+ * @author elenimikroyannidi Class which takes as argument an ontology and computes all distances.
+ */
 public class ComputeAllDistances {
-    /** @param args
-     *            args
-     * @throws OWLOntologyCreationException
-     *             OWLOntologyCreationException */
+    /**
+     * @param args args
+     * @throws OWLOntologyCreationException OWLOntologyCreationException
+     */
     public static void main(String[] args) throws OWLOntologyCreationException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        List<IRI> iris = new ArrayList<IRI>(args.length);
+        List<IRI> iris = new ArrayList<>(args.length);
         for (String string : args) {
             iris.add(IRI.create(string));
         }
         IOUtils.loadIRIMappers(iris, manager);
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         for (OWLOntology ontology : manager.getOntologies()) {
             entities.addAll(ontology.getSignature());
         }
-        AxiomBasedDistance distance = new AxiomBasedDistance(manager.getOntologies(),
-                manager.getOWLDataFactory(),
+        AxiomBasedDistance distance =
+            new AxiomBasedDistance(manager.getOntologies(), manager.getOWLDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
-        SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        System.out.println(String.format(
-                "Finished computing distance between %d entities", distanceMatrix
-                        .getObjects().size()));
+        SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        System.out.println(String.format("Finished computing distance between %d entities",
+            distanceMatrix.getObjects().size()));
     }
 }

@@ -10,25 +10,28 @@
  ******************************************************************************/
 package org.coode.owl.structural.difference;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public interface StructuralDifferenceReportVisitorEx<O> {
-    /** @param report
-     *            report
-     * @return visitor value */
-    O visitNoDifferenceStructuralDifferenceReport(
-            NoDifferenceStructuralDifferenceReport report);
+    /**
+     * @param report report
+     * @return visitor value
+     */
+    O visitNoDifferenceStructuralDifferenceReport(NoDifferenceStructuralDifferenceReport report);
 
-    /** @param report
-     *            report
-     * @return visitor value */
+    /**
+     * @param report report
+     * @return visitor value
+     */
     O visitIncomparableObjectsStructuralDifferenceReport(
-            IncomparableObjectsStructuralDifferenceReport report);
+        IncomparableObjectsStructuralDifferenceReport report);
 
-    /** @param report
-     *            report
-     * @return visitor value */
+    /**
+     * @param report report
+     * @return visitor value
+     */
     O visitSomeDifferenceStructuralDifferenceReport(
-            SomeDifferenceStructuralDifferenceReport report);
+        SomeDifferenceStructuralDifferenceReport report);
 }

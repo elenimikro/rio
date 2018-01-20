@@ -16,12 +16,12 @@ import org.coode.owl.wrappers.OWLEntityProvider;
 
 /** @author eleni */
 public class StructuralOWLObjectGeneralisation extends AbstractOWLObjectGeneralisation {
-    /** @param entityProvider
-     *            entityProvider
-     * @param constraintSystem
-     *            constraintSystem */
+    /**
+     * @param entityProvider entityProvider
+     * @param constraintSystem constraintSystem
+     */
     public StructuralOWLObjectGeneralisation(OWLEntityProvider entityProvider,
-            ConstraintSystem constraintSystem) {
+        ConstraintSystem constraintSystem) {
         super(new StructuralVariableProvider(entityProvider, constraintSystem));
         setConstraintSystem(constraintSystem);
         getVariableProvider().setConstraintSystem(constraintSystem);

@@ -11,23 +11,16 @@
 package org.coode.owl.structural.difference;
 
 /** @author eleni */
-public class StructuralDifferenceReportVisitorAdapter implements
-        StructuralDifferenceReportVisitor {
+public class StructuralDifferenceReportVisitorAdapter implements StructuralDifferenceReportVisitor {
     @Override
-    public
-            void
-            visitNoDifferenceStructuralDifferenceReport(
-                    NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {}
+    public void visitNoDifferenceStructuralDifferenceReport(
+        NoDifferenceStructuralDifferenceReport noDifferenceStructuralDifferenceReport) {}
 
     @Override
-    public
-            void
-            visitIncomparableObjectsStructuralDifferenceReport(
-                    IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {}
+    public void visitIncomparableObjectsStructuralDifferenceReport(
+        IncomparableObjectsStructuralDifferenceReport incomparableObjectsStructuralDifferenceReport) {}
 
     @Override
-    public
-            void
-            visitSomeDifferenceStructuralDifferenceReport(
-                    SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {}
+    public void visitSomeDifferenceStructuralDifferenceReport(
+        SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport) {}
 }

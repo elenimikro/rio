@@ -45,36 +45,35 @@ import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.util.MultiMap;
 
-/** Visitor that abstracts OWLObjects into variables.
+/**
+ * Visitor that abstracts OWLObjects into variables.
  * 
- * @author Eleni Mikroyannidi, Luigi Iannone */
-public class UnwrappedOWLObjectGeneralisation extends OWLObjectGeneralisation implements
-        OWLObjectVisitorEx<OWLObject> {
-    /** @param bindingNodes
-     *            bindingNodes
-     * @param constraintSystem
-     *            constraintSystem */
-    public UnwrappedOWLObjectGeneralisation(
-            Collection<? extends BindingNode> bindingNodes,
-            ConstraintSystem constraintSystem) {
+ * @author Eleni Mikroyannidi, Luigi Iannone
+ */
+public class UnwrappedOWLObjectGeneralisation extends OWLObjectGeneralisation
+    implements OWLObjectVisitorEx<OWLObject> {
+    /**
+     * @param bindingNodes bindingNodes
+     * @param constraintSystem constraintSystem
+     */
+    public UnwrappedOWLObjectGeneralisation(Collection<? extends BindingNode> bindingNodes,
+        ConstraintSystem constraintSystem) {
         super(bindingNodes, constraintSystem);
     }
 
     @Override
     public OWLClassExpression visit(OWLObjectIntersectionOf desc) {
         Set<OWLClassExpression> operands = desc.getOperands();
-        Set<OWLClassExpression> newOperands = new HashSet<OWLClassExpression>(
-                operands.size());
-        MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<OWLClassExpression, OWLClassExpression>();
+        Set<OWLClassExpression> newOperands = new HashSet<>(operands.size());
+        MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
         for (OWLClassExpression classExpression : operands) {
-            OWLClassExpression generalised = (OWLClassExpression) classExpression
-                    .accept(this);
+            OWLClassExpression generalised = (OWLClassExpression) classExpression.accept(this);
             generalisationMap.put(generalised, classExpression);
         }
         for (OWLClassExpression generalisation : generalisationMap.keySet()) {
             newOperands.add(generalisation);
         }
-        return OWLManager.getOWLDataFactory().getOWLObjectIntersectionOf(
-                new HashSet<OWLClassExpression>(newOperands));
+        return OWLManager.getOWLDataFactory()
+            .getOWLObjectIntersectionOf(new HashSet<>(newOperands));
     }
 }

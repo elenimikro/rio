@@ -33,41 +33,41 @@ public class ClusterStatisticsTableModel implements TableModel {
         double select(ClusterStatistics<?> statistics);
     }
 
-    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<>();
     private final Cluster<?>[] clusters;
     private final ClusterStatistics<?>[] statistics;
     /** size comparator */
-    public final static Comparator<Cluster<?>> SIZE_COMPARATOR = Collections
-            .reverseOrder(new Comparator<Cluster<?>>() {
-                @Override
-                public int compare(Cluster<?> o1, Cluster<?> o2) {
-                    int sizeDifference = o1.size() - o2.size();
-                    return sizeDifference == 0 ? o1.hashCode() - o2.hashCode()
-                            : sizeDifference;
-                }
-            });
-    private static final String[] COLUMN_NAMES = new String[] { "Cluster",
-            "Avg Distance", "Min Distance", "Max Distance" };
+    public final static Comparator<Cluster<?>> SIZE_COMPARATOR =
+        Collections.reverseOrder(new Comparator<Cluster<?>>() {
+            @Override
+            public int compare(Cluster<?> o1, Cluster<?> o2) {
+                int sizeDifference = o1.size() - o2.size();
+                return sizeDifference == 0 ? o1.hashCode() - o2.hashCode() : sizeDifference;
+            }
+        });
+    private static final String[] COLUMN_NAMES =
+        new String[] {"Cluster", "Avg Distance", "Min Distance", "Max Distance"};
 
-    /** @param clusters
-     *            clusters */
+    /**
+     * @param clusters clusters
+     */
     public ClusterStatisticsTableModel(Collection<? extends Cluster<?>> clusters) {
         this(clusters, SIZE_COMPARATOR);
     }
 
-    /** @param clusters
-     *            clusters
-     * @param comparator
-     *            comparator */
+    /**
+     * @param clusters clusters
+     * @param comparator comparator
+     */
     public ClusterStatisticsTableModel(Collection<? extends Cluster<?>> clusters,
-            Comparator<Cluster<?>> comparator) {
+        Comparator<Cluster<?>> comparator) {
         if (clusters == null) {
             throw new NullPointerException("The cluster set cannot be null");
         }
         if (comparator == null) {
             throw new NullPointerException("The comparator cannot be null");
         }
-        SortedSet<Cluster<?>> sortedSet = new TreeSet<Cluster<?>>(comparator);
+        SortedSet<Cluster<?>> sortedSet = new TreeSet<>(comparator);
         sortedSet.addAll(clusters);
         this.clusters = sortedSet.toArray(new Cluster[clusters.size()]);
         statistics = new ClusterStatistics<?>[this.clusters.length];
@@ -104,12 +104,12 @@ public class ClusterStatisticsTableModel implements TableModel {
                     return s.getCluster().size();
                 }
             });
-            String totalString = String.format("TOTAL %d Average size: %f ",
-                    clusters.length, avgSize);
+            String totalString =
+                String.format("TOTAL %d Average size: %f ", clusters.length, avgSize);
             toReturn = rowIndex >= clusters.length ? totalString : clusters[rowIndex];
         } else {
-            ClusterStatistics<?> clusterStatistics = rowIndex >= statistics.length ? null
-                    : statistics[rowIndex];
+            ClusterStatistics<?> clusterStatistics =
+                rowIndex >= statistics.length ? null : statistics[rowIndex];
             if (clusterStatistics == null) {
                 return null;
             }

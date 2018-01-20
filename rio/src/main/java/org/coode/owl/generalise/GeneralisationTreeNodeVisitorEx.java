@@ -10,22 +10,26 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public interface GeneralisationTreeNodeVisitorEx<O> {
-    /** @param node
-     *            node
-     * @return visitor value */
+    /**
+     * @param node node
+     * @return visitor value
+     */
     O visitAxiomGeneralisationTreeNode(AxiomGeneralisationTreeNode node);
 
-    /** @param node
-     *            node
-     * @return visitor value */
+    /**
+     * @param node node
+     * @return visitor value
+     */
     O visitVariableGeneralisationTreeNode(VariableGeneralisationTreeNode node);
 
-    /** @param node
-     *            node
-     * @return visitor value */
+    /**
+     * @param node node
+     * @return visitor value
+     */
     O visitBindingNodeGeneralisationTreeNode(BindingNodeGeneralisationTreeNode node);
 }

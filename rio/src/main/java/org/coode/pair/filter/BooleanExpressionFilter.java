@@ -13,21 +13,23 @@
  */
 package org.coode.pair.filter;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public abstract class BooleanExpressionFilter<O> implements PairFilter<O> {
     private final PairFilter<O>[] filters;
 
-    /** @param filters
-     *            filters */
+    /**
+     * @param filters filters
+     */
     public BooleanExpressionFilter(PairFilter<O>... filters) {
         if (filters == null) {
             throw new NullPointerException("The filters cannot be null");
         }
         if (filters.length < 1) {
-            throw new IllegalArgumentException(String.format(
-                    "The number of filters (%d) is not >1", filters.length));
+            throw new IllegalArgumentException(
+                String.format("The number of filters (%d) is not >1", filters.length));
         }
         this.filters = filters;
     }

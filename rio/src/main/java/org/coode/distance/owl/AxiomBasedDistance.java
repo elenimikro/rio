@@ -40,14 +40,13 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
 public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
-    protected final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    protected final Set<OWLOntology> ontologies = new HashSet<>();
     private final OWLDataFactory dataFactory;
     private final RelevancePolicy<OWLEntity> relevancePolicy;
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
-    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantiationMap =
-        new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
+    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantiationMap = new MultiMap<>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
@@ -59,7 +58,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     private final RelevancePolicyOWLObjectGeneralisation replacer;
 
     void buildAxiomMap(Collection<? extends OWLOntology> ontos) {
-        Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
+        Set<AxiomType<?>> types = new HashSet<>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         for (OWLOntology ontology : ontos) {
             for (AxiomType<?> t : types) {
@@ -179,7 +178,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
 
     /** @return the ontologies */
     public Set<OWLOntology> getOntologies() {
-        return new HashSet<OWLOntology>(ontologies);
+        return new HashSet<>(ontologies);
     }
 
     /** @return the dataFactory */

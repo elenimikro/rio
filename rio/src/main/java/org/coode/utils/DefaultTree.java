@@ -19,8 +19,9 @@ import java.util.Stack;
 public class DefaultTree implements Tree {
     private final TreeNode<?> root;
 
-    /** @param root
-     *            root */
+    /**
+     * @param root root
+     */
     public DefaultTree(TreeNode<?> root) {
         if (root == null) {
             throw new NullPointerException("The root cannot be null");
@@ -55,14 +56,13 @@ public class DefaultTree implements Tree {
         if (search == null) {
             throw new NullPointerException("The search criteria cannot be null");
         }
-        Stack<TreeNode<?>> result = new Stack<TreeNode<?>>();
+        Stack<TreeNode<?>> result = new Stack<>();
         boolean found = depthFirstSearch(start, result, search);
-        return found ? new ArrayList<TreeNode<?>>(result) : Collections
-                .<TreeNode<?>> emptyList();
+        return found ? new ArrayList<>(result) : Collections.<TreeNode<?>>emptyList();
     }
 
     private boolean depthFirstSearch(TreeNode<?> start, Stack<TreeNode<?>> result,
-            Tree.Search search) {
+        Tree.Search search) {
         if (result.contains(start)) {
             return false;
         }
@@ -90,18 +90,18 @@ public class DefaultTree implements Tree {
         }
         solutions.clear();
         return this.findAllDepthFirst(getRoot(), new Stack<TreeNode<?>>(), solutions,
-                Utils.getUserObjectSearch(object));
+            Utils.getUserObjectSearch(object));
     }
 
     private boolean findAllDepthFirst(TreeNode<?> start, Stack<TreeNode<?>> currentPath,
-            List<List<TreeNode<?>>> solutions, Search search) {
+        List<List<TreeNode<?>>> solutions, Search search) {
         if (currentPath.contains(start)) {
             return false;
         }
         currentPath.push(start);
         boolean goalReached = search.goalReached(start);
         if (goalReached) {
-            solutions.add(new ArrayList<TreeNode<?>>(currentPath));
+            solutions.add(new ArrayList<>(currentPath));
             currentPath.pop();
             return true;
         }
@@ -109,8 +109,7 @@ public class DefaultTree implements Tree {
         boolean found = false;
         for (int i = 0; i < children.size(); i++) {
             TreeNode<?> child = children.get(i);
-            boolean searchSubTree = this.findAllDepthFirst(child, currentPath, solutions,
-                    search);
+            boolean searchSubTree = this.findAllDepthFirst(child, currentPath, solutions, search);
             found = found || searchSubTree;
         }
         currentPath.pop();

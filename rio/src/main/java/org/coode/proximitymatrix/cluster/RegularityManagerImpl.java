@@ -17,10 +17,11 @@ import org.semanticweb.owlapi.util.MultiMap;
 public class RegularityManagerImpl {
     private RegularitiesDecompositionModel<?, OWLEntity> model = null;
     private final OWLOntology ontology;
-    private final Set<OWLAxiom> seedAxioms = new HashSet<OWLAxiom>();
+    private final Set<OWLAxiom> seedAxioms = new HashSet<>();
 
-    /** @param ontology
-     *            ontology */
+    /**
+     * @param ontology ontology
+     */
     public RegularityManagerImpl(OWLOntology ontology) {
         if (ontology == null) {
             throw new NullPointerException("The ontology cannot be null");
@@ -28,10 +29,10 @@ public class RegularityManagerImpl {
         this.ontology = ontology;
     }
 
-    /** @param ontology
-     *            ontology
-     * @param axioms
-     *            axioms */
+    /**
+     * @param ontology ontology
+     * @param axioms axioms
+     */
     public RegularityManagerImpl(OWLOntology ontology, Set<OWLAxiom> axioms) {
         if (ontology == null) {
             throw new NullPointerException("The ontology cannot be null");
@@ -74,7 +75,7 @@ public class RegularityManagerImpl {
     /** create regularity model */
     public void createRegularityModel() {
         Distance<OWLEntity> distance = DistanceCreator
-                .createAxiomRelevanceAxiomBasedDistance(ontology.getOWLOntologyManager());
+            .createAxiomRelevanceAxiomBasedDistance(ontology.getOWLOntologyManager());
         ClusterCreator clusterer = new ClusterCreator();
         try {
             Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(distance, null);

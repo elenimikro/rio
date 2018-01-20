@@ -17,23 +17,23 @@ import java.util.List;
 import java.util.Map;
 
 /** @author eleni */
-public class SomeDifferenceStructuralDifferenceReport implements
-        StructuralDifferenceReport {
-    private static Map<SomeDifferenceStructuralDifferenceReport, SomeDifferenceStructuralDifferenceReport> cache = new HashMap<SomeDifferenceStructuralDifferenceReport, SomeDifferenceStructuralDifferenceReport>();
-    private final List<Integer> position = new ArrayList<Integer>();
+public class SomeDifferenceStructuralDifferenceReport implements StructuralDifferenceReport {
+    private static Map<SomeDifferenceStructuralDifferenceReport, SomeDifferenceStructuralDifferenceReport> cache =
+        new HashMap<>();
+    private final List<Integer> position = new ArrayList<>();
 
-    /** @param position
-     *            position
-     * @return report */
-    public static SomeDifferenceStructuralDifferenceReport build(
-            List<? extends Integer> position) {
-        SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport = new SomeDifferenceStructuralDifferenceReport(
-                position);
-        SomeDifferenceStructuralDifferenceReport toReturn = cache
-                .get(someDifferenceStructuralDifferenceReport);
+    /**
+     * @param position position
+     * @return report
+     */
+    public static SomeDifferenceStructuralDifferenceReport build(List<? extends Integer> position) {
+        SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport =
+            new SomeDifferenceStructuralDifferenceReport(position);
+        SomeDifferenceStructuralDifferenceReport toReturn =
+            cache.get(someDifferenceStructuralDifferenceReport);
         if (toReturn == null) {
             cache.put(someDifferenceStructuralDifferenceReport,
-                    someDifferenceStructuralDifferenceReport);
+                someDifferenceStructuralDifferenceReport);
             toReturn = someDifferenceStructuralDifferenceReport;
         }
         return toReturn;
@@ -44,8 +44,7 @@ public class SomeDifferenceStructuralDifferenceReport implements
             throw new NullPointerException("The position cannot be null");
         }
         if (position.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "The position must contain at least one index");
+            throw new IllegalArgumentException("The position must contain at least one index");
         }
         this.position.addAll(position);
     }
@@ -62,7 +61,7 @@ public class SomeDifferenceStructuralDifferenceReport implements
 
     /** @return the position */
     public List<Integer> getPosition() {
-        return new ArrayList<Integer>(position);
+        return new ArrayList<>(position);
     }
 
     @Override
@@ -98,7 +97,8 @@ public class SomeDifferenceStructuralDifferenceReport implements
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        SomeDifferenceStructuralDifferenceReport other = (SomeDifferenceStructuralDifferenceReport) obj;
+        SomeDifferenceStructuralDifferenceReport other =
+            (SomeDifferenceStructuralDifferenceReport) obj;
         if (position == null) {
             if (other.position != null) {
                 return false;

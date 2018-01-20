@@ -21,53 +21,50 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 /** @author Eleni Mikroyannidi */
-public class OWLNamedIndividualLeastCommonSubsumer extends
-        LeastCommonSubsumer<OWLNamedIndividual, OWLClass> {
+public class OWLNamedIndividualLeastCommonSubsumer
+    extends LeastCommonSubsumer<OWLNamedIndividual, OWLClass> {
     private final OWLClassLeastCommonSubsumer delegate;
 
-    /** @param axiomProvider
-     *            axiomProvider
-     * @param dataFactory
-     *            dataFactory */
+    /**
+     * @param axiomProvider axiomProvider
+     * @param dataFactory dataFactory
+     */
     public OWLNamedIndividualLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
-            OWLDataFactory dataFactory) {
+        OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory.getOWLThing());
         delegate = new OWLClassLeastCommonSubsumer(axiomProvider, dataFactory);
     }
 
     @Override
     protected void rebuild() {
-        for (OWLAxiom axiom : getAxiomProvider()) {
-            axiom.accept(new OWLAxiomVisitorAdapter() {
-                @Override
-                public void visit(OWLClassAssertionAxiom ax) {
-                    if (!ax.getIndividual().isAnonymous()
-                            && !ax.getClassExpression().isAnonymous()) {
-                        OWLNamedIndividualLeastCommonSubsumer.this.addParent(ax
-                                .getIndividual().asOWLNamedIndividual(), ax
-                                .getClassExpression().asOWLClass());
-                    }
-                }
-            });
+        getAxiomProvider().stream().filter(ax -> ax instanceof OWLClassAssertionAxiom)
+            .forEach(this::handleClassAssertion);
+    }
+
+    private void handleClassAssertion(OWLAxiom a) {
+        OWLClassAssertionAxiom ax = (OWLClassAssertionAxiom) a;
+        if (!ax.getIndividual().isAnonymous() && !ax.getClassExpression().isAnonymous()) {
+            OWLNamedIndividualLeastCommonSubsumer.this.addParent(
+                ax.getIndividual().asOWLNamedIndividual(), ax.getClassExpression().asOWLClass());
         }
     }
 
     @Override
     public OWLClass get(Collection<? extends OWLNamedIndividual> c) {
-        List<OWLClass> results = new ArrayList<OWLClass>();
+        List<OWLClass> results = new ArrayList<>();
         for (OWLNamedIndividual owlNamedIndividual : c) {
             results.addAll(getParents(owlNamedIndividual));
         }
-        results = new ArrayList<OWLClass>(new HashSet<OWLClass>(results));
+        results = new ArrayList<>(new HashSet<>(results));
         if (results.size() == 0) {
             return null;
         }
-        return results.size() > 1 ? results.size() == 2 ? delegate.get(results.get(0),
-                results.get(1)) : delegate.get(results.get(0), results.get(1), results
-                .subList(2, results.size()).toArray(new OWLClass[results.size() - 2]))
-                : results.get(0);
+        return results.size() > 1
+            ? results.size() == 2 ? delegate.get(results.get(0), results.get(1))
+                : delegate.get(results.get(0), results.get(1),
+                    results.subList(2, results.size()).toArray(new OWLClass[results.size() - 2]))
+            : results.get(0);
     }
 }

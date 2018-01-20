@@ -16,8 +16,6 @@ package org.coode.proximitymatrix.ui;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -39,15 +37,13 @@ public class ClusterAxiomListModel implements ListModel<OWLAxiomListItem> {
     private final ListModel<OWLAxiomListItem> delegate;
     private final int axiomCount;
 
-    /** @param cluster
-     *            cluster
-     * @param ontologies
-     *            ontologies
-     * @param generalisation
-     *            generalisation */
-    public ClusterAxiomListModel(Cluster<? extends OWLEntity> cluster,
-            Collection<? extends OWLOntology> ontologies,
-            OWLObjectGeneralisation generalisation) {
+    /**
+     * @param cluster cluster
+     * @param ontologies ontologies
+     * @param generalisation generalisation
+     */
+    public ClusterAxiomListModel(Cluster<OWLEntity> cluster, Collection<OWLOntology> ontologies,
+        OWLObjectGeneralisation generalisation) {
         if (cluster == null) {
             throw new NullPointerException("The cluster cannot be null");
         }
@@ -55,39 +51,28 @@ public class ClusterAxiomListModel implements ListModel<OWLAxiomListItem> {
             throw new NullPointerException("The ontologies collection cannot be null");
         }
         if (ontologies.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "The colleciton of ontologies cannot be null");
+            throw new IllegalArgumentException("The colleciton of ontologies cannot be null");
         }
-        DefaultListModel<OWLAxiomListItem> defaultListModel = new DefaultListModel<OWLAxiomListItem>();
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
-        for (OWLOntology ont : ontologies) {
-            axioms.addAll(ont.getAxioms());
-        }
-        final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = Utils
-                .buildGeneralisationMap(cluster, ontologies, axioms, generalisation);
-        Comparator<OWLAxiom> comparator = new Comparator<OWLAxiom>() {
-            @Override
-            public int compare(OWLAxiom axiom, OWLAxiom anotherAxiom) {
-                int toReturn = axiom.hashCode() - anotherAxiom.hashCode();
-                Collection<OWLAxiomInstantiation> genAxioms = generalisationMap
-                        .get(axiom);
-                Collection<OWLAxiomInstantiation> otherAxioms = generalisationMap
-                        .get(anotherAxiom);
-                if (genAxioms != otherAxioms) {
-                    toReturn = genAxioms.size() - otherAxioms.size();
-                    if (toReturn == 0) {
-                        toReturn = genAxioms.hashCode() - otherAxioms.hashCode();
-                    }
+        DefaultListModel<OWLAxiomListItem> defaultListModel = new DefaultListModel<>();
+        final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
+            Utils.buildGeneralisationMap(cluster, ontologies,
+                ontologies.stream().flatMap(OWLOntology::axioms).distinct(), generalisation);
+        Comparator<OWLAxiom> comparator = (axiom, anotherAxiom) -> {
+            int toReturn = axiom.hashCode() - anotherAxiom.hashCode();
+            Collection<OWLAxiomInstantiation> genAxioms = generalisationMap.get(axiom);
+            Collection<OWLAxiomInstantiation> otherAxioms = generalisationMap.get(anotherAxiom);
+            if (genAxioms != otherAxioms) {
+                toReturn = genAxioms.size() - otherAxioms.size();
+                if (toReturn == 0) {
+                    toReturn = genAxioms.hashCode() - otherAxioms.hashCode();
                 }
-                return toReturn;
             }
+            return toReturn;
         };
-        SortedSet<OWLAxiom> sortedAxioms = new TreeSet<OWLAxiom>(
-                Collections.reverseOrder(comparator));
+        SortedSet<OWLAxiom> sortedAxioms = new TreeSet<>(Collections.reverseOrder(comparator));
         sortedAxioms.addAll(generalisationMap.keySet());
         for (OWLAxiom axiom : sortedAxioms) {
-            Collection<OWLAxiomInstantiation> axiomInstantiations = generalisationMap
-                    .get(axiom);
+            Collection<OWLAxiomInstantiation> axiomInstantiations = generalisationMap.get(axiom);
             defaultListModel.addElement(new OWLAxiomListItem(axiom, axiomInstantiations));
         }
         axiomCount = defaultListModel.getSize();

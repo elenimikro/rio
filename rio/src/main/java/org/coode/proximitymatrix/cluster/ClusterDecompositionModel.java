@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.AssignmentMap;
@@ -18,23 +16,24 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.MultiMap;
 
-/** @author eleni
- * @param <P>
- *            type */
-public class ClusterDecompositionModel<P> implements
-        RegularitiesDecompositionModel<Cluster<P>, P> {
-    Map<Cluster<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>> fullGeneralisationMap = new LinkedHashMap<Cluster<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>>();
-    Map<Cluster<P>, Variable<?>> variableMap = new HashMap<Cluster<P>, Variable<?>>();
+/**
+ * @author eleni
+ * @param <P> type
+ */
+public class ClusterDecompositionModel<P> implements RegularitiesDecompositionModel<Cluster<P>, P> {
+    Map<Cluster<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>> fullGeneralisationMap =
+        new LinkedHashMap<>();
+    Map<Cluster<P>, Variable<?>> variableMap = new HashMap<>();
     List<Cluster<P>> sortedClusters;
-    private final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    private final List<OWLOntology> ontologies = new ArrayList<>();
 
-    /** @param _clusters
-     *            _clusters
-     * @param ontologies
-     *            ontologies */
+    /**
+     * @param _clusters _clusters
+     * @param ontologies ontologies
+     */
     public ClusterDecompositionModel(Collection<? extends Cluster<P>> _clusters,
-            Collection<? extends OWLOntology> ontologies) {
-        sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
+        Collection<? extends OWLOntology> ontologies) {
+        sortedClusters = new ArrayList<>(_clusters.size());
         for (Cluster<P> c : _clusters) {
             if (c.size() > 1) {
                 sortedClusters.add(c);
@@ -44,10 +43,11 @@ public class ClusterDecompositionModel<P> implements
         this.ontologies.addAll(ontologies);
     }
 
-    /** @param _clusters
-     *            _clusters */
+    /**
+     * @param _clusters _clusters
+     */
     public ClusterDecompositionModel(Collection<? extends Cluster<P>> _clusters) {
-        sortedClusters = new ArrayList<Cluster<P>>(_clusters.size());
+        sortedClusters = new ArrayList<>(_clusters.size());
         for (Cluster<P> c : _clusters) {
             if (c.size() > 1) {
                 sortedClusters.add(c);
@@ -63,7 +63,7 @@ public class ClusterDecompositionModel<P> implements
 
     @Override
     public List<Cluster<P>> getClusterList() {
-        return new ArrayList<Cluster<P>>(sortedClusters);
+        return new ArrayList<>(sortedClusters);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ClusterDecompositionModel<P> implements
     }
 
     @Override
-    public Set<OWLOntology> getOntologies() {
+    public List<OWLOntology> getOntologies() {
         return ontologies;
     }
 
@@ -86,12 +86,11 @@ public class ClusterDecompositionModel<P> implements
 
     private void buildVariableMap() {
         for (Cluster<P> cluster : sortedClusters) {
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = fullGeneralisationMap
-                    .get(cluster);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = fullGeneralisationMap.get(cluster);
             OWLAxiom exampleLogicGeneralisation = getExampleLogicGeneralisation(multiMap);
             if (exampleLogicGeneralisation != null) {
-                Collection<OWLAxiomInstantiation> collection = multiMap
-                        .get(exampleLogicGeneralisation);
+                Collection<OWLAxiomInstantiation> collection =
+                    multiMap.get(exampleLogicGeneralisation);
                 OWLAxiomInstantiation exampleInst = collection.iterator().next();
                 AssignmentMap substitutions = exampleInst.getSubstitutions();
                 for (Variable<?> var : substitutions.getVariables()) {
@@ -104,7 +103,7 @@ public class ClusterDecompositionModel<P> implements
     }
 
     private OWLAxiom getExampleLogicGeneralisation(
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap) {
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap) {
         if (multiMap != null) {
             for (OWLAxiom ax : multiMap.keySet()) {
                 if (ax.isLogicalAxiom()) {
@@ -117,7 +116,7 @@ public class ClusterDecompositionModel<P> implements
 
     @Override
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap() {
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> map = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> map = new MultiMap<>();
         for (Cluster<P> c : fullGeneralisationMap.keySet()) {
             map.putAll(fullGeneralisationMap.get(c));
         }

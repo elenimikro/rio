@@ -22,7 +22,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 /** @author eleni */
 public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase
     implements OWLEntityProvider {
-    private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+    private final Set<OWLAxiom> axioms = new HashSet<>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {

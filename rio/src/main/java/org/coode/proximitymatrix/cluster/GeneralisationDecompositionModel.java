@@ -1,5 +1,7 @@
 package org.coode.proximitymatrix.cluster;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,52 +25,47 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
 import org.semanticweb.owlapi.util.MultiMap;
 
-/** Convenience class for analysing regularities that were already saved in xml
- * file. The difference from the ClusterDecompositionModel is that instead of
- * having Cluster is using Set.
+/**
+ * Convenience class for analysing regularities that were already saved in xml file. The difference
+ * from the ClusterDecompositionModel is that instead of having Cluster is using Set.
  * 
  * @author elenimikroyannidi
- * @param <P>
- *            type */
-public class GeneralisationDecompositionModel<P extends OWLEntity> implements
-        RegularitiesDecompositionModel<Set<P>, P> {
-    private final Map<Set<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>> fullGeneralisationMap = new LinkedHashMap<Set<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>>();
-    protected static MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> sortedGeneralisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-    Map<Set<P>, Variable<?>> variableMap = new HashMap<Set<P>, Variable<?>>();
+ * @param <P> type
+ */
+public class GeneralisationDecompositionModel<P extends OWLEntity>
+    implements RegularitiesDecompositionModel<Set<P>, P> {
+    private final Map<Set<P>, MultiMap<OWLAxiom, OWLAxiomInstantiation>> fullGeneralisationMap =
+        new LinkedHashMap<>();
+    protected static MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
+    private final MultiMap<OWLAxiom, OWLAxiomInstantiation> sortedGeneralisationMap =
+        new MultiMap<>();
+    Map<Set<P>, Variable<?>> variableMap = new HashMap<>();
     List<Set<P>> sortedClusters;
     private final OWLOntology ontology;
-    private static final Comparator<Set<?>> CLUSTER_SIZE_COMPARATOR = Collections
-            .reverseOrder(new Comparator<Set<?>>() {
-                @Override
-                public int compare(Set<?> cluster, Set<?> anothercluster) {
-                    // return cluster.size() - anothercluster.size();
-                    int sizeDifference = cluster.size() - anothercluster.size();
-                    return sizeDifference == 0 ? cluster.hashCode()
-                            - anothercluster.hashCode() : sizeDifference;
-                }
-            });
-    private static final Comparator<OWLAxiom> GENERALISATIONS_SIZE_COMPARATOR = new Comparator<OWLAxiom>() {
-        @Override
-        public int compare(OWLAxiom axiom, OWLAxiom otherAxiom) {
-            Collection<OWLAxiomInstantiation> axiomInstatiations = generalisationMap
-                    .get(axiom);
-            Collection<OWLAxiomInstantiation> otherAxiomInstantiations = generalisationMap
-                    .get(otherAxiom);
+    private static final Comparator<Set<?>> CLUSTER_SIZE_COMPARATOR =
+        Collections.reverseOrder((cluster, anothercluster) -> {
+            // return cluster.size() - anothercluster.size();
+            int sizeDifference = cluster.size() - anothercluster.size();
+            return sizeDifference == 0 ? cluster.hashCode() - anothercluster.hashCode()
+                : sizeDifference;
+        });
+    private static final Comparator<OWLAxiom> GENERALISATIONS_SIZE_COMPARATOR =
+        (axiom, otherAxiom) -> {
+            Collection<OWLAxiomInstantiation> axiomInstatiations = generalisationMap.get(axiom);
+            Collection<OWLAxiomInstantiation> otherAxiomInstantiations =
+                generalisationMap.get(otherAxiom);
             return axiomInstatiations.size() - otherAxiomInstantiations.size();
-        }
-    };
+        };
     private ConstraintSystem constraintSystem;
 
-    /** @param _clusters
-     *            _clusters
-     * @param ontology
-     *            ontology
-     * @throws UnknownOWLOntologyException
-     *             UnknownOWLOntologyException */
+    /**
+     * @param _clusters _clusters
+     * @param ontology ontology
+     * @throws UnknownOWLOntologyException UnknownOWLOntologyException
+     */
     public GeneralisationDecompositionModel(Collection<? extends Set<P>> _clusters,
-            OWLOntology ontology) throws UnknownOWLOntologyException {
-        sortedClusters = new ArrayList<Set<P>>(_clusters.size());
+        OWLOntology ontology) throws UnknownOWLOntologyException {
+        sortedClusters = new ArrayList<>(_clusters.size());
         for (Set<P> c : _clusters) {
             if (c.size() > 1) {
                 sortedClusters.add(c);
@@ -80,15 +77,14 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
 
     private void buildGeneralisationMap(OWLOntology ont) {
         try {
-            OPPLFactory opplFactory = new OPPLFactory(ont.getOWLOntologyManager(), ont,
-                    null);
+            OPPLFactory opplFactory = new OPPLFactory(ont.getOWLOntologyManager(), ont, null);
             constraintSystem = opplFactory.createConstraintSystem();
-            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                    sortedClusters, ont.getImportsClosure(), constraintSystem);
+            List<OWLOntology> closure = asList(ont.importsClosure());
+            OWLObjectGeneralisation generalisation =
+                Utils.getOWLObjectGeneralisation(sortedClusters, closure, constraintSystem);
             for (Set<P> cluster : sortedClusters) {
-                MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils
-                        .buildGeneralisationMap(cluster, ont.getImportsClosure(),
-                                generalisation);
+                MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils.buildGeneralisationMap(
+                    (Collection<OWLEntity>) cluster, closure, generalisation);
                 fullGeneralisationMap.put(cluster, map);
                 generalisationMap.putAll(map);
             }
@@ -99,8 +95,8 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
     }
 
     private void sortGeneralisations() {
-        Set<OWLAxiom> orderedGenSet = new TreeSet<OWLAxiom>(
-                Collections.reverseOrder(GENERALISATIONS_SIZE_COMPARATOR));
+        Set<OWLAxiom> orderedGenSet =
+            new TreeSet<>(Collections.reverseOrder(GENERALISATIONS_SIZE_COMPARATOR));
         orderedGenSet.addAll(generalisationMap.keySet());
         for (OWLAxiom ax : orderedGenSet) {
             sortedGeneralisationMap.putAll(ax, generalisationMap.get(ax));
@@ -112,15 +108,16 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
         fullGeneralisationMap.put(cluster, map);
     }
 
-    /** @param map
-     *            map */
+    /**
+     * @param map map
+     */
     public void putAll(MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         generalisationMap.putAll(map);
     }
 
     @Override
     public List<Set<P>> getClusterList() {
-        return new ArrayList<Set<P>>(sortedClusters);
+        return new ArrayList<>(sortedClusters);
     }
 
     @Override
@@ -146,12 +143,11 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
 
     private void buildVariableMap() {
         for (Set<P> cluster : sortedClusters) {
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = fullGeneralisationMap
-                    .get(cluster);
+            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap = fullGeneralisationMap.get(cluster);
             OWLAxiom exampleLogicGeneralisation = getExampleLogicGeneralisation(multiMap);
             if (exampleLogicGeneralisation != null) {
-                Collection<OWLAxiomInstantiation> collection = multiMap
-                        .get(exampleLogicGeneralisation);
+                Collection<OWLAxiomInstantiation> collection =
+                    multiMap.get(exampleLogicGeneralisation);
                 OWLAxiomInstantiation exampleInst = collection.iterator().next();
                 AssignmentMap substitutions = exampleInst.getSubstitutions();
                 for (Variable<?> var : substitutions.getVariables()) {
@@ -164,7 +160,7 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
     }
 
     private OWLAxiom getExampleLogicGeneralisation(
-            MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap) {
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap) {
         if (multiMap != null) {
             for (OWLAxiom ax : multiMap.keySet()) {
                 if (ax.isLogicalAxiom()) {
@@ -188,19 +184,21 @@ public class GeneralisationDecompositionModel<P extends OWLEntity> implements
         return constraintSystem;
     }
 
-    /** @param constraintSystem
-     *            constraintSystem */
+    /**
+     * @param constraintSystem constraintSystem
+     */
     public void setConstraintSystem(ConstraintSystem constraintSystem) {
         this.constraintSystem = constraintSystem;
     }
 
     @Override
-    public Set<OWLOntology> getOntologies() {
-        return ontology.getImportsClosure();
+    public List<OWLOntology> getOntologies() {
+        return asList(ontology.importsClosure());
     }
 
-    /** @param map
-     *            map */
+    /**
+     * @param map map
+     */
     public void setGeneralisationMap(MultiMap<OWLAxiom, OWLAxiomInstantiation> map) {
         GeneralisationDecompositionModel.generalisationMap.clear();
         this.sortedGeneralisationMap.clear();

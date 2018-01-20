@@ -17,19 +17,18 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
 public class Utils {
-    /** @param objects
-     *            objects
-     * @param distance
-     *            distance
-     * @param <P>
-     *            type
-     * @return equivalence classes */
-    public static <P> MultiMap<P, P> getEquivalenceClasses(
-            Collection<? extends P> objects, Distance<P> distance) {
-        MultiMap<P, P> toReturn = new MultiMap<P, P>();
+    /**
+     * @param objects objects
+     * @param distance distance
+     * @param <P> type
+     * @return equivalence classes
+     */
+    public static <P> MultiMap<P, P> getEquivalenceClasses(Collection<? extends P> objects,
+        Distance<P> distance) {
+        MultiMap<P, P> toReturn = new MultiMap<>();
         for (P p : objects) {
             boolean found = false;
-            for (P key : new ArrayList<P>(toReturn.keySet())) {
+            for (P key : new ArrayList<>(toReturn.keySet())) {
                 if (distance.getDistance(p, key) == 0) {
                     toReturn.put(key, p);
                     found = true;

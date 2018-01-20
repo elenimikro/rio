@@ -18,21 +18,21 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
-public class StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll extends
-        AgglomeratorBase {
-    /** @param args
-     *            args
-     * @throws OWLOntologyCreationException
-     *             OWLOntologyCreationException */
+public class StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll extends AgglomeratorBase {
+    /**
+     * @param args args
+     * @throws OWLOntologyCreationException OWLOntologyCreationException
+     */
     public static void main(String[] args) throws OWLOntologyCreationException {
-        StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll agglomerator = new StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll();
+        StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll agglomerator =
+            new StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll();
         agglomerator.checkArgumentsAndRun(args);
     }
 
     @Override
     public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
         Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
-                manager.getOntologies(), manager.getOWLDataFactory(), manager);
+            manager.getOntologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
 

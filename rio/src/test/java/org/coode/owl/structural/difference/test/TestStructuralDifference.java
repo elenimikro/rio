@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.coode.owl.structural.difference.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,26 +47,26 @@ public class TestStructuralDifference {
 
         @Override
         public void visitNoDifferenceStructuralDifferenceReport(
-                NoDifferenceStructuralDifferenceReport report) {
+            NoDifferenceStructuralDifferenceReport report) {
             fail("Wrong kind of report");
         }
 
         @Override
         public void visitIncomparableObjectsStructuralDifferenceReport(
-                IncomparableObjectsStructuralDifferenceReport report) {
+            IncomparableObjectsStructuralDifferenceReport report) {
             fail("Wrong kind of report");
         }
     }
 
-    private final class Personalized3 extends
-            StructuralDifferenceReportVisitorExAdapter<List<Integer>> {
+    private final class Personalized3
+        extends StructuralDifferenceReportVisitorExAdapter<List<Integer>> {
         public Personalized3(List<Integer> defaultValue) {
             super(defaultValue);
         }
 
         @Override
         public List<Integer> visitSomeDifferenceStructuralDifferenceReport(
-                SomeDifferenceStructuralDifferenceReport report) {
+            SomeDifferenceStructuralDifferenceReport report) {
             return report.getPosition();
         }
     }
@@ -75,7 +76,7 @@ public class TestStructuralDifference {
 
         @Override
         public void visitSomeDifferenceStructuralDifferenceReport(
-                SomeDifferenceStructuralDifferenceReport report) {
+            SomeDifferenceStructuralDifferenceReport report) {
             List<Integer> position = report.getPosition();
             assertTrue(position.size() == 1);
             assertTrue(position.get(0).intValue() == 2);
@@ -87,7 +88,7 @@ public class TestStructuralDifference {
 
         @Override
         public void visitSomeDifferenceStructuralDifferenceReport(
-                SomeDifferenceStructuralDifferenceReport report) {
+            SomeDifferenceStructuralDifferenceReport report) {
             List<Integer> position = report.getPosition();
             assertTrue(position.size() == 2);
             assertTrue(position.get(0).intValue() == 2);
@@ -102,8 +103,7 @@ public class TestStructuralDifference {
         // ontology.getOWLOntologyManager();
         StructuralDifference difference = new StructuralDifference();
         for (OWLAxiom axiom : ontology.getAxioms()) {
-            StructuralDifferenceReport topDifference = difference.getTopDifference(axiom,
-                    axiom);
+            StructuralDifferenceReport topDifference = difference.getTopDifference(axiom, axiom);
             assertTrue(topDifference == StructuralDifferenceReport.NO_DIFFERENCE);
             topDifference = difference.getTopDifference(ontology, axiom);
             assertTrue(topDifference == StructuralDifferenceReport.INCOMPARABLE);
@@ -135,25 +135,20 @@ public class TestStructuralDifference {
         OWLObjectIntersectionOf aANDb = dataFactory.getOWLObjectIntersectionOf(a, b);
         OWLObjectIntersectionOf aANDc = dataFactory.getOWLObjectIntersectionOf(a, c);
         OWLObjectUnionOf aORc = dataFactory.getOWLObjectUnionOf(a, c);
-        OWLObjectSomeValuesFrom somePAANDB = dataFactory.getOWLObjectSomeValuesFrom(p,
-                aANDb);
-        OWLObjectSomeValuesFrom somePAANDC = dataFactory.getOWLObjectSomeValuesFrom(p,
-                aANDc);
-        OWLObjectSomeValuesFrom somePAORC = dataFactory.getOWLObjectSomeValuesFrom(p,
-                aORc);
+        OWLObjectSomeValuesFrom somePAANDB = dataFactory.getOWLObjectSomeValuesFrom(p, aANDb);
+        OWLObjectSomeValuesFrom somePAANDC = dataFactory.getOWLObjectSomeValuesFrom(p, aANDc);
+        OWLObjectSomeValuesFrom somePAORC = dataFactory.getOWLObjectSomeValuesFrom(p, aORc);
         StructuralDifference difference = new StructuralDifference();
-        StructuralDifferenceReport topDifference = difference.getTopDifference(aANDb,
-                aANDc);
+        StructuralDifferenceReport topDifference = difference.getTopDifference(aANDb, aANDc);
         System.out.printf("Between {%s, %s} is %s \n", aANDb, aANDc, topDifference);
         topDifference.accept(new Personalized1());
         topDifference = difference.getTopDifference(somePAANDB, somePAANDC);
-        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, somePAANDC,
-                topDifference);
+        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, somePAANDC, topDifference);
         topDifference.accept(new PersonalizedReportVisitor());
         topDifference = difference.getTopDifference(somePAANDB, somePAORC);
-        System.out.printf("Between {%s, %s} is at %s  which is %s \n", somePAANDB,
-                somePAORC, topDifference, Position.get(somePAANDB, topDifference
-                        .accept(new Personalized3(Collections.<Integer> emptyList()))));
+        System.out.printf("Between {%s, %s} is at %s  which is %s \n", somePAANDB, somePAORC,
+            topDifference, Position.get(somePAANDB,
+                topDifference.accept(new Personalized3(Collections.<Integer>emptyList()))));
         topDifference.accept(new Personalized1());
     }
 
@@ -170,24 +165,19 @@ public class TestStructuralDifference {
         OWLObjectProperty q = dataFactory.getOWLObjectProperty(IRI.create("q"));
         OWLObjectIntersectionOf aANDb = dataFactory.getOWLObjectIntersectionOf(a, b);
         OWLObjectIntersectionOf aANDc = dataFactory.getOWLObjectIntersectionOf(a, c);
-        OWLObjectSomeValuesFrom somePAANDB = dataFactory.getOWLObjectSomeValuesFrom(p,
-                aANDb);
-        OWLObjectSomeValuesFrom somePAANDC = dataFactory.getOWLObjectSomeValuesFrom(p,
-                aANDc);
-        OWLObjectSomeValuesFrom someQAANDC = dataFactory.getOWLObjectSomeValuesFrom(q,
-                aANDc);
+        OWLObjectSomeValuesFrom somePAANDB = dataFactory.getOWLObjectSomeValuesFrom(p, aANDb);
+        OWLObjectSomeValuesFrom somePAANDC = dataFactory.getOWLObjectSomeValuesFrom(p, aANDc);
+        OWLObjectSomeValuesFrom someQAANDC = dataFactory.getOWLObjectSomeValuesFrom(q, aANDc);
         StructuralDifference difference = new StructuralDifference();
-        List<StructuralDifferenceReport> topDifferences = difference.getTopDifferences(
-                somePAANDB, somePAANDC);
-        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, somePAANDC,
-                topDifferences);
+        List<StructuralDifferenceReport> topDifferences =
+            difference.getTopDifferences(somePAANDB, somePAANDC);
+        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, somePAANDC, topDifferences);
         assertTrue(topDifferences.size() == 1);
         for (StructuralDifferenceReport topDifference : topDifferences) {
             topDifference.accept(new PersonalizedReportVisitor());
         }
         topDifferences = difference.getTopDifferences(somePAANDB, someQAANDC);
-        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, someQAANDC,
-                topDifferences);
+        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, someQAANDC, topDifferences);
         assertTrue(topDifferences.size() == 2);
     }
 
@@ -204,20 +194,16 @@ public class TestStructuralDifference {
         OWLSubClassOfAxiom cSubClassOfd = dataFactory.getOWLSubClassOfAxiom(c, d);
         OWLObjectIntersectionOf aANDb = dataFactory.getOWLObjectIntersectionOf(a, b);
         OWLObjectIntersectionOf aANDc = dataFactory.getOWLObjectIntersectionOf(a, c);
-        OWLSubClassOfAxiom aANDbSubClassOfaANDc = dataFactory.getOWLSubClassOfAxiom(
-                aANDb, aANDc);
-        OWLSubClassOfAxiom aANDcSubClassOfaANDb = dataFactory.getOWLSubClassOfAxiom(
-                aANDc, aANDb);
+        OWLSubClassOfAxiom aANDbSubClassOfaANDc = dataFactory.getOWLSubClassOfAxiom(aANDb, aANDc);
+        OWLSubClassOfAxiom aANDcSubClassOfaANDb = dataFactory.getOWLSubClassOfAxiom(aANDc, aANDb);
         StructuralDifference difference = new StructuralDifference();
-        List<StructuralDifferenceReport> topDifferences = difference.getTopDifferences(
-                aSubClassOfb, cSubClassOfd);
-        System.out.printf("Between {%s, %s} is %s \n", aSubClassOfb, cSubClassOfd,
-                topDifferences);
+        List<StructuralDifferenceReport> topDifferences =
+            difference.getTopDifferences(aSubClassOfb, cSubClassOfd);
+        System.out.printf("Between {%s, %s} is %s \n", aSubClassOfb, cSubClassOfd, topDifferences);
         assertTrue(topDifferences.size() == 2);
-        topDifferences = difference.getTopDifferences(aANDcSubClassOfaANDb,
-                aANDbSubClassOfaANDc);
-        System.out.printf("Between {%s, %s} is %s \n", aANDcSubClassOfaANDb,
-                aANDbSubClassOfaANDc, topDifferences);
+        topDifferences = difference.getTopDifferences(aANDcSubClassOfaANDb, aANDbSubClassOfaANDc);
+        System.out.printf("Between {%s, %s} is %s \n", aANDcSubClassOfaANDb, aANDbSubClassOfaANDc,
+            topDifferences);
         assertTrue(topDifferences.size() == 2);
     }
 }

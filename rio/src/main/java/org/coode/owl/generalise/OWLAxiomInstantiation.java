@@ -33,10 +33,10 @@ public class OWLAxiomInstantiation {
     private final OWLAxiom axiom;
     private final AssignmentMap substitutions;
 
-    /** @param axiom
-     *            axiom
-     * @param assignmentMap
-     *            assignmentMap */
+    /**
+     * @param axiom axiom
+     * @param assignmentMap assignmentMap
+     */
     public OWLAxiomInstantiation(OWLAxiom axiom, AssignmentMap assignmentMap) {
         if (axiom == null) {
             throw new NullPointerException("The axiom cannot be null");
@@ -60,12 +60,12 @@ public class OWLAxiomInstantiation {
 
     /** @return input variables */
     public Set<InputVariable<?>> getInputVariables() {
-        final Set<InputVariable<?>> toReturn = new HashSet<InputVariable<?>>();
+        final Set<InputVariable<?>> toReturn = new HashSet<>();
         for (Variable<?> v : substitutions.keySet()) {
             v.accept(new VariableVisitor() {
                 @Override
                 public <P extends OWLObject> void visit(
-                        RegexpGeneratedVariable<P> regExpGenerated) {}
+                    RegexpGeneratedVariable<P> regExpGenerated) {}
 
                 @Override
                 public <P extends OWLObject> void visit(GeneratedVariable<P> gv) {}
@@ -117,26 +117,23 @@ public class OWLAxiomInstantiation {
         return true;
     }
 
-    /** @param bindingNode
-     *            bindingNode
-     * @param parameters
-     *            parameters
-     * @return true if in agreement */
-    public boolean agreesWith(BindingNode bindingNode,
-            ValueComputationParameters parameters) {
+    /**
+     * @param bindingNode bindingNode
+     * @param parameters parameters
+     * @return true if in agreement
+     */
+    public boolean agreesWith(BindingNode bindingNode, ValueComputationParameters parameters) {
         if (bindingNode == null) {
             throw new NullPointerException("The binding node cannot be null");
         }
         if (parameters == null) {
-            throw new NullPointerException(
-                    "The value computation parameters cannot be null");
+            throw new NullPointerException("The value computation parameters cannot be null");
         }
         boolean found = false;
         Iterator<Variable<?>> iterator = bindingNode.getAssignedVariables().iterator();
         while (!found && iterator.hasNext()) {
             Variable<?> variable = iterator.next();
-            OWLObject assignmentValue = bindingNode.getAssignmentValue(variable,
-                    parameters);
+            OWLObject assignmentValue = bindingNode.getAssignmentValue(variable, parameters);
             Set<OWLObject> set = substitutions.get(variable);
             found = set == null || set.size() > 1 || !set.contains(assignmentValue);// iterator().next().equals(assignmentValue);
         }

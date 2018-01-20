@@ -15,27 +15,28 @@ import java.util.Map;
 
 import org.coode.metrics.AbstractRanking;
 
-/** @author eleni
- * @param <T>
- *            type */
+/**
+ * @author eleni
+ * @param <T> type
+ */
 public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
     private final AbstractRanking<T> ranking;
     private final double standardDeviation;
     private final double mean;
-    private final Map<T, Boolean> cache = new HashMap<T, Boolean>();
+    private final Map<T, Boolean> cache = new HashMap<>();
     private final boolean anyRelenant;
     private final int sampleSize;
     protected final double upperLimit;
     protected final double lowerLimit;
 
     /*
-     * From http://onlinestatbook.com/chapter8/mean.html 2 4.303 9.925 3 3.182
-     * 5.841 4 2.776 4.604 5 2.571 4.032 8 2.306 3.355 10 2.228 3.169 20 2.086
-     * 2.845 50 2.009 2.678 100 1.984 2.626
+     * From http://onlinestatbook.com/chapter8/mean.html 2 4.303 9.925 3 3.182 5.841 4 2.776 4.604 5
+     * 2.571 4.032 8 2.306 3.355 10 2.228 3.169 20 2.086 2.845 50 2.009 2.678 100 1.984 2.626
      */
-    /** @param sample
-     *            sample
-     * @return zeta */
+    /**
+     * @param sample sample
+     * @return zeta
+     */
     public static double getZeta(int sample) {
         if (sample <= 2) {
             return 4.303d;
@@ -64,8 +65,9 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
         return 1.984d;
     }
 
-    /** @param ranking
-     *            ranking */
+    /**
+     * @param ranking ranking
+     */
     private AbstractRankingRelevancePolicy(AbstractRanking<T> ranking) {
         if (ranking == null) {
             throw new NullPointerException("The ranking cannot be null");
@@ -81,13 +83,11 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
     }
 
     private double computeUpperLimit() {
-        return getMean() + this.getZeta() * getStandardDeviation()
-                / Math.sqrt(getSampleSize());
+        return getMean() + this.getZeta() * getStandardDeviation() / Math.sqrt(getSampleSize());
     }
 
     private double computeLowerLimit() {
-        return getMean() - this.getZeta() * getStandardDeviation()
-                / Math.sqrt(getSampleSize());
+        return getMean() - this.getZeta() * getStandardDeviation() / Math.sqrt(getSampleSize());
     }
 
     @Override
@@ -96,9 +96,10 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
         return isCached ? cache.get(object) : computeIsRelevant(object);
     }
 
-    /** @param object
-     *            object
-     * @return true if relevant */
+    /**
+     * @param object object
+     * @return true if relevant
+     */
     public boolean computeIsRelevant(T object) {
         boolean isRelevant = !anyRelenant;
         if (!isRelevant) {
@@ -122,9 +123,9 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
 
     @Override
     public String toString() {
-        return String
-                .format("OWL Entity popularity Based relevance policy (Mean %f Standard deviation: %f)",
-                        getMean(), getStandardDeviation());
+        return String.format(
+            "OWL Entity popularity Based relevance policy (Mean %f Standard deviation: %f)",
+            getMean(), getStandardDeviation());
     }
 
     /** @return the mean */
@@ -132,14 +133,14 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
         return mean;
     }
 
-    /** @param ranking
-     *            ranking
-     * @param <T>
-     *            type
-     * @return ranking relevance policy */
-    public static <T> AbstractRankingRelevancePolicy<T>
-            getAbstractRankingRelevancePolicy(AbstractRanking<T> ranking) {
-        return new AbstractRankingRelevancePolicy<T>(ranking);
+    /**
+     * @param ranking ranking
+     * @param <T> type
+     * @return ranking relevance policy
+     */
+    public static <T> AbstractRankingRelevancePolicy<T> getAbstractRankingRelevancePolicy(
+        AbstractRanking<T> ranking) {
+        return new AbstractRankingRelevancePolicy<>(ranking);
     }
 
     /** @return the sampleSize */

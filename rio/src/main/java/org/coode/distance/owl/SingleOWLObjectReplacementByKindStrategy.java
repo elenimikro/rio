@@ -42,22 +42,20 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     protected final ReplacementStrategy defaultStrategy;
     static {
         try {
-            properties.load(ReplacementByKindStrategy.class
-                    .getResourceAsStream(SingleOWLObjectReplacementByKindStrategy.class
-                            .getName() + ".properties"));
+            properties.load(ReplacementByKindStrategy.class.getResourceAsStream(
+                SingleOWLObjectReplacementByKindStrategy.class.getName() + ".properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /** @param owlEntity
-     *            owlEntity
-     * @param dataFactory
-     *            dataFactory
-     * @param relevancePolicy
-     *            relevancePolicy */
-    public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity,
-            OWLDataFactory dataFactory, RelevancePolicy<OWLEntity> relevancePolicy) {
+    /**
+     * @param owlEntity owlEntity
+     * @param dataFactory dataFactory
+     * @param relevancePolicy relevancePolicy
+     */
+    public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity, OWLDataFactory dataFactory,
+        RelevancePolicy<OWLEntity> relevancePolicy) {
         if (dataFactory == null) {
             throw new NullPointerException("The data factory cannot be null");
         }
@@ -74,9 +72,8 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
         delegate = new ReplacementStrategy() {
             @Override
             public <O extends OWLObject> O replace(O owlObject) {
-                return owlObject.accept(Utils.getOWLEntityRecogniser())
-                        && SingleOWLObjectReplacementByKindStrategy.this
-                                .getRelevancePolicy().isRelevant((OWLEntity) owlObject) ? owlObject
+                return Utils.isEntity(owlObject) && SingleOWLObjectReplacementByKindStrategy.this
+                    .getRelevancePolicy().isRelevant((OWLEntity) owlObject) ? owlObject
                         : defaultStrategy.replace(owlObject);
             }
         };
@@ -84,49 +81,42 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
             @Override
             public OWLAnnotationProperty visit(OWLAnnotationProperty property) {
                 return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                        .getOWLAnnotationProperty(
-                                SingleOWLObjectReplacementByKindStrategy.this
-                                        .getPlaceHolderIRI());
+                    .getOWLAnnotationProperty(
+                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
             }
 
             @Override
             public OWLClass visit(OWLClass cls) {
                 return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                        .getOWLClass(
-                                SingleOWLObjectReplacementByKindStrategy.this
-                                        .getPlaceHolderIRI());
+                    .getOWLClass(SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
             }
 
             @Override
             public OWLDataProperty visit(OWLDataProperty property) {
                 return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                        .getOWLDataProperty(
-                                SingleOWLObjectReplacementByKindStrategy.this
-                                        .getPlaceHolderIRI());
+                    .getOWLDataProperty(
+                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
             }
 
             @Override
             public OWLObjectProperty visit(OWLObjectProperty property) {
                 return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                        .getOWLObjectProperty(
-                                SingleOWLObjectReplacementByKindStrategy.this
-                                        .getPlaceHolderIRI());
+                    .getOWLObjectProperty(
+                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
             }
 
             @Override
             public OWLDatatype visit(OWLDatatype datatype) {
                 return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                        .getOWLDatatype(
-                                SingleOWLObjectReplacementByKindStrategy.this
-                                        .getPlaceHolderIRI());
+                    .getOWLDatatype(
+                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
             }
 
             @Override
             public OWLNamedIndividual visit(OWLNamedIndividual individual) {
                 return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                        .getOWLNamedIndividual(
-                                SingleOWLObjectReplacementByKindStrategy.this
-                                        .getPlaceHolderIRI());
+                    .getOWLNamedIndividual(
+                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
             }
         });
     }
@@ -143,8 +133,7 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     @Override
     @SuppressWarnings("unchecked")
     public <O extends OWLObject> O replace(O owlObject) {
-        return (O) (owlObject.equals(owlEntity) ? getReplacement() : delegate
-                .replace(owlObject));
+        return (O) (owlObject.equals(owlEntity) ? getReplacement() : delegate.replace(owlObject));
     }
 
     /** @return the replacement */

@@ -11,7 +11,6 @@
 package org.coode.owl.generalise;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.coode.oppl.ConstraintSystem;
@@ -21,25 +20,19 @@ import org.coode.oppl.variabletypes.VariableType;
 import org.coode.oppl.variabletypes.VariableTypeFactory;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 /** @author eleni */
 public abstract class VariableProvider {
     private ConstraintSystem constraintSystem;
     private final OWLEntityProvider entityProvider;
-    private final Map<OWLObject, Variable<?>> cache = new HashMap<OWLObject, Variable<?>>();
-    private final Map<VariableType<?>, Variable<?>> variables = new HashMap<VariableType<?>, Variable<?>>();
-    private final Map<VariableType<?>, Integer> variableIndex = new HashMap<VariableType<?>, Integer>();
+    private final Map<OWLObject, Variable<?>> cache = new HashMap<>();
+    private final Map<VariableType<?>, Variable<?>> variables = new HashMap<>();
+    private final Map<VariableType<?>, Integer> variableIndex = new HashMap<>();
 
-    /** @param entityProvider
-     *            entityProvider */
+    /**
+     * @param entityProvider entityProvider
+     */
     public VariableProvider(OWLEntityProvider entityProvider) {
         if (entityProvider == null) {
             throw new NullPointerException("The entity provider cannot be null");
@@ -47,9 +40,10 @@ public abstract class VariableProvider {
         this.entityProvider = entityProvider;
     }
 
-    /** @param owlObject
-     *            owlObject
-     * @return variable */
+    /**
+     * @param owlObject owlObject
+     * @return variable
+     */
     public Variable<?> get(OWLObject owlObject) {
         Variable<?> toReturn = cache.get(owlObject);
         if (toReturn == null) {
@@ -62,8 +56,9 @@ public abstract class VariableProvider {
         return toReturn;
     }
 
-    /** @param variableType
-     *            variableType */
+    /**
+     * @param variableType variableType
+     */
     public void newVariable(VariableType<?> variableType) {
         Integer integer = variableIndex.get(variableType);
         if (integer == null) {
@@ -72,8 +67,7 @@ public abstract class VariableProvider {
         variableIndex.put(variableType, integer + 1);
         Variable<?> v;
         try {
-            v = getConstraintSystem().createVariable(createName(variableType),
-                    variableType, null);
+            v = getConstraintSystem().createVariable(createName(variableType), variableType, null);
             variables.put(variableType, v);
         } catch (OPPLException e) {
             e.printStackTrace();
@@ -82,7 +76,7 @@ public abstract class VariableProvider {
 
     private String createName(VariableType<?> variableType) {
         return String.format("?%s_%d", variableType.toString().toLowerCase(),
-                variableIndex.get(variableType).intValue());
+            variableIndex.get(variableType).intValue());
     }
 
     protected abstract Variable<?> getAbstractingVariable(OWLObject owlObject);
@@ -95,56 +89,20 @@ public abstract class VariableProvider {
         return constraintSystem;
     }
 
-    /** @param cs
-     *            cs */
+    /**
+     * @param cs cs
+     */
     public void setConstraintSystem(ConstraintSystem cs) {
         constraintSystem = cs;
     }
 
-    /** @param iri
-     *            iri
-     * @return entity */
+    /**
+     * @param iri iri
+     * @return entity
+     */
     public OWLObject getOWLEntity(final IRI iri) {
-        boolean found = false;
-        OWLObject toReturn = null;
-        OWLObject owlObject = null;
-        Iterator<OWLEntity> iterator = getEntityProvider().iterator();
-        while (!found && iterator.hasNext()) {
-            owlObject = iterator.next();
-            toReturn = owlObject.accept(new OWLObjectVisitorExAdapter<OWLObject>() {
-                private boolean matchEntity(OWLEntity desc) {
-                    return desc.getIRI().equals(iri);
-                }
-
-                @Override
-                public OWLObject visit(OWLClass desc) {
-                    return matchEntity(desc) ? desc : null;
-                }
-
-                @Override
-                public OWLObject visit(OWLDataProperty property) {
-                    return matchEntity(property) ? property : null;
-                }
-
-                @Override
-                public OWLObject visit(OWLObjectProperty property) {
-                    return matchEntity(property) ? property : null;
-                }
-
-                @Override
-                public OWLObject visit(OWLAnnotationProperty property) {
-                    return matchEntity(property) ? property : null;
-                }
-
-                @Override
-                public OWLObject visit(OWLNamedIndividual individual) {
-                    return matchEntity(individual) ? individual : null;
-                }
-            });
-            found = toReturn != null;
-        }
-        toReturn = found ? toReturn : null;
-        return toReturn;
+        return getEntityProvider().stream().filter(e -> e.getIRI().equals(iri)).findFirst()
+            .orElse(null);
     }
 
     /** @return the entityProvider */

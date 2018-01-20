@@ -16,20 +16,20 @@ import java.util.Set;
 
 import org.coode.distance.Distance;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public class DistanceTableObject<O> {
     private final O object;
     private final int index;
     private final Distance<O> distance;
 
-    /** @param object
-     *            object
-     * @param index
-     *            index
-     * @param distance
-     *            distance */
+    /**
+     * @param object object
+     * @param index index
+     * @param distance distance
+     */
     public DistanceTableObject(O object, int index, Distance<O> distance) {
         if (object == null) {
             throw new NullPointerException("The object cannot be null");
@@ -57,19 +57,18 @@ public class DistanceTableObject<O> {
         return this.index;
     }
 
-    /** @param distance
-     *            distance
-     * @param objects
-     *            objects
-     * @param <P>
-     *            type
-     * @return distance table */
-    public static <P> Set<DistanceTableObject<P>> createDistanceTableObjectSet(
-            Distance<P> distance, Collection<? extends P> objects) {
-        Set<DistanceTableObject<P>> toReturn = new LinkedHashSet<DistanceTableObject<P>>();
+    /**
+     * @param distance distance
+     * @param objects objects
+     * @param <P> type
+     * @return distance table
+     */
+    public static <P> Set<DistanceTableObject<P>> createDistanceTableObjectSet(Distance<P> distance,
+        Collection<? extends P> objects) {
+        Set<DistanceTableObject<P>> toReturn = new LinkedHashSet<>();
         int i = 0;
         for (P p : objects) {
-            toReturn.add(new DistanceTableObject<P>(p, i, distance));
+            toReturn.add(new DistanceTableObject<>(p, i, distance));
             i++;
         }
         return toReturn;

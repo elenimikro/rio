@@ -15,16 +15,17 @@ package org.coode.distance;
 
 import java.util.Collection;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public class TableDistance<O> implements Distance<O> {
     private final SparseMatrix table;
 
-    /** @param objects
-     *            objects
-     * @param table
-     *            table */
+    /**
+     * @param objects objects
+     * @param table table
+     */
     public TableDistance(Collection<? extends O> objects, SparseMatrix table) {
         if (table == null) {
             throw new NullPointerException("The table cannot be null");
@@ -47,11 +48,11 @@ public class TableDistance<O> implements Distance<O> {
         return this.table.get(a, b);
     }
 
-    /** @param i
-     *            i
-     * @param j
-     *            j
-     * @return distance */
+    /**
+     * @param i i
+     * @param j j
+     * @return distance
+     */
     public double getDistance(int i, int j) {
         return this.table.get(i, j);
     }

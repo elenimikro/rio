@@ -11,18 +11,18 @@
 package org.coode.owl.generalise;
 
 /** @author eleni */
-public abstract class GeneralisationTreeNodeVisitorAdapter implements
-        GeneralisationTreeNodeVisitor {
+public abstract class GeneralisationTreeNodeVisitorAdapter
+    implements GeneralisationTreeNodeVisitor {
     @Override
     public void visitAxiomGeneralisationTreeNode(
-            final AxiomGeneralisationTreeNode axiomGeneralisationTreeNode) {}
+        final AxiomGeneralisationTreeNode axiomGeneralisationTreeNode) {}
 
     @Override
     public void visitVariableGeneralisationTreeNode(
-            final VariableGeneralisationTreeNode variableGeneralisationTreeNode) {}
+        final VariableGeneralisationTreeNode variableGeneralisationTreeNode) {}
 
     @Override
     public void visitBindingNodeGeneralisationTreeNode(
-            final BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {}
+        final BindingNodeGeneralisationTreeNode bindingNodeGeneralisationTreeNode) {}
 
 }

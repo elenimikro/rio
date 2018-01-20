@@ -18,17 +18,19 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 /** @author eleni */
 public class GeneralisationTree extends DefaultTree implements Tree {
-    /** @param rootAxiom
-     *            rootAxiom */
+    /**
+     * @param rootAxiom rootAxiom
+     */
     public GeneralisationTree(OWLAxiom rootAxiom) {
         super(buildNode(rootAxiom));
     }
 
-    /** @param axiom
-     *            axiom
-     * @return node */
+    /**
+     * @param axiom axiom
+     * @return node
+     */
     public static TreeNode<OWLAxiom> buildNode(OWLAxiom axiom) {
-        TreeNode<OWLAxiom> toReturn = new DefaultTreeNode<OWLAxiom>(axiom);
+        TreeNode<OWLAxiom> toReturn = new DefaultTreeNode<>(axiom);
         return toReturn;
     }
 }

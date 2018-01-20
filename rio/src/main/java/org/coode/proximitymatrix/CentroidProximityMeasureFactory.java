@@ -9,12 +9,14 @@
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.proximitymatrix;
+
 /** @author eleni */
 public class CentroidProximityMeasureFactory implements ProximityMeasureFactory {
-	@Override
+    @Override
     public LanceWilliamsFormula getProximityMeasure(int mA, int mB, int mQ) {
-		return new LanceWilliamsFormula((double) mA / (double) (mA + mB), (double) mB
-				/ (double) (mA + mB), (double) -mA * (double) mB
-				/ (((double) mA + (double) mB) * ((double) mA + (double) mB)), 0);
-	}
+        return new LanceWilliamsFormula((double) mA / (double) (mA + mB),
+            (double) mB / (double) (mA + mB), (double) -mA * (double) mB
+                / (((double) mA + (double) mB) * ((double) mA + (double) mB)),
+            0);
+    }
 }

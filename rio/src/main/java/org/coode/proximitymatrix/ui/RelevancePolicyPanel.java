@@ -36,12 +36,13 @@ import org.semanticweb.owlapi.model.OWLEntity;
 /** @author Luigi Iannone */
 public abstract class RelevancePolicyPanel extends JPanel {
     private static final long serialVersionUID = 8159023598180517334L;
-    private final JList<RankingSlot<OWLEntity>> rankingList = new JList<RankingSlot<OWLEntity>>();
+    private final JList<RankingSlot<OWLEntity>> rankingList = new JList<>();
     protected final RelevancePolicy<OWLEntity> policy;
     private final JLabel summaryLabel = new JLabel();
 
-    /** @param policy
-     *            policy */
+    /**
+     * @param policy policy
+     */
     public RelevancePolicyPanel(RelevancePolicy<OWLEntity> policy) {
         if (policy == null) {
             throw new NullPointerException("The policy cannot be null");
@@ -57,18 +58,15 @@ public abstract class RelevancePolicyPanel extends JPanel {
         rankingList.setCellRenderer(new ListCellRenderer<RankingSlot<OWLEntity>>() {
             @Override
             public Component getListCellRendererComponent(
-                    JList<? extends RankingSlot<OWLEntity>> list,
-                    RankingSlot<OWLEntity> value, int index, boolean isSelected,
-                    boolean cellHasFocus) {
+                JList<? extends RankingSlot<OWLEntity>> list, RankingSlot<OWLEntity> value,
+                int index, boolean isSelected, boolean cellHasFocus) {
                 DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-                final HashSet<OWLEntity> members = new HashSet<OWLEntity>(Arrays
-                        .asList(value.getMembers()));
-                Object toRender = String.format("%s [%s] relevant? %b",
-                        RelevancePolicyPanel.this.render(members), value.getValue(),
-                        policy.isRelevant(value.getMembers()[0]));
+                final HashSet<OWLEntity> members = new HashSet<>(Arrays.asList(value.getMembers()));
+                Object toRender =
+                    String.format("%s [%s] relevant? %b", RelevancePolicyPanel.this.render(members),
+                        value.getValue(), policy.isRelevant(value.getMembers()[0]));
                 Component toReturn = renderer.getListCellRendererComponent(list,
-                        String.format("%d) %s ", index + 1, toRender), index, isSelected,
-                        cellHasFocus);
+                    String.format("%d) %s ", index + 1, toRender), index, isSelected, cellHasFocus);
                 return toReturn;
             }
         });
@@ -77,13 +75,13 @@ public abstract class RelevancePolicyPanel extends JPanel {
 
     protected abstract Object render(Set<?> members);
 
-    /** @param ranking
-     *            ranking
-     * @param <P>
-     *            type */
+    /**
+     * @param ranking ranking
+     * @param <P> type
+     */
     public <P> void reset(Ranking<OWLEntity> ranking) {
         List<? extends RankingSlot<OWLEntity>> list = ranking.getSortedRanking();
-        DefaultListModel<RankingSlot<OWLEntity>> model = new DefaultListModel<RankingSlot<OWLEntity>>();
+        DefaultListModel<RankingSlot<OWLEntity>> model = new DefaultListModel<>();
         for (RankingSlot<OWLEntity> rankingSlot : list) {
             model.addElement(rankingSlot);
         }

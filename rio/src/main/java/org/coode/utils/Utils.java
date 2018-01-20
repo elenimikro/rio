@@ -17,31 +17,32 @@ import org.coode.utils.Tree.Search;
 
 /** @author eleni */
 public class Utils {
-    /** @param object
-     *            object
-     * @return user object search */
+    /**
+     * @param object object
+     * @return user object search
+     */
     public static Search getUserObjectSearch(final Object object) {
         return new Search() {
             @Override
             public boolean goalReached(TreeNode<?> node) {
-                return object == null ? object == node.getUserObject() : object
-                        .equals(node.getUserObject());
+                return object == null ? object == node.getUserObject()
+                    : object.equals(node.getUserObject());
             }
         };
     }
 
-    /** @param tree
-     *            tree
-     * @param out
-     *            out */
+    /**
+     * @param tree tree
+     * @param out out
+     */
     public static void printTree(Tree tree, PrintStream out) {
         printNode(tree.getRoot(), out);
     }
 
-    /** @param node
-     *            node
-     * @param out
-     *            out */
+    /**
+     * @param node node
+     * @param out out
+     */
     public static void printNode(TreeNode<?> node, PrintStream out) {
         printNode(node, 0, out);
     }

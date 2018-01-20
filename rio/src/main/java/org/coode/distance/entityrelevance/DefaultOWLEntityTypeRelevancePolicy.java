@@ -22,17 +22,17 @@ import org.semanticweb.owlapi.model.OWLEntity;
 /** @author Luigi Iannone */
 public class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolicy<OWLEntity> {
     // private EntityType<?> type;
-    private final Set<EntityType<?>> types = new HashSet<EntityType<?>>();
+    private final Set<EntityType<?>> types = new HashSet<>();
     private final boolean relevant;
-    private final static RelevancePolicy<OWLEntity> OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
-            true, EntityType.OBJECT_PROPERTY);
-    private final static RelevancePolicy<OWLEntity> ALWAYS_IRRELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
-            false);
-    private final static RelevancePolicy<OWLEntity> ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
-            true);
-    private static final RelevancePolicy<OWLEntity> PROPERTIES_ALWAYS_RELEVANT_POLICY = new DefaultOWLEntityTypeRelevancePolicy(
-            true, EntityType.OBJECT_PROPERTY, EntityType.DATA_PROPERTY,
-            EntityType.DATATYPE, EntityType.ANNOTATION_PROPERTY);
+    private final static RelevancePolicy<OWLEntity> OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY =
+        new DefaultOWLEntityTypeRelevancePolicy(true, EntityType.OBJECT_PROPERTY);
+    private final static RelevancePolicy<OWLEntity> ALWAYS_IRRELEVANT_POLICY =
+        new DefaultOWLEntityTypeRelevancePolicy(false);
+    private final static RelevancePolicy<OWLEntity> ALWAYS_RELEVANT_POLICY =
+        new DefaultOWLEntityTypeRelevancePolicy(true);
+    private static final RelevancePolicy<OWLEntity> PROPERTIES_ALWAYS_RELEVANT_POLICY =
+        new DefaultOWLEntityTypeRelevancePolicy(true, EntityType.OBJECT_PROPERTY,
+            EntityType.DATA_PROPERTY, EntityType.DATATYPE, EntityType.ANNOTATION_PROPERTY);
 
     private DefaultOWLEntityTypeRelevancePolicy(boolean relevant, EntityType<?>... types) {
         if (types.length != 0) {

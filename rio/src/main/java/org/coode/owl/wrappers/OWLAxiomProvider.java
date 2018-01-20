@@ -17,12 +17,14 @@ import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author eleni */
 public interface OWLAxiomProvider extends Set<OWLAxiom> {
-    /** @param l
-     *            l */
+    /**
+     * @param l l
+     */
     public void addOWLAxiomsChangedListener(OWLAxiomsChangedListener l);
 
-    /** @param l
-     *            l */
+    /**
+     * @param l l
+     */
     public void removeOWLAxiomsChangedListener(OWLAxiomsChangedListener l);
 
     /** @return signature */

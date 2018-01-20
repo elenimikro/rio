@@ -17,22 +17,17 @@ import java.util.Set;
 
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.AssignmentMap;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 /** @author eleni */
 public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
-    protected final Set<OWLEntity> delegate = new HashSet<OWLEntity>();
+    protected final Set<OWLEntity> delegate = new HashSet<>();
     private final AssignmentMap assignmentMap;
 
-    /** @param assignmentMap
-     *            assignmentMap */
+    /**
+     * @param assignmentMap assignmentMap
+     */
     public AssignmentMapBasedOWLEntityProvider(AssignmentMap assignmentMap) {
         if (assignmentMap == null) {
             throw new NullPointerException("The assignment map cannot be null");
@@ -45,38 +40,8 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
         Set<Variable<?>> variables = assignmentMap.getVariables();
         for (Variable<?> variable : variables) {
             Set<OWLObject> set = assignmentMap.get(variable);
-            for (OWLObject owlObject : set) {
-                owlObject.accept(new OWLObjectVisitorAdapter() {
-                    @Override
-                    public void visit(OWLClass desc) {
-                        addEntity(desc);
-                    }
-
-                    @Override
-                    public void visit(OWLAnnotationProperty property) {
-                        addEntity(property);
-                    }
-
-                    @Override
-                    public void visit(OWLDataProperty property) {
-                        addEntity(property);
-                    }
-
-                    @Override
-                    public void visit(OWLObjectProperty property) {
-                        addEntity(property);
-                    }
-
-                    @Override
-                    public void visit(OWLNamedIndividual individual) {
-                        addEntity(individual);
-                    }
-
-                    private void addEntity(OWLEntity desc) {
-                        delegate.add(desc);
-                    }
-                });
-            }
+            set.stream().filter(a -> a instanceof OWLEntity)
+                .forEach(a -> delegate.add((OWLEntity) a));
         }
     }
 

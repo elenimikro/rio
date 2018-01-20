@@ -35,8 +35,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 /** @author eleni */
-public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
-        RelevancePolicy<OWLEntity> {
+public final class ByKindOWLEntityPopularityBasedRelevantPolicy
+    implements RelevancePolicy<OWLEntity> {
     private final class GroupRanking implements Ranking<OWLEntity> {
         public GroupRanking() {}
 
@@ -64,7 +64,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
 
         @Override
         public double[] getValues() {
-            Set<Double> values = new HashSet<Double>();
+            Set<Double> values = new HashSet<>();
             if (owlClassesPopularityRanking != null) {
                 owlClassesPopularityRanking.getRanking().collect(values);
             }
@@ -83,7 +83,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
             if (owlDatatypesPopularityRanking != null) {
                 owlDatatypesPopularityRanking.getRanking().collect(values);
             }
-            double[] doubles = new double[] { values.size() };
+            double[] doubles = new double[] {values.size()};
             Iterator<Double> it = values.iterator();
             int i = 0;
             while (it.hasNext()) {
@@ -110,8 +110,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
                 }
             }
             if (owlAnnotationPropertiesPopularityRanking != null) {
-                if (d == owlAnnotationPropertiesPopularityRanking.getRanking()
-                        .getTopValue()) {
+                if (d == owlAnnotationPropertiesPopularityRanking.getRanking().getTopValue()) {
                     return owlAnnotationPropertiesPopularityRanking.getRanking().getTop();
                 }
             }
@@ -134,8 +133,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
                 d = owlClassesPopularityRanking.getRanking().getTopValue();
             }
             if (owlObjectPropertiesPopularityRanking != null) {
-                double v = owlObjectPropertiesPopularityRanking.getRanking()
-                        .getTopValue();
+                double v = owlObjectPropertiesPopularityRanking.getRanking().getTopValue();
                 if (d < v) {
                     d = v;
                 }
@@ -147,15 +145,13 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
                 }
             }
             if (owlAnnotationPropertiesPopularityRanking != null) {
-                double v = owlAnnotationPropertiesPopularityRanking.getRanking()
-                        .getTopValue();
+                double v = owlAnnotationPropertiesPopularityRanking.getRanking().getTopValue();
                 if (d < v) {
                     d = v;
                 }
             }
             if (owlNamedIndividualsPopularityRanking != null) {
-                double v = owlNamedIndividualsPopularityRanking.getRanking()
-                        .getTopValue();
+                double v = owlNamedIndividualsPopularityRanking.getRanking().getTopValue();
                 if (d < v) {
                     d = v;
                 }
@@ -181,30 +177,28 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
 
         @Override
         public List<RankingSlot<OWLEntity>> getUnorderedRanking() {
-            List<RankingSlot<OWLEntity>> toReturn = new ArrayList<RankingSlot<OWLEntity>>();
+            List<RankingSlot<OWLEntity>> toReturn = new ArrayList<>();
             if (owlClassesPopularityRanking != null) {
-                toReturn.addAll(owlClassesPopularityRanking.getRanking()
-                        .getUnorderedRanking());
+                toReturn.addAll(owlClassesPopularityRanking.getRanking().getUnorderedRanking());
             }
             if (owlObjectPropertiesPopularityRanking != null) {
-                toReturn.addAll(owlObjectPropertiesPopularityRanking.getRanking()
-                        .getUnorderedRanking());
+                toReturn.addAll(
+                    owlObjectPropertiesPopularityRanking.getRanking().getUnorderedRanking());
             }
             if (owlDataPropertiesPopularityRanking != null) {
-                toReturn.addAll(owlDataPropertiesPopularityRanking.getRanking()
-                        .getUnorderedRanking());
+                toReturn
+                    .addAll(owlDataPropertiesPopularityRanking.getRanking().getUnorderedRanking());
             }
             if (owlAnnotationPropertiesPopularityRanking != null) {
-                toReturn.addAll(owlAnnotationPropertiesPopularityRanking.getRanking()
-                        .getUnorderedRanking());
+                toReturn.addAll(
+                    owlAnnotationPropertiesPopularityRanking.getRanking().getUnorderedRanking());
             }
             if (owlNamedIndividualsPopularityRanking != null) {
-                toReturn.addAll(owlNamedIndividualsPopularityRanking.getRanking()
-                        .getUnorderedRanking());
+                toReturn.addAll(
+                    owlNamedIndividualsPopularityRanking.getRanking().getUnorderedRanking());
             }
             if (owlDatatypesPopularityRanking != null) {
-                toReturn.addAll(owlDatatypesPopularityRanking.getRanking()
-                        .getUnorderedRanking());
+                toReturn.addAll(owlDatatypesPopularityRanking.getRanking().getUnorderedRanking());
             }
             return toReturn;
         }
@@ -213,16 +207,14 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
         public List<RankingSlot<OWLEntity>> getSortedRanking() {
             List<RankingSlot<OWLEntity>> toReturn = getUnorderedRanking();
             Collections.sort(toReturn,
-                    Collections.reverseOrder(new Comparator<RankingSlot<OWLEntity>>() {
-                        @Override
-                        public int compare(RankingSlot<OWLEntity> o1,
-                                RankingSlot<OWLEntity> o2) {
-                            double difference = o1.getValue() - o2.getValue();
-                            return difference == 0 ? o1.getMembersHashCode()
-                                    - o2.getMembersHashCode() : (int) Math
-                                    .signum(difference);
-                        }
-                    }));
+                Collections.reverseOrder(new Comparator<RankingSlot<OWLEntity>>() {
+                    @Override
+                    public int compare(RankingSlot<OWLEntity> o1, RankingSlot<OWLEntity> o2) {
+                        double difference = o1.getValue() - o2.getValue();
+                        return difference == 0 ? o1.getMembersHashCode() - o2.getMembersHashCode()
+                            : (int) Math.signum(difference);
+                    }
+                }));
             return toReturn;
         }
     }
@@ -234,24 +226,24 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
     protected final AbstractRankingRelevancePolicy<OWLEntity> owlNamedIndividualsPopularityRanking;
     protected final AbstractRankingRelevancePolicy<OWLEntity> owlDatatypesPopularityRanking;
 
-    /** @param objects
-     *            objects
-     * @param ontologies
-     *            ontologies */
+    /**
+     * @param objects objects
+     * @param ontologies ontologies
+     */
     public ByKindOWLEntityPopularityBasedRelevantPolicy(Collection<OWLEntity> objects,
-            Collection<OWLOntology> ontologies) {
+        Collection<OWLOntology> ontologies) {
         if (objects == null) {
             throw new NullPointerException("The collection of obejcts cannot be null");
         }
         if (ontologies == null) {
             throw new NullPointerException("The ontology collection cannot be null");
         }
-        Set<OWLEntity> owlClasses = new HashSet<OWLEntity>();
-        Set<OWLEntity> owlObjectProperties = new HashSet<OWLEntity>();
-        Set<OWLEntity> owlDataProperties = new HashSet<OWLEntity>();
-        Set<OWLEntity> owlAnnotationProperties = new HashSet<OWLEntity>();
-        Set<OWLEntity> owlNamedIndividuals = new HashSet<OWLEntity>();
-        Set<OWLEntity> owlDatatypes = new HashSet<OWLEntity>();
+        Set<OWLEntity> owlClasses = new HashSet<>();
+        Set<OWLEntity> owlObjectProperties = new HashSet<>();
+        Set<OWLEntity> owlDataProperties = new HashSet<>();
+        Set<OWLEntity> owlAnnotationProperties = new HashSet<>();
+        Set<OWLEntity> owlNamedIndividuals = new HashSet<>();
+        Set<OWLEntity> owlDatatypes = new HashSet<>();
         for (OWLEntity owlEntity : objects) {
             if (owlEntity.isOWLClass()) {
                 owlClasses.add(owlEntity.asOWLClass());
@@ -273,29 +265,23 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
             }
         }
         owlClassesPopularityRanking = owlClasses.isEmpty() ? null
-                : AbstractRankingRelevancePolicy
-                        .getAbstractRankingRelevancePolicy(new OWLEntityPopularityRanking(
-                                owlClasses, ontologies));
+            : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
+                new OWLEntityPopularityRanking(owlClasses, ontologies));
         owlObjectPropertiesPopularityRanking = owlObjectProperties.isEmpty() ? null
-                : AbstractRankingRelevancePolicy
-                        .getAbstractRankingRelevancePolicy(new OWLEntityPopularityRanking(
-                                owlObjectProperties, ontologies));
+            : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
+                new OWLEntityPopularityRanking(owlObjectProperties, ontologies));
         owlDataPropertiesPopularityRanking = owlDataProperties.isEmpty() ? null
-                : AbstractRankingRelevancePolicy
-                        .getAbstractRankingRelevancePolicy(new OWLEntityPopularityRanking(
-                                owlDataProperties, ontologies));
+            : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
+                new OWLEntityPopularityRanking(owlDataProperties, ontologies));
         owlAnnotationPropertiesPopularityRanking = owlAnnotationProperties.isEmpty() ? null
-                : AbstractRankingRelevancePolicy
-                        .getAbstractRankingRelevancePolicy(new OWLEntityPopularityRanking(
-                                owlAnnotationProperties, ontologies));
+            : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
+                new OWLEntityPopularityRanking(owlAnnotationProperties, ontologies));
         owlNamedIndividualsPopularityRanking = owlNamedIndividuals.isEmpty() ? null
-                : AbstractRankingRelevancePolicy
-                        .getAbstractRankingRelevancePolicy(new OWLEntityPopularityRanking(
-                                owlNamedIndividuals, ontologies));
+            : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
+                new OWLEntityPopularityRanking(owlNamedIndividuals, ontologies));
         owlDatatypesPopularityRanking = owlDatatypes.isEmpty() ? null
-                : AbstractRankingRelevancePolicy
-                        .getAbstractRankingRelevancePolicy(new OWLEntityPopularityRanking(
-                                owlDatatypes, ontologies));
+            : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
+                new OWLEntityPopularityRanking(owlDatatypes, ontologies));
     }
 
     @Override
@@ -304,40 +290,37 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
             @Override
             public Boolean visit(OWLClass cls) {
                 return owlClassesPopularityRanking != null
-                        && owlClassesPopularityRanking.computeIsRelevant(cls);
+                    && owlClassesPopularityRanking.computeIsRelevant(cls);
             }
 
             @Override
             public Boolean visit(OWLObjectProperty property) {
                 return owlObjectPropertiesPopularityRanking != null
-                        && owlObjectPropertiesPopularityRanking
-                                .computeIsRelevant(property);
+                    && owlObjectPropertiesPopularityRanking.computeIsRelevant(property);
             }
 
             @Override
             public Boolean visit(OWLDataProperty property) {
                 return owlDataPropertiesPopularityRanking != null
-                        && owlDataPropertiesPopularityRanking.computeIsRelevant(property);
+                    && owlDataPropertiesPopularityRanking.computeIsRelevant(property);
             }
 
             @Override
             public Boolean visit(OWLNamedIndividual individual) {
                 return owlNamedIndividualsPopularityRanking != null
-                        && owlNamedIndividualsPopularityRanking
-                                .computeIsRelevant(individual);
+                    && owlNamedIndividualsPopularityRanking.computeIsRelevant(individual);
             }
 
             @Override
             public Boolean visit(OWLDatatype datatype) {
                 return owlDatatypesPopularityRanking != null
-                        && owlDatatypesPopularityRanking.computeIsRelevant(datatype);
+                    && owlDatatypesPopularityRanking.computeIsRelevant(datatype);
             }
 
             @Override
             public Boolean visit(OWLAnnotationProperty property) {
                 return owlAnnotationPropertiesPopularityRanking != null
-                        && owlAnnotationPropertiesPopularityRanking
-                                .computeIsRelevant(property);
+                    && owlAnnotationPropertiesPopularityRanking.computeIsRelevant(property);
             }
         });
     }
@@ -353,26 +336,22 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy implements
     }
 
     /** @return the owlObjectPropertiesPopularityRanking */
-    public AbstractRankingRelevancePolicy<OWLEntity>
-            getOWLObjectPropertiesPopularityRanking() {
+    public AbstractRankingRelevancePolicy<OWLEntity> getOWLObjectPropertiesPopularityRanking() {
         return owlObjectPropertiesPopularityRanking;
     }
 
     /** @return the owlDataPropertiesPopularityRanking */
-    public AbstractRankingRelevancePolicy<OWLEntity>
-            getOWLDataPropertiesPopularityRanking() {
+    public AbstractRankingRelevancePolicy<OWLEntity> getOWLDataPropertiesPopularityRanking() {
         return owlDataPropertiesPopularityRanking;
     }
 
     /** @return the owlAnnotationPropertiesPopularityRanking */
-    public AbstractRankingRelevancePolicy<OWLEntity>
-            getOwlAnnotationPropertiesPopularityRanking() {
+    public AbstractRankingRelevancePolicy<OWLEntity> getOwlAnnotationPropertiesPopularityRanking() {
         return owlAnnotationPropertiesPopularityRanking;
     }
 
     /** @return the owlNamedIndividualsPopularityRanking */
-    public AbstractRankingRelevancePolicy<OWLEntity>
-            getOWLNamedIndividualsPopularityRanking() {
+    public AbstractRankingRelevancePolicy<OWLEntity> getOWLNamedIndividualsPopularityRanking() {
         return owlNamedIndividualsPopularityRanking;
     }
 

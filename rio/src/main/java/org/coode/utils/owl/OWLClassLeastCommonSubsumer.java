@@ -20,38 +20,34 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 /** @author Eleni Mikroyannidi */
 public class OWLClassLeastCommonSubsumer extends LeastCommonSubsumer<OWLClass, OWLClass> {
-    /** @param axiomProvider
-     *            axiomProvider
-     * @param dataFactory
-     *            dataFactory */
-    public OWLClassLeastCommonSubsumer(OWLAxiomProvider axiomProvider,
-            OWLDataFactory dataFactory) {
+    /**
+     * @param axiomProvider axiomProvider
+     * @param dataFactory dataFactory
+     */
+    public OWLClassLeastCommonSubsumer(OWLAxiomProvider axiomProvider, OWLDataFactory dataFactory) {
         super(axiomProvider, dataFactory.getOWLThing());
     }
 
     @Override
     protected void rebuild() {
-        for (OWLAxiom axiom : getAxiomProvider()) {
-            axiom.accept(new OWLAxiomVisitorAdapter() {
-                @Override
-                public void visit(OWLSubClassOfAxiom ax) {
-                    if (!ax.getSubClass().isAnonymous()
-                            && !ax.getSuperClass().isAnonymous()) {
-                        OWLClassLeastCommonSubsumer.this.addParent(ax.getSubClass()
-                                .asOWLClass(), ax.getSuperClass().asOWLClass());
-                    }
-                }
-            });
+        getAxiomProvider().stream().filter(ax -> ax instanceof OWLSubClassOfAxiom)
+            .forEach(this::handleSubClassOf);
+    }
+
+    private void handleSubClassOf(OWLAxiom a) {
+        OWLSubClassOfAxiom ax = (OWLSubClassOfAxiom) a;
+        if (!ax.getSubClass().isAnonymous() && !ax.getSuperClass().isAnonymous()) {
+            OWLClassLeastCommonSubsumer.this.addParent(ax.getSubClass().asOWLClass(),
+                ax.getSuperClass().asOWLClass());
         }
     }
 
     @Override
     public OWLClass get(Collection<? extends OWLClass> c) {
-        List<OWLClass> results = new ArrayList<OWLClass>(c);
+        List<OWLClass> results = new ArrayList<>(c);
         while (results.size() > 1) {
             OWLClass owlClass = results.get(0);
             results.remove(owlClass);

@@ -13,5 +13,7 @@ package org.coode.owl.wrappers;
 import java.util.Set;
 
 import org.semanticweb.owlapi.model.OWLEntity;
+
 /** @author eleni */
-public interface OWLEntityProvider extends Set<OWLEntity> {}
+public interface OWLEntityProvider extends Set<OWLEntity> {
+}

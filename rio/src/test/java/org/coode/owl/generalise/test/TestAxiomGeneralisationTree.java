@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.coode.owl.generalise.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -36,7 +37,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 @SuppressWarnings("javadoc")
 public class TestAxiomGeneralisationTree {
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         // super.setUp();
         // ToStringRenderer.getInstance().setRenderer(new
         // ManchesterSyntaxRenderer());
@@ -50,16 +51,17 @@ public class TestAxiomGeneralisationTree {
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
         Set<OWLAxiom> axioms = ontology.getAxioms();
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
         for (OWLAxiom axiom : axioms) {
             if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
-                StructuralOWLObjectGeneralisation generalisation = new StructuralOWLObjectGeneralisation(
+                StructuralOWLObjectGeneralisation generalisation =
+                    new StructuralOWLObjectGeneralisation(
                         new OntologyManagerBasedOWLEntityProvider(ontologyManager),
                         constraintSystem);
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-                generalisationMap.put(generalised, new OWLAxiomInstantiation(axiom,
-                        generalisation.getSubstitutions()));
+                generalisationMap.put(generalised,
+                    new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
                 generalisationCount++;
             }
         }
@@ -68,11 +70,10 @@ public class TestAxiomGeneralisationTree {
         for (OWLAxiom owlAxiom : generalisationMap.keySet()) {
             System.out.println(owlAxiom);
         }
-        OWLAxiom generalisation = new ArrayList<OWLAxiom>(generalisationMap.keySet())
-                .get(2);
+        OWLAxiom generalisation = new ArrayList<>(generalisationMap.keySet()).get(2);
         System.out.println(generalisation);
-        AxiomGeneralisationTreeNode root = new AxiomGeneralisationTreeNode(
-                generalisation, generalisationMap.get(generalisation), constraintSystem);
+        AxiomGeneralisationTreeNode root = new AxiomGeneralisationTreeNode(generalisation,
+            generalisationMap.get(generalisation), constraintSystem);
         assertFalse(root.getChildren().isEmpty());
         Utils.printNode(root, System.out);
     }

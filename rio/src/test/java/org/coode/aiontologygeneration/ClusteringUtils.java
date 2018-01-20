@@ -1,5 +1,7 @@
 package org.coode.aiontologygeneration;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,24 +30,23 @@ import org.xml.sax.SAXException;
 
 /** @author eleni */
 public class ClusteringUtils {
-    /** @param onto
-     *            onto
-     * @param clusters
-     *            clusters
-     * @return generalisation map */
-    public static MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap(
-            OWLOntology onto, Set<Set<OWLEntity>> clusters) {
+    /**
+     * @param onto onto
+     * @param clusters clusters
+     * @return generalisation map
+     */
+    public static MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap(OWLOntology onto,
+        Set<Set<OWLEntity>> clusters) {
         OWLOntologyManager ontologyManager = onto.getOWLOntologyManager();
-        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<OWLAxiom, OWLAxiomInstantiation>();
+        MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
         try {
             OPPLFactory opplFactory = new OPPLFactory(ontologyManager, onto, null);
             ConstraintSystem constraintSystem = opplFactory.createConstraintSystem();
-            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                    clusters, ontologyManager.getOntologies(), constraintSystem);
+            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(clusters,
+                asList(ontologyManager.ontologies()), constraintSystem);
             for (Set<OWLEntity> cluster : clusters) {
-                MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils
-                        .buildGeneralisationMap(cluster, onto.getImportsClosure(),
-                                onto.getAxioms(), generalisation);
+                MultiMap<OWLAxiom, OWLAxiomInstantiation> map = Utils.buildGeneralisationMap(
+                    cluster, asList(onto.importsClosure()), onto.axioms(), generalisation);
                 generalisationMap.putAll(map);
             }
         } catch (OPPLException e) {
@@ -54,34 +55,30 @@ public class ClusteringUtils {
         return generalisationMap;
     }
 
-    /** @param filename
-     *            filename
-     * @param ontologyManager
-     *            ontologyManager
+    /**
+     * @param filename filename
+     * @param ontologyManager ontologyManager
      * @return cluster entities
-     * @throws FileNotFoundException
-     *             FileNotFoundException
-     * @throws ParserConfigurationException
-     *             ParserConfigurationException
-     * @throws SAXException
-     *             SAXException
-     * @throws IOException
-     *             IOException */
+     * @throws FileNotFoundException FileNotFoundException
+     * @throws ParserConfigurationException ParserConfigurationException
+     * @throws SAXException SAXException
+     * @throws IOException IOException
+     */
     public static Set<Set<OWLEntity>> loadClustersFromFile(String filename,
-            OWLOntologyManager ontologyManager) throws FileNotFoundException,
-            ParserConfigurationException, SAXException, IOException {
-        Set<Set<OWLEntity>> clusters = Utils.readFromXML(new FileInputStream(filename),
-                ontologyManager);
+        OWLOntologyManager ontologyManager)
+        throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
+        Set<Set<OWLEntity>> clusters =
+            Utils.readFromXML(new FileInputStream(filename), ontologyManager);
         return clusters;
     }
 
-    /** @param args
-     *            args
-     * @throws Exception
-     *             Exception */
+    /**
+     * @param args args
+     * @throws Exception Exception
+     */
     public static void main(String[] args) throws Exception {
-        BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(
-                new File("comparison.txt"))));
+        BufferedReader r = new BufferedReader(
+            new InputStreamReader(new FileInputStream(new File("comparison.txt"))));
         String line = r.readLine();
         while (line != null) {
             String[] strings = line.split(" ");
@@ -104,40 +101,34 @@ public class ClusteringUtils {
         }
     }
 
-    /** @param onto
-     *            onto
-     * @param input1
-     *            input1
-     * @param input2
-     *            input2
+    /**
+     * @param onto onto
+     * @param input1 input1
+     * @param input2 input2
      * @return true if checked
-     * @throws Exception
-     *             Exception */
-    public static boolean check(String onto, String input1, String input2)
-            throws Exception {
+     * @throws Exception Exception
+     */
+    public static boolean check(String onto, String input1, String input2) throws Exception {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = manager.loadOntology(IRI.create(new File(onto)));
         return check(ontology, input1, input2);
     }
 
-    /** @param onto
-     *            onto
-     * @param input1
-     *            input1
-     * @param input2
-     *            input2
+    /**
+     * @param onto onto
+     * @param input1 input1
+     * @param input2 input2
      * @return true if checked
-     * @throws Exception
-     *             Exception */
-    public static boolean check(OWLOntology onto, String input1, String input2)
-            throws Exception {
+     * @throws Exception Exception
+     */
+    public static boolean check(OWLOntology onto, String input1, String input2) throws Exception {
         // the clusters are sorted
         boolean toReturn = true;
-        Set<Set<OWLEntity>> loadClustersFromFile1 = ClusteringUtils.loadClustersFromFile(
-                input1, onto.getOWLOntologyManager());
-        Set<Set<OWLEntity>> loadClustersFromFile2 = ClusteringUtils.loadClustersFromFile(
-                input2, onto.getOWLOntologyManager());
-        Set<Set<OWLEntity>> common = new HashSet<Set<OWLEntity>>();
+        Set<Set<OWLEntity>> loadClustersFromFile1 =
+            ClusteringUtils.loadClustersFromFile(input1, onto.getOWLOntologyManager());
+        Set<Set<OWLEntity>> loadClustersFromFile2 =
+            ClusteringUtils.loadClustersFromFile(input2, onto.getOWLOntologyManager());
+        Set<Set<OWLEntity>> common = new HashSet<>();
         if (!loadClustersFromFile1.equals(loadClustersFromFile2)) {
             int diffs = 0;
             int size = 0;
@@ -171,9 +162,8 @@ public class ClusteringUtils {
             }
             toReturn = diffs == 0;
             if (diffs != 0) {
-                System.out.println("ClusteringUtils.check() " + onto + " commons: "
-                        + common.size() + "\t" + diffs + "\t" + size + "\t"
-                        + (double) size / diffs);
+                System.out.println("ClusteringUtils.check() " + onto + " commons: " + common.size()
+                    + "\t" + diffs + "\t" + size + "\t" + (double) size / diffs);
             }
         }
         return toReturn;

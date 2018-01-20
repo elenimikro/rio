@@ -39,8 +39,9 @@ public class GlassPane extends JComponent {
         setFont(new Font("Default", Font.BOLD, 16));
     }
 
-    /** @param message
-     *            message */
+    /**
+     * @param message message
+     */
     public void setMessage(String message) {
         // computes the damaged area
         this.message = message;
@@ -51,8 +52,7 @@ public class GlassPane extends JComponent {
     protected void paintComponent(Graphics g) {
         // enables anti-aliasing
         Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // gets the current clipping area
         Rectangle clip = g.getClipBounds();
         // sets a 65% translucent composite

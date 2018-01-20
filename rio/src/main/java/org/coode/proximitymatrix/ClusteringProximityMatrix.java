@@ -25,45 +25,40 @@ import org.coode.pair.Pair;
 import org.coode.pair.filter.PairFilter;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 
-/** @author eleni
- * @param <O>
- *            type */
-public class ClusteringProximityMatrix<O> implements
-        ProximityMatrix<Collection<? extends O>> {
+/**
+ * @author eleni
+ * @param <O> type
+ */
+public class ClusteringProximityMatrix<O> implements ProximityMatrix<Collection<? extends O>> {
     private final ProximityMatrix<Collection<? extends O>> delegate;
     private final ProximityMeasureFactory proximityMeasureFactory;
 
-    /** @param initialMatrix
-     *            initialMatrix
-     * @param proximityMeasureFactory
-     *            proximityMeasureFactory
-     * @param filter
-     *            filter
-     * @param comparator
-     *            comparator
-     * @param <P>
-     *            type
-     * @return clustering proximity matrix */
-    public static <P> ClusteringProximityMatrix<P> build(
-            ProximityMatrix<P> initialMatrix,
-            ProximityMeasureFactory proximityMeasureFactory,
-            PairFilter<Collection<? extends P>> filter,
-            Comparator<? super Pair<Collection<? extends P>>> comparator) {
-        Set<Collection<? extends P>> newObjects = new LinkedHashSet<Collection<? extends P>>();
+    /**
+     * @param initialMatrix initialMatrix
+     * @param proximityMeasureFactory proximityMeasureFactory
+     * @param filter filter
+     * @param comparator comparator
+     * @param <P> type
+     * @return clustering proximity matrix
+     */
+    public static <P> ClusteringProximityMatrix<P> build(ProximityMatrix<P> initialMatrix,
+        ProximityMeasureFactory proximityMeasureFactory, PairFilter<Collection<? extends P>> filter,
+        Comparator<? super Pair<Collection<? extends P>>> comparator) {
+        Set<Collection<? extends P>> newObjects = new LinkedHashSet<>();
         for (P object : initialMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
         }
-        ProximityMatrix<Collection<? extends P>> newDelegate = new SimpleProximityMatrix<Collection<? extends P>>(
-                newObjects, initialMatrix.getData(), filter, comparator);
-        return new ClusteringProximityMatrix<P>(newDelegate, proximityMeasureFactory);
+        ProximityMatrix<Collection<? extends P>> newDelegate =
+            new SimpleProximityMatrix<>(newObjects, initialMatrix.getData(), filter, comparator);
+        return new ClusteringProximityMatrix<>(newDelegate, proximityMeasureFactory);
     }
 
-    /** @param delegate
-     *            delegate
-     * @param proximityMeasureFactory
-     *            proximityMeasureFactory */
+    /**
+     * @param delegate delegate
+     * @param proximityMeasureFactory proximityMeasureFactory
+     */
     public ClusteringProximityMatrix(ProximityMatrix<Collection<? extends O>> delegate,
-            ProximityMeasureFactory proximityMeasureFactory) {
+        ProximityMeasureFactory proximityMeasureFactory) {
         if (delegate == null) {
             throw new NullPointerException("The delegate matrix cannot be null");
         }
@@ -79,20 +74,19 @@ public class ClusteringProximityMatrix<O> implements
         return this.proximityMeasureFactory;
     }
 
-    /** @param filter
-     *            filter
-     * @return clustering proximity matrix */
-    public ClusteringProximityMatrix<O> agglomerate(
-            PairFilter<Collection<? extends O>> filter) {
+    /**
+     * @param filter filter
+     * @return clustering proximity matrix
+     */
+    public ClusteringProximityMatrix<O> agglomerate(PairFilter<Collection<? extends O>> filter) {
         Collection<Collection<? extends O>> objects = this.getObjects();
         Pair<Collection<? extends O>> minimumDistancePair = this.getMinimumDistancePair();
         Collection<? extends O> a = minimumDistancePair.getFirst();
         Collection<? extends O> b = minimumDistancePair.getSecond();
         objects.remove(a);
         objects.remove(b);
-        List<Collection<? extends O>> newObjects = new ArrayList<Collection<? extends O>>(
-                objects);
-        List<O> merger = new ArrayList<O>();
+        List<Collection<? extends O>> newObjects = new ArrayList<>(objects);
+        List<O> merger = new ArrayList<>();
         merger.addAll(minimumDistancePair.getFirst());
         merger.addAll(minimumDistancePair.getSecond());
         newObjects.add(merger);
@@ -118,30 +112,28 @@ public class ClusteringProximityMatrix<O> implements
                     newDistances.set(i, j, this.getDistance(rowIndex, columnIndex));
                 } else {
                     // Apply the formula
-                    Collection<? extends O> q = rowIndex != -1 ? aCollection
-                            : anotherCollection;
+                    Collection<? extends O> q = rowIndex != -1 ? aCollection : anotherCollection;
                     double distanceAB = this.getDistance(a, b);
                     double distanceAQ = this.getDistance(a, q);
                     double distanceBQ = this.getDistance(b, q);
                     double newProximity = this.getProximityMeasureFactory()
-                            .getProximityMeasure(a.size(), b.size(), q.size())
-                            .distance(distanceAQ, distanceBQ, distanceAB);
+                        .getProximityMeasure(a.size(), b.size(), q.size())
+                        .distance(distanceAQ, distanceBQ, distanceAB);
                     newDistances.set(i, j, newProximity);
                 }
             }
             i++;
         }
-        SimpleProximityMatrix<Collection<? extends O>> simpleProximityMatrix = new SimpleProximityMatrix<Collection<? extends O>>(
-                newObjects, newDistances, filter, PairFilterBasedComparator.build(filter,
-                        newObjects, new TableDistance<Collection<? extends O>>(
-                                newObjects, newDistances)));
+        SimpleProximityMatrix<Collection<? extends O>> simpleProximityMatrix =
+            new SimpleProximityMatrix<>(newObjects, newDistances, filter, PairFilterBasedComparator
+                .build(filter, newObjects, new TableDistance<>(newObjects, newDistances)));
         // History<Collection<? extends O>> newHistory = this.getHistory();
         // HistoryItem<Collection<? extends O>> newItem =
         // this.getHistoryItemFactory()
         // .create(minimumDistancePair, newObjects);
         // newHistory.add(newItem);
-        ClusteringProximityMatrix<O> toReturn = new ClusteringProximityMatrix<O>(
-                simpleProximityMatrix, this.getProximityMeasureFactory());
+        ClusteringProximityMatrix<O> toReturn = new ClusteringProximityMatrix<>(
+            simpleProximityMatrix, this.getProximityMeasureFactory());
         return toReturn;
     }
 
@@ -156,11 +148,9 @@ public class ClusteringProximityMatrix<O> implements
     }
 
     @Override
-    public ClusteringProximityMatrix<O>
-            reduce(PairFilter<Collection<? extends O>> filter) {
+    public ClusteringProximityMatrix<O> reduce(PairFilter<Collection<? extends O>> filter) {
         ProximityMatrix<Collection<? extends O>> reduced = this.delegate.reduce(filter);
-        return new ClusteringProximityMatrix<O>(reduced,
-                this.getProximityMeasureFactory());
+        return new ClusteringProximityMatrix<>(reduced, this.getProximityMeasureFactory());
     }
 
     @Override
@@ -190,7 +180,7 @@ public class ClusteringProximityMatrix<O> implements
 
     @Override
     public double getDistance(Collection<? extends O> anObject,
-            Collection<? extends O> anotherObject) {
+        Collection<? extends O> anotherObject) {
         return this.delegate.getDistance(anObject, anotherObject);
     }
 

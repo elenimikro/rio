@@ -23,9 +23,10 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.MultiMap;
 
-/** @author eleni
- * @param <T>
- *            type */
+/**
+ * @author eleni
+ * @param <T> type
+ */
 public abstract class AbstractRanking<T> implements Ranking<T> {
     private final Metric<T> metric;
     private Double max = -1D;
@@ -50,7 +51,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
         final int size;
 
         public DoubleMap(int i) {
-            list = new ArrayList<Entry>(i);
+            list = new ArrayList<>(i);
             size = i;
         }
 
@@ -139,12 +140,11 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
     private final TinyDoubleMap dmap;
     private final T[] maxEntities;
 
-    /** @param metric
-     *            metric
-     * @param objects
-     *            objects
-     * @param clazz
-     *            clazz */
+    /**
+     * @param metric metric
+     * @param objects objects
+     * @param clazz clazz
+     */
     public AbstractRanking(Metric<T> metric, Collection<T> objects, Class<T> clazz) {
         if (metric == null) {
             throw new NullPointerException("The metric cannot be null");
@@ -153,13 +153,12 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
             throw new NullPointerException("The collection of obejcts cannot be null");
         }
         if (objects.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "The collection of objects to rank cannot be empty");
+            throw new IllegalArgumentException("The collection of objects to rank cannot be empty");
         }
         this.metric = metric;
         double[] valueList = new double[objects.size()];
         int i = 0;
-        MultiMap<Double, T> map = new MultiMap<Double, T>(false, false);
+        MultiMap<Double, T> map = new MultiMap<>();
         for (T o : objects) {
             Double value = filter(this.metric.getValue(o));
             if (max.compareTo(value) < 0) {
@@ -171,7 +170,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
         // System.out.println("AbstractRanking.AbstractRanking() " +
         // valueList.length + "\t"
         // + map.keySet().size() + "\t" + size(valueList));
-        dmap = new TinyDoubleMap(valueList, new ArrayList<Double>(map.keySet()));
+        dmap = new TinyDoubleMap(valueList, new ArrayList<>(map.keySet()));
         for (Double key : map.keySet()) {
             dmap.add(key, map.get(key).size());
         }
@@ -232,18 +231,15 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
         return dmap.keys();
     }
 
-    /** @param set
-     *            set */
+    /**
+     * @param set set
+     */
     public void collect(Set<Double> set) {
         dmap.collect(set);
     }
 
-    private final Comparator<RankingSlot<T>> sorter = new Comparator<RankingSlot<T>>() {
-        @Override
-        public int compare(RankingSlot<T> arg0, RankingSlot<T> arg1) {
-            return (int) Math.signum(arg0.getValue() - arg1.getValue());
-        }
-    };
+    private final Comparator<RankingSlot<T>> sorter =
+        (arg0, arg1) -> (int) Math.signum(arg0.getValue() - arg1.getValue());
     private List<RankingSlot<T>> sortedList = null;
 
     @Override

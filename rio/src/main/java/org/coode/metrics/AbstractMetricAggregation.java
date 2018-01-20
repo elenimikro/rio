@@ -17,14 +17,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/** @author Luigi Iannone
- * @param <O>
- *            metric type */
+/**
+ * @author Luigi Iannone
+ * @param <O> metric type
+ */
 public abstract class AbstractMetricAggregation<O> implements Metric<O> {
-    private final List<Metric<O>> metrics = new ArrayList<Metric<O>>();
+    private final List<Metric<O>> metrics = new ArrayList<>();
 
-    /** @param metrics
-     *            metrics */
+    /**
+     * @param metrics metrics
+     */
     public AbstractMetricAggregation(List<Metric<O>> metrics) {
         if (metrics == null) {
             throw new NullPointerException("The metrics cannot be null");
@@ -46,18 +48,16 @@ public abstract class AbstractMetricAggregation<O> implements Metric<O> {
 
     /** @return the metrics */
     public List<Metric<O>> getMetrics() {
-        return new ArrayList<Metric<O>>(this.metrics);
+        return new ArrayList<>(this.metrics);
     }
 
-    /** @param metrics
-     *            metrics
-     * @param <S>
-     *            type
-     * @param <T>
-     *            value
-     * @return sum */
-    public static <S, T extends Number> Metric<S> getSum(
-            Collection<? extends Metric<S>> metrics) {
+    /**
+     * @param metrics metrics
+     * @param <S> type
+     * @param <T> value
+     * @return sum
+     */
+    public static <S, T extends Number> Metric<S> getSum(Collection<? extends Metric<S>> metrics) {
         return new AbstractMetricAggregation<S>(new ArrayList<Metric<S>>(metrics)) {
             @Override
             protected double aggregate(double... values) {
@@ -70,15 +70,14 @@ public abstract class AbstractMetricAggregation<O> implements Metric<O> {
         };
     }
 
-    /** @param metrics
-     *            metrics
-     * @param <S>
-     *            type
-     * @param <T>
-     *            value
-     * @return product */
+    /**
+     * @param metrics metrics
+     * @param <S> type
+     * @param <T> value
+     * @return product
+     */
     public static <S, T extends Number> Metric<S> getProduct(
-            Collection<? extends Metric<S>> metrics) {
+        Collection<? extends Metric<S>> metrics) {
         return new AbstractMetricAggregation<S>(new ArrayList<Metric<S>>(metrics)) {
             @Override
             protected double aggregate(double... values) {

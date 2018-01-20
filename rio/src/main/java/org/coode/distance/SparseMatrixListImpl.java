@@ -13,17 +13,19 @@ import org.apache.commons.math3.util.OpenIntToDoubleHashMap;
 public class SparseMatrixListImpl implements SparseMatrix {
     private final OpenIntToDoubleHashMap m;
     private final int size;
-    private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
+    private final Map<Object, Integer> objectIndex = new HashMap<>();
 
-    /** @param size
-     *            size */
+    /**
+     * @param size size
+     */
     public SparseMatrixListImpl(int size) {
         m = new OpenIntToDoubleHashMap(1D);
         this.size = size;
     }
 
-    /** @param m
-     *            m */
+    /**
+     * @param m m
+     */
     public SparseMatrixListImpl(SparseMatrixListImpl m) {
         this(m.length());
         for (int i = 0; i < size; i++) {
@@ -51,8 +53,8 @@ public class SparseMatrixListImpl implements SparseMatrix {
             int j = _i < _j ? _j : _i;
             return m.get(i * size + j);
         }
-        throw new IllegalArgumentException("Table of size " + size
-                + " does not contain (" + _i + "," + _j + ")");
+        throw new IllegalArgumentException(
+            "Table of size " + size + " does not contain (" + _i + "," + _j + ")");
     }
 
     @Override
@@ -60,14 +62,15 @@ public class SparseMatrixListImpl implements SparseMatrix {
         return get(getPosition(i), getPosition(j));
     }
 
-    /** @param i
-     *            i
-     * @return position */
+    /**
+     * @param i i
+     * @return position
+     */
     public int getPosition(Object i) {
         Integer index = objectIndex.get(i);
         if (index == -1) {
-            throw new IllegalArgumentException(String.format(
-                    "%s is not contained in this table based distance", i));
+            throw new IllegalArgumentException(
+                String.format("%s is not contained in this table based distance", i));
         }
         return index.intValue();
     }
@@ -88,8 +91,8 @@ public class SparseMatrixListImpl implements SparseMatrix {
                 m.put(i * size + j, d);
             }
         } else {
-            throw new IllegalArgumentException("Table of size " + size
-                    + " does not contain (" + _i + "," + _j + ")");
+            throw new IllegalArgumentException(
+                "Table of size " + size + " does not contain (" + _i + "," + _j + ")");
         }
     }
 
@@ -101,9 +104,10 @@ public class SparseMatrixListImpl implements SparseMatrix {
         }
     }
 
-    /** @param i
-     *            i
-     * @return row */
+    /**
+     * @param i i
+     * @return row
+     */
     public double[] getRow(int i) {
         double[] row = new double[size];
         for (int j = 0; j < size; j++) {

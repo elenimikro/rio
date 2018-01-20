@@ -103,14 +103,14 @@ import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 /** @author eleni */
 public class StructuralDifference {
-    private final List<Integer> position = new ArrayList<Integer>();
+    private final List<Integer> position = new ArrayList<>();
 
-    /** @param position
-     *            position */
+    /**
+     * @param position position
+     */
     public StructuralDifference(List<? extends Integer> position) {
         if (position == null) {
             throw new NullPointerException("The position cannot be null");
@@ -122,60 +122,59 @@ public class StructuralDifference {
      * 
      */
     public StructuralDifference() {
-        this(Collections.<Integer> emptyList());
+        this(Collections.<Integer>emptyList());
     }
 
-    /** Retrieves the position of the top-most difference between the two input
-     * object, relative to the first one.
+    /**
+     * Retrieves the position of the top-most difference between the two input object, relative to
+     * the first one.
      * 
-     * @param anOWLObject
-     *            input OWL Object.
-     * @param anotherOWLObject
-     *            input OWL Object.
-     * @return An instance of StructuralDifferenceReport describing the result
-     *         of the comparison. */
+     * @param anOWLObject input OWL Object.
+     * @param anotherOWLObject input OWL Object.
+     * @return An instance of StructuralDifferenceReport describing the result of the comparison.
+     */
     public StructuralDifferenceReport getTopDifference(OWLObject anOWLObject,
-            OWLObject anotherOWLObject) {
-        StructuralDifferenceReport toReturn = areComparable(anOWLObject, anotherOWLObject) ? StructuralDifferenceReport.NO_DIFFERENCE
+        OWLObject anotherOWLObject) {
+        StructuralDifferenceReport toReturn =
+            areComparable(anOWLObject, anotherOWLObject) ? StructuralDifferenceReport.NO_DIFFERENCE
                 : StructuralDifferenceReport.INCOMPARABLE;
         if (toReturn == StructuralDifferenceReport.NO_DIFFERENCE) {
-            StructuralComparison comparison = new StructuralComparison(anOWLObject,
-                    position);
+            StructuralComparison comparison = new StructuralComparison(anOWLObject, position);
             toReturn = anotherOWLObject.accept(comparison);
         }
         return toReturn;
     }
 
-    /** @param anOWLObject
-     *            anOWLObject
-     * @param anotherOWLObject
-     *            anotherOWLObject
-     * @return top differences */
+    /**
+     * @param anOWLObject anOWLObject
+     * @param anotherOWLObject anotherOWLObject
+     * @return top differences
+     */
     public List<StructuralDifferenceReport> getTopDifferences(OWLObject anOWLObject,
-            OWLObject anotherOWLObject) {
+        OWLObject anotherOWLObject) {
         boolean areComparable = areComparable(anOWLObject, anotherOWLObject);
-        List<StructuralDifferenceReport> toReturn = areComparable ? Collections
-                .<StructuralDifferenceReport> emptyList()
-                : new ArrayList<StructuralDifferenceReport>(
-                        Collections.singleton(StructuralDifferenceReport.INCOMPARABLE));
+        List<StructuralDifferenceReport> toReturn =
+            areComparable ? Collections.<StructuralDifferenceReport>emptyList()
+                : new ArrayList<>(Collections.singleton(StructuralDifferenceReport.INCOMPARABLE));
         if (areComparable) {
-            CompleteStructuralComparison comparison = new CompleteStructuralComparison(
-                    anOWLObject, position);
+            CompleteStructuralComparison comparison =
+                new CompleteStructuralComparison(anOWLObject, position);
             toReturn = anotherOWLObject.accept(comparison);
         }
         toReturn.remove(StructuralDifferenceReport.NO_DIFFERENCE);
         return toReturn;
     }
 
-    /** @param c
-     *            c
-     * @return top differences */
+    /**
+     * @param c c
+     * @return top differences
+     */
     public Set<List<StructuralDifferenceReport>> getTopDifferences(
-            Collection<? extends OWLObject> c) {
+        Collection<? extends OWLObject> c) {
         if (c == null) {
             throw new NullPointerException("The collection cannot be null");
         }
-        Set<List<StructuralDifferenceReport>> toReturn = new HashSet<List<StructuralDifferenceReport>>();
+        Set<List<StructuralDifferenceReport>> toReturn = new HashSet<>();
         for (OWLObject owlObject : c) {
             for (OWLObject anotherOWLObject : c) {
                 if (owlObject != anotherOWLObject) {
@@ -186,15 +185,14 @@ public class StructuralDifference {
         return toReturn;
     }
 
-    /** Determines if the structural difference makes sense for the pair of input
-     * OWLObjects. It returns {@code true} if the input objects are fo the same
-     * kind.
+    /**
+     * Determines if the structural difference makes sense for the pair of input OWLObjects. It
+     * returns {@code true} if the input objects are fo the same kind.
      * 
-     * @param anOWLObject
-     *            An input object
-     * @param anotherOWLObject
-     *            Another input object
-     * @return {@code true} if the input objects are of the same kind. */
+     * @param anOWLObject An input object
+     * @param anotherOWLObject Another input object
+     * @return {@code true} if the input objects are of the same kind.
+     */
     @SuppressWarnings("boxing")
     public boolean areComparable(OWLObject anOWLObject, final OWLObject anotherOWLObject) {
         boolean toReturn = false;
@@ -202,932 +200,425 @@ public class StructuralDifference {
             toReturn = anotherOWLObject == null;
         } else if (anotherOWLObject != null) {
             toReturn = anOWLObject.accept(new OWLObjectVisitorEx<Boolean>() {
+                // XXX compare OWLObject::type
                 @Override
                 public Boolean visit(OWLSubClassOfAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLSubClassOfAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLSubClassOfAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(
-                                        OWLNegativeDataPropertyAssertionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLNegativeDataPropertyAssertionAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLAsymmetricObjectPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLAsymmetricObjectPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLAsymmetricObjectPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLReflexiveObjectPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLReflexiveObjectPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLReflexiveObjectPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDisjointClassesAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDisjointClassesAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDisjointClassesAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDataPropertyDomainAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataPropertyDomainAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataPropertyDomainAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectPropertyDomainAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectPropertyDomainAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectPropertyDomainAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean
-                                        visit(OWLEquivalentObjectPropertiesAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLEquivalentObjectPropertiesAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(
-                                        OWLNegativeDataPropertyAssertionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLNegativeDataPropertyAssertionAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDifferentIndividualsAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDifferentIndividualsAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDifferentIndividualsAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDisjointDataPropertiesAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDisjointDataPropertiesAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDisjointObjectPropertiesAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDisjointObjectPropertiesAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectPropertyRangeAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectPropertyRangeAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectPropertyRangeAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectPropertyAssertionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectPropertyAssertionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectPropertyAssertionAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLFunctionalObjectPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLFunctionalObjectPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLFunctionalObjectPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLSubObjectPropertyOfAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLSubObjectPropertyOfAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLSubObjectPropertyOfAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDisjointUnionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDisjointUnionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDisjointUnionAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDeclarationAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDeclarationAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDeclarationAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLAnnotationAssertionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLAnnotationAssertionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLAnnotationAssertionAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLSymmetricObjectPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLSymmetricObjectPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLSymmetricObjectPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDataPropertyRangeAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataPropertyRangeAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataPropertyRangeAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLFunctionalDataPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLFunctionalDataPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLFunctionalDataPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLEquivalentDataPropertiesAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLEquivalentDataPropertiesAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLEquivalentDataPropertiesAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLClassAssertionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLClassAssertionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLClassAssertionAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLEquivalentClassesAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLEquivalentClassesAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLEquivalentClassesAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDataPropertyAssertionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataPropertyAssertionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataPropertyAssertionAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLTransitiveObjectPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLTransitiveObjectPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLTransitiveObjectPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLIrreflexiveObjectPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLIrreflexiveObjectPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLSubDataPropertyOfAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLSubDataPropertyOfAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLSubDataPropertyOfAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(
-                                        OWLInverseFunctionalObjectPropertyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLInverseFunctionalObjectPropertyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLSameIndividualAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLSameIndividualAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLSameIndividualAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLSubPropertyChainOfAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLSubPropertyChainOfAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLSubPropertyChainOfAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLInverseObjectPropertiesAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLInverseObjectPropertiesAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLInverseObjectPropertiesAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLHasKeyAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLHasKeyAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLHasKeyAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLDatatypeDefinitionAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDatatypeDefinitionAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDatatypeDefinitionAxiom;
                 }
 
                 @Override
                 public Boolean visit(SWRLRule rule) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLRule r) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLRule;
                 }
 
                 @Override
                 public Boolean visit(OWLSubAnnotationPropertyOfAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLSubAnnotationPropertyOfAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLSubAnnotationPropertyOfAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLAnnotationPropertyDomainAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLAnnotationPropertyDomainAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLAnnotationPropertyDomainAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLAnnotationPropertyRangeAxiom axiom) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLAnnotationPropertyRangeAxiom a) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLAnnotationPropertyRangeAxiom;
                 }
 
                 @Override
                 public Boolean visit(OWLClass ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLClass c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLClass;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectIntersectionOf ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectIntersectionOf c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectIntersectionOf;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectUnionOf ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectUnionOf c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectUnionOf;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectComplementOf ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectComplementOf c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectComplementOf;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectSomeValuesFrom ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectSomeValuesFrom c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectSomeValuesFrom;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectAllValuesFrom ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectAllValuesFrom c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectAllValuesFrom;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectHasValue ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectHasValue c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectHasValue;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectMinCardinality ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectMinCardinality c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectMinCardinality;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectExactCardinality ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectExactCardinality c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectExactCardinality;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectMaxCardinality ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectMaxCardinality c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectMaxCardinality;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectHasSelf ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectHasSelf c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectHasSelf;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectOneOf ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectOneOf c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectOneOf;
                 }
 
                 @Override
                 public Boolean visit(OWLDataSomeValuesFrom ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataSomeValuesFrom c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataSomeValuesFrom;
                 }
 
                 @Override
                 public Boolean visit(OWLDataAllValuesFrom ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataAllValuesFrom c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataAllValuesFrom;
                 }
 
                 @Override
                 public Boolean visit(OWLDataHasValue ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataHasValue c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataHasValue;
                 }
 
                 @Override
                 public Boolean visit(OWLDataMinCardinality ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataMinCardinality c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataMinCardinality;
                 }
 
                 @Override
                 public Boolean visit(OWLDataExactCardinality ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataExactCardinality c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataExactCardinality;
                 }
 
                 @Override
                 public Boolean visit(OWLDataMaxCardinality ce) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataMaxCardinality c) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataMaxCardinality;
                 }
 
                 @Override
                 public Boolean visit(OWLDatatype node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDatatype n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDatatype;
                 }
 
                 @Override
                 public Boolean visit(OWLDataComplementOf node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataComplementOf n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataComplementOf;
                 }
 
                 @Override
                 public Boolean visit(OWLDataOneOf node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataOneOf n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataOneOf;
                 }
 
                 @Override
                 public Boolean visit(OWLDataIntersectionOf node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataIntersectionOf n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataIntersectionOf;
                 }
 
                 @Override
                 public Boolean visit(OWLDataUnionOf node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataUnionOf n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataUnionOf;
                 }
 
                 @Override
                 public Boolean visit(OWLDatatypeRestriction node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDatatypeRestriction n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDatatypeRestriction;
                 }
 
                 @Override
                 public Boolean visit(OWLLiteral node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLLiteral n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLLiteral;
                 }
 
                 @Override
                 public Boolean visit(OWLFacetRestriction node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLFacetRestriction n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLFacetRestriction;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectProperty property) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectProperty p) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectProperty;
                 }
 
                 @Override
                 public Boolean visit(OWLObjectInverseOf property) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLObjectInverseOf p) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLObjectInverseOf;
                 }
 
                 @Override
                 public Boolean visit(OWLDataProperty property) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLDataProperty p) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLDataProperty;
                 }
 
                 @Override
                 public Boolean visit(OWLNamedIndividual individual) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLNamedIndividual i) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLNamedIndividual;
                 }
 
                 @Override
                 public Boolean visit(OWLAnnotationProperty property) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLAnnotationProperty p) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLAnnotationProperty;
                 }
 
                 @Override
                 public Boolean visit(OWLAnnotation node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLAnnotation n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLAnnotation;
                 }
 
                 @Override
                 public Boolean visit(IRI iri) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(IRI i) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof IRI;
                 }
 
                 @Override
                 public Boolean visit(OWLAnonymousIndividual individual) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLAnonymousIndividual i) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLAnonymousIndividual;
                 }
 
                 @Override
                 public Boolean visit(SWRLClassAtom node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLClassAtom n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLClassAtom;
                 }
 
                 @Override
                 public Boolean visit(SWRLDataRangeAtom node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLDataRangeAtom n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLDataRangeAtom;
                 }
 
                 @Override
                 public Boolean visit(SWRLObjectPropertyAtom node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLObjectPropertyAtom n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLObjectPropertyAtom;
                 }
 
                 @Override
                 public Boolean visit(SWRLDataPropertyAtom node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLDataPropertyAtom n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLDataPropertyAtom;
                 }
 
                 @Override
                 public Boolean visit(SWRLBuiltInAtom node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLBuiltInAtom n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLBuiltInAtom;
                 }
 
                 @Override
                 public Boolean visit(SWRLVariable node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLVariable n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLVariable;
                 }
 
                 @Override
                 public Boolean visit(SWRLIndividualArgument node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLIndividualArgument n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLIndividualArgument;
                 }
 
                 @Override
                 public Boolean visit(SWRLLiteralArgument node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLLiteralArgument n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLLiteralArgument;
                 }
 
                 @Override
                 public Boolean visit(SWRLSameIndividualAtom node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLSameIndividualAtom n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLSameIndividualAtom;
                 }
 
                 @Override
                 public Boolean visit(SWRLDifferentIndividualsAtom node) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(SWRLDifferentIndividualsAtom n) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof SWRLDifferentIndividualsAtom;
                 }
 
                 @Override
                 public Boolean visit(OWLOntology ontology) {
-                    return anotherOWLObject
-                            .accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
-                                @Override
-                                public Boolean visit(OWLOntology o) {
-                                    return true;
-                                }
-                            });
+                    return anotherOWLObject instanceof OWLOntology;
                 }
             });
         }
@@ -1136,6 +627,6 @@ public class StructuralDifference {
 
     /** @return the position */
     public List<Integer> getPosition() {
-        return new ArrayList<Integer>(position);
+        return new ArrayList<>(position);
     }
 }

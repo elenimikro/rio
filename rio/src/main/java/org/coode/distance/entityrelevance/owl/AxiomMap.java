@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.distance.entityrelevance.owl;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,19 +29,18 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
 public class AxiomMap {
-    private final Map<OWLAxiom, Map<OWLEntity, AtomicInteger>> delegate = new HashMap<OWLAxiom, Map<OWLEntity, AtomicInteger>>();
-    private final Map<OWLAxiom, AtomicInteger> axiomCountMap = new HashMap<OWLAxiom, AtomicInteger>();
+    private final Map<OWLAxiom, Map<OWLEntity, AtomicInteger>> delegate = new HashMap<>();
+    private final Map<OWLAxiom, AtomicInteger> axiomCountMap = new HashMap<>();
     private final OWLEntityReplacer replacer;
-    private final Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+    private final Set<OWLAxiom> axioms;
 
-    /** @param ontologies
-     *            ontologies
-     * @param ontologyManager
-     *            ontologyManager
-     * @param replacer
-     *            replacer */
+    /**
+     * @param ontologies ontologies
+     * @param ontologyManager ontologyManager
+     * @param replacer replacer
+     */
     public AxiomMap(Collection<? extends OWLOntology> ontologies,
-            OWLOntologyManager ontologyManager, OWLEntityReplacer replacer) {
+        OWLOntologyManager ontologyManager, OWLEntityReplacer replacer) {
         if (ontologies == null) {
             throw new NullPointerException("The ontology colleciton cannot be null");
         }
@@ -48,22 +49,20 @@ public class AxiomMap {
         }
         this.replacer = replacer;
         // ontologyManager.addOntologyChangeListener(listener);
-        for (OWLOntology o : ontologies) {
-            axioms.addAll(o.getAxioms());
-        }
+        axioms = asSet(ontologies.stream().flatMap(OWLOntology::axioms));
         buildMaps(axioms);
     }
 
-    /** @param axioms
-     *            axioms
-     * @param replacer
-     *            replacer */
+    /**
+     * @param axioms axioms
+     * @param replacer replacer
+     */
     public AxiomMap(Set<OWLAxiom> axioms, OWLEntityReplacer replacer) {
         if (axioms == null) {
             throw new NullPointerException("The set of axioms cannot be null");
         }
         this.replacer = replacer;
-        this.axioms.addAll(axioms);
+        this.axioms = new HashSet<>(axioms);
         buildMaps(axioms);
     }
 
@@ -81,25 +80,23 @@ public class AxiomMap {
                 }
                 d.incrementAndGet();
                 if (entityMap == null) {
-                    entityMap = new HashMap<OWLEntity, AtomicInteger>();
+                    entityMap = new HashMap<>();
                     delegate.put(replaced, entityMap);
                 }
-                Set<OWLEntity> signature = axiom.getSignature();
-                for (OWLEntity owlEntity : signature) {
-                    AtomicInteger integer = entityMap.get(owlEntity);
-                    if (integer == null) {
-                        integer = new AtomicInteger();
-                        entityMap.put(owlEntity, integer);
-                    }
-                    integer.incrementAndGet();
-                }
+                countAxioms(axiom, entityMap);
             }
         }
     }
 
-    /** @param object
-     *            object
-     * @return map */
+    protected void countAxioms(OWLAxiom axiom, Map<OWLEntity, AtomicInteger> entityMap) {
+        axiom.signature()
+            .forEach(e -> entityMap.computeIfAbsent(e, x -> new AtomicInteger()).incrementAndGet());
+    }
+
+    /**
+     * @param object object
+     * @return map
+     */
     public Map<OWLEntity, AtomicInteger> get(OWLAxiom object) {
         Map<OWLEntity, AtomicInteger> map = delegate.get(object);
         if (map == null) {
@@ -112,9 +109,10 @@ public class AxiomMap {
     int lastElement = -1;
     OWLAxiom lastRequest;
 
-    /** @param object
-     *            object
-     * @return count */
+    /**
+     * @param object object
+     * @return count
+     */
     public int getAxiomCount(OWLAxiom object) {
         if (object == lastRequest) {
             return lastElement;

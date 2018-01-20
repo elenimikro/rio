@@ -46,36 +46,29 @@ public class TableDistanceTest {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-                ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
-                        ontologyManager.getOWLDataFactory()));
-        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                ontologies, owlEntityReplacer, ontologyManager);
-        SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
+        OWLEntityReplacer owlEntityReplacer =
+            new OWLEntityReplacer(ontologyManager.getOWLDataFactory(),
+                new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));
+        final AxiomRelevanceAxiomBasedDistance distance =
+            new AxiomRelevanceAxiomBasedDistance(ontologies, owlEntityReplacer, ontologyManager);
+        SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
         }
-        Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
-            @Override
-            public double getDistance(Collection<? extends OWLEntity> a,
-                    Collection<? extends OWLEntity> b) {
-                return distance.getDistance(a.iterator().next(), b.iterator().next());
-            }
-        };
+        Distance<Collection<? extends OWLEntity>> singletonDistance =
+            (a, b) -> distance.getDistance(a.iterator().next(), b.iterator().next());
         for (OWLEntity owlEntity : entities) {
             for (OWLEntity otherEntity : entities) {
-                assertTrue(
-                        String.format("Mismatch between %s and %s", owlEntity,
-                                otherEntity),
-                        distanceMatrix.getDistance(owlEntity, otherEntity) == singletonDistance
-                                .getDistance(Collections.singleton(owlEntity),
-                                        Collections.singleton(otherEntity)));
+                assertTrue(String.format("Mismatch between %s and %s", owlEntity, otherEntity),
+                    distanceMatrix.getDistance(owlEntity, otherEntity) == singletonDistance
+                        .getDistance(Collections.singleton(owlEntity),
+                            Collections.singleton(otherEntity)));
             }
         }
         distance.dispose();
@@ -86,26 +79,24 @@ public class TableDistanceTest {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-                ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
-                        ontologyManager.getOWLDataFactory()));
-        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                ontologies, owlEntityReplacer, ontologyManager);
-        SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        TableDistance<OWLEntity> tableDistance = new TableDistance<OWLEntity>(entities,
-                distanceMatrix.getData());
+        OWLEntityReplacer owlEntityReplacer =
+            new OWLEntityReplacer(ontologyManager.getOWLDataFactory(),
+                new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));
+        AxiomRelevanceAxiomBasedDistance distance =
+            new AxiomRelevanceAxiomBasedDistance(ontologies, owlEntityReplacer, ontologyManager);
+        SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        TableDistance<OWLEntity> tableDistance =
+            new TableDistance<>(entities, distanceMatrix.getData());
         for (OWLEntity owlEntity : entities) {
             for (OWLEntity otherEntity : entities) {
-                assertTrue(
-                        String.format("Mismatch between %s and %s", owlEntity,
-                                otherEntity),
-                        distanceMatrix.getDistance(owlEntity, otherEntity) == tableDistance
-                                .getDistance(owlEntity, otherEntity));
+                assertTrue(String.format("Mismatch between %s and %s", owlEntity, otherEntity),
+                    distanceMatrix.getDistance(owlEntity, otherEntity) == tableDistance
+                        .getDistance(owlEntity, otherEntity));
             }
         }
         distance.dispose();
@@ -116,45 +107,36 @@ public class TableDistanceTest {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-                ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
-                        ontologyManager.getOWLDataFactory()));
-        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                ontologies, owlEntityReplacer, ontologyManager);
-        SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        TableDistance<OWLEntity> tableDistance = new TableDistance<OWLEntity>(entities,
-                distanceMatrix.getData());
-        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
+        OWLEntityReplacer owlEntityReplacer =
+            new OWLEntityReplacer(ontologyManager.getOWLDataFactory(),
+                new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));
+        final AxiomRelevanceAxiomBasedDistance distance =
+            new AxiomRelevanceAxiomBasedDistance(ontologies, owlEntityReplacer, ontologyManager);
+        SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        TableDistance<OWLEntity> tableDistance =
+            new TableDistance<>(entities, distanceMatrix.getData());
+        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
         }
-        Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
-            @Override
-            public double getDistance(Collection<? extends OWLEntity> a,
-                    Collection<? extends OWLEntity> b) {
-                return distance.getDistance(a.iterator().next(), b.iterator().next());
-            }
-        };
+        Distance<Collection<? extends OWLEntity>> singletonDistance =
+            (a, b) -> distance.getDistance(a.iterator().next(), b.iterator().next());
         PairFilter<Collection<? extends OWLEntity>> filter = DistanceThresholdBasedFilter
-                .build(new TableDistance<OWLEntity>(entities, distanceMatrix.getData()),
-                        1);
-        ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
-                .build(distanceMatrix, new CentroidProximityMeasureFactory(), filter,
-                        PairFilterBasedComparator.build(filter, newObjects,
-                                singletonDistance));
+            .build(new TableDistance<>(entities, distanceMatrix.getData()), 1);
+        ClusteringProximityMatrix<OWLEntity> clusteringMatrix =
+            ClusteringProximityMatrix.build(distanceMatrix, new CentroidProximityMeasureFactory(),
+                filter, PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
         for (OWLEntity owlEntity : entities) {
             for (OWLEntity otherEntity : entities) {
-                assertTrue(String.format("Mismatch between %s and %s", owlEntity,
-                        otherEntity),
-                        clusteringMatrix.getDistance(
-                                Collections.singletonList(owlEntity),
-                                Collections.singletonList(otherEntity)) == tableDistance
-                                .getDistance(owlEntity, otherEntity));
+                assertTrue(String.format("Mismatch between %s and %s", owlEntity, otherEntity),
+                    clusteringMatrix.getDistance(Collections.singletonList(owlEntity),
+                        Collections.singletonList(otherEntity)) == tableDistance
+                            .getDistance(owlEntity, otherEntity));
             }
         }
         distance.dispose();
@@ -165,63 +147,55 @@ public class TableDistanceTest {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         Set<OWLOntology> ontologies = ontologyManager.getOntologies();
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         for (OWLOntology o : ontologyManager.getOntologies()) {
             entities.addAll(o.getSignature());
         }
-        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
-                ontologyManager.getOWLDataFactory(), new ReplacementByKindStrategy(
-                        ontologyManager.getOWLDataFactory()));
-        final AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                ontologies, owlEntityReplacer, ontologyManager);
-        SimpleProximityMatrix<OWLEntity> distanceMatrix = new SimpleProximityMatrix<OWLEntity>(
-                entities, distance);
-        TableDistance<OWLEntity> tableDistance = new TableDistance<OWLEntity>(entities,
-                distanceMatrix.getData());
-        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<Collection<? extends OWLEntity>>();
+        OWLEntityReplacer owlEntityReplacer =
+            new OWLEntityReplacer(ontologyManager.getOWLDataFactory(),
+                new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));
+        final AxiomRelevanceAxiomBasedDistance distance =
+            new AxiomRelevanceAxiomBasedDistance(ontologies, owlEntityReplacer, ontologyManager);
+        SimpleProximityMatrix<OWLEntity> distanceMatrix =
+            new SimpleProximityMatrix<>(entities, distance);
+        TableDistance<OWLEntity> tableDistance =
+            new TableDistance<>(entities, distanceMatrix.getData());
+        Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
         }
-        Distance<Collection<? extends OWLEntity>> singletonDistance = new Distance<Collection<? extends OWLEntity>>() {
-            @Override
-            public double getDistance(Collection<? extends OWLEntity> a,
-                    Collection<? extends OWLEntity> b) {
-                return distance.getDistance(a.iterator().next(), b.iterator().next());
-            }
-        };
+        Distance<Collection<? extends OWLEntity>> singletonDistance =
+            (a, b) -> distance.getDistance(a.iterator().next(), b.iterator().next());
         PairFilter<Collection<? extends OWLEntity>> filter = DistanceThresholdBasedFilter
-                .build(new TableDistance<OWLEntity>(entities, distanceMatrix.getData()),
-                        1);
-        ClusteringProximityMatrix<OWLEntity> clusteringMatrix = ClusteringProximityMatrix
-                .build(distanceMatrix, new CentroidProximityMeasureFactory(), filter,
-                        PairFilterBasedComparator.build(filter, newObjects,
-                                singletonDistance));
-        Pair<Collection<? extends OWLEntity>> minimumDistancePair = clusteringMatrix
-                .getMinimumDistancePair();
+            .build(new TableDistance<>(entities, distanceMatrix.getData()), 1);
+        ClusteringProximityMatrix<OWLEntity> clusteringMatrix =
+            ClusteringProximityMatrix.build(distanceMatrix, new CentroidProximityMeasureFactory(),
+                filter, PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
+        Pair<Collection<? extends OWLEntity>> minimumDistancePair =
+            clusteringMatrix.getMinimumDistancePair();
         int i = 1;
         while (minimumDistancePair != null
-                && filter.accept(minimumDistancePair.getFirst(),
-                        minimumDistancePair.getSecond())) {
+            && filter.accept(minimumDistancePair.getFirst(), minimumDistancePair.getSecond())) {
             clusteringMatrix = clusteringMatrix.agglomerate(filter);
-            for (OWLEntity owlEntity : new HashSet<OWLEntity>(entities)) {
-                for (OWLEntity otherEntity : new HashSet<OWLEntity>(entities)) {
+            for (OWLEntity owlEntity : new HashSet<>(entities)) {
+                for (OWLEntity otherEntity : new HashSet<>(entities)) {
                     if (!minimumDistancePair.getFirst().contains(owlEntity)
-                            && !minimumDistancePair.getSecond().contains(owlEntity)
-                            && !minimumDistancePair.getFirst().contains(otherEntity)
-                            && !minimumDistancePair.getSecond().contains(otherEntity)) {
-                        double clusteringMatrixDistance = clusteringMatrix.getDistance(
-                                Collections.singletonList(owlEntity),
+                        && !minimumDistancePair.getSecond().contains(owlEntity)
+                        && !minimumDistancePair.getFirst().contains(otherEntity)
+                        && !minimumDistancePair.getSecond().contains(otherEntity)) {
+                        double clusteringMatrixDistance =
+                            clusteringMatrix.getDistance(Collections.singletonList(owlEntity),
                                 Collections.singletonList(otherEntity));
-                        assertTrue(String.format(
-                                " Agglomeration %d Mismatch between %s and %s", i,
+                        assertTrue(
+                            String.format(" Agglomeration %d Mismatch between %s and %s", i,
                                 owlEntity, otherEntity),
-                                clusteringMatrixDistance == tableDistance.getDistance(
-                                        owlEntity, otherEntity));
+                            clusteringMatrixDistance == tableDistance.getDistance(owlEntity,
+                                otherEntity));
                     } else if (minimumDistancePair.getFirst().contains(owlEntity)
-                            || minimumDistancePair.getSecond().contains(owlEntity)) {
+                        || minimumDistancePair.getSecond().contains(owlEntity)) {
                         entities.remove(owlEntity);
                     } else if (minimumDistancePair.getFirst().contains(otherEntity)
-                            || minimumDistancePair.getSecond().contains(otherEntity)) {
+                        || minimumDistancePair.getSecond().contains(otherEntity)) {
                         entities.remove(otherEntity);
                     }
                 }

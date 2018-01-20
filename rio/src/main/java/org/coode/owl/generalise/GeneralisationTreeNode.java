@@ -12,18 +12,20 @@ package org.coode.owl.generalise;
 
 import org.coode.utils.TreeNode;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public interface GeneralisationTreeNode<O> extends TreeNode<O> {
-    /** @param visitor
-     *            visitor */
+    /**
+     * @param visitor visitor
+     */
     void accept(GeneralisationTreeNodeVisitor visitor);
 
-    /** @param visitor
-     *            visitor
-     * @param <P>
-     *            type
-     * @return visitor value */
+    /**
+     * @param visitor visitor
+     * @param <P> type
+     * @return visitor value
+     */
     <P> P accept(GeneralisationTreeNodeVisitorEx<P> visitor);
 }

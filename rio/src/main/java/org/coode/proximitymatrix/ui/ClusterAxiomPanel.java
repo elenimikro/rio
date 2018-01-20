@@ -14,7 +14,6 @@
 package org.coode.proximitymatrix.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListCellRenderer;
 
 import org.coode.oppl.Variable;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
@@ -39,46 +37,42 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-/** @author Luigi Iannone
- * @param <O>
- *            type */
+/**
+ * @author Luigi Iannone
+ * @param <O> type
+ */
 public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
     private static final long serialVersionUID = -8706696433509939648L;
-    private final JList<OWLAxiomListItem> axiomList = new JList<OWLAxiomListItem>();
-    private final JList<Variable<OWLObject>> variableList = new JList<Variable<OWLObject>>();
+    private final JList<OWLAxiomListItem> axiomList = new JList<>();
+    private final JList<Variable<OWLObject>> variableList = new JList<>();
     private final JLabel summaryLabel = new JLabel();
     private OWLObjectGeneralisation generalisation;
 
     @SuppressWarnings("javadoc")
     public ClusterAxiomPanel() {
         this.initGUI();
-        this.reset(null, Collections.<OWLOntology> emptySet());
+        this.reset(null, Collections.<OWLOntology>emptySet());
     }
 
-    private void reset(Cluster<O> cluster, Collection<? extends OWLOntology> ontologies) {
+    private void reset(Cluster<O> cluster, Collection<OWLOntology> ontologies) {
         if (cluster != null) {
-            ClusterAxiomListModel model = new ClusterAxiomListModel(cluster, ontologies,
-                    this.getGeneralisation());
+            ClusterAxiomListModel model = new ClusterAxiomListModel((Cluster<OWLEntity>) cluster,
+                ontologies, this.getGeneralisation());
             this.axiomList.setModel(model);
             String string = String.format("Axiom count: %d", model.getAxiomCount());
             if (this.getGeneralisation() != null) {
-                Comparator<Variable<?>> comparator = new Comparator<Variable<?>>() {
-                    @Override
-                    public int compare(Variable<?> o1, Variable<?> o2) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                };
-                Set<Variable<? extends OWLObject>> variables = new TreeSet<Variable<?>>(
-                        comparator);
-                variables.addAll(this.getGeneralisation().getConstraintSystem()
-                        .getInputVariables());
-                DefaultListModel<Variable<OWLObject>> defaultListModel = new DefaultListModel<Variable<OWLObject>>();
+                Comparator<Variable<?>> comparator =
+                    (o1, o2) -> o1.getName().compareTo(o2.getName());
+                Set<Variable<? extends OWLObject>> variables = new TreeSet<Variable<?>>(comparator);
+                variables
+                    .addAll(this.getGeneralisation().getConstraintSystem().getInputVariables());
+                DefaultListModel<Variable<OWLObject>> defaultListModel = new DefaultListModel<>();
                 for (Variable<? extends OWLObject> variable : variables) {
                     defaultListModel.addElement((Variable<OWLObject>) variable);
                 }
                 variables.clear();
-                variables.addAll(this.getGeneralisation().getConstraintSystem()
-                        .getGeneratedVariables());
+                variables
+                    .addAll(this.getGeneralisation().getConstraintSystem().getGeneratedVariables());
                 for (Variable<?> variable : variables) {
                     defaultListModel.addElement((Variable<OWLObject>) variable);
                 }
@@ -96,32 +90,22 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
         this.add(this.summaryLabel, BorderLayout.NORTH);
         this.add(new JScrollPane(this.variableList), BorderLayout.WEST);
         this.add(new JScrollPane(this.axiomList), BorderLayout.CENTER);
-        this.axiomList.setCellRenderer(new ListCellRenderer<OWLAxiomListItem>() {
-            @Override
-            public Component getListCellRendererComponent(
-                    JList<? extends OWLAxiomListItem> list, OWLAxiomListItem value,
-                    int index, boolean isSelected, boolean cellHasFocus) {
-                DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
-                Object toRender = String.format("%s [%d] %s", ClusterAxiomPanel.this
-                        .render(value.getAxiom()), value.getCount(), Utils
-                        .renderInstantiationsStats(Utils.buildAssignmentMap(value
-                                .getInstantiations())));
-                return defaultListCellRenderer.getListCellRendererComponent(list,
-                        toRender, index, isSelected, cellHasFocus);
-            }
+        this.axiomList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
+            Object toRender =
+                String.format("%s [%d] %s", ClusterAxiomPanel.this.render(value.getAxiom()),
+                    value.getCount(), Utils.renderInstantiationsStats(
+                        Utils.buildAssignmentMap(value.getInstantiations())));
+            return defaultListCellRenderer.getListCellRendererComponent(list, toRender, index,
+                isSelected, cellHasFocus);
         });
-        this.variableList.setCellRenderer(new ListCellRenderer<Variable<OWLObject>>() {
-            @Override
-            public Component getListCellRendererComponent(
-                    JList<? extends Variable<OWLObject>> list, Variable<OWLObject> value,
-                    int index, boolean isSelected, boolean cellHasFocus) {
-                DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
-                Object toRender = ClusterAxiomPanel.this.getGeneralisation() != null ? value
-                        .render(ClusterAxiomPanel.this.getGeneralisation()
-                                .getConstraintSystem()) : value;
-                return defaultListCellRenderer.getListCellRendererComponent(list,
-                        toRender, index, isSelected, cellHasFocus);
-            }
+        this.variableList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
+            Object toRender = ClusterAxiomPanel.this.getGeneralisation() != null
+                ? value.render(ClusterAxiomPanel.this.getGeneralisation().getConstraintSystem())
+                : value;
+            return defaultListCellRenderer.getListCellRendererComponent(list, toRender, index,
+                isSelected, cellHasFocus);
         });
     }
 
@@ -130,26 +114,24 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
         return toReturn;
     }
 
-    /** @param cluster
-     *            the cluster to set
-     * @param ontologies
-     *            ontologies
-     * @param generalisation
-     *            generalisation */
-    public void setCluster(Cluster<O> cluster,
-            Collection<? extends OWLOntology> ontologies,
-            OWLObjectGeneralisation generalisation) {
+    /**
+     * @param cluster the cluster to set
+     * @param ontologies ontologies
+     * @param generalisation generalisation
+     */
+    public void setCluster(Cluster<O> cluster, Collection<OWLOntology> ontologies,
+        OWLObjectGeneralisation generalisation) {
         this.setGeneralisation(generalisation);
         this.reset(cluster, ontologies);
     }
 
-    /** @param renderer
-     *            renderer
-     * @param <P>
-     *            type
-     * @return cluster axiom panel */
+    /**
+     * @param renderer renderer
+     * @param <P> type
+     * @return cluster axiom panel
+     */
     public static <P extends OWLEntity> ClusterAxiomPanel<P> build(
-            final OWLObjectRenderer renderer) {
+        final OWLObjectRenderer renderer) {
         return new ClusterAxiomPanel<P>() {
             private static final long serialVersionUID = 5936336750441629116L;
 
@@ -166,8 +148,9 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
         return this.generalisation;
     }
 
-    /** @param generalisation
-     *            the generalisation to set */
+    /**
+     * @param generalisation the generalisation to set
+     */
     public void setGeneralisation(OWLObjectGeneralisation generalisation) {
         this.generalisation = generalisation;
     }

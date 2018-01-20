@@ -9,25 +9,26 @@
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
 package org.coode.owl.structural.difference;
+
 /** @author eleni */
-public class IncomparableObjectsStructuralDifferenceReport implements
-		StructuralDifferenceReport {
-	static final IncomparableObjectsStructuralDifferenceReport INSTANCE = new IncomparableObjectsStructuralDifferenceReport();
+public class IncomparableObjectsStructuralDifferenceReport implements StructuralDifferenceReport {
+    static final IncomparableObjectsStructuralDifferenceReport INSTANCE =
+        new IncomparableObjectsStructuralDifferenceReport();
 
-	private IncomparableObjectsStructuralDifferenceReport() {}
+    private IncomparableObjectsStructuralDifferenceReport() {}
 
-	@Override
+    @Override
     public void accept(StructuralDifferenceReportVisitor visitor) {
-		visitor.visitIncomparableObjectsStructuralDifferenceReport(this);
-	}
+        visitor.visitIncomparableObjectsStructuralDifferenceReport(this);
+    }
 
-	@Override
+    @Override
     public <O> O accept(StructuralDifferenceReportVisitorEx<O> visitor) {
-		return visitor.visitIncomparableObjectsStructuralDifferenceReport(this);
-	}
+        return visitor.visitIncomparableObjectsStructuralDifferenceReport(this);
+    }
 
-	@Override
-	public String toString() {
-		return "Incomparable objects";
-	}
+    @Override
+    public String toString() {
+        return "Incomparable objects";
+    }
 }

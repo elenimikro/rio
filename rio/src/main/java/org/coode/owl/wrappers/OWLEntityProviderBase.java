@@ -10,11 +10,12 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
 public abstract class OWLEntityProviderBase implements OWLEntityProvider {
-    private final Set<OWLEntity> delegate = new HashSet<OWLEntity>();
+    private final Set<OWLEntity> delegate = new HashSet<>();
     private final OWLOntologyManager ontologyManager;
 
-    /** @param ontologyManager
-     *            ontologyManager */
+    /**
+     * @param ontologyManager ontologyManager
+     */
     public OWLEntityProviderBase(OWLOntologyManager ontologyManager) {
         if (ontologyManager == null) {
             throw new NullPointerException("The ontology manager cannot be null");

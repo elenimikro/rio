@@ -70,13 +70,13 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
         }
     }
 
-    protected final Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+    protected final Set<OWLOntology> ontologies = new HashSet<>();
     private final OWLDataFactory dataFactory;
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<OWLEntity, OWLAxiom>();
+    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
     private final OWLEntityProvider entityProvider;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<OWLEntity, OWLAxiom>();
-    private final Set<OWLEntity> ontologySignature = new HashSet<OWLEntity>();
+    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
+    private final Set<OWLEntity> ontologySignature = new HashSet<>();
     private final AxiomRelevanceMap axiomRelevanceMap;
     private final OPPLFactory opplfactory;
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
@@ -88,7 +88,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
     };
 
     protected void buildAxiomEntityMap(Collection<? extends OWLOntology> ontos) {
-        Set<AxiomType<?>> types = new HashSet<AxiomType<?>>(AxiomType.AXIOM_TYPES);
+        Set<AxiomType<?>> types = new HashSet<>(AxiomType.AXIOM_TYPES);
         types.remove(AxiomType.DECLARATION);
         for (OWLOntology ontology : ontos) {
             for (AxiomType<?> t : types) {
@@ -108,8 +108,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
         }
     }
 
-    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers =
-        new HashMap<OWLAxiom, RelevancePolicyOWLObjectGeneralisation>();
+    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<>();
 
     /**
      * @param ontologies ontologies
@@ -138,7 +137,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
     }
 
     protected AxiomRelevanceMap buildAxiomRelevanceMap() {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (OWLOntology ontology : ontologies) {
             for (OWLAxiom axiom : ontology.getAxioms()) {
                 if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
@@ -207,7 +206,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
 
     /** @return the ontologies */
     public Set<OWLOntology> getOntologies() {
-        return new HashSet<OWLOntology>(ontologies);
+        return new HashSet<>(ontologies);
     }
 
     /** @return the dataFactory */

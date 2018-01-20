@@ -1,5 +1,7 @@
 package org.coode.popularitydistance.profiling;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.io.File;
 import java.util.Calendar;
 import java.util.Set;
@@ -22,37 +24,35 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
 public class StructuralClusteringComparison {
-    private final static String onto_iri = "similarity/experiment-ontologies/amino-acid-original.owl";
+    private final static String onto_iri =
+        "similarity/experiment-ontologies/amino-acid-original.owl";
 
-    /** @param args
-     *            args
-     * @throws TransformerFactoryConfigurationError
-     *             TransformerFactoryConfigurationError
-     * @throws Exception
-     *             Exception */
-    public static void main(String[] args) throws TransformerFactoryConfigurationError,
-            Exception {
+    /**
+     * @param args args
+     * @throws TransformerFactoryConfigurationError TransformerFactoryConfigurationError
+     * @throws Exception Exception
+     */
+    public static void main(String[] args) throws TransformerFactoryConfigurationError, Exception {
         boolean correct = true;
         File ontology = new File(onto_iri);
         Calendar c = Calendar.getInstance();
-        String saveTo = "results/" + ontology.getName() + "_"
-                + c.get(Calendar.DAY_OF_MONTH) + "_" + c.get(Calendar.HOUR) + ".xml";
+        String saveTo = "results/" + ontology.getName() + "_" + c.get(Calendar.DAY_OF_MONTH) + "_"
+            + c.get(Calendar.HOUR) + ".xml";
         String compareTo = "similarity/profiling_data/compareto_amino.xml";
         OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         OWLOntology o = m.loadOntologyFromOntologyDocument(ontology);
-        Distance<OWLEntity> distance = DistanceCreator
-                .createStructuralAxiomRelevanceAxiomBasedDistance(m);
-        Set<OWLEntity> entities = new TreeSet<OWLEntity>(new EntityComparator());
+        Distance<OWLEntity> distance =
+            DistanceCreator.createStructuralAxiomRelevanceAxiomBasedDistance(m);
+        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         for (OWLOntology onto : m.getOntologies()) {
             entities.addAll(onto.getSignature());
         }
         ClusterCreator clusterer = new ClusterCreator();
-        System.out
-                .println("StructuralClusteringComparison.main() Starting clustering....");
-        Set<Cluster<OWLEntity>> clusters = clusterer.agglomerateAll(distance,
-                o.getSignature());
-        ClusterDecompositionModel<OWLEntity> model = clusterer
-                .buildClusterDecompositionModel(o, clusters);
+        System.out.println("StructuralClusteringComparison.main() Starting clustering....");
+        Set<Cluster<OWLEntity>> clusters =
+            clusterer.agglomerateAll(distance, asList(o.signature()));
+        ClusterDecompositionModel<OWLEntity> model =
+            clusterer.buildClusterDecompositionModel(o, clusters);
         Utils.saveToXML(model, new File(saveTo));
         correct &= ClusteringUtils.check(o, saveTo, compareTo);
         System.out.println("correct? " + correct);

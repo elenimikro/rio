@@ -17,19 +17,19 @@ import java.util.Set;
 
 import org.coode.proximitymatrix.ProximityMatrix;
 
-/** @author eleni
- * @param <O>
- *            type */
+/**
+ * @author eleni
+ * @param <O> type
+ */
 public class SimpleCluster<O> implements Cluster<O> {
-    private final Set<O> delegate = new HashSet<O>();
+    private final Set<O> delegate = new HashSet<>();
     private final ProximityMatrix<O> proximityMatrix;
 
-    /** @param members
-     *            members
-     * @param proximityMatrix
-     *            proximityMatrix */
-    public SimpleCluster(Collection<? extends O> members,
-            ProximityMatrix<O> proximityMatrix) {
+    /**
+     * @param members members
+     * @param proximityMatrix proximityMatrix
+     */
+    public SimpleCluster(Collection<? extends O> members, ProximityMatrix<O> proximityMatrix) {
         if (members == null) {
             throw new NullPointerException("The members' collection cannot be null");
         }
@@ -38,7 +38,7 @@ public class SimpleCluster<O> implements Cluster<O> {
         }
         if (!proximityMatrix.getObjects().containsAll(members)) {
             throw new IllegalArgumentException(
-                    "The proximity matrix does not contain the necessary information about all the cluster members");
+                "The proximity matrix does not contain the necessary information about all the cluster members");
         }
         this.proximityMatrix = proximityMatrix;
         this.delegate.addAll(members);

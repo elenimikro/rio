@@ -18,18 +18,18 @@ import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.owl.wrappers.AssignmentMapBasedOWLEntityProvider;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 /** @author eleni */
 public class AssignmentMapBasedVariableProvider extends VariableProvider {
     protected final AssignmentMap assignmentMap;
 
-    /** @param assignmentMap
-     *            assignmentMap
-     * @param constraintSystem
-     *            constraintSystem */
+    /**
+     * @param assignmentMap assignmentMap
+     * @param constraintSystem constraintSystem
+     */
     public AssignmentMapBasedVariableProvider(AssignmentMap assignmentMap,
-            ConstraintSystem constraintSystem) {
+        ConstraintSystem constraintSystem) {
         super(new AssignmentMapBasedOWLEntityProvider(assignmentMap));
         setConstraintSystem(constraintSystem);
         this.assignmentMap = new AssignmentMap(assignmentMap);
@@ -37,9 +37,9 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
 
     @Override
     protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
-        return owlObject.accept(new OWLObjectVisitorExAdapter<Variable<?>>() {
+        return owlObject.accept(new OWLObjectVisitorEx<Variable<?>>() {
             @Override
-            protected Variable<?> getDefaultReturnValue(OWLObject object) {
+            public <T> Variable<?> doDefault(T object) {
                 boolean found = false;
                 // AssignmentMap anAssignmentMap =
                 // AssignmentMapBasedVariableProvider.this.getAssignmentMap();
@@ -58,8 +58,7 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
 
             @Override
             public Variable<?> visit(IRI iri) {
-                OWLObject owlEntity = AssignmentMapBasedVariableProvider.this
-                        .getOWLEntity(iri);
+                OWLObject owlEntity = AssignmentMapBasedVariableProvider.this.getOWLEntity(iri);
                 return owlEntity != null ? owlEntity.accept(this) : null;
             }
         });

@@ -35,8 +35,8 @@ import org.semanticweb.owlapi.util.MultiMap;
 /** @author eleni */
 public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomProvider {
     final OWLOntologyManager ontologyManager;
-    final MultiMap<OWLEntity, OWLAxiom> entityAxiomMap = new MultiMap<OWLEntity, OWLAxiom>();
-    final Set<OWLAxiom> axiomsDelegate = new HashSet<OWLAxiom>();
+    final MultiMap<OWLEntity, OWLAxiom> entityAxiomMap = new MultiMap<>();
+    final Set<OWLAxiom> axiomsDelegate = new HashSet<>();
     private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
         @Override
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
@@ -149,7 +149,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
 
     @Override
     public Set<OWLEntity> getSignature() {
-        return new HashSet<OWLEntity>(entityAxiomMap.keySet());
+        return new HashSet<>(entityAxiomMap.keySet());
     }
 
     /**

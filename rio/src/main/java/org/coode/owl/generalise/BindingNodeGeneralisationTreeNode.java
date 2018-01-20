@@ -23,23 +23,20 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 
 /** @author eleni */
 public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNode>
-        implements GeneralisationTreeNode<BindingNode> {
+    implements GeneralisationTreeNode<BindingNode> {
     private final OWLAxiom generalisation;
-    private final Set<OWLAxiomInstantiation> instantiations = new HashSet<OWLAxiomInstantiation>();
+    private final Set<OWLAxiomInstantiation> instantiations = new HashSet<>();
     private final ConstraintSystem constraintSystem;
 
-    /** @param userObject
-     *            userObject
-     * @param generalisation
-     *            generalisation
-     * @param instantiations
-     *            instantiations
-     * @param constraintSystem
-     *            constraintSystem */
-    public BindingNodeGeneralisationTreeNode(BindingNode userObject,
-            OWLAxiom generalisation,
-            Collection<? extends OWLAxiomInstantiation> instantiations,
-            ConstraintSystem constraintSystem) {
+    /**
+     * @param userObject userObject
+     * @param generalisation generalisation
+     * @param instantiations instantiations
+     * @param constraintSystem constraintSystem
+     */
+    public BindingNodeGeneralisationTreeNode(BindingNode userObject, OWLAxiom generalisation,
+        Collection<? extends OWLAxiomInstantiation> instantiations,
+        ConstraintSystem constraintSystem) {
         super(userObject);
         if (generalisation == null) {
             throw new NullPointerException("The generalisation cannot be null");
@@ -54,8 +51,8 @@ public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNo
         this.generalisation = generalisation;
         this.instantiations.addAll(instantiations);
         if (!instantiations.isEmpty()) {
-            this.addChild(new AxiomGeneralisationTreeNode(generalisation, instantiations,
-                    constraintSystem));
+            this.addChild(
+                new AxiomGeneralisationTreeNode(generalisation, instantiations, constraintSystem));
         }
     }
 
@@ -76,7 +73,7 @@ public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNo
 
     /** @return the instantiations */
     public Set<OWLAxiomInstantiation> getInstantiations() {
-        return new HashSet<OWLAxiomInstantiation>(instantiations);
+        return new HashSet<>(instantiations);
     }
 
     /** @return the constraintSystem */

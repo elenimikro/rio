@@ -1,6 +1,7 @@
 package org.coode.owl.structural.difference.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,8 +30,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 @SuppressWarnings("javadoc")
 public class OPPLAssignmentMapTest {
     @Test
-    public void testAsignmentMapDisjointness() throws OWLOntologyCreationException,
-            OPPLException {
+    public void testAsignmentMapDisjointness() throws OWLOntologyCreationException, OPPLException {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology o = manager.createOntology();
         OWLDataFactory df = manager.getOWLDataFactory();
@@ -40,8 +40,7 @@ public class OPPLAssignmentMapTest {
         OWLClass b = df.getOWLClass(IRI.create("urn:test#B"));
         VariableType<?> variableType = VariableTypeFactory.getVariableType(a);
         InputVariable<?> var = constraintSystem.createVariable("?x", variableType, null);
-        InputVariable<?> anothervar = constraintSystem.createVariable("?y", variableType,
-                null);
+        InputVariable<?> anothervar = constraintSystem.createVariable("?y", variableType, null);
         BindingNode bindingNode = BindingNode.createNewEmptyBindingNode();
         bindingNode.addAssignment(new Assignment(var, a));
         // bindingNode.addAssignment(new Assignment(var, b));
@@ -49,40 +48,37 @@ public class OPPLAssignmentMapTest {
         anotherBindingNode.addAssignment(new Assignment(var, b));
         BindingNode yBindingNode = BindingNode.createNewEmptyBindingNode();
         yBindingNode.addAssignment(new Assignment(anothervar, a));
-        Set<BindingNode> nodes = new HashSet<BindingNode>();
+        Set<BindingNode> nodes = new HashSet<>();
         nodes.add(bindingNode);
         // nodes.add(anotherBindingNode);
-        Set<BindingNode> anothernodeset = new HashSet<BindingNode>();
+        Set<BindingNode> anothernodeset = new HashSet<>();
         anothernodeset.add(anotherBindingNode);
         // nodes.add(anotherBindingNode);
-        Set<BindingNode> ynodeset = new HashSet<BindingNode>();
+        Set<BindingNode> ynodeset = new HashSet<>();
         ynodeset.add(yBindingNode);
         AssignmentMap map = new AssignmentMap(nodes);
         AssignmentMap anothermap = new AssignmentMap(anothernodeset);
         AssignmentMap ymap = new AssignmentMap(ynodeset);
-        List<AssignmentMap> maps = new ArrayList<AssignmentMap>();
+        List<AssignmentMap> maps = new ArrayList<>();
         maps.add(anothermap);
         maps.add(map);
-        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps "
-                + maps);
+        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps " + maps);
         assertTrue(AssignmentMap.areDisjoint(maps));
         maps.clear();
         maps.add(map);
         maps.add(ymap);
-        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps "
-                + maps);
+        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps " + maps);
         // assertFalse(maps.get(0).isDisjointWith(maps.get(1)));
         assertTrue(AssignmentMap.areDisjoint(maps));
         BindingNode thirdBindingNode = BindingNode.createNewEmptyBindingNode();
         thirdBindingNode.addAssignment(new Assignment(var, a));
         thirdBindingNode.addAssignment(new Assignment(var, b));
-        Set<BindingNode> thirdset = new HashSet<BindingNode>();
+        Set<BindingNode> thirdset = new HashSet<>();
         thirdset.add(thirdBindingNode);
         maps.clear();
         maps.add(map);
         maps.add(new AssignmentMap(thirdset));
-        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps "
-                + maps);
+        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps " + maps);
         assertFalse(AssignmentMap.areDisjoint(maps));
     }
 }

@@ -10,19 +10,21 @@ import java.util.Map;
 
 /** @author eleni */
 public class SparseMatrixImpl implements SparseMatrix {
-    Map<Record, Record> matrix = new HashMap<Record, Record>();
-    private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
+    Map<Record, Record> matrix = new HashMap<>();
+    private final Map<Object, Integer> objectIndex = new HashMap<>();
     private final Record key = new Record();
     private final int size;
 
-    /** @param size
-     *            size */
+    /**
+     * @param size size
+     */
     public SparseMatrixImpl(int size) {
         this.size = size;
     }
 
-    /** @param m
-     *            m */
+    /**
+     * @param m m
+     */
     public SparseMatrixImpl(SparseMatrixImpl m) {
         size = m.length();
         for (Record r : m.matrix.keySet()) {
@@ -31,9 +33,10 @@ public class SparseMatrixImpl implements SparseMatrix {
         }
     }
 
-    /** @param i
-     *            i
-     * @return row */
+    /**
+     * @param i i
+     * @return row
+     */
     public double[] getRow(int i) {
         double[] toReturn = new double[size];
         Arrays.fill(toReturn, 1D);
@@ -66,8 +69,8 @@ public class SparseMatrixImpl implements SparseMatrix {
             }
             return 1D;
         }
-        throw new IllegalArgumentException("Table of size " + size
-                + " does not contain (" + _i + "," + _j + ")");
+        throw new IllegalArgumentException(
+            "Table of size " + size + " does not contain (" + _i + "," + _j + ")");
     }
 
     @Override
@@ -75,14 +78,14 @@ public class SparseMatrixImpl implements SparseMatrix {
         Integer index = objectIndex.get(i);
         int rowIndex = index == null ? -1 : index;
         if (rowIndex == -1) {
-            throw new IllegalArgumentException(String.format(
-                    "%s is not contained in this table based distance", i));
+            throw new IllegalArgumentException(
+                String.format("%s is not contained in this table based distance", i));
         }
         index = objectIndex.get(j);
         int columnIndex = index == null ? -1 : index;
         if (columnIndex == -1) {
-            throw new IllegalArgumentException(String.format(
-                    "%s is not contained in this table based distance", j));
+            throw new IllegalArgumentException(
+                String.format("%s is not contained in this table based distance", j));
         }
         return get(rowIndex, columnIndex);
     }
@@ -106,8 +109,8 @@ public class SparseMatrixImpl implements SparseMatrix {
             matrix.put(value, value);
             // cache.remove(i);
         } else {
-            throw new IllegalArgumentException("Table of size " + size
-                    + " does not contain (" + _i + "," + _j + ")");
+            throw new IllegalArgumentException(
+                "Table of size " + size + " does not contain (" + _i + "," + _j + ")");
         }
     }
 

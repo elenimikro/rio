@@ -20,14 +20,12 @@ public class LanceWilliamsFormula {
     private final double beta;
     private final double gamma;
 
-    /** @param alphaA
-     *            alphaA
-     * @param alphaB
-     *            alphaB
-     * @param beta
-     *            beta
-     * @param gamma
-     *            gamma */
+    /**
+     * @param alphaA alphaA
+     * @param alphaB alphaB
+     * @param beta beta
+     * @param gamma gamma
+     */
     public LanceWilliamsFormula(double alphaA, double alphaB, double beta, double gamma) {
         this.alphaA = alphaA;
         this.alphaB = alphaB;
@@ -35,15 +33,14 @@ public class LanceWilliamsFormula {
         this.gamma = gamma;
     }
 
-    /** @param distanceAQ
-     *            distanceAQ
-     * @param distanceBQ
-     *            distanceBQ
-     * @param distanceAB
-     *            distanceAB
-     * @return distance */
+    /**
+     * @param distanceAQ distanceAQ
+     * @param distanceBQ distanceBQ
+     * @param distanceAB distanceAB
+     * @return distance
+     */
     public double distance(double distanceAQ, double distanceBQ, double distanceAB) {
-        return alphaA * distanceAQ + alphaB * distanceBQ + beta * distanceAB + gamma
-                * Math.abs(distanceAQ - distanceBQ);
+        return alphaA * distanceAQ + alphaB * distanceBQ + beta * distanceAB
+            + gamma * Math.abs(distanceAQ - distanceBQ);
     }
 }

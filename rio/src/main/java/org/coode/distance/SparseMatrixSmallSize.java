@@ -11,10 +11,11 @@ import java.util.Map;
 public class SparseMatrixSmallSize implements SparseMatrix {
     double[][] matrix;
     final int size;
-    private final Map<Object, Integer> objectIndex = new HashMap<Object, Integer>();
+    private final Map<Object, Integer> objectIndex = new HashMap<>();
 
-    /** @param size
-     *            size */
+    /**
+     * @param size size
+     */
     public SparseMatrixSmallSize(int size) {
         this.size = size;
         matrix = new double[size][size];
@@ -25,8 +26,9 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         }
     }
 
-    /** @param m
-     *            m */
+    /**
+     * @param m m
+     */
     public SparseMatrixSmallSize(SparseMatrixSmallSize m) {
         this(m.length());
         System.arraycopy(m.matrix, 0, matrix, 0, m.matrix.length);
@@ -44,8 +46,8 @@ public class SparseMatrixSmallSize implements SparseMatrix {
             // int j = _i < _j ? _j : _i;
             return matrix[_i][_j];
         }
-        throw new IllegalArgumentException("Table of size " + size
-                + " does not contain (" + _i + "," + _j + ")");
+        throw new IllegalArgumentException(
+            "Table of size " + size + " does not contain (" + _i + "," + _j + ")");
     }
 
     @Override
@@ -53,14 +55,15 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         return get(getPosition(i), getPosition(j));
     }
 
-    /** @param i
-     *            i
-     * @return position */
+    /**
+     * @param i i
+     * @return position
+     */
     public int getPosition(Object i) {
         Integer index = objectIndex.get(i);
         if (index == -1) {
-            throw new IllegalArgumentException(String.format(
-                    "%s is not contained in this table based distance", i));
+            throw new IllegalArgumentException(
+                String.format("%s is not contained in this table based distance", i));
         }
         return index.intValue();
     }
@@ -74,8 +77,8 @@ public class SparseMatrixSmallSize implements SparseMatrix {
             // int j = _i < _j ? _j : _i;
             matrix[_i][_j] = d;
         } else {
-            throw new IllegalArgumentException("Table of size " + size
-                    + " does not contain (" + _i + "," + _j + ")");
+            throw new IllegalArgumentException(
+                "Table of size " + size + " does not contain (" + _i + "," + _j + ")");
         }
     }
 
@@ -87,9 +90,10 @@ public class SparseMatrixSmallSize implements SparseMatrix {
         }
     }
 
-    /** @param i
-     *            i
-     * @return row */
+    /**
+     * @param i i
+     * @return row
+     */
     public double[] getRow(int i) {
         double[] row = new double[size];
         for (int j = 0; j < size; j++) {
