@@ -32,8 +32,8 @@ public class Utility {
      */
     public static void printAgglomeration(ClusteringProximityMatrix<?> m, int i) {
         if (i % 50 == 0) {
-            System.out.println(
-                String.format("Agglomerations: %d for %d clusters", i, m.getObjects().size()));
+            System.out.println(String.format("Agglomerations: %d for %d clusters",
+                Integer.valueOf(i), Integer.valueOf(m.getObjects().size())));
         }
     }
 

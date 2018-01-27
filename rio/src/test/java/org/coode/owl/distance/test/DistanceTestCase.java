@@ -35,6 +35,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
+@SuppressWarnings("javadoc")
 public abstract class DistanceTestCase {
     protected static final String pizza_ns = "http://www.co-ode.org/ontologies/pizza/pizza.owl#";
 

@@ -100,8 +100,8 @@ public class DefaultTreeNode<O> implements TreeNode<O> {
             throw new NullPointerException("The child node cannot be null");
         }
         if (i < 0 || i > this.children.size()) {
-            throw new IllegalArgumentException(
-                String.format("%d not in the allowed range [0,%d] ", i, this.children.size()));
+            throw new IllegalArgumentException(String.format("%d not in the allowed range [0,%d] ",
+                Integer.valueOf(i), Integer.valueOf(this.children.size())));
         }
         this.children.add(i, child);
     }

@@ -92,6 +92,9 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
             }
             // sumGenCoverage += genCoverage
         }
+        if (genMap.keySet().isEmpty()) {
+            throw new IllegalStateException("The map cannot be empty at this point");
+        }
         return genCoverage / genMap.keySet().size();
     }
 
@@ -128,16 +131,18 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
     /** @return stats */
     public List<SimpleMetric<?>> getStats() {
         List<SimpleMetric<?>> stats = new ArrayList<>();
-        stats.add(new SimpleMetric<>("# Generalisations", this.getNumberOfGeneralisations()));
-        stats.add(new SimpleMetric<>("# Instantiations", this.getNumberOfInstantiations()));
+        stats.add(new SimpleMetric<>("# Generalisations",
+            Integer.valueOf(this.getNumberOfGeneralisations())));
+        stats.add(new SimpleMetric<>("# Instantiations",
+            Integer.valueOf(this.getNumberOfInstantiations())));
         stats.add(new SimpleMetric<>("# Generalised Axioms",
-            this.getRatioOfGeneralisedAxiomsToTotalAxioms()));
+            Double.valueOf(this.getRatioOfGeneralisedAxiomsToTotalAxioms())));
         stats.add(new SimpleMetric<>("Mean instantiations per generalisation",
-            this.getMeanOWLAxiomInstantiationsPerGeneralisation()));
-        stats
-            .add(new SimpleMetric<>("Mean entities per cluster", this.getMeanEntitiesPerCluster()));
+            Double.valueOf(this.getMeanOWLAxiomInstantiationsPerGeneralisation())));
+        stats.add(new SimpleMetric<>("Mean entities per cluster",
+            Double.valueOf(this.getMeanEntitiesPerCluster())));
         stats.add(new SimpleMetric<>("Mean cluster coverage",
-            this.getMeanClusterCoveragePerGeneralisation()));
+            Double.valueOf(this.getMeanClusterCoveragePerGeneralisation())));
         return stats;
     }
 

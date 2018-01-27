@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -43,15 +45,13 @@ public class ComputeAllDistances {
         }
         IOUtils.loadIRIMappers(iris, manager);
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        for (OWLOntology ontology : manager.getOntologies()) {
-            entities.addAll(ontology.getSignature());
-        }
+        add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         AxiomBasedDistance distance =
             new AxiomBasedDistance(manager.getOntologies(), manager.getOWLDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",
-            distanceMatrix.getObjects().size()));
+            Integer.valueOf(distanceMatrix.getObjects().size())));
     }
 }

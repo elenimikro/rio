@@ -16,7 +16,6 @@ import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -72,12 +71,10 @@ public class StructuralDistanceTest {
         AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
             .createStructuralAxiomRelevanceAxiomBasedDistance(m);
         // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
-        for (OWLAxiom ax : o.getAxioms()) {
-            System.out.println(ax);
-        }
+        o.axioms().forEach(System.out::println);
         AbstractAxiomBasedDistance popularity_distance =
             (AbstractAxiomBasedDistance) DistanceCreator.createAxiomRelevanceAxiomBasedDistance(m);
-        for (OWLEntity en : o.getSignature()) {
+        o.signature().forEach(en -> {
             System.out.println("Structural Axioms of " + en);
             for (OWLAxiom ax : distance.getAxioms(en)) {
                 System.out.println("\t " + ax);
@@ -86,7 +83,7 @@ public class StructuralDistanceTest {
             for (OWLAxiom ax : popularity_distance.getAxioms(en)) {
                 System.out.println("\t " + ax);
             }
-        }
+        });
     }
 
     @Test
@@ -103,12 +100,8 @@ public class StructuralDistanceTest {
                 Collections.<OWLAnnotationProperty, List<String>>emptyMap(),
                 o.getOWLOntologyManager()));
         renderer.setShortFormProvider(shortFormProvider);
-        for (OWLEntity e : o.getSignature()) {
-            System.out.println("Axioms of " + e);
-            for (OWLAxiom ax : distance.getAxioms(e)) {
-                System.out.println("\t " + renderer.render(ax));
-            }
-        }
+        o.signature().peek(e -> System.out.println("Axioms of " + e)).forEach(e -> distance
+            .getAxioms(e).forEach(ax -> System.out.println("\t " + renderer.render(ax))));
     }
 
     @Test
@@ -121,12 +114,8 @@ public class StructuralDistanceTest {
             new ManchesterOWLSyntaxOWLObjectRendererImpl();
         // ToStringRenderer.getInstance().setRenderer(
         // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        for (OWLEntity e : o.getSignature()) {
-            System.out.println("Axioms of " + e);
-            for (OWLAxiom ax : distance.getAxioms(e)) {
-                System.out.println("\t " + renderer.render(ax));
-            }
-        }
+        o.signature().peek(e -> System.out.println("Axioms of " + e)).forEach(e -> distance
+            .getAxioms(e).forEach(ax -> System.out.println("\t " + renderer.render(ax))));
     }
 
     @Test
@@ -139,11 +128,7 @@ public class StructuralDistanceTest {
             new ManchesterOWLSyntaxOWLObjectRendererImpl();
         // ToStringRenderer.getInstance().setRenderer(
         // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        for (OWLEntity e : o.getSignature()) {
-            System.out.println("Axioms of " + e);
-            for (OWLAxiom ax : distance.getAxioms(e)) {
-                System.out.println("\t " + renderer.render(ax));
-            }
-        }
+        o.signature().peek(e -> System.out.println("Axioms of " + e)).forEach(e -> distance
+            .getAxioms(e).forEach(ax -> System.out.println("\t " + renderer.render(ax))));
     }
 }

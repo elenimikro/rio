@@ -25,7 +25,7 @@ public class IOUtils {
                 File file = new File(uri);
                 File parentFile = file.getParentFile();
                 if (parentFile.isDirectory()) {
-                    manager.addIRIMapper(new AutoIRIMapper(parentFile, true));
+                    manager.getIRIMappers().add(new AutoIRIMapper(parentFile, true));
                 }
             }
             manager.loadOntology(iri);

@@ -73,7 +73,7 @@ public class ProximityMatrixTableModel implements TableModel {
         if (column == 0) {
             toReturn = columnNames[row + 1];
         } else {
-            toReturn = getProximityMatrix().getData().get(row, column - 1);
+            toReturn = Double.valueOf(getProximityMatrix().getData().get(row, column - 1));
         }
         return toReturn;
     }

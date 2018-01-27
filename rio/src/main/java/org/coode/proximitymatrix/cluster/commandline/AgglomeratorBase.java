@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster.commandline;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,9 +72,7 @@ public abstract class AgglomeratorBase implements Agglomerator {
         // Set the policy and the distance
         Distance<OWLEntity> distance = getDistance(manager);
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        for (OWLOntology ontology : manager.getOntologies()) {
-            entities.addAll(ontology.getSignature());
-        }
+        add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         SimpleProximityMatrix<OWLEntity> baseDistanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
@@ -81,29 +81,19 @@ public abstract class AgglomeratorBase implements Agglomerator {
         final SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",
-            distanceMatrix.getObjects().size()));
+            Integer.valueOf(distanceMatrix.getObjects().size())));
         final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix =
-            new SimpleProximityMatrix<>(DistanceTableObject.createDistanceTableObjectSet(distance,
-                distanceMatrix.getObjects()), new Distance<DistanceTableObject<OWLEntity>>() {
-                    @Override
-                    public double getDistance(DistanceTableObject<OWLEntity> a,
-                        DistanceTableObject<OWLEntity> b) {
-                        return distanceMatrix.getDistance(a.getIndex(), b.getIndex());
-                    }
-                });
+            new SimpleProximityMatrix<>(
+                DistanceTableObject.createDistanceTableObjectSet(distance,
+                    distanceMatrix.getObjects()),
+                (a, b) -> distanceMatrix.getDistance(a.getIndex(), b.getIndex()));
         Set<Collection<? extends DistanceTableObject<OWLEntity>>> newObjects =
             new LinkedHashSet<>();
         for (DistanceTableObject<OWLEntity> object : wrappedMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
         }
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance =
-            new Distance<Collection<? extends DistanceTableObject<OWLEntity>>>() {
-                @Override
-                public double getDistance(Collection<? extends DistanceTableObject<OWLEntity>> a,
-                    Collection<? extends DistanceTableObject<OWLEntity>> b) {
-                    return wrappedMatrix.getDistance(a.iterator().next(), b.iterator().next());
-                }
-            };
+            (a, b) -> wrappedMatrix.getDistance(a.iterator().next(), b.iterator().next());
         // it passes the threshold for the distance (criterion for stopping
         // clustering)
         // In this case is 1.
@@ -143,8 +133,9 @@ public abstract class AgglomeratorBase implements Agglomerator {
         }
         Set<Cluster<OWLEntity>> clusters =
             Utils.buildClusters(clusteringMatrix, baseDistanceMatrix, equivalenceClasses);
-        System.out.println(String.format(
-            "Finished clustering after %d agglomerations no of clusters %d", i, clusters.size()));
+        System.out
+            .println(String.format("Finished clustering after %d agglomerations no of clusters %d",
+                Integer.valueOf(i), Integer.valueOf(clusters.size())));
         Utils.save(clusters, manager, outfile);
     }
 }

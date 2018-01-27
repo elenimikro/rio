@@ -93,7 +93,7 @@ public class TestProximityMatrix {
         Pair<Collection<? extends OWLEntity>> minimumDistancePair =
             clusteringMatrix.getMinimumDistancePair();
         System.out.printf("%s distance %f\n", minimumDistancePair,
-            clusteringMatrix.getMinimumDistance());
+            Double.valueOf(clusteringMatrix.getMinimumDistance()));
         ClusteringProximityMatrix<OWLEntity> agglomerated = clusteringMatrix.agglomerate(filter);
         for (OWLEntity owlEntity : signature) {
             for (OWLEntity anotherOWLEntity : signature) {
@@ -109,11 +109,13 @@ public class TestProximityMatrix {
                 }
                 assertTrue(String.format(
                     "Non corresponding distance between %s (rowIndex distance matrix = %d, agglomerated = %d) and %s  (columnIndex distance matrix = %d, agglomerated = %d) starting distance %f agglomerated %f",
-                    owlEntity, distanceMatrix.getRowIndex(owlEntity),
-                    agglomerated.getRowIndex(Collections.singleton(owlEntity)), anotherOWLEntity,
-                    distanceMatrix.getColumnIndex(anotherOWLEntity),
-                    agglomerated.getColumnIndex(Collections.singleton(anotherOWLEntity)), distance,
-                    agglomeratedDistance),
+                    owlEntity, Integer.valueOf(distanceMatrix.getRowIndex(owlEntity)),
+                    Integer.valueOf(agglomerated.getRowIndex(Collections.singleton(owlEntity))),
+                    anotherOWLEntity,
+                    Integer.valueOf(distanceMatrix.getColumnIndex(anotherOWLEntity)),
+                    Integer.valueOf(
+                        agglomerated.getColumnIndex(Collections.singleton(anotherOWLEntity))),
+                    Double.valueOf(distance), Double.valueOf(agglomeratedDistance)),
                     minimumDistancePair.contains(Collections.singleton(owlEntity))
                         || minimumDistancePair.contains(Collections.singleton(anotherOWLEntity))
                         || distance == agglomeratedDistance);

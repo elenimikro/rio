@@ -175,7 +175,7 @@ final class CompleteStructuralComparison
             if (!differenceReports.isEmpty()) {
                 for (StructuralDifferenceReport differenceReport : differenceReports) {
                     final List<Integer> newPositions = getPosition();
-                    newPositions.add(startIndex);
+                    newPositions.add(Integer.valueOf(startIndex));
                     differenceReport.accept(new StructuralDifferenceReportVisitorAdapter() {
                         @Override
                         public void visitSomeDifferenceStructuralDifferenceReport(
@@ -245,7 +245,7 @@ final class CompleteStructuralComparison
         @Override
         public List<StructuralDifferenceReport> visit(OWLDisjointClassesAxiom owlObject) {
             return CompleteStructuralComparison.this.compareCollection(
-                owlObject.getClassExpressions(), arg(owlObject).getClassExpressions());
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -269,8 +269,8 @@ final class CompleteStructuralComparison
         @Override
         public List<StructuralDifferenceReport> visit(
             OWLEquivalentObjectPropertiesAxiom owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getProperties(),
-                arg(owlObject).getProperties());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -287,20 +287,20 @@ final class CompleteStructuralComparison
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLDifferentIndividualsAxiom owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getIndividuals(),
-                arg(owlObject).getIndividuals());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLDisjointDataPropertiesAxiom owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getProperties(),
-                arg(owlObject).getProperties());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLDisjointObjectPropertiesAxiom owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getProperties(),
-                arg(owlObject).getProperties());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -344,7 +344,7 @@ final class CompleteStructuralComparison
         @Override
         public List<StructuralDifferenceReport> visit(OWLDisjointUnionAxiom owlObject) {
             return CompleteStructuralComparison.this.compareCollection(
-                owlObject.getClassExpressions(), arg(owlObject).getClassExpressions());
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -391,8 +391,8 @@ final class CompleteStructuralComparison
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLEquivalentDataPropertiesAxiom owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getProperties(),
-                arg(owlObject).getProperties());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -408,7 +408,7 @@ final class CompleteStructuralComparison
         @Override
         public List<StructuralDifferenceReport> visit(OWLEquivalentClassesAxiom owlObject) {
             return CompleteStructuralComparison.this.compareCollection(
-                owlObject.getClassExpressions(), arg(owlObject).getClassExpressions());
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -459,8 +459,8 @@ final class CompleteStructuralComparison
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLSameIndividualAxiom owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getIndividuals(),
-                arg(owlObject).getIndividuals());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -493,7 +493,7 @@ final class CompleteStructuralComparison
             List<StructuralDifferenceReport> toReturn =
                 CompleteStructuralComparison.this.compare(pairs);
             toReturn.addAll(CompleteStructuralComparison.this.compareCollection(
-                owlObject.getPropertyExpressions(), arg(owlObject).getPropertyExpressions(), 1));
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList(), 1));
             return toReturn;
         }
 
@@ -510,9 +510,9 @@ final class CompleteStructuralComparison
         @Override
         public List<StructuralDifferenceReport> visit(SWRLRule owlObject) {
             List<StructuralDifferenceReport> toReturn = CompleteStructuralComparison.this
-                .compareCollection(owlObject.getHead(), arg(owlObject).getHead());
-            toReturn.addAll(CompleteStructuralComparison.this.compareCollection(owlObject.getBody(),
-                arg(owlObject).getBody(), owlObject.getHead().size()));
+                .compareCollection(owlObject.headList(), arg(owlObject).headList());
+            toReturn.addAll(CompleteStructuralComparison.this.compareCollection(
+                owlObject.bodyList(), arg(owlObject).bodyList(), owlObject.headList().size()));
             return toReturn;
         }
 
@@ -552,14 +552,14 @@ final class CompleteStructuralComparison
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLObjectIntersectionOf owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getOperands(),
-                arg(owlObject).getOperands());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLObjectUnionOf owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getOperands(),
-                arg(owlObject).getOperands());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -593,7 +593,7 @@ final class CompleteStructuralComparison
             List<SimplePair<OWLObject>> pairs = new ArrayList<>();
             pairs.add(
                 new SimplePair<OWLObject>(owlObject.getProperty(), arg(owlObject).getProperty()));
-            pairs.add(new SimplePair<OWLObject>(owlObject.getValue(), arg(owlObject).getValue()));
+            pairs.add(new SimplePair<OWLObject>(owlObject.getFiller(), arg(owlObject).getFiller()));
             return CompleteStructuralComparison.this.compare(pairs);
         }
 
@@ -606,7 +606,7 @@ final class CompleteStructuralComparison
                 CompleteStructuralComparison.this.compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
                 List<Integer> newPositions = getPosition();
-                newPositions.add(2);
+                newPositions.add(Integer.valueOf(2));
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -624,7 +624,7 @@ final class CompleteStructuralComparison
                 CompleteStructuralComparison.this.compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
                 List<Integer> newPositions = getPosition();
-                newPositions.add(2);
+                newPositions.add(Integer.valueOf(2));
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -642,7 +642,7 @@ final class CompleteStructuralComparison
                 CompleteStructuralComparison.this.compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
                 List<Integer> newPositions = getPosition();
-                newPositions.add(2);
+                newPositions.add(Integer.valueOf(2));
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -663,8 +663,8 @@ final class CompleteStructuralComparison
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLObjectOneOf owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getIndividuals(),
-                arg(owlObject).getIndividuals());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -690,7 +690,7 @@ final class CompleteStructuralComparison
             List<SimplePair<OWLObject>> pairs = new ArrayList<>();
             pairs.add(
                 new SimplePair<OWLObject>(owlObject.getProperty(), arg(owlObject).getProperty()));
-            pairs.add(new SimplePair<OWLObject>(owlObject.getValue(), arg(owlObject).getValue()));
+            pairs.add(new SimplePair<OWLObject>(owlObject.getFiller(), arg(owlObject).getFiller()));
             return CompleteStructuralComparison.this.compare(pairs);
         }
 
@@ -703,7 +703,7 @@ final class CompleteStructuralComparison
                 CompleteStructuralComparison.this.compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
                 List<Integer> newPositions = getPosition();
-                newPositions.add(2);
+                newPositions.add(Integer.valueOf(2));
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -721,7 +721,7 @@ final class CompleteStructuralComparison
                 CompleteStructuralComparison.this.compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
                 List<Integer> newPositions = getPosition();
-                newPositions.add(2);
+                newPositions.add(Integer.valueOf(2));
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -739,7 +739,7 @@ final class CompleteStructuralComparison
                 CompleteStructuralComparison.this.compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
                 List<Integer> newPositions = getPosition();
-                newPositions.add(2);
+                newPositions.add(Integer.valueOf(2));
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -767,20 +767,20 @@ final class CompleteStructuralComparison
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLDataOneOf owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getValues(),
-                arg(owlObject).getValues());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLDataIntersectionOf owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getOperands(),
-                arg(owlObject).getOperands());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLDataUnionOf owlObject) {
-            return CompleteStructuralComparison.this.compareCollection(owlObject.getOperands(),
-                arg(owlObject).getOperands());
+            return CompleteStructuralComparison.this.compareCollection(
+                owlObject.getOperandsAsList(), arg(owlObject).getOperandsAsList());
         }
 
         @Override
@@ -791,7 +791,7 @@ final class CompleteStructuralComparison
             List<StructuralDifferenceReport> toReturn =
                 CompleteStructuralComparison.this.compare(pairs);
             toReturn.addAll(CompleteStructuralComparison.this.compareCollection(
-                owlObject.getFacetRestrictions(), arg(owlObject).getFacetRestrictions(), 1));
+                owlObject.facetRestrictionsAsList(), arg(owlObject).facetRestrictionsAsList(), 1));
             return toReturn;
         }
 

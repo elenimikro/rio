@@ -102,7 +102,7 @@ public class ClusterDecompositionModel<P> implements RegularitiesDecompositionMo
         }
     }
 
-    private OWLAxiom getExampleLogicGeneralisation(
+    private static OWLAxiom getExampleLogicGeneralisation(
         MultiMap<OWLAxiom, OWLAxiomInstantiation> multiMap) {
         if (multiMap != null) {
             for (OWLAxiom ax : multiMap.keySet()) {

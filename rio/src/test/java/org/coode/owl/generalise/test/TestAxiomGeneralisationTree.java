@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.coode.basetest.TestHelper;
 import org.coode.oppl.ConstraintSystem;
@@ -46,15 +46,14 @@ public class TestAxiomGeneralisationTree {
     @Ignore
     @Test
     public void testAxiomGeneralisationTree() {
-        int generalisationCount = 0;
+        AtomicInteger generalisationCount = new AtomicInteger(0);
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
-        Set<OWLAxiom> axioms = ontology.getAxioms();
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
-        for (OWLAxiom axiom : axioms) {
-            if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
+        ontology.axioms().filter(ax -> !ax.getAxiomType().equals(AxiomType.DECLARATION))
+            .forEach(axiom -> {
                 StructuralOWLObjectGeneralisation generalisation =
                     new StructuralOWLObjectGeneralisation(
                         new OntologyManagerBasedOWLEntityProvider(ontologyManager),
@@ -62,14 +61,13 @@ public class TestAxiomGeneralisationTree {
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
                 generalisationMap.put(generalised,
                     new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
-                generalisationCount++;
-            }
-        }
-        assertTrue(generalisationCount > 1);
+                generalisationCount.incrementAndGet();
+            });
+
+        assertTrue(generalisationCount.get() > 1);
         System.out.printf("Generalised over %d axioms\n", generalisationCount);
-        for (OWLAxiom owlAxiom : generalisationMap.keySet()) {
-            System.out.println(owlAxiom);
-        }
+        generalisationMap.keySet().forEach(System.out::println);
+
         OWLAxiom generalisation = new ArrayList<>(generalisationMap.keySet()).get(2);
         System.out.println(generalisation);
         AxiomGeneralisationTreeNode root = new AxiomGeneralisationTreeNode(generalisation,

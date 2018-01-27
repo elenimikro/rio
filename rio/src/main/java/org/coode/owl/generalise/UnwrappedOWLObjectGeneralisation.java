@@ -32,9 +32,9 @@
  */
 package org.coode.owl.generalise;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.bindingtree.BindingNode;
@@ -43,7 +43,6 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
-import org.semanticweb.owlapi.util.MultiMap;
 
 /**
  * Visitor that abstracts OWLObjects into variables.
@@ -63,17 +62,11 @@ public class UnwrappedOWLObjectGeneralisation extends OWLObjectGeneralisation
 
     @Override
     public OWLClassExpression visit(OWLObjectIntersectionOf desc) {
-        Set<OWLClassExpression> operands = desc.getOperands();
-        Set<OWLClassExpression> newOperands = new HashSet<>(operands.size());
-        MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
-        for (OWLClassExpression classExpression : operands) {
-            OWLClassExpression generalised = (OWLClassExpression) classExpression.accept(this);
-            generalisationMap.put(generalised, classExpression);
-        }
-        for (OWLClassExpression generalisation : generalisationMap.keySet()) {
-            newOperands.add(generalisation);
-        }
         return OWLManager.getOWLDataFactory()
-            .getOWLObjectIntersectionOf(new HashSet<>(newOperands));
+            .getOWLObjectIntersectionOf(asList(desc.operands().map(this::v)));
+    }
+
+    private <T extends OWLObject> T v(T t) {
+        return (T) t.accept(this);
     }
 }

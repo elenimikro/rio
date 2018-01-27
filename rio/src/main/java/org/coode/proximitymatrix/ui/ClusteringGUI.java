@@ -90,6 +90,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.w3c.dom.Document;
 
@@ -161,8 +162,8 @@ public class ClusteringGUI extends JFrame {
                 for (ClusteringProximityMatrix<OWLEntity> clusteringProximityMatrix : chunks) {
                     clusterCount = clusteringProximityMatrix.getData().length();
                 }
-                glassPane.setMessage(
-                    String.format("%d agglomerations so far %d clusters", count, clusterCount));
+                glassPane.setMessage(String.format("%d agglomerations so far %d clusters",
+                    Integer.valueOf(count), Integer.valueOf(clusterCount)));
             }
         }
 
@@ -257,15 +258,13 @@ public class ClusteringGUI extends JFrame {
             String fileName = dialog.getFile();
             if (fileName != null) {
                 Set<Cluster<OWLEntity>> clusters = buildClusters();
-                try {
-                    File file = new File(new File(dialog.getDirectory()), fileName);
-                    PrintWriter out = new PrintWriter(file);
+                File file = new File(new File(dialog.getDirectory()), fileName);
+                try (PrintWriter out = new PrintWriter(file);) {
                     ProximityMatrixUtils.printClusters(clusters, out);
                     SparseMatrix data = clusteringMatrix.getData();
                     ProximityMatrixUtils.printProximityMatrix(data, clusters, out);
                     data = distanceMatrix.getData();
                     ProximityMatrixUtils.printDistanceMatrix(out, data, distanceMatrix);
-                    out.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(ClusteringGUI.this, e.getMessage());
@@ -297,8 +296,8 @@ public class ClusteringGUI extends JFrame {
                 for (Object object : (Set<?>) value) {
                     members.add(render(object));
                 }
-                rendering = String.format(" Cluster %d) %s, size %d", row + 1, members.toString(),
-                    members.size());
+                rendering = String.format(" Cluster %d) %s, size %d", Integer.valueOf(row + 1),
+                    members.toString(), Integer.valueOf(members.size()));
             }
             Component toReturn = defaultTableCellRenderer.getTableCellRendererComponent(table,
                 rendering, isSelected, hasFocus, row, column);
@@ -350,7 +349,8 @@ public class ClusteringGUI extends JFrame {
                 JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-        System.out.println(String.format("Loaded %d ontologies ", manager.getOntologies().size()));
+        System.out.println(
+            String.format("Loaded %d ontologies ", Long.valueOf(manager.ontologies().count())));
         reset();
         initGUI();
     }
@@ -358,11 +358,9 @@ public class ClusteringGUI extends JFrame {
     private void reset() {
         Set<OWLEntity> entities = new TreeSet<>((o1, o2) -> shortFormProvider.getShortForm(o1)
             .compareTo(shortFormProvider.getShortForm(o2)));
-        for (OWLOntology ontology : manager.getOntologies()) {
-            entities.addAll(ontology.getSignature());
-        }
-        System.out
-            .println(String.format("Computing distance between %d entities ...", entities.size()));
+        OWLAPIStreamUtils.add(entities, manager.ontologies().flatMap(OWLOntology::signature));
+        System.out.println(String.format("Computing distance between %d entities ...",
+            Integer.valueOf(entities.size())));
         // ByKindOWLEntityPopularityBasedRelevantPolicy policy = new
         // ByKindOWLEntityPopularityBasedRelevantPolicy(
         // entities, this.manager.getOntologies());
@@ -378,8 +376,8 @@ public class ClusteringGUI extends JFrame {
         // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
         // this.manager);
         distanceMatrix = new SimpleProximityMatrix<>(entities, distance);
-        System.out.println(
-            String.format("Computing distance between %d entities finished", entities.size()));
+        System.out.println(String.format("Computing distance between %d entities finished",
+            Integer.valueOf(entities.size())));
         Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singleton(object));

@@ -12,11 +12,13 @@ package org.coode.generalise.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.coode.basetest.TestHelper;
 import org.coode.oppl.ConstraintSystem;
@@ -85,29 +87,27 @@ public class TestGeneralisation {
 
     @Test
     public void testMultipleStructuralGeneralisationWholeOntology() {
+        AtomicInteger generalisationCount = new AtomicInteger(0);
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-        int generalisationCount = 0;
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
-        Set<OWLAxiom> axioms = ontology.getAxioms();
         Set<OWLAxiom> generalisedAxioms = new HashSet<>();
-        for (OWLAxiom axiom : axioms) {
-            if (!axiom.getAxiomType().equals(AxiomType.DECLARATION)) {
-                ConstraintSystem constraintSystem = factory.createConstraintSystem();
+        ConstraintSystem constraintSystem = factory.createConstraintSystem();
+        ontology.axioms().filter(ax -> !ax.getAxiomType().equals(AxiomType.DECLARATION))
+            .forEach(axiom -> {
                 StructuralOWLObjectGeneralisation generalisation =
                     new StructuralOWLObjectGeneralisation(
                         new OntologyManagerBasedOWLEntityProvider(ontologyManager),
                         constraintSystem);
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
                 generalisedAxioms.add(generalised);
-                generalisationCount++;
-            }
-        }
-        assertTrue(generalisationCount > 1);
-        System.out.printf("Generalised over %d axioms\n", generalisationCount);
-        for (OWLAxiom owlAxiom : generalisedAxioms) {
-            System.out.println(owlAxiom);
-        }
+                generalisationCount.incrementAndGet();
+            });
+
+        assertTrue(generalisationCount.get() > 1);
+        System.out.printf("Generalised over %s axioms\n", generalisationCount);
+        generalisedAxioms.forEach(System.out::println);
+
     }
 
     @Test
@@ -116,9 +116,8 @@ public class TestGeneralisation {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
-        Set<OWLAxiom> axioms = ontology.getAxioms();
         Set<OWLAxiom> generalisedAxioms = new HashSet<>();
-        for (OWLAxiom axiom : axioms) {
+        for (OWLAxiom axiom : asList(ontology.axioms())) {
             ConstraintSystem constraintSystem = factory.createConstraintSystem();
             StructuralOWLObjectGeneralisation generalisation =
                 new StructuralOWLObjectGeneralisation(
@@ -155,8 +154,8 @@ public class TestGeneralisation {
         }
         assertTrue(generalisationCount > 1);
         assertTrue(generalisedAxioms.size() > 1);
-        System.out.printf("%d Generalisations over %d axioms\n", generalisedAxioms.size(),
-            generalisationCount);
+        System.out.printf("%d Generalisations over %d axioms\n",
+            Integer.valueOf(generalisedAxioms.size()), Integer.valueOf(generalisationCount));
         for (OWLAxiom owlAxiom : generalisedAxioms) {
             System.out.println(owlAxiom);
         }

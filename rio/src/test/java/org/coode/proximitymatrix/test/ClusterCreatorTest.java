@@ -42,7 +42,7 @@ public class ClusterCreatorTest {
     public void testClusteringMatrix() {
         ClusteringProximityMatrix<DistanceTableObject<OWLEntity>> clusteringMatrix =
             clusterer.getClusteringMatrix();
-        assertFalse(clusteringMatrix.getObjects().equals(0));
+        assertFalse(clusteringMatrix.getObjects().isEmpty());
         Collection<Collection<? extends DistanceTableObject<OWLEntity>>> objects =
             clusteringMatrix.getObjects();
         for (Collection<? extends DistanceTableObject<OWLEntity>> anObject : objects) {

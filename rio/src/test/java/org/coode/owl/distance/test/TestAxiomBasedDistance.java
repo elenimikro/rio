@@ -116,11 +116,12 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         List<OWLClass> classes = getClasses(pizza_ns + "Margherita", pizza_ns + "Siciliana");
         properTest(distance, classes);
         int i = 1;
-        System.out.println(String.format("Average popularity %s", ranking.getAverageValue()));
+        System.out.println(
+            String.format("Average popularity %s", Double.valueOf(ranking.getAverageValue())));
         for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(
-                String.format("%d. %s value %s is relevant: %b", i, Arrays.toString(s.getMembers()),
-                    s.getValue(), policy.isRelevant(s.getMembers()[0])));
+            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
+                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
+                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
             i++;
         }
     }
@@ -135,11 +136,12 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         List<OWLClass> classes = getClasses(pizza_ns + "Spiciness", pizza_ns + "SauceTopping");
         properTest(distance, classes);
         int i = 1;
-        System.out.println(String.format("Average popularity %s", ranking.getAverageValue()));
+        System.out.println(
+            String.format("Average popularity %s", Double.valueOf(ranking.getAverageValue())));
         for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(
-                String.format("%d. %s value %s is relevant: %b", i, Arrays.toString(s.getMembers()),
-                    s.getValue(), policy.isRelevant(s.getMembers()[0])));
+            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
+                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
+                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
             i++;
         }
     }
@@ -156,11 +158,12 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
             "http://sweet.jpl.nasa.gov/ontology/units.owl#percent");
         properTest(distance, classes);
         int i = 1;
-        System.out.println(String.format("Average popularity %s", ranking.getAverageValue()));
+        System.out.println(
+            String.format("Average popularity %s", Double.valueOf(ranking.getAverageValue())));
         for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(
-                String.format("%d. %s value %s is relevant: %b", i, Arrays.toString(s.getMembers()),
-                    s.getValue(), policy.isRelevant(s.getMembers()[0])));
+            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
+                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
+                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
             i++;
         }
     }
@@ -178,11 +181,12 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         properTest(distance, classes);
         int i = 1;
         System.out.println(String.format("Average popularity %s standard deviation %f",
-            ranking.getAverageValue(), policy.getStandardDeviation()));
+            Double.valueOf(ranking.getAverageValue()),
+            Double.valueOf(policy.getStandardDeviation())));
         for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(
-                String.format("%d. %s value %s is relevant: %b", i, Arrays.toString(s.getMembers()),
-                    s.getValue(), policy.isRelevant(s.getMembers()[0])));
+            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
+                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
+                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
             i++;
         }
     }

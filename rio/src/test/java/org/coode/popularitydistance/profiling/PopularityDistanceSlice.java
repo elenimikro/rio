@@ -75,7 +75,7 @@ public class PopularityDistanceSlice {
             final SimpleProximityMatrix<OWLEntity> distanceMatrix =
                 new SimpleProximityMatrix<>(entities, distance);
             System.out.println(String.format("Finished computing distance between %d entities",
-                distanceMatrix.getObjects().size()));
+                Integer.valueOf(distanceMatrix.getObjects().size())));
             final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix =
                 new SimpleProximityMatrix<>(
                     DistanceTableObject.createDistanceTableObjectSet(distance,
@@ -97,7 +97,7 @@ public class PopularityDistanceSlice {
                     new CentroidProximityMeasureFactory(), filter,
                     PairFilterBasedComparator.build(filter, newObjects, singletonDistance));
             System.out.println(String.format("Finished building clustering matrix of %d entities",
-                clusteringMatrix.getObjects().size()));
+                Integer.valueOf(clusteringMatrix.getObjects().size())));
         } catch (OWLOntologyCreationException e) {
             e.printStackTrace();
         }

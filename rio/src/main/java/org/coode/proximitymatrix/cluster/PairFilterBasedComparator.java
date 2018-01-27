@@ -28,7 +28,8 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
     private final PairFilter<O> filter;
     private final Set<O> objects = new LinkedHashSet<>();
     private final Distance<O> distance;
-    private final static WeakHashMap<Pair<?>, Integer> scores = new WeakHashMap<>();
+    //XXX this should be moved so it's not VM wide
+    private final static WeakHashMap<Pair, Integer> scores = new WeakHashMap<>();
 
     /**
      * @param filter filter
@@ -62,27 +63,26 @@ public final class PairFilterBasedComparator<O> implements Comparator<Pair<O>> {
     }
 
     private int getScore(Pair<O> pair) {
-        Integer cached = scores.get(pair);
-        if (cached == null) {
-            O first = pair.getFirst();
-            O second = pair.getSecond();
-            int unionCount = 0;
-            int intersectionCount = 0;
-            for (O o : this.objects) {
-                if (!this.filter.accept(first, o)) {
-                    unionCount++;
-                    if (!this.filter.accept(second, o)) {
-                        intersectionCount++;
-                    }
-                }
+        return scores.computeIfAbsent(pair, this::compute).intValue();
+    }
+
+    protected Integer compute(Pair<O> pair) {
+        O first = pair.getFirst();
+        O second = pair.getSecond();
+        int unionCount = 0;
+        int intersectionCount = 0;
+        for (O o : this.objects) {
+            if (!this.filter.accept(first, o)) {
+                unionCount++;
                 if (!this.filter.accept(second, o)) {
-                    unionCount++;
+                    intersectionCount++;
                 }
             }
-            cached = unionCount - intersectionCount;
-            scores.put(pair, cached);
+            if (!this.filter.accept(second, o)) {
+                unionCount++;
+            }
         }
-        return cached;
+        return Integer.valueOf(unionCount - intersectionCount);
     }
 
     /**

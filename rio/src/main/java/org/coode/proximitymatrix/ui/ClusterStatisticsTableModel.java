@@ -38,12 +38,9 @@ public class ClusterStatisticsTableModel implements TableModel {
     private final ClusterStatistics<?>[] statistics;
     /** size comparator */
     public final static Comparator<Cluster<?>> SIZE_COMPARATOR =
-        Collections.reverseOrder(new Comparator<Cluster<?>>() {
-            @Override
-            public int compare(Cluster<?> o1, Cluster<?> o2) {
-                int sizeDifference = o1.size() - o2.size();
-                return sizeDifference == 0 ? o1.hashCode() - o2.hashCode() : sizeDifference;
-            }
+        Collections.reverseOrder((o1, o2) -> {
+            int sizeDifference = o1.size() - o2.size();
+            return sizeDifference == 0 ? o1.hashCode() - o2.hashCode() : sizeDifference;
         });
     private static final String[] COLUMN_NAMES =
         new String[] {"Cluster", "Avg Distance", "Min Distance", "Max Distance"};
@@ -98,14 +95,9 @@ public class ClusterStatisticsTableModel implements TableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Object toReturn = null;
         if (columnIndex == 0) {
-            double avgSize = avg(new Selector() {
-                @Override
-                public double select(ClusterStatistics<?> s) {
-                    return s.getCluster().size();
-                }
-            });
-            String totalString =
-                String.format("TOTAL %d Average size: %f ", clusters.length, avgSize);
+            double avgSize = avg(s -> s.getCluster().size());
+            String totalString = String.format("TOTAL %d Average size: %f ",
+                Integer.valueOf(clusters.length), Double.valueOf(avgSize));
             toReturn = rowIndex >= clusters.length ? totalString : clusters[rowIndex];
         } else {
             ClusterStatistics<?> clusterStatistics =
@@ -115,28 +107,19 @@ public class ClusterStatisticsTableModel implements TableModel {
             }
             switch (columnIndex) {
                 case 1:
-                    toReturn = rowIndex >= statistics.length ? avg(new Selector() {
-                        @Override
-                        public double select(ClusterStatistics<?> s) {
-                            return s.getAverageInternalDistance();
-                        }
-                    }) : clusterStatistics.getAverageInternalDistance();
+                    toReturn = Double.valueOf(
+                        rowIndex >= statistics.length ? avg(s -> s.getAverageInternalDistance())
+                            : clusterStatistics.getAverageInternalDistance());
                     break;
                 case 2:
-                    toReturn = rowIndex >= statistics.length ? avg(new Selector() {
-                        @Override
-                        public double select(ClusterStatistics<?> s) {
-                            return s.getMinInternalDistance();
-                        }
-                    }) : clusterStatistics.getMinInternalDistance();
+                    toReturn = Double.valueOf(
+                        rowIndex >= statistics.length ? avg(s -> s.getMinInternalDistance())
+                            : clusterStatistics.getMinInternalDistance());
                     break;
                 case 3:
-                    toReturn = rowIndex >= statistics.length ? avg(new Selector() {
-                        @Override
-                        public double select(ClusterStatistics<?> s) {
-                            return s.getMaxInternalDistance();
-                        }
-                    }) : clusterStatistics.getMaxInternalDistance();
+                    toReturn = Double.valueOf(
+                        rowIndex >= statistics.length ? avg(s -> s.getMaxInternalDistance())
+                            : clusterStatistics.getMaxInternalDistance());
                     break;
                 default:
                     break;

@@ -59,7 +59,8 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
             ClusterAxiomListModel model = new ClusterAxiomListModel((Cluster<OWLEntity>) cluster,
                 ontologies, this.getGeneralisation());
             this.axiomList.setModel(model);
-            String string = String.format("Axiom count: %d", model.getAxiomCount());
+            String string =
+                String.format("Axiom count: %d", Integer.valueOf(model.getAxiomCount()));
             if (this.getGeneralisation() != null) {
                 Comparator<Variable<?>> comparator =
                     (o1, o2) -> o1.getName().compareTo(o2.getName());
@@ -94,7 +95,7 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
             DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
             Object toRender =
                 String.format("%s [%d] %s", ClusterAxiomPanel.this.render(value.getAxiom()),
-                    value.getCount(), Utils.renderInstantiationsStats(
+                    Integer.valueOf(value.getCount()), Utils.renderInstantiationsStats(
                         Utils.buildAssignmentMap(value.getInstantiations())));
             return defaultListCellRenderer.getListCellRendererComponent(list, toRender, index,
                 isSelected, cellHasFocus);

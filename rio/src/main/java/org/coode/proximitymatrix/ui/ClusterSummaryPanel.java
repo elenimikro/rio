@@ -58,8 +58,8 @@ public class ClusterSummaryPanel<O> extends JPanel {
             }
             this.clusterMembers.setText(
                 String.format("%s %s", this.clusterMembers.getText(), formatter.toString()));
-            this.clusterSize.setText(
-                String.format("%s %d", this.clusterSize.getText(), this.getCluster().size()));
+            this.clusterSize.setText(String.format("%s %d", this.clusterSize.getText(),
+                Integer.valueOf(this.getCluster().size())));
         }
     }
 

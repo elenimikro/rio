@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListCellRenderer;
 
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.metrics.Ranking;
@@ -55,20 +54,16 @@ public abstract class RelevancePolicyPanel extends JPanel {
         setLayout(new BorderLayout());
         this.add(summaryLabel, BorderLayout.NORTH);
         this.add(new JScrollPane(rankingList), BorderLayout.CENTER);
-        rankingList.setCellRenderer(new ListCellRenderer<RankingSlot<OWLEntity>>() {
-            @Override
-            public Component getListCellRendererComponent(
-                JList<? extends RankingSlot<OWLEntity>> list, RankingSlot<OWLEntity> value,
-                int index, boolean isSelected, boolean cellHasFocus) {
-                DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-                final HashSet<OWLEntity> members = new HashSet<>(Arrays.asList(value.getMembers()));
-                Object toRender =
-                    String.format("%s [%s] relevant? %b", RelevancePolicyPanel.this.render(members),
-                        value.getValue(), policy.isRelevant(value.getMembers()[0]));
-                Component toReturn = renderer.getListCellRendererComponent(list,
-                    String.format("%d) %s ", index + 1, toRender), index, isSelected, cellHasFocus);
-                return toReturn;
-            }
+        rankingList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+            DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+            final HashSet<OWLEntity> members = new HashSet<>(Arrays.asList(value.getMembers()));
+            Object toRender = String.format("%s [%s] relevant? %b",
+                RelevancePolicyPanel.this.render(members), Double.valueOf(value.getValue()),
+                Boolean.valueOf(policy.isRelevant(value.getMembers()[0])));
+            Component toReturn = renderer.getListCellRendererComponent(list,
+                String.format("%d) %s ", Integer.valueOf(index + 1), toRender), index, isSelected,
+                cellHasFocus);
+            return toReturn;
         });
         summaryLabel.setText(policy.toString());
     }
@@ -77,9 +72,8 @@ public abstract class RelevancePolicyPanel extends JPanel {
 
     /**
      * @param ranking ranking
-     * @param <P> type
      */
-    public <P> void reset(Ranking<OWLEntity> ranking) {
+    public void reset(Ranking<OWLEntity> ranking) {
         List<? extends RankingSlot<OWLEntity>> list = ranking.getSortedRanking();
         DefaultListModel<RankingSlot<OWLEntity>> model = new DefaultListModel<>();
         for (RankingSlot<OWLEntity> rankingSlot : list) {

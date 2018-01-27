@@ -9,12 +9,12 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
-
+@SuppressWarnings("javadoc")
 public class WrappingEquivalenceClassesAgglomerateAllTest {
 
     @Test
     public void test() {
-        List<IRI> iris = new ArrayList<IRI>(1);
+        List<IRI> iris = new ArrayList<>(1);
         WrappingAgglomerateAll agglomerator = new WrappingAgglomerateAll();
         File file = new File(getClass().getResource("/pizza.owl").getFile());
         iris.add(IRI.create(file));

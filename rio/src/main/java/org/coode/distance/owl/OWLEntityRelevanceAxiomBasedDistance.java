@@ -13,6 +13,8 @@
  */
 package org.coode.distance.owl;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -64,22 +66,13 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     }
 
     protected void buildAxiomEntityMap(Collection<? extends OWLOntology> ontos) {
-        for (OWLOntology ontology : ontos) {
-            for (AxiomType<?> t : types) {
-                for (OWLAxiom ax : ontology.getAxioms(t)) {
-                    for (OWLEntity e : ax.getSignature()) {
-                        candidates.put(e, ax);
-                    }
-                }
-            }
-        }
+        ontos.stream().flatMap(OWLOntology::axioms)
+            .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
     protected void buildOntologySignature() {
         ontologySignature.clear();
-        for (OWLOntology ontology : ontologies) {
-            ontologySignature.addAll(ontology.getSignature());
-        }
+        add(ontologySignature, ontologies.stream().flatMap(OWLOntology::signature));
     }
 
     private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<>();
@@ -140,17 +133,8 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     }
 
     protected boolean isRelevant(OWLAxiom replaced) {
-        Set<OWLEntity> signature = replaced.getSignature();
-        boolean found = false;
-        Iterator<OWLEntity> iterator = signature.iterator();
-        while (!found && iterator.hasNext()) {
-            OWLEntity owlEntity = iterator.next();
-            found = ontologySignature.contains(owlEntity);
-        }
-        if (!found) {
-            found = replaced.accept(AxiomGeneralityDetector.getInstance());
-        }
-        return found;
+        return replaced.signature().anyMatch(ontologySignature::contains)
+            || replaced.accept(AxiomGeneralityDetector.getInstance()).booleanValue();
     }
 
     /**

@@ -40,11 +40,10 @@ public class ClusterCreator {
     /**
      * @param distance distance
      * @param entities entities
-     * @param <P> type
      * @return clusters
      */
-    public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateAll(
-        Distance<OWLEntity> distance, List<OWLEntity> entities) {
+    public Set<Cluster<OWLEntity>> agglomerateAll(Distance<OWLEntity> distance,
+        List<OWLEntity> entities) {
         SimpleProximityMatrix<OWLEntity> baseDistanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
@@ -55,7 +54,7 @@ public class ClusterCreator {
         final SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",
-            distanceMatrix.getObjects().size()));
+            Integer.valueOf(distanceMatrix.getObjects().size())));
         final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix =
             new SimpleProximityMatrix<>(
                 DistanceTableObject.createDistanceTableObjectSet(distance,
@@ -78,7 +77,7 @@ public class ClusterCreator {
         return clusters;
     }
 
-    private <P extends OWLEntity> Set<Cluster<OWLEntity>> runClustering(
+    private Set<Cluster<OWLEntity>> runClustering(
         SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix,
         PairFilter<Collection<? extends DistanceTableObject<OWLEntity>>> filter,
         Distance<Collection<? extends DistanceTableObject<OWLEntity>>> singletonDistance,
@@ -117,8 +116,9 @@ public class ClusterCreator {
         }
         Set<Cluster<OWLEntity>> clusters =
             Utils.buildClusters(clusteringMatrix, baseDistanceMatrix, equivalenceClasses);
-        System.out.println(String.format(
-            "Finished clustering after %d agglomerations no of clusters %d", i, clusters.size()));
+        System.out
+            .println(String.format("Finished clustering after %d agglomerations no of clusters %d",
+                Integer.valueOf(i), Integer.valueOf(clusters.size())));
         return clusters;
     }
 
@@ -168,11 +168,10 @@ public class ClusterCreator {
     /**
      * @param distance distance
      * @param entities entities
-     * @param <P> type
      * @return clusters
      */
-    public <P extends OWLEntity> Set<Cluster<OWLEntity>> agglomerateZeros(
-        Distance<OWLEntity> distance, Set<OWLEntity> entities) {
+    public Set<Cluster<OWLEntity>> agglomerateZeros(Distance<OWLEntity> distance,
+        Set<OWLEntity> entities) {
         SimpleProximityMatrix<OWLEntity> baseDistanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
@@ -181,7 +180,7 @@ public class ClusterCreator {
         final SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",
-            distanceMatrix.getObjects().size()));
+            Integer.valueOf(distanceMatrix.getObjects().size())));
         final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix =
             new SimpleProximityMatrix<>(
                 DistanceTableObject.createDistanceTableObjectSet(distance,

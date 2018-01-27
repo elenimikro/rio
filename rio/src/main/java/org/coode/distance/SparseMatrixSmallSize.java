@@ -61,7 +61,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
      */
     public int getPosition(Object i) {
         Integer index = objectIndex.get(i);
-        if (index == -1) {
+        if (index == null) {
             throw new IllegalArgumentException(
                 String.format("%s is not contained in this table based distance", i));
         }
@@ -105,7 +105,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     @Override
     public void setKeys(Collection<?> objects) {
         for (Object o : objects) {
-            objectIndex.put(o, objectIndex.size());
+            objectIndex.put(o, Integer.valueOf(objectIndex.size()));
         }
     }
 }

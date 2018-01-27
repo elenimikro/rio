@@ -30,7 +30,7 @@ public abstract class OWLEntityProviderBase implements OWLEntityProvider {
 
     @Override
     public boolean addAll(Collection<? extends OWLEntity> c) {
-        return false;
+        return delegate.addAll(c);
     }
 
     @Override

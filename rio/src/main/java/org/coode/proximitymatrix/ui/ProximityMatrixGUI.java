@@ -42,6 +42,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author Luigi Iannone */
@@ -72,9 +73,7 @@ public class ProximityMatrixGUI extends JFrame {
     private void reset() {
         SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        for (OWLOntology ontology : manager.getOntologies()) {
-            entities.addAll(ontology.getSignature());
-        }
+        OWLAPIStreamUtils.add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         Distance<OWLEntity> distance =
             new AxiomBasedDistance(manager.getOntologies(), manager.getOWLDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);

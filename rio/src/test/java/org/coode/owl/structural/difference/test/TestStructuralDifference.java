@@ -28,7 +28,6 @@ import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorExAd
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
@@ -102,12 +101,12 @@ public class TestStructuralDifference {
         // OWLOntologyManager ontologyManager =
         // ontology.getOWLOntologyManager();
         StructuralDifference difference = new StructuralDifference();
-        for (OWLAxiom axiom : ontology.getAxioms()) {
+        ontology.axioms().forEach(axiom -> {
             StructuralDifferenceReport topDifference = difference.getTopDifference(axiom, axiom);
             assertTrue(topDifference == StructuralDifferenceReport.NO_DIFFERENCE);
             topDifference = difference.getTopDifference(ontology, axiom);
             assertTrue(topDifference == StructuralDifferenceReport.INCOMPARABLE);
-        }
+        });
     }
 
     @Test
@@ -116,10 +115,7 @@ public class TestStructuralDifference {
         // OWLOntologyManager ontologyManager =
         // ontology.getOWLOntologyManager();
         StructuralDifference difference = new StructuralDifference();
-        for (OWLAxiom axiom : ontology.getAxioms()) {
-            boolean areComparable = difference.areComparable(axiom, axiom);
-            assertTrue(areComparable);
-        }
+        ontology.axioms().forEach(ax -> assertTrue(difference.areComparable(ax, ax)));
     }
 
     @Test

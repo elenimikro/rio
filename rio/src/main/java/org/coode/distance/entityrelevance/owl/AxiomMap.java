@@ -72,18 +72,8 @@ public class AxiomMap {
         for (OWLAxiom axiom : axs) {
             if (axiom.getAxiomType() != AxiomType.DECLARATION) {
                 OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
-                Map<OWLEntity, AtomicInteger> entityMap = delegate.get(replaced);
-                AtomicInteger d = axiomCountMap.get(replaced);
-                if (d == null) {
-                    d = new AtomicInteger();
-                    axiomCountMap.put(replaced, d);
-                }
-                d.incrementAndGet();
-                if (entityMap == null) {
-                    entityMap = new HashMap<>();
-                    delegate.put(replaced, entityMap);
-                }
-                countAxioms(axiom, entityMap);
+                axiomCountMap.computeIfAbsent(replaced, x -> new AtomicInteger()).incrementAndGet();
+                countAxioms(axiom, delegate.computeIfAbsent(replaced, x -> new HashMap<>()));
             }
         }
     }

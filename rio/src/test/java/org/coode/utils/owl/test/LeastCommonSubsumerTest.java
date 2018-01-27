@@ -78,8 +78,8 @@ public class LeastCommonSubsumerTest {
             if (names.contains(string)) {
                 String[] split = string.split("__");
                 if (split != null && split.length >= 2) {
-                    createName(String.format("%s__%d", split[0], Integer.parseInt(split[1]) + 1),
-                        names, rootNames);
+                    createName(String.format("%s__%d", split[0],
+                        Integer.valueOf(Integer.parseInt(split[1]) + 1)), names, rootNames);
                 } else {
                     createName(String.format("%s__1", string), names, rootNames);
                 }

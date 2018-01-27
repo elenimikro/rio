@@ -13,6 +13,8 @@
  */
 package org.coode.metrics.owl;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.coode.metrics.Metric;
-import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -40,27 +41,16 @@ public class OWLEntityPopularity implements Metric<OWLEntity> {
             throw new NullPointerException("The ontology collection cannot be null");
         }
         this.ontologies.addAll(ontologies);
-        for (OWLOntology ontology : this.ontologies) {
-            for (AxiomType<?> t : AxiomType.AXIOM_TYPES) {
-                for (OWLAxiom ax : ontology.getAxioms(t)) {
-                    for (OWLEntity e : ax.getSignature()) {
-                        multimapFromOntologies.put(e, ax);
-                    }
-                }
-            }
-        }
+        ontologies.stream().flatMap(OWLOntology::axioms)
+            .forEach(ax -> ax.signature().forEach(e -> multimapFromOntologies.put(e, ax)));
         // compute the number of axioms, duplicates removed
         // XXX needs to be done incrementally if changes to the ontologies are
         // made
         int size = getAxiomSet(ontologies).size();
         MultiMap<OWLEntity, OWLAxiom> axioms = getAxiomMap();
-        Set<OWLEntity> entities = new HashSet<>();
-        for (OWLOntology ontology : ontologies) {
-            entities.addAll(ontology.getSignature());
-        }
-        for (OWLEntity owlEntity : entities) {
-            cache.put(owlEntity, computeValue(owlEntity, axioms, size));
-        }
+        ontologies.stream().flatMap(OWLOntology::signature).distinct()
+            .forEach(e -> cache.put(e, Double.valueOf(computeValue(e, axioms, size))));
+
     }
 
     /** @return reverse indexing entity to set of mentioning axioms */
@@ -73,13 +63,7 @@ public class OWLEntityPopularity implements Metric<OWLEntity> {
      * @return axioms
      */
     public Set<OWLAxiom> getAxiomSet(Collection<? extends OWLOntology> ontos) {
-        Set<OWLAxiom> axioms = new HashSet<>();
-        for (OWLOntology ontology : ontos) {
-            for (AxiomType<?> t : AxiomType.AXIOM_TYPES) {
-                axioms.addAll(ontology.getAxioms(t));
-            }
-        }
-        return axioms;
+        return asSet(ontos.stream().flatMap(OWLOntology::axioms));
     }
 
     @Override
@@ -87,14 +71,14 @@ public class OWLEntityPopularity implements Metric<OWLEntity> {
         Double toReturn = cache.get(object);
         return toReturn == null
             ? computeValue(object, getAxiomMap(), getAxiomSet(ontologies).size())
-            : toReturn;
+            : toReturn.doubleValue();
     }
 
     private double computeValue(OWLEntity object, MultiMap<OWLEntity, OWLAxiom> axioms, int size) {
         double toReturn = axioms.get(object).size();
         // Eliminated the duplicates by putting everything in the same set
         double value = toReturn / size;
-        cache.put(object, value);
+        cache.put(object, Double.valueOf(value));
         return value;
     }
 

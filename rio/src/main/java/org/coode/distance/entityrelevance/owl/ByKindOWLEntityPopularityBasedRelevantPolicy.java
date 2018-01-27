@@ -87,7 +87,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy
             Iterator<Double> it = values.iterator();
             int i = 0;
             while (it.hasNext()) {
-                doubles[i++] = it.next();
+                doubles[i++] = it.next().doubleValue();
             }
             return doubles;
         }
@@ -289,40 +289,40 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy
         return object.accept(new OWLEntityVisitorEx<Boolean>() {
             @Override
             public Boolean visit(OWLClass cls) {
-                return owlClassesPopularityRanking != null
-                    && owlClassesPopularityRanking.computeIsRelevant(cls);
+                return Boolean.valueOf(owlClassesPopularityRanking != null
+                    && owlClassesPopularityRanking.computeIsRelevant(cls));
             }
 
             @Override
             public Boolean visit(OWLObjectProperty property) {
-                return owlObjectPropertiesPopularityRanking != null
-                    && owlObjectPropertiesPopularityRanking.computeIsRelevant(property);
+                return Boolean.valueOf(owlObjectPropertiesPopularityRanking != null
+                    && owlObjectPropertiesPopularityRanking.computeIsRelevant(property));
             }
 
             @Override
             public Boolean visit(OWLDataProperty property) {
-                return owlDataPropertiesPopularityRanking != null
-                    && owlDataPropertiesPopularityRanking.computeIsRelevant(property);
+                return Boolean.valueOf(owlDataPropertiesPopularityRanking != null
+                    && owlDataPropertiesPopularityRanking.computeIsRelevant(property));
             }
 
             @Override
             public Boolean visit(OWLNamedIndividual individual) {
-                return owlNamedIndividualsPopularityRanking != null
-                    && owlNamedIndividualsPopularityRanking.computeIsRelevant(individual);
+                return Boolean.valueOf(owlNamedIndividualsPopularityRanking != null
+                    && owlNamedIndividualsPopularityRanking.computeIsRelevant(individual));
             }
 
             @Override
             public Boolean visit(OWLDatatype datatype) {
-                return owlDatatypesPopularityRanking != null
-                    && owlDatatypesPopularityRanking.computeIsRelevant(datatype);
+                return Boolean.valueOf(owlDatatypesPopularityRanking != null
+                    && owlDatatypesPopularityRanking.computeIsRelevant(datatype));
             }
 
             @Override
             public Boolean visit(OWLAnnotationProperty property) {
-                return owlAnnotationPropertiesPopularityRanking != null
-                    && owlAnnotationPropertiesPopularityRanking.computeIsRelevant(property);
+                return Boolean.valueOf(owlAnnotationPropertiesPopularityRanking != null
+                    && owlAnnotationPropertiesPopularityRanking.computeIsRelevant(property));
             }
-        });
+        }).booleanValue();
     }
 
     /** @return ranking */

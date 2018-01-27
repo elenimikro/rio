@@ -1,5 +1,6 @@
 package org.coode.popularitydistance.profiling;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.File;
@@ -44,9 +45,7 @@ public class StructuralClusteringComparison {
         Distance<OWLEntity> distance =
             DistanceCreator.createStructuralAxiomRelevanceAxiomBasedDistance(m);
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        for (OWLOntology onto : m.getOntologies()) {
-            entities.addAll(onto.getSignature());
-        }
+        add(entities, m.ontologies().flatMap(OWLOntology::signature));
         ClusterCreator clusterer = new ClusterCreator();
         System.out.println("StructuralClusteringComparison.main() Starting clustering....");
         Set<Cluster<OWLEntity>> clusters =

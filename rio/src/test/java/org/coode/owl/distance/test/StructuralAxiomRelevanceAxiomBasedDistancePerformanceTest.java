@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.coode.oppl.ConstraintSystem;
@@ -37,13 +40,14 @@ public class StructuralAxiomRelevanceAxiomBasedDistancePerformanceTest {
         try {
             OWLOntology ontology =
                 ontologyManager.loadOntology(IRI.create("http://purl.obolibrary.org/obo/obi.owl"));
-            Set<OWLDisjointClassesAxiom> axioms = ontology.getAxioms(AxiomType.DISJOINT_CLASSES);
+            List<OWLDisjointClassesAxiom> axioms =
+                asList(ontology.axioms(AxiomType.DISJOINT_CLASSES));
             OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
             ConstraintSystem constraintSystem = factory.createConstraintSystem();
             OWLEntityProvider entityProvider =
                 new OntologyManagerBasedOWLEntityProvider(ontologyManager);
             Set<OWLAxiomInstantiation> instantiations = new HashSet<>(axioms.size());
-            System.out.println(String.format("Axiom size: %d", axioms.size()));
+            System.out.println(String.format("Axiom size: %d", Integer.valueOf(axioms.size())));
             for (OWLDisjointClassesAxiom owlDisjointClassesAxiom : axioms) {
                 StructuralOWLObjectGeneralisation generalisation =
                     new StructuralOWLObjectGeneralisation(entityProvider, constraintSystem);

@@ -12,6 +12,7 @@ package org.coode.owl.generalise;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.Variable;
@@ -28,7 +29,7 @@ public abstract class VariableProvider {
     private final OWLEntityProvider entityProvider;
     private final Map<OWLObject, Variable<?>> cache = new HashMap<>();
     private final Map<VariableType<?>, Variable<?>> variables = new HashMap<>();
-    private final Map<VariableType<?>, Integer> variableIndex = new HashMap<>();
+    private final Map<VariableType<?>, AtomicInteger> variableIndex = new HashMap<>();
 
     /**
      * @param entityProvider entityProvider
@@ -60,11 +61,7 @@ public abstract class VariableProvider {
      * @param variableType variableType
      */
     public void newVariable(VariableType<?> variableType) {
-        Integer integer = variableIndex.get(variableType);
-        if (integer == null) {
-            integer = 0;
-        }
-        variableIndex.put(variableType, integer + 1);
+        variableIndex.computeIfAbsent(variableType, x -> new AtomicInteger(0)).incrementAndGet();
         Variable<?> v;
         try {
             v = getConstraintSystem().createVariable(createName(variableType), variableType, null);
@@ -75,8 +72,8 @@ public abstract class VariableProvider {
     }
 
     private String createName(VariableType<?> variableType) {
-        return String.format("?%s_%d", variableType.toString().toLowerCase(),
-            variableIndex.get(variableType).intValue());
+        return String.format("?%s_%s", variableType.toString().toLowerCase(),
+            variableIndex.get(variableType));
     }
 
     protected abstract Variable<?> getAbstractingVariable(OWLObject owlObject);

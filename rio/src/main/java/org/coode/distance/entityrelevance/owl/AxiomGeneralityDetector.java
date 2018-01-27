@@ -42,6 +42,7 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
@@ -73,6 +74,14 @@ public class AxiomGeneralityDetector implements OWLObjectVisitorEx<Boolean> {
     @Override
     public <T> Boolean doDefault(T object) {
         return Boolean.TRUE;
+    }
+
+    private Boolean v(OWLObject t) {
+        return t.accept(this);
+    }
+
+    private boolean vt(OWLObject t) {
+        return t.accept(this).booleanValue();
     }
 
     @Override
@@ -107,12 +116,12 @@ public class AxiomGeneralityDetector implements OWLObjectVisitorEx<Boolean> {
 
     @Override
     public Boolean visit(OWLSubClassOfAxiom axiom) {
-        return axiom.getSubClass().accept(this) || axiom.getSuperClass().accept(this);
+        return v(axiom.getSubClass()) || v(axiom.getSuperClass());
     }
 
     @Override
     public Boolean visit(OWLAnnotationAssertionAxiom axiom) {
-        return axiom.getAnnotation().getValue().accept(this);
+        return v(axiom.getAnnotation().getValue());
     }
 
     @Override
@@ -132,32 +141,32 @@ public class AxiomGeneralityDetector implements OWLObjectVisitorEx<Boolean> {
 
     @Override
     public Boolean visit(OWLAsymmetricObjectPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override
     public Boolean visit(OWLClassAssertionAxiom axiom) {
-        return axiom.getClassExpression().accept(this) || axiom.getIndividual().accept(this);
+        return v(axiom.getClassExpression()) || v(axiom.getIndividual());
     }
 
     @Override
     public Boolean visit(OWLDataPropertyAssertionAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getObject().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getObject());
     }
 
     @Override
     public Boolean visit(OWLDataPropertyDomainAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getDomain().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getDomain());
     }
 
     @Override
     public Boolean visit(OWLDataPropertyRangeAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getRange().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getRange());
     }
 
     @Override
     public Boolean visit(OWLDatatypeDefinitionAxiom axiom) {
-        return axiom.getDatatype().accept(this);
+        return v(axiom.getDatatype());
     }
 
     @Override
@@ -167,146 +176,138 @@ public class AxiomGeneralityDetector implements OWLObjectVisitorEx<Boolean> {
 
     @Override
     public Boolean visit(OWLDifferentIndividualsAxiom axiom) {
-        return Boolean.valueOf(axiom.individuals().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.individuals().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLDisjointClassesAxiom axiom) {
-        return Boolean
-            .valueOf(axiom.classExpressions().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.classExpressions().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
-        return Boolean.valueOf(axiom.properties().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.properties().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
-        return Boolean.valueOf(axiom.properties().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.properties().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLDisjointUnionAxiom axiom) {
-        return Boolean
-            .valueOf(axiom.classExpressions().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.classExpressions().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLEquivalentClassesAxiom axiom) {
-        return Boolean
-            .valueOf(axiom.classExpressions().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.classExpressions().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLEquivalentDataPropertiesAxiom axiom) {
-        return Boolean.valueOf(axiom.properties().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.properties().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-        return Boolean.valueOf(axiom.properties().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.properties().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLFunctionalDataPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override
     public Boolean visit(OWLFunctionalObjectPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override
     public Boolean visit(OWLHasKeyAxiom axiom) {
-        return Boolean
-            .valueOf(axiom.propertyExpressions().anyMatch(c -> c.accept(this).booleanValue())
-                || axiom.getClassExpression().accept(this).booleanValue());
+        return Boolean.valueOf(
+            axiom.propertyExpressions().anyMatch(this::vt) || vt(axiom.getClassExpression()));
     }
 
     @Override
     public Boolean visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override
     public Boolean visit(OWLInverseObjectPropertiesAxiom axiom) {
-        return axiom.getFirstProperty().accept(this) || axiom.getSecondProperty().accept(this);
+        return v(axiom.getFirstProperty()) || v(axiom.getSecondProperty());
     }
 
     @Override
     public Boolean visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override
     public Boolean visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getSubject().accept(this)
-            || axiom.getObject().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getSubject()) || v(axiom.getObject());
     }
 
     @Override
     public Boolean visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getSubject().accept(this)
-            || axiom.getObject().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getSubject()) || v(axiom.getObject());
     }
 
     @Override
     public Boolean visit(OWLObjectPropertyAssertionAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getSubject().accept(this)
-            || axiom.getObject().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getSubject()) || v(axiom.getObject());
     }
 
     @Override
     public Boolean visit(OWLObjectPropertyDomainAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getDomain().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getDomain());
     }
 
     @Override
     public Boolean visit(OWLObjectPropertyRangeAxiom axiom) {
-        return axiom.getProperty().accept(this) || axiom.getRange().accept(this);
+        return v(axiom.getProperty()) || v(axiom.getRange());
     }
 
     @Override
     public Boolean visit(OWLReflexiveObjectPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override
     public Boolean visit(OWLSameIndividualAxiom axiom) {
-        return Boolean.valueOf(axiom.individuals().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.individuals().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLSubAnnotationPropertyOfAxiom axiom) {
-        return axiom.getSubProperty().accept(this) || axiom.getSuperProperty().accept(this);
+        return v(axiom.getSubProperty()) || v(axiom.getSuperProperty());
     }
 
     @Override
     public Boolean visit(OWLSubDataPropertyOfAxiom axiom) {
-        return axiom.getSubProperty().accept(this) || axiom.getSuperProperty().accept(this);
+        return v(axiom.getSubProperty()) || v(axiom.getSuperProperty());
     }
 
     @Override
     public Boolean visit(OWLSubObjectPropertyOfAxiom axiom) {
-        return axiom.getSubProperty().accept(this) || axiom.getSuperProperty().accept(this);
+        return v(axiom.getSubProperty()) || v(axiom.getSuperProperty());
     }
 
     @Override
     public Boolean visit(OWLSubPropertyChainOfAxiom axiom) {
-        return Boolean.valueOf(
-            axiom.getPropertyChain().stream().anyMatch(c -> c.accept(this).booleanValue()));
+        return Boolean.valueOf(axiom.getPropertyChain().stream().anyMatch(this::vt));
     }
 
     @Override
     public Boolean visit(OWLSymmetricObjectPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override
     public Boolean visit(OWLTransitiveObjectPropertyAxiom axiom) {
-        return axiom.getProperty().accept(this);
+        return v(axiom.getProperty());
     }
 
     @Override

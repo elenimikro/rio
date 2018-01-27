@@ -92,8 +92,7 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
 
     @Override
     public boolean isRelevant(T object) {
-        boolean isCached = cache.containsKey(object);
-        return isCached ? cache.get(object) : computeIsRelevant(object);
+        return cache.computeIfAbsent(object, this::computeIsRelevant).booleanValue();
     }
 
     /**
@@ -106,7 +105,7 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
             double value = ranking.getMetric().getValue(object);
             double difference = value - getUpperLimit();
             isRelevant = difference > 0;
-            cache.put(object, isRelevant);
+            cache.put(object, Boolean.valueOf(isRelevant));
         }
         return isRelevant;
     }
@@ -125,7 +124,7 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
     public String toString() {
         return String.format(
             "OWL Entity popularity Based relevance policy (Mean %f Standard deviation: %f)",
-            getMean(), getStandardDeviation());
+            Double.valueOf(getMean()), Double.valueOf(getStandardDeviation()));
     }
 
     /** @return the mean */
@@ -173,7 +172,8 @@ public class AbstractRankingRelevancePolicy<T> implements RelevancePolicy<T> {
 
             @Override
             public String toString() {
-                return String.format("[%s, %s]", getLowerBound(), getUpperBound());
+                return String.format("[%s, %s]", Double.valueOf(getLowerBound()),
+                    Double.valueOf(getUpperBound()));
             }
         };
     }

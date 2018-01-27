@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -69,7 +71,6 @@ import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
-import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
 import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
@@ -79,7 +80,6 @@ import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
-import org.semanticweb.owlapi.model.OWLFacetRestriction;
 import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
@@ -284,7 +284,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             int i = 1;
             String newName = name;
             while (variable != null) {
-                newName = String.format("%s_%d", name, i++);
+                newName = String.format("%s_%d", name, Integer.valueOf(i++));
                 variable = getConstraintSystem().getVariable(newName);
             }
             GeneratedVariable<? extends OWLClassExpression> expressionGeneratedVariable =
@@ -419,19 +419,21 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         return toReturn;
     }
 
+    private <T extends OWLObject> T v(T t) {
+        return (T) t.accept(this);
+    }
+
     @Override
     public OWLObject visit(OWLAnnotation annotation) {
-        OWLAnnotationProperty property =
-            (OWLAnnotationProperty) annotation.getProperty().accept(this);
-        OWLAnnotationValue value = (OWLAnnotationValue) annotation.getValue().accept(this);
+        OWLAnnotationProperty property = v(annotation.getProperty());
+        OWLAnnotationValue value = v(annotation.getValue());
         return factory.getOWLAnnotation(property, value);
     }
 
     @Override
     public OWLObject visit(OWLAnnotationAssertionAxiom axiom) {
-        OWLAnnotationSubject generalisedSubject =
-            (OWLAnnotationSubject) axiom.getSubject().accept(this);
-        OWLAnnotation generalisedAnnotation = (OWLAnnotation) axiom.getAnnotation().accept(this);
+        OWLAnnotationSubject generalisedSubject = v(axiom.getSubject());
+        OWLAnnotation generalisedAnnotation = v(axiom.getAnnotation());
         return factory.getOWLAnnotationAssertionAxiom(generalisedSubject, generalisedAnnotation);
     }
 
@@ -449,8 +451,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     @Override
     public OWLObject visit(OWLAsymmetricObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLAsymmetricObjectPropertyAxiom(
-            (OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLAsymmetricObjectPropertyAxiom(v(property));
     }
 
     @Override
@@ -470,22 +471,20 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     public OWLObject visit(OWLClassAssertionAxiom axiom) {
         OWLClassExpression description = axiom.getClassExpression();
         OWLIndividual individual = axiom.getIndividual();
-        return factory.getOWLClassAssertionAxiom((OWLClassExpression) description.accept(this),
-            (OWLIndividual) individual.accept(this));
+        return factory.getOWLClassAssertionAxiom(v(description), v(individual));
     }
 
     @Override
     public OWLObject visit(OWLDataAllValuesFrom desc) {
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
-        return factory.getOWLDataAllValuesFrom((OWLDataPropertyExpression) property.accept(this),
-            (OWLDataRange) filler.accept(this));
+        return factory.getOWLDataAllValuesFrom(v(property), v(filler));
     }
 
     @Override
     public OWLObject visit(OWLDataComplementOf node) {
         OWLDataRange dataRange = node.getDataRange();
-        return factory.getOWLDataComplementOf((OWLDataRange) dataRange.accept(this));
+        return factory.getOWLDataComplementOf(v(dataRange));
     }
 
     @Override
@@ -493,16 +492,12 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         int cardinality = desc.getCardinality();
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
-        return factory.getOWLDataExactCardinality(cardinality,
-            (OWLDataPropertyExpression) property.accept(this), (OWLDataRange) filler.accept(this));
+        return factory.getOWLDataExactCardinality(cardinality, v(property), v(filler));
     }
 
     @Override
     public OWLObject visit(OWLDataHasValue desc) {
-        OWLDataPropertyExpression property = desc.getProperty();
-        OWLLiteral value = desc.getValue();
-        return factory.getOWLDataHasValue((OWLDataPropertyExpression) property.accept(this),
-            (OWLLiteral) value.accept(this));
+        return factory.getOWLDataHasValue(v(desc.getProperty()), v(desc.getFiller()));
     }
 
     @Override
@@ -510,8 +505,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         int cardinality = desc.getCardinality();
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
-        return factory.getOWLDataMaxCardinality(cardinality,
-            (OWLDataPropertyExpression) property.accept(this), (OWLDataRange) filler.accept(this));
+        return factory.getOWLDataMaxCardinality(cardinality, v(property), v(filler));
     }
 
     @Override
@@ -519,18 +513,12 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         int cardinality = desc.getCardinality();
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
-        return factory.getOWLDataMinCardinality(cardinality,
-            (OWLDataPropertyExpression) property.accept(this), (OWLDataRange) filler.accept(this));
+        return factory.getOWLDataMinCardinality(cardinality, v(property), v(filler));
     }
 
     @Override
     public OWLObject visit(OWLDataOneOf node) {
-        Set<OWLLiteral> values = node.getValues();
-        Set<OWLLiteral> instantiatedValues = new HashSet<>();
-        for (OWLLiteral constant : values) {
-            instantiatedValues.add((OWLLiteral) constant.accept(this));
-        }
-        return factory.getOWLDataOneOf(instantiatedValues);
+        return factory.getOWLDataOneOf(node.values().map(this::v));
     }
 
     @Override
@@ -549,51 +537,42 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         OWLIndividual subject = axiom.getSubject();
         OWLDataPropertyExpression property = axiom.getProperty();
         OWLLiteral object = axiom.getObject();
-        return factory.getOWLDataPropertyAssertionAxiom(
-            (OWLDataPropertyExpression) property.accept(this), (OWLIndividual) subject.accept(this),
-            (OWLLiteral) object.accept(this));
+        return factory.getOWLDataPropertyAssertionAxiom(v(property), v(subject), v(object));
     }
 
     @Override
     public OWLObject visit(OWLDataPropertyDomainAxiom axiom) {
         OWLClassExpression domain = axiom.getDomain();
         OWLDataPropertyExpression property = axiom.getProperty();
-        return factory.getOWLDataPropertyDomainAxiom(
-            (OWLDataPropertyExpression) property.accept(this),
-            (OWLClassExpression) domain.accept(this));
+        return factory.getOWLDataPropertyDomainAxiom(v(property), v(domain));
     }
 
     @Override
     public OWLObject visit(OWLDataPropertyRangeAxiom axiom) {
         OWLDataPropertyExpression property = axiom.getProperty();
         OWLDataRange range = axiom.getRange();
-        return factory.getOWLDataPropertyRangeAxiom(
-            (OWLDataPropertyExpression) property.accept(this), (OWLDataRange) range.accept(this));
+        return factory.getOWLDataPropertyRangeAxiom(v(property), v(range));
     }
 
     @Override
     public OWLObject visit(OWLDataSomeValuesFrom desc) {
         OWLDataRange filler = desc.getFiller();
         OWLDataPropertyExpression property = desc.getProperty();
-        return factory.getOWLDataSomeValuesFrom((OWLDataPropertyExpression) property.accept(this),
-            (OWLDataRange) filler.accept(this));
+        return factory.getOWLDataSomeValuesFrom(v(property), v(filler));
     }
 
     @Override
     public OWLObject visit(OWLDatatypeRestriction node) {
-        OWLDataRange dataRange = node.getDatatype();
-        Set<OWLFacetRestriction> facetRestrictions = node.getFacetRestrictions();
-        return factory.getOWLDatatypeRestriction((OWLDatatype) dataRange.accept(this),
-            facetRestrictions);
+        return factory.getOWLDatatypeRestriction(v(node.getDatatype()),
+            node.facetRestrictionsAsList());
     }
 
     @Override
     public OWLObject visit(OWLDifferentIndividualsAxiom axiom) {
-        Set<OWLIndividual> individuals = axiom.getIndividuals();
         Set<OWLIndividual> instatiatedDescriptions = new HashSet<>();
         MultiMap<OWLIndividual, OWLIndividual> generalisationMap = new MultiMap<>();
-        for (OWLIndividual individual : individuals) {
-            OWLIndividual generalised = (OWLIndividual) individual.accept(this);
+        for (OWLIndividual individual : axiom.getOperandsAsList()) {
+            OWLIndividual generalised = v(individual);
             generalisationMap.put(generalised, individual);
         }
         Set<InlineSet<OWLIndividual>> inlineSets = new HashSet<>(generalisationMap.keySet().size());
@@ -616,18 +595,17 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
                 getConstraintSystem(), VariableTypeFactory.getINDIVIDUALVariableType(), inlineSets,
                 instatiatedDescriptions.toArray(new OWLIndividual[instatiatedDescriptions.size()]));
             toReturn = dataFactory.getOWLDifferentIndividualsAxiom(set,
-                axiom.getIndividuals().size() == 2);
+                axiom.getOperandsAsList().size() == 2);
         }
         return toReturn;
     }
 
     @Override
     public OWLObject visit(OWLDisjointClassesAxiom axiom) {
-        Set<OWLClassExpression> descriptions = axiom.getClassExpressions();
         Set<OWLClassExpression> instatiatedDescriptions = new HashSet<>();
         MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
-        for (OWLClassExpression classExpression : descriptions) {
-            OWLClassExpression generalised = (OWLClassExpression) classExpression.accept(this);
+        for (OWLClassExpression classExpression : axiom.getOperandsAsList()) {
+            OWLClassExpression generalised = v(classExpression);
             generalisationMap.put(generalised, classExpression);
         }
         Set<InlineSet<OWLClassExpression>> inlineSets =
@@ -651,20 +629,18 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
                 InlineSet.buildInlineSet(dataFactory, getConstraintSystem(),
                     VariableTypeFactory.getCLASSVariableType(), inlineSets, instatiatedDescriptions
                         .toArray(new OWLClassExpression[instatiatedDescriptions.size()]));
-            toReturn = dataFactory.getOWLDisjointClassesAxiom(set,
-                axiom.getClassExpressions().size() == 2);
+            toReturn =
+                dataFactory.getOWLDisjointClassesAxiom(set, axiom.getOperandsAsList().size() == 2);
         }
         return toReturn;
     }
 
     @Override
     public OWLObject visit(OWLDisjointDataPropertiesAxiom axiom) {
-        Set<OWLDataPropertyExpression> properties = axiom.getProperties();
         Set<OWLDataPropertyExpression> instatiatedProperties = new HashSet<>();
         MultiMap<OWLDataPropertyExpression, OWLDataProperty> generalisationMap = new MultiMap<>();
-        for (OWLDataPropertyExpression property : properties) {
-            OWLDataPropertyExpression generalised =
-                (OWLDataPropertyExpression) property.accept(this);
+        for (OWLDataPropertyExpression property : axiom.getOperandsAsList()) {
+            OWLDataPropertyExpression generalised = v(property);
             generalisationMap.put(generalised, property.asOWLDataProperty());
         }
         Set<InlineSet<OWLDataPropertyExpression>> inlineSets =
@@ -689,20 +665,18 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
                 inlineSets,
                 instatiatedProperties.toArray(new OWLDataProperty[instatiatedProperties.size()]));
             toReturn = dataFactory.getOWLDisjointDataPropertiesAxiom(set,
-                axiom.getProperties().size() == 2);
+                axiom.getOperandsAsList().size() == 2);
         }
         return toReturn;
     }
 
     @Override
     public OWLObject visit(OWLDisjointObjectPropertiesAxiom axiom) {
-        Set<OWLObjectPropertyExpression> properties = axiom.getProperties();
         Set<OWLObjectPropertyExpression> instatiatedProperties = new HashSet<>();
         MultiMap<OWLObjectPropertyExpression, OWLObjectPropertyExpression> generalisationMap =
             new MultiMap<>();
-        for (OWLObjectPropertyExpression property : properties) {
-            OWLObjectPropertyExpression generalised =
-                (OWLObjectPropertyExpression) property.accept(this);
+        for (OWLObjectPropertyExpression property : axiom.getOperandsAsList()) {
+            OWLObjectPropertyExpression generalised = v(property);
             generalisationMap.put(generalised, property);
         }
         Set<InlineSet<OWLObjectPropertyExpression>> inlineSets =
@@ -727,90 +701,62 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
                 inlineSets, instatiatedProperties
                     .toArray(new OWLObjectPropertyExpression[instatiatedProperties.size()]));
             toReturn = dataFactory.getOWLDisjointObjectPropertiesAxiom(set,
-                axiom.getProperties().size() == 2);
+                axiom.getOperandsAsList().size() == 2);
         }
         return toReturn;
     }
 
     @Override
     public OWLObject visit(OWLDisjointUnionAxiom axiom) {
-        Set<OWLClassExpression> descriptions = axiom.getClassExpressions();
-        OWLClass owlClass = axiom.getOWLClass();
-        Set<OWLClassExpression> instantiatedDescriptions = axiom.getClassExpressions();
-        for (OWLClassExpression description : descriptions) {
-            instantiatedDescriptions.add((OWLClassExpression) description.accept(this));
-        }
-        return factory.getOWLDisjointUnionAxiom((OWLClass) owlClass.accept(this),
-            instantiatedDescriptions);
+        return factory.getOWLDisjointUnionAxiom(v(axiom.getOWLClass()),
+            axiom.classExpressions().map(this::v));
     }
 
     @Override
     public OWLObject visit(OWLEquivalentClassesAxiom axiom) {
-        Set<OWLClassExpression> descriptions = axiom.getClassExpressions();
-        Set<OWLClassExpression> instantiatedDescriptions = new HashSet<>();
-        for (OWLClassExpression description : descriptions) {
-            instantiatedDescriptions.add((OWLClassExpression) description.accept(this));
-        }
-        return factory.getOWLEquivalentClassesAxiom(instantiatedDescriptions);
+        return factory.getOWLEquivalentClassesAxiom(axiom.classExpressions().map(this::v));
     }
 
     @Override
     public OWLObject visit(OWLEquivalentDataPropertiesAxiom axiom) {
-        Set<OWLDataPropertyExpression> properties = axiom.getProperties();
-        Set<OWLDataPropertyExpression> instantiatedProperties = new HashSet<>();
-        for (OWLDataPropertyExpression dataPropertyExpression : properties) {
-            instantiatedProperties
-                .add((OWLDataPropertyExpression) dataPropertyExpression.accept(this));
-        }
-        return factory.getOWLEquivalentDataPropertiesAxiom(instantiatedProperties);
+        return factory.getOWLEquivalentDataPropertiesAxiom(asList(axiom.properties().map(this::v)));
     }
 
     @Override
     public OWLObject visit(OWLEquivalentObjectPropertiesAxiom axiom) {
-        Set<OWLObjectPropertyExpression> properties = axiom.getProperties();
-        Set<OWLObjectPropertyExpression> instantiatedProperties = new HashSet<>();
-        for (OWLObjectPropertyExpression objectPropertyExpression : properties) {
-            instantiatedProperties
-                .add((OWLObjectPropertyExpression) objectPropertyExpression.accept(this));
-        }
-        return factory.getOWLEquivalentObjectPropertiesAxiom(instantiatedProperties);
+        return factory
+            .getOWLEquivalentObjectPropertiesAxiom(asList(axiom.properties().map(this::v)));
     }
 
     @Override
     public OWLObject visit(OWLFunctionalDataPropertyAxiom axiom) {
         OWLDataPropertyExpression property = axiom.getProperty();
-        return factory
-            .getOWLFunctionalDataPropertyAxiom((OWLDataPropertyExpression) property.accept(this));
+        return factory.getOWLFunctionalDataPropertyAxiom(v(property));
     }
 
     @Override
     public OWLObject visit(OWLFunctionalObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLFunctionalObjectPropertyAxiom(
-            (OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLFunctionalObjectPropertyAxiom(v(property));
     }
 
     @Override
     public OWLObject visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLInverseFunctionalObjectPropertyAxiom(
-            (OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLInverseFunctionalObjectPropertyAxiom(v(property));
     }
 
     @Override
     public OWLObject visit(OWLInverseObjectPropertiesAxiom axiom) {
         OWLObjectPropertyExpression firstProperty = axiom.getFirstProperty();
         OWLObjectPropertyExpression secondProperty = axiom.getSecondProperty();
-        return factory.getOWLInverseObjectPropertiesAxiom(
-            (OWLObjectPropertyExpression) firstProperty.accept(this),
-            (OWLObjectPropertyExpression) secondProperty.accept(this));
+        return factory.getOWLInverseObjectPropertiesAxiom(v(firstProperty), v(secondProperty));
     }
 
     @Override
     public OWLObject visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLIrreflexiveObjectPropertyAxiom(
-            (OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLIrreflexiveObjectPropertyAxiom(v(property));
     }
 
     @Override
@@ -842,9 +788,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         OWLDataPropertyExpression property = axiom.getProperty();
         OWLIndividual subject = axiom.getSubject();
         OWLLiteral object = axiom.getObject();
-        return factory.getOWLNegativeDataPropertyAssertionAxiom(
-            (OWLDataPropertyExpression) property.accept(this), (OWLIndividual) subject.accept(this),
-            (OWLLiteral) object.accept(this));
+        return factory.getOWLNegativeDataPropertyAssertionAxiom(v(property), v(subject), v(object));
     }
 
     @Override
@@ -852,10 +796,9 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         OWLObjectPropertyExpression property = axiom.getProperty();
         OWLIndividual subject = axiom.getSubject();
         OWLIndividual object = axiom.getObject();
-        OWLIndividual instantiatedSubject = (OWLIndividual) subject.accept(this);
-        OWLObjectPropertyExpression instantiatedProperty =
-            (OWLObjectPropertyExpression) property.accept(this);
-        OWLIndividual instantiatedObject = (OWLIndividual) object.accept(this);
+        OWLIndividual instantiatedSubject = v(subject);
+        OWLObjectPropertyExpression instantiatedProperty = v(property);
+        OWLIndividual instantiatedObject = v(object);
         return factory.getOWLNegativeObjectPropertyAssertionAxiom(instantiatedProperty,
             instantiatedSubject, instantiatedObject);
     }
@@ -864,15 +807,13 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     public OWLClassExpression visit(OWLObjectAllValuesFrom desc) {
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
-        return factory.getOWLObjectAllValuesFrom(
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLClassExpression) filler.accept(this));
+        return factory.getOWLObjectAllValuesFrom(v(property), v(filler));
     }
 
     @Override
     public OWLClassExpression visit(OWLObjectComplementOf desc) {
         OWLClassExpression operand = desc.getOperand();
-        return factory.getOWLObjectComplementOf((OWLClassExpression) operand.accept(this));
+        return factory.getOWLObjectComplementOf(v(operand));
     }
 
     @Override
@@ -880,34 +821,25 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         int cardinality = desc.getCardinality();
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
-        return factory.getOWLObjectExactCardinality(cardinality,
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLClassExpression) filler.accept(this));
+        return factory.getOWLObjectExactCardinality(cardinality, v(property), v(filler));
     }
 
     @Override
     public OWLObject visit(OWLObjectHasSelf desc) {
         OWLObjectPropertyExpression property = desc.getProperty();
-        return factory.getOWLObjectHasSelf((OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLObjectHasSelf(v(property));
     }
 
     @Override
     public OWLClassExpression visit(OWLObjectHasValue desc) {
-        OWLObjectPropertyExpression property = desc.getProperty();
-        OWLIndividual value = desc.getValue();
-        return factory.getOWLObjectHasValue((OWLObjectPropertyExpression) property.accept(this),
-            (OWLIndividual) value.accept(this));
+        return factory.getOWLObjectHasValue(v(desc.getProperty()), v(desc.getFiller()));
     }
 
     @Override
     public OWLClassExpression visit(OWLObjectIntersectionOf desc) {
-        Set<OWLClassExpression> operands = desc.getOperands();
-        Set<OWLClassExpression> newOperands = new HashSet<>(operands.size());
         MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
-        for (OWLClassExpression classExpression : operands) {
-            OWLClassExpression generalised = (OWLClassExpression) classExpression.accept(this);
-            generalisationMap.put(generalised, classExpression);
-        }
+        desc.operands().forEach(c -> generalisationMap.put(v(c), c));
+        Set<OWLClassExpression> newOperands = new HashSet<>();
         for (OWLClassExpression generalisation : generalisationMap.keySet()) {
             if (generalisationMap.get(generalisation).size() > 1) {
                 newOperands.add(generalisation.accept(new FunctionGeneralisation() {
@@ -939,7 +871,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     @Override
     public OWLObject visit(OWLObjectInverseOf property) {
         OWLObjectPropertyExpression inverse = property.getInverse();
-        return factory.getOWLObjectInverseOf((OWLObjectProperty) inverse.accept(this));
+        return factory.getOWLObjectInverseOf(v(inverse).asOWLObjectProperty());
     }
 
     @Override
@@ -947,9 +879,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         int cardinality = desc.getCardinality();
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
-        return factory.getOWLObjectMaxCardinality(cardinality,
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLClassExpression) filler.accept(this));
+        return factory.getOWLObjectMaxCardinality(cardinality, v(property), v(filler));
     }
 
     @Override
@@ -957,15 +887,13 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         int cardinality = desc.getCardinality();
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
-        return factory.getOWLObjectMinCardinality(cardinality,
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLClassExpression) filler.accept(this));
+        return factory.getOWLObjectMinCardinality(cardinality, v(property), v(filler));
     }
 
     @Override
     public OWLObject visit(OWLObjectOneOf desc) {
         Set<OWLIndividual> instantiatedIndividuals =
-            new HashSet<>(this.generaliseCollection(desc.getIndividuals()));
+            new HashSet<>(this.generaliseCollection(desc.getOperandsAsList()));
         return factory.getOWLObjectOneOf(instantiatedIndividuals);
     }
 
@@ -985,52 +913,42 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         OWLIndividual subject = axiom.getSubject();
         OWLObjectPropertyExpression property = axiom.getProperty();
         OWLIndividual object = axiom.getObject();
-        return factory.getOWLObjectPropertyAssertionAxiom(
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLIndividual) subject.accept(this), (OWLIndividual) object.accept(this));
+        return factory.getOWLObjectPropertyAssertionAxiom(v(property), v(subject), v(object));
     }
 
     @Override
     public OWLObject visit(OWLObjectPropertyDomainAxiom axiom) {
         OWLClassExpression domain = axiom.getDomain();
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLObjectPropertyDomainAxiom(
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLClassExpression) domain.accept(this));
+        return factory.getOWLObjectPropertyDomainAxiom(v(property), v(domain));
     }
 
     @Override
     public OWLObject visit(OWLObjectPropertyRangeAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
         OWLClassExpression range = axiom.getRange();
-        return factory.getOWLObjectPropertyRangeAxiom(
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLClassExpression) range.accept(this));
+        return factory.getOWLObjectPropertyRangeAxiom(v(property), v(range));
     }
 
     @Override
     public OWLClassExpression visit(OWLObjectSomeValuesFrom desc) {
         OWLClassExpression filler = desc.getFiller();
         OWLObjectPropertyExpression property = desc.getProperty();
-        return factory.getOWLObjectSomeValuesFrom(
-            (OWLObjectPropertyExpression) property.accept(this),
-            (OWLClassExpression) filler.accept(this));
+        return factory.getOWLObjectSomeValuesFrom(v(property), v(filler));
     }
 
     @Override
     public OWLObject visit(OWLReflexiveObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLReflexiveObjectPropertyAxiom(
-            (OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLReflexiveObjectPropertyAxiom(v(property));
     }
 
     @Override
     public OWLObject visit(OWLSameIndividualAxiom axiom) {
-        Set<OWLIndividual> individuals = axiom.getIndividuals();
         Set<OWLIndividual> instatiatedDescriptions = new HashSet<>();
         MultiMap<OWLIndividual, OWLIndividual> generalisationMap = new MultiMap<>();
-        for (OWLIndividual individual : individuals) {
-            OWLIndividual generalised = (OWLIndividual) individual.accept(this);
+        for (OWLIndividual individual : axiom.getOperandsAsList()) {
+            OWLIndividual generalised = v(individual);
             generalisationMap.put(generalised, individual);
         }
         Set<InlineSet<OWLIndividual>> inlineSets = new HashSet<>(generalisationMap.keySet().size());
@@ -1053,15 +971,15 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
                 getConstraintSystem(), VariableTypeFactory.getINDIVIDUALVariableType(), inlineSets,
                 instatiatedDescriptions.toArray(new OWLIndividual[instatiatedDescriptions.size()]));
             toReturn =
-                dataFactory.getOWLSameIndividualAxiom(set, axiom.getIndividuals().size() == 2);
+                dataFactory.getOWLSameIndividualAxiom(set, axiom.getOperandsAsList().size() == 2);
         }
         return toReturn;
     }
 
     @Override
     public OWLObject visit(OWLSubClassOfAxiom axiom) {
-        OWLClassExpression superClass = (OWLClassExpression) axiom.getSuperClass().accept(this);
-        OWLClassExpression subClass = (OWLClassExpression) axiom.getSubClass().accept(this);
+        OWLClassExpression superClass = v(axiom.getSuperClass());
+        OWLClassExpression subClass = v(axiom.getSubClass());
         return factory.getOWLSubClassOfAxiom(subClass, superClass);
     }
 
@@ -1069,10 +987,8 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     public OWLObject visit(OWLSubDataPropertyOfAxiom axiom) {
         OWLDataPropertyExpression subProperty = axiom.getSubProperty();
         OWLDataPropertyExpression superProperty = axiom.getSuperProperty();
-        OWLDataPropertyExpression generalisedSubProperty =
-            (OWLDataPropertyExpression) subProperty.accept(this);
-        OWLDataPropertyExpression generalisedSuperProperty =
-            (OWLDataPropertyExpression) superProperty.accept(this);
+        OWLDataPropertyExpression generalisedSubProperty = v(subProperty);
+        OWLDataPropertyExpression generalisedSuperProperty = v(superProperty);
         return factory.getOWLSubDataPropertyOfAxiom(generalisedSubProperty,
             generalisedSuperProperty);
     }
@@ -1081,10 +997,8 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     public OWLObject visit(OWLSubObjectPropertyOfAxiom axiom) {
         OWLObjectPropertyExpression subProperty = axiom.getSubProperty();
         OWLObjectPropertyExpression superProperty = axiom.getSuperProperty();
-        OWLObjectPropertyExpression generalisedSubProperty =
-            (OWLObjectPropertyExpression) subProperty.accept(this);
-        return factory.getOWLSubObjectPropertyOfAxiom(generalisedSubProperty,
-            (OWLObjectPropertyExpression) superProperty.accept(this));
+        OWLObjectPropertyExpression generalisedSubProperty = v(subProperty);
+        return factory.getOWLSubObjectPropertyOfAxiom(generalisedSubProperty, v(superProperty));
     }
 
     @Override
@@ -1092,22 +1006,19 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         OWLObjectPropertyExpression superProperty = axiom.getSuperProperty();
         List<? extends OWLObjectPropertyExpression> instantiatedPropertyChain =
             new ArrayList<>(this.generaliseCollection(axiom.getPropertyChain()));
-        return factory.getOWLSubPropertyChainOfAxiom(instantiatedPropertyChain,
-            (OWLObjectPropertyExpression) superProperty.accept(this));
+        return factory.getOWLSubPropertyChainOfAxiom(instantiatedPropertyChain, v(superProperty));
     }
 
     @Override
     public OWLObject visit(OWLSymmetricObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLSymmetricObjectPropertyAxiom(
-            (OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLSymmetricObjectPropertyAxiom(v(property));
     }
 
     @Override
     public OWLObject visit(OWLTransitiveObjectPropertyAxiom axiom) {
         OWLObjectPropertyExpression property = axiom.getProperty();
-        return factory.getOWLTransitiveObjectPropertyAxiom(
-            (OWLObjectPropertyExpression) property.accept(this));
+        return factory.getOWLTransitiveObjectPropertyAxiom(v(property));
     }
 
     /** clear substitutions */
@@ -1115,14 +1026,8 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
         substitutions.clear();
     }
 
-    @SuppressWarnings("unchecked")
-    protected <O extends OWLObject> Collection<? extends O> generaliseCollection(
-        Collection<? extends O> collection) {
-        Set<O> toReturn = new HashSet<>();
-        for (O o : collection) {
-            toReturn.add((O) o.accept(this));
-        }
-        return toReturn;
+    protected <O extends OWLObject> Collection<O> generaliseCollection(Collection<O> collection) {
+        return asList(collection.stream().map(o -> v(o)).distinct());
     }
 
     /** @return the constraintSystem */
@@ -1147,13 +1052,9 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
 
     @Override
     public OWLClassExpression visit(OWLObjectUnionOf desc) {
-        Set<OWLClassExpression> operands = desc.getOperands();
-        Set<OWLClassExpression> newOperands = new HashSet<>(operands.size());
         MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
-        for (OWLClassExpression classExpression : operands) {
-            OWLClassExpression generalised = (OWLClassExpression) classExpression.accept(this);
-            generalisationMap.put(generalised, classExpression);
-        }
+        desc.operands().forEach(c -> generalisationMap.put(v(c), c));
+        Set<OWLClassExpression> newOperands = new HashSet<>();
         for (OWLClassExpression generalisation : generalisationMap.keySet()) {
             if (generalisationMap.get(generalisation).size() > 1) {
                 newOperands.add(generalisation.accept(new FunctionGeneralisation() {

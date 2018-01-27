@@ -165,7 +165,7 @@ public abstract class InlineSetBuilder<O extends OWLObject>
                 int i = 1;
                 String newName = name;
                 while (variable != null) {
-                    newName = String.format("%s_%d", name, i++);
+                    newName = String.format("%s_%d", name, Integer.valueOf(i++));
                     variable = getConstraintSystem().getVariable(newName);
                 }
                 GeneratedVariable<OWLObjectPropertyExpression> expressionGeneratedVariable =
@@ -469,7 +469,7 @@ public abstract class InlineSetBuilder<O extends OWLObject>
                 int i = 1;
                 String newName = name;
                 while (variable != null) {
-                    newName = String.format("%s_%d", name, i++);
+                    newName = String.format("%s_%d", name, Integer.valueOf(i++));
                     variable = getConstraintSystem().getVariable(newName);
                 }
                 GeneratedVariable<OWLClassExpression> expressionGeneratedVariable =

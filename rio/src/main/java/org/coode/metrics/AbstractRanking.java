@@ -29,7 +29,7 @@ import org.semanticweb.owlapi.util.MultiMap;
  */
 public abstract class AbstractRanking<T> implements Ranking<T> {
     private final Metric<T> metric;
-    private Double max = -1D;
+    private Double max = Double.valueOf(-1D);
 
     static class Entry {
         double key;
@@ -80,7 +80,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
 
         public void collect(Set<Double> set) {
             for (int i = 0; i < size; i++) {
-                set.add(list.get(i).key);
+                set.add(Double.valueOf(list.get(i).key));
             }
         }
     }
@@ -99,7 +99,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
             keyset = new double[keys.size()];
             Iterator<Double> it = keys.iterator();
             for (int i = 0; i < keyset.length; i++) {
-                keyset[i] = it.next();
+                keyset[i] = it.next().doubleValue();
             }
         }
 
@@ -124,7 +124,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
 
         public void collect(Set<Double> set) {
             for (int i = 0; i < size; i++) {
-                set.add(keyset[i]);
+                set.add(Double.valueOf(keyset[i]));
             }
         }
 
@@ -164,7 +164,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
             if (max.compareTo(value) < 0) {
                 max = value;
             }
-            valueList[i++] = value;
+            valueList[i++] = value.doubleValue();
             map.put(value, o);
         }
         // System.out.println("AbstractRanking.AbstractRanking() " +
@@ -172,7 +172,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
         // + map.keySet().size() + "\t" + size(valueList));
         dmap = new TinyDoubleMap(valueList, new ArrayList<>(map.keySet()));
         for (Double key : map.keySet()) {
-            dmap.add(key, map.get(key).size());
+            dmap.add(key.doubleValue(), map.get(key).size());
         }
         Collection<T> m = map.get(max);
         maxEntities = (T[]) Array.newInstance(clazz, m.size());
@@ -187,12 +187,12 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
     private static Double[] getDoubles() {
         Double[] d = new Double[1001];
         for (int i = 0; i < 1001; i++) {
-            d[i] = Math.rint(i) / 1000;
+            d[i] = Double.valueOf(Math.rint(i) / 1000);
         }
         return d;
     }
 
-    private Double filter(double value) {
+    private static Double filter(double value) {
         return doubles[(int) Math.rint(value * 1000)];
     }
 
@@ -203,7 +203,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
 
     @Override
     public final double getTopValue() {
-        return max;
+        return max.doubleValue();
     }
 
     @Override

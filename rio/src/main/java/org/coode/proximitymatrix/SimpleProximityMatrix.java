@@ -60,7 +60,7 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         if (distances.length() != objects.size()) {
             throw new IllegalArgumentException(
                 String.format("The object collection size %d != distances dimension %d",
-                    objects.size(), distances.length()));
+                    Integer.valueOf(objects.size()), Integer.valueOf(distances.length())));
         }
         if (filter == null) {
             throw new NullPointerException("The filter cannot be null");
@@ -75,7 +75,7 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         int size = this.objects.size();
         for (int i = 0; i < size; i++) {
             O object = this.objects.get(i);
-            this.objectIndex.put(object, i);
+            this.objectIndex.put(object, Integer.valueOf(i));
             for (int j = 0; j < size; j++) {
                 O anotherObject = this.objects.get(j);
                 double distanceValue = distances.get(i, j);
@@ -141,7 +141,7 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         this.objectIndex = new HashMap<>();
         for (O object : objects) {
             int j = 0;
-            this.objectIndex.put(object, i);
+            this.objectIndex.put(object, Integer.valueOf(i));
             for (O anotherObject : objects) {
                 double distanceValue = distance.getDistance(object, anotherObject);
                 distances.set(i, j, distanceValue);
@@ -199,16 +199,16 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
         }
     }
 
+    private static Integer NULL = Integer.valueOf(-1);
+
     @Override
     public int getRowIndex(O o) {
-        Integer index = this.objectIndex.get(o);
-        return index == null ? -1 : index;
+        return this.objectIndex.getOrDefault(o, NULL).intValue();
     }
 
     @Override
     public int getColumnIndex(O o) {
-        Integer index = this.objectIndex.get(o);
-        return index == null ? -1 : index;
+        return this.objectIndex.getOrDefault(o, NULL).intValue();
     }
 
     @Override

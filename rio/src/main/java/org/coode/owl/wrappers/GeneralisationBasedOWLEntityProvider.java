@@ -11,11 +11,9 @@
 package org.coode.owl.wrappers;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
@@ -23,12 +21,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase
     implements OWLEntityProvider {
     private final Set<OWLAxiom> axioms = new HashSet<>();
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            clear();
-            GeneralisationBasedOWLEntityProvider.this.loadDelegate();
-        }
+    private final OWLOntologyChangeListener listener = changes -> {
+        clear();
+        GeneralisationBasedOWLEntityProvider.this.loadDelegate();
     };
 
     /**
@@ -44,9 +39,7 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase
     }
 
     protected void loadDelegate() {
-        for (OWLAxiom ax : axioms) {
-            addAll(ax.getSignature());
-        }
+        axioms.stream().flatMap(OWLAxiom::signature).forEach(this::add);
     }
 
     /** dispose */

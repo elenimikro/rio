@@ -39,6 +39,7 @@ import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
+//XXX
 public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     protected final Set<OWLOntology> ontologies = new HashSet<>();
     private final OWLDataFactory dataFactory;
@@ -58,17 +59,9 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     private final RelevancePolicyOWLObjectGeneralisation replacer;
 
     void buildAxiomMap(Collection<? extends OWLOntology> ontos) {
-        Set<AxiomType<?>> types = new HashSet<>(AxiomType.AXIOM_TYPES);
-        types.remove(AxiomType.DECLARATION);
-        for (OWLOntology ontology : ontos) {
-            for (AxiomType<?> t : types) {
-                for (OWLAxiom ax : ontology.getAxioms(t)) {
-                    for (OWLEntity e : ax.getSignature()) {
-                        candidates.put(e, ax);
-                    }
-                }
-            }
-        }
+        ontos.stream().flatMap(OWLOntology::axioms)
+            .filter(ax -> !ax.getAxiomType().equals(AxiomType.DECLARATION))
+            .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
     /**
@@ -166,14 +159,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     }
 
     protected boolean isRelevant(OWLAxiom replaced) {
-        Set<OWLEntity> signature = replaced.getSignature();
-        boolean found = false;
-        Iterator<OWLEntity> iterator = signature.iterator();
-        while (!found && iterator.hasNext()) {
-            OWLEntity owlEntity = iterator.next();
-            found = getRelevancePolicy().isRelevant(owlEntity);
-        }
-        return found;
+        return replaced.signature().anyMatch(e -> getRelevancePolicy().isRelevant(e));
     }
 
     /** @return the ontologies */

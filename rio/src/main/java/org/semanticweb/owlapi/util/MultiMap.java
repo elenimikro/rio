@@ -18,8 +18,6 @@ import java.util.Set;
 public class MultiMap<Key, Value> implements Serializable {
 
     private static final long serialVersionUID = 30406L;
-    private static final int DEFAULT_INITIAL_CAPACITY = 5;
-    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
     private final Map<Key, Collection<Value>> map;
     private int size = 0;
 

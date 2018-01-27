@@ -20,7 +20,7 @@ public class SlowDoubleBag implements Iterable<Double> {
         @Override
         public Double next() {
             if (next < d.size) {
-                return d.get(next++);
+                return Double.valueOf(d.get(next++));
             }
             throw new ArrayIndexOutOfBoundsException(next);
         }

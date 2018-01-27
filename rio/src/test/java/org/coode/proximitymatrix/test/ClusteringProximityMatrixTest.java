@@ -11,6 +11,7 @@
 package org.coode.proximitymatrix.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -47,11 +48,11 @@ public class ClusteringProximityMatrixTest {
             DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(),
             ontology.getOWLOntologyManager());
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        entities.addAll(ontology.getSignature());
+        add(entities, ontology.signature());
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",
-            distanceMatrix.getObjects().size()));
+            Integer.valueOf(distanceMatrix.getObjects().size())));
         Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singleton(object));

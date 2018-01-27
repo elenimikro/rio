@@ -12,9 +12,9 @@ package org.coode.owl.structural.difference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** @author eleni */
 public class SomeDifferenceStructuralDifferenceReport implements StructuralDifferenceReport {
@@ -66,16 +66,8 @@ public class SomeDifferenceStructuralDifferenceReport implements StructuralDiffe
 
     @Override
     public String toString() {
-        StringBuilder out = new StringBuilder("Difference at position ");
-        Iterator<Integer> iterator = position.iterator();
-        while (iterator.hasNext()) {
-            int i = iterator.next();
-            out.append(i);
-            if (iterator.hasNext()) {
-                out.append(", ");
-            }
-        }
-        return out.toString();
+        return "Difference at position "
+            + position.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
     }
 
     @Override

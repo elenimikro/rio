@@ -1,9 +1,10 @@
 package org.coode.basetest;
 
 import static org.junit.Assert.assertEquals;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -160,10 +161,10 @@ public class TestOntologies {
     }
 
     public static void same(OWLOntology o1, OWLOntology o2) throws OWLOntologyStorageException {
-        Set<OWLAxiom> common = new HashSet<>(o1.getAxioms());
-        common.retainAll(o2.getAxioms());
-        o1.getOWLOntologyManager().removeAxioms(o1, common);
-        o2.getOWLOntologyManager().removeAxioms(o2, common);
+        Set<OWLAxiom> common = asSet(o1.axioms());
+        common.retainAll(asList(o2.axioms()));
+        o1.removeAxioms(common);
+        o2.removeAxioms(common);
         if (o1.getAxiomCount() == 0 && o2.getAxiomCount() == 0) {
             return;
         }

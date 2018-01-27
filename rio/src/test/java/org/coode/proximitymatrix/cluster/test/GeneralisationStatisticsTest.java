@@ -19,7 +19,6 @@ import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.DistanceCreator;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -44,19 +43,17 @@ public class GeneralisationStatisticsTest {
             GeneralisationStatistics.buildStatistics(model);
         double meanClusterCoveragePerGeneralisation =
             stats.getMeanClusterCoveragePerGeneralisation();
+        assertTrue(meanClusterCoveragePerGeneralisation < 1);
         System.out.println("GeneralisationStatisticsTest.testClusterCoverage() "
             + meanClusterCoveragePerGeneralisation);
-        assertTrue(Double.toString(meanClusterCoveragePerGeneralisation),
-            meanClusterCoveragePerGeneralisation < 1);
     }
 
     @Test
     public void testSmallOntologyClusterCoverage() {
         OWLOntology o = OntologyTestHelper.getSmallTestOntology();
-        for (OWLAxiom a : o.getAxioms()) {
-            System.out.println(
-                "GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() axiom: " + a);
-        }
+        o.axioms().forEach(a -> System.out.println(
+            "GeneralisationStatisticsTest.testSmallOntologyClusterCoverage() axiom: " + a));
+
         ClusterDecompositionModel<OWLEntity> model =
             ClusteringHelper.getSyntacticPopularityClusterModel(o);
         List<Cluster<OWLEntity>> clusterList = model.getClusterList();
@@ -74,10 +71,10 @@ public class GeneralisationStatisticsTest {
             GeneralisationStatistics.buildStatistics(model);
         double meanClusterCoveragePerGeneralisation =
             stats.getMeanClusterCoveragePerGeneralisation();
-        System.out.println("GeneralisationStatisticsTest.testClusterCoverage() "
-            + meanClusterCoveragePerGeneralisation);
-        assertTrue(Double.toString(meanClusterCoveragePerGeneralisation),
+        assertTrue("Expected " + meanClusterCoveragePerGeneralisation + " < 1",
             meanClusterCoveragePerGeneralisation < 1);
         assertEquals(0.875, meanClusterCoveragePerGeneralisation, 0.001);
+        System.out.println("GeneralisationStatisticsTest.testClusterCoverage() "
+            + meanClusterCoveragePerGeneralisation);
     }
 }

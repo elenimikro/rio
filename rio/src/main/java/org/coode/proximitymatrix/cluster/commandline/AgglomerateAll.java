@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster.commandline;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
@@ -62,9 +64,7 @@ public class AgglomerateAll extends AgglomeratorBase {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         IOUtils.loadIRIMappers(iris, manager);
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        for (OWLOntology ontology : manager.getOntologies()) {
-            entities.addAll(ontology.getSignature());
-        }
+        add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(manager.getOWLDataFactory(),
             new ReplacementByKindStrategy(manager.getOWLDataFactory()));
         final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
@@ -72,7 +72,7 @@ public class AgglomerateAll extends AgglomeratorBase {
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",
-            distanceMatrix.getObjects().size()));
+            Integer.valueOf(distanceMatrix.getObjects().size())));
         Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singletonList(object));
@@ -99,8 +99,9 @@ public class AgglomerateAll extends AgglomeratorBase {
             }
         }
         Set<Cluster<OWLEntity>> clusters = buildClusters(clusteringMatrix, distanceMatrix);
-        System.out.println(String.format(
-            "Finished clustering after %d agglomerations no of clusters %d", i, clusters.size()));
+        System.out
+            .println(String.format("Finished clustering after %d agglomerations no of clusters %d",
+                Integer.valueOf(i), Integer.valueOf(clusters.size())));
         Utils.save(clusters, manager, outfile);
     }
 
@@ -116,7 +117,7 @@ public class AgglomerateAll extends AgglomeratorBase {
             (Collection<? extends OWLEntity>) clusteringMatrix.getMinimumDistancePair().getFirst()),
             render((Collection<? extends OWLEntity>) clusteringMatrix.getMinimumDistancePair()
                 .getSecond()),
-            clusteringMatrix.getMinimumDistance()));
+            Double.valueOf(clusteringMatrix.getMinimumDistance())));
     }
 
     private static String render(Collection<? extends OWLEntity> cluster) {

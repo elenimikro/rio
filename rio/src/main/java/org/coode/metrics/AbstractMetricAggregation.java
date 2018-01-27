@@ -54,10 +54,9 @@ public abstract class AbstractMetricAggregation<O> implements Metric<O> {
     /**
      * @param metrics metrics
      * @param <S> type
-     * @param <T> value
      * @return sum
      */
-    public static <S, T extends Number> Metric<S> getSum(Collection<? extends Metric<S>> metrics) {
+    public static <S> Metric<S> getSum(Collection<? extends Metric<S>> metrics) {
         return new AbstractMetricAggregation<S>(new ArrayList<Metric<S>>(metrics)) {
             @Override
             protected double aggregate(double... values) {
@@ -73,11 +72,9 @@ public abstract class AbstractMetricAggregation<O> implements Metric<O> {
     /**
      * @param metrics metrics
      * @param <S> type
-     * @param <T> value
      * @return product
      */
-    public static <S, T extends Number> Metric<S> getProduct(
-        Collection<? extends Metric<S>> metrics) {
+    public static <S> Metric<S> getProduct(Collection<? extends Metric<S>> metrics) {
         return new AbstractMetricAggregation<S>(new ArrayList<Metric<S>>(metrics)) {
             @Override
             protected double aggregate(double... values) {

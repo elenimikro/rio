@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.distance.owl;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -42,17 +44,9 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     };
 
     protected void buildAxiomMap(Collection<? extends OWLOntology> ontos) {
-        Set<AxiomType<?>> types = new HashSet<>(AxiomType.AXIOM_TYPES);
-        types.remove(AxiomType.DECLARATION);
-        for (OWLOntology ontology : ontos) {
-            for (AxiomType<?> t : types) {
-                for (OWLAxiom ax : ontology.getAxioms(t)) {
-                    for (OWLEntity e : ax.getSignature()) {
-                        candidates.put(e, ax);
-                    }
-                }
-            }
-        }
+        ontos.stream().flatMap(OWLOntology::axioms)
+            .filter(a -> !a.getAxiomType().equals(AxiomType.DECLARATION))
+            .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
     /**
@@ -114,12 +108,8 @@ public class EditDistance implements AbstractAxiomBasedDistance {
         return editDistance;
     }
 
-    private Set<OWLEntity> extractOWLEntities(Collection<? extends OWLAxiom> axioms) {
-        Set<OWLEntity> toReturn = new HashSet<>();
-        for (OWLAxiom axiom : axioms) {
-            toReturn.addAll(axiom.getSignature());
-        }
-        return toReturn;
+    private static Set<OWLEntity> extractOWLEntities(Collection<? extends OWLAxiom> axioms) {
+        return asSet(axioms.stream().flatMap(OWLAxiom::signature));
     }
 
     private MultiMap<OWLAxiom, OWLAxiom> buildMap(OWLEntity owlEntity,

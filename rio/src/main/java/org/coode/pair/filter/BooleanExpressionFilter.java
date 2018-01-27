@@ -23,13 +23,14 @@ public abstract class BooleanExpressionFilter<O> implements PairFilter<O> {
     /**
      * @param filters filters
      */
+    @SafeVarargs
     public BooleanExpressionFilter(PairFilter<O>... filters) {
         if (filters == null) {
             throw new NullPointerException("The filters cannot be null");
         }
         if (filters.length < 1) {
-            throw new IllegalArgumentException(
-                String.format("The number of filters (%d) is not >1", filters.length));
+            throw new IllegalArgumentException(String.format("The number of filters (%d) is not >1",
+                Integer.valueOf(filters.length)));
         }
         this.filters = filters;
     }

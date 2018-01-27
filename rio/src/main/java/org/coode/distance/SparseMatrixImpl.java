@@ -75,19 +75,17 @@ public class SparseMatrixImpl implements SparseMatrix {
 
     @Override
     public double get(Object i, Object j) {
-        Integer index = objectIndex.get(i);
-        int rowIndex = index == null ? -1 : index;
-        if (rowIndex == -1) {
+        Integer rowIndex = objectIndex.get(i);
+        if (rowIndex == null) {
             throw new IllegalArgumentException(
                 String.format("%s is not contained in this table based distance", i));
         }
-        index = objectIndex.get(j);
-        int columnIndex = index == null ? -1 : index;
-        if (columnIndex == -1) {
+        Integer columnIndex = objectIndex.get(j);
+        if (columnIndex == null) {
             throw new IllegalArgumentException(
                 String.format("%s is not contained in this table based distance", j));
         }
-        return get(rowIndex, columnIndex);
+        return get(rowIndex.intValue(), columnIndex.intValue());
     }
 
     @Override
@@ -125,7 +123,7 @@ public class SparseMatrixImpl implements SparseMatrix {
     @Override
     public void setKeys(Collection<?> objects) {
         for (Object o : objects) {
-            objectIndex.put(o, objectIndex.size());
+            objectIndex.put(o, Integer.valueOf(objectIndex.size()));
         }
     }
 

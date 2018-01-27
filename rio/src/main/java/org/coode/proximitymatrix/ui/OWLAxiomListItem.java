@@ -53,7 +53,7 @@ public class OWLAxiomListItem {
 
     @Override
     public String toString() {
-        return String.format("%s[%d]", getAxiom(), getCount());
+        return String.format("%s[%d]", getAxiom(), Integer.valueOf(getCount()));
     }
 
     /** @return the instantiations */

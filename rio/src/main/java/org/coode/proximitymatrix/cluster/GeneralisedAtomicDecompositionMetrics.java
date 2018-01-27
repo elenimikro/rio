@@ -6,16 +6,15 @@ import java.util.Set;
 
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.MultiMap;
 
 import uk.ac.manchester.cs.atomicdecomposition.Atom;
 
 /** @author eleni */
 public class GeneralisedAtomicDecompositionMetrics {
-    private final GeneralisedAtomicDecomposition<OWLEntity> gad;
+    private final GeneralisedAtomicDecomposition gad;
 
-    private GeneralisedAtomicDecompositionMetrics(GeneralisedAtomicDecomposition<OWLEntity> gad) {
+    private GeneralisedAtomicDecompositionMetrics(GeneralisedAtomicDecomposition gad) {
         this.gad = gad;
     }
 
@@ -85,7 +84,7 @@ public class GeneralisedAtomicDecompositionMetrics {
      * @return AD metric
      */
     public static GeneralisedAtomicDecompositionMetrics buildMetrics(
-        GeneralisedAtomicDecomposition<OWLEntity> gad) {
+        GeneralisedAtomicDecomposition gad) {
         return new GeneralisedAtomicDecompositionMetrics(gad);
     }
 }

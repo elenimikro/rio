@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,7 +91,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLLiteral;
@@ -147,12 +146,8 @@ public class Utils {
 
         @Override
         public Boolean visit(IRI iri) {
-            for (OWLOntology ontology : ontologies) {
-                if (!cluster.containsAll(ontology.getEntitiesInSignature(iri))) {
-                    return false;
-                }
-            }
-            return true;
+            return Boolean.valueOf(ontologies.stream().flatMap(o -> o.entitiesInSignature(iri))
+                .allMatch(cluster::contains));
         }
     }
 
@@ -168,7 +163,7 @@ public class Utils {
             if (manager == null) {
                 throw new NullPointerException("The manager cannot be null");
             }
-            manager = manager;
+            this.manager = manager;
         }
 
         private final LinkedList<Set<OWLEntity>> stack = new LinkedList<Set<OWLEntity>>();
@@ -197,16 +192,7 @@ public class Utils {
         }
 
         private Set<OWLEntity> getOWLEntities(IRI iri) {
-            Set<OWLEntity> toReturn = new HashSet<OWLEntity>();
-            Iterator<OWLOntology> iterator = manager.getOntologies().iterator();
-            while (iterator.hasNext()) {
-                OWLOntology owlOntology = iterator.next();
-                Set<OWLEntity> entitiesInSignature = owlOntology.getEntitiesInSignature(iri);
-                if (!entitiesInSignature.isEmpty()) {
-                    toReturn.addAll(entitiesInSignature);
-                }
-            }
-            return toReturn;
+            return asSet(manager.ontologies().flatMap(o -> o.entitiesInSignature(iri)));
         }
 
         @Override
@@ -280,13 +266,8 @@ public class Utils {
         // int i = 0;
         Set<BindingNode> bindings = new HashSet<>(set.size());
         // I need to preload all the constants into a variable before I start
-        Set<OWLLiteral> constants = new HashSet<>();
-        for (OWLOntology ontology : ontologies) {
-            Set<OWLAxiom> axioms = ontology.getAxioms();
-            for (OWLAxiom axiom : axioms) {
-                add(constants, OWLObjectExtractor.getAllOWLLiterals(axiom));
-            }
-        }
+        Set<OWLLiteral> constants = asSet(ontologies.stream().flatMap(OWLOntology::axioms)
+            .flatMap(OWLObjectExtractor::getAllOWLLiterals));
         if (!constants.isEmpty()) {
             String constantVariableName = "?constant";
             InputVariable<?> constantVariable = constraintSystem.createVariable(
@@ -352,9 +333,10 @@ public class Utils {
                 if (split != null && split.length >= 2) {
                     try {
                         return createName(String.format("%s_%d", split[0],
-                            Integer.parseInt(split[split.length - 1]) + 1), names, rootNames);
+                            Integer.valueOf(split[split.length - 1] + 1)), names, rootNames);
                     } catch (NumberFormatException e) {
-                        return createName(String.format("%s_%d", string, 1), names, rootNames);
+                        return createName(String.format("%s_%d", string, Integer.valueOf(1)), names,
+                            rootNames);
                     }
                 } else {
                     return createName(String.format("%s_1", string), names, rootNames);
@@ -540,15 +522,9 @@ public class Utils {
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
         Collection<OWLEntity> cluster, Collection<OWLOntology> ontologies,
         OWLObjectGeneralisation generalisation) {
-        Set<OWLAxiom> ontologyAxioms = new HashSet<>();
-        for (OWLOntology ontology : ontologies) {
-            Set<OWLAnnotationAssertionAxiom> axioms =
-                ontology.getAxioms(AxiomType.ANNOTATION_ASSERTION);
-            Set<OWLDeclarationAxiom> declaxioms = ontology.getAxioms(AxiomType.DECLARATION);
-            ontologyAxioms.addAll(ontology.getAxioms());
-            ontologyAxioms.removeAll(axioms);
-            ontologyAxioms.removeAll(declaxioms);
-        }
+        Set<OWLAxiom> ontologyAxioms = asSet(ontologies.stream().flatMap(OWLOntology::axioms)
+            .filter(ax -> !ax.getAxiomType().equals(AxiomType.ANNOTATION_ASSERTION))
+            .filter(ax -> !ax.getAxiomType().equals(AxiomType.DECLARATION)));
         return buildGeneralisationMap(cluster, ontologies, generalisation, ontologyAxioms);
     }
 
@@ -559,13 +535,8 @@ public class Utils {
             new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
         for (OWLAxiom axiom : ontologyAxioms) {
-            Set<OWLEntity> signature = axiom.getSignature();
-            boolean intersection = false;
-            Iterator<OWLEntity> it = signature.iterator();
-            while (!intersection && it.hasNext()) {
-                intersection = cluster.contains(it.next());
-            }
-            if (intersection || axiom.accept(visitor)) {
+            boolean intersection = axiom.signature().anyMatch(cluster::contains);
+            if (intersection || axiom.accept(visitor).booleanValue()) {
                 generalisation.clearSubstitutions();
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
                 generalisationMap.put(generalised,
@@ -586,12 +557,7 @@ public class Utils {
         Set<OWLAxiom> axioms) {
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
         for (OWLAxiom axiom : axioms) {
-            Set<OWLEntity> signature = axiom.getSignature();
-            boolean intersection = false;
-            Iterator<OWLEntity> it = signature.iterator();
-            while (!intersection && it.hasNext()) {
-                intersection = cluster.contains(it.next());
-            }
+            boolean intersection = axiom.signature().anyMatch(cluster::contains);
             if (intersection) {
                 generalisation.clearSubstitutions();
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
@@ -654,9 +620,8 @@ public class Utils {
             && axiom.getAxiomType() != AxiomType.ANNOTATION_ASSERTION) {
             OWLOntologyAnnotationClusterDetector visitor =
                 new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
-            Set<OWLEntity> signature = new HashSet<>(axiom.getSignature());
-            signature.retainAll(cluster);
-            if (!signature.isEmpty() || axiom.accept(visitor)) {
+            boolean intersection = axiom.signature().anyMatch(cluster::contains);
+            if (intersection || axiom.accept(visitor).booleanValue()) {
                 generalisation.clearSubstitutions();
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
                 generalisationMap.put(generalised,
@@ -824,8 +789,8 @@ public class Utils {
         Iterator<Variable<?>> iterator = assignmentMap.keySet().iterator();
         while (iterator.hasNext()) {
             Variable<?> v = iterator.next();
-            formatter.format("%s count: %d%s", v.getName(), assignmentMap.get(v).size(),
-                iterator.hasNext() ? "; " : "");
+            formatter.format("%s count: %d%s", v.getName(),
+                Integer.valueOf(assignmentMap.get(v).size()), iterator.hasNext() ? "; " : "");
         }
         return formatter.toString();
     }
@@ -1103,8 +1068,7 @@ public class Utils {
      * @param <P> type
      */
     public static <P> void printExtraStats(File file, Collection<Cluster<P>> sortedClusters) {
-        try {
-            PrintStream out = new PrintStream(file.getName() + ".csv");
+        try (PrintStream out = new PrintStream(file.getName() + ".csv")) {
             int index = 0;
             out.println("cluster index, cluster size, "
                 + "average internal distance, average external distance, "
@@ -1120,7 +1084,6 @@ public class Utils {
                     + "," + stats.getMinExternalDistance() + ","
                     + (1 - stats.getAverageInternalDistance()));
             }
-            out.close();
         } catch (IOException e) {
             System.out.println(
                 "AtomicDecompositionDifferenceWrappingEquivalenceClassesAgglomerateAll.save() Cannot save extra metrics for "
