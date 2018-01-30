@@ -161,7 +161,7 @@ public class AxiomGeneralisationTreeNode extends DefaultTreeNode<OWLAxiom>
         return getUserObject().toString();
     }
 
-    private boolean areDifferencesWorthIt(Collection<? extends OWLAxiom> axioms) {
+    private static boolean areDifferencesWorthIt(Collection<? extends OWLAxiom> axioms) {
         if (axioms == null) {
             throw new NullPointerException("The collection cannot be null");
         }

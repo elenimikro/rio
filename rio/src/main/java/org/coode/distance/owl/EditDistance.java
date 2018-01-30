@@ -14,7 +14,6 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
@@ -23,7 +22,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
@@ -36,12 +34,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            EditDistance.this.buildAxiomMap(ontologies);
-        }
-    };
+    private final OWLOntologyChangeListener listener = changes -> buildAxiomMap(ontologies);
 
     protected void buildAxiomMap(Collection<? extends OWLOntology> ontos) {
         ontos.stream().flatMap(OWLOntology::axioms)

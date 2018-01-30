@@ -47,8 +47,7 @@ public class OWLAnnotationPropertyLeastCommonSubsumer
     }
 
     protected void handleSubAnnotationProperty(OWLAxiom ax) {
-        OWLAnnotationPropertyLeastCommonSubsumer.this.addParent(
-            ((OWLSubAnnotationPropertyOfAxiom) ax).getSubProperty(),
+        addParent(((OWLSubAnnotationPropertyOfAxiom) ax).getSubProperty(),
             ((OWLSubAnnotationPropertyOfAxiom) ax).getSuperProperty());
     }
 

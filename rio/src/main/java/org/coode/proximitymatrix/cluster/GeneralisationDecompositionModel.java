@@ -44,7 +44,6 @@ public class GeneralisationDecompositionModel<P extends OWLEntity>
     private final OWLOntology ontology;
     private static final Comparator<Set<?>> CLUSTER_SIZE_COMPARATOR =
         Collections.reverseOrder((cluster, anothercluster) -> {
-            // return cluster.size() - anothercluster.size();
             int sizeDifference = cluster.size() - anothercluster.size();
             return sizeDifference == 0 ? cluster.hashCode() - anothercluster.hashCode()
                 : sizeDifference;
@@ -150,11 +149,8 @@ public class GeneralisationDecompositionModel<P extends OWLEntity>
                     multiMap.get(exampleLogicGeneralisation);
                 OWLAxiomInstantiation exampleInst = collection.iterator().next();
                 AssignmentMap substitutions = exampleInst.getSubstitutions();
-                for (Variable<?> var : substitutions.getVariables()) {
-                    if (cluster.containsAll(substitutions.get(var))) {
-                        variableMap.put(cluster, var);
-                    }
-                }
+                substitutions.variables().filter(var -> cluster.containsAll(substitutions.get(var)))
+                    .forEach(var -> variableMap.put(cluster, var));
             }
         }
     }
@@ -173,9 +169,7 @@ public class GeneralisationDecompositionModel<P extends OWLEntity>
 
     @Override
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap() {
-        // if (sortedGeneralisationMap.size() < 2) {
         buildGeneralisationMap(ontology);
-        // }
         return sortedGeneralisationMap;
     }
 

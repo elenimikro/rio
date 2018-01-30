@@ -14,7 +14,6 @@
 package org.coode.owl.generalise;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.coode.oppl.Variable;
@@ -129,15 +128,18 @@ public class OWLAxiomInstantiation {
         if (parameters == null) {
             throw new NullPointerException("The value computation parameters cannot be null");
         }
-        boolean found = false;
-        Iterator<Variable<?>> iterator = bindingNode.getAssignedVariables().iterator();
-        while (!found && iterator.hasNext()) {
-            Variable<?> variable = iterator.next();
-            OWLObject assignmentValue = bindingNode.getAssignmentValue(variable, parameters);
-            Set<OWLObject> set = substitutions.get(variable);
-            found = set == null || set.size() > 1 || !set.contains(assignmentValue);// iterator().next().equals(assignmentValue);
-        }
+        boolean found = bindingNode.assignedVariables()
+            .anyMatch(v -> foundDisagreement(bindingNode, parameters, v));
         return !found;
+    }
+
+    protected boolean foundDisagreement(BindingNode bindingNode,
+        ValueComputationParameters parameters, Variable<?> variable) {
+        boolean found;
+        OWLObject assignmentValue = bindingNode.getAssignmentValue(variable, parameters);
+        Set<OWLObject> set = substitutions.get(variable);
+        found = set == null || set.size() > 1 || !set.contains(assignmentValue);
+        return found;
     }
 
     @Override

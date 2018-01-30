@@ -97,17 +97,8 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
      * @param distance distance
      */
     public SimpleProximityMatrix(Collection<? extends O> objects, Distance<O> distance) {
-        this(objects, distance, new PairFilter<O>() {
-            @Override
-            public boolean accept(O first, O second) {
-                return true;
-            }
-        }, new Comparator<Pair<O>>() {
-            @Override
-            public int compare(Pair<O> arg0, Pair<O> arg1) {
-                return arg0.hashCode() - arg1.hashCode();
-            }
-        });
+        this(objects, distance, (PairFilter<O>) (first, second) -> true,
+            (Comparator<Pair<O>>) (arg0, arg1) -> arg0.hashCode() - arg1.hashCode());
     }
 
     /**
@@ -225,9 +216,9 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
                 b.append(e.toString()).append(" [type ").append(e.getClass().getName())
                     .append("] ");
             }
-            throw new IllegalArgumentException(String.format(
-                "The object %s [type %s] is not contained in this matrix " + b.toString(), anObject,
-                anObject.getClass().getName()));
+            throw new IllegalArgumentException(
+                String.format("The object %s [type %s] is not contained in this matrix %s",
+                    anObject, anObject.getClass().getName(), b.toString()));
         }
         int column = this.getColumnIndex(anotherObject);
         if (column == -1) {
@@ -236,9 +227,9 @@ public class SimpleProximityMatrix<O> implements ProximityMatrix<O> {
                 b.append(e.toString()).append(" [type ").append(e.getClass().getName())
                     .append("] ");
             }
-            throw new IllegalArgumentException(String.format(
-                "The object %s [type %s] is not contained in this matrix " + b.toString(),
-                anotherObject, anotherObject.getClass().getName()));
+            throw new IllegalArgumentException(
+                String.format("The object %s [type %s] is not contained in this matrix %s",
+                    anotherObject, anotherObject.getClass().getName(), b.toString()));
         }
         return this.getDistance(row, column);
     }

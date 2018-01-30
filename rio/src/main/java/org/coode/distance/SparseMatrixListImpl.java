@@ -77,8 +77,6 @@ public class SparseMatrixListImpl implements SparseMatrix {
 
     @Override
     public void set(int _i, int _j, double d) {
-        // System.out.println("SparseMatrixSmallSize.set() " + _i + "\t" + _j +
-        // "\t" + d);
         if (_i < size && _j < size) {
             if (_i == _j) {
                 return;

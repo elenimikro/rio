@@ -23,7 +23,7 @@ public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase
     private final Set<OWLAxiom> axioms = new HashSet<>();
     private final OWLOntologyChangeListener listener = changes -> {
         clear();
-        GeneralisationBasedOWLEntityProvider.this.loadDelegate();
+        loadDelegate();
     };
 
     /**

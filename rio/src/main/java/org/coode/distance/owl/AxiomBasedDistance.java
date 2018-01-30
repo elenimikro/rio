@@ -15,8 +15,6 @@ package org.coode.distance.owl;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.coode.distance.entityrelevance.RelevancePolicy;
@@ -32,14 +30,13 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
-//XXX
+// XXX
 public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     protected final Set<OWLOntology> ontologies = new HashSet<>();
     private final OWLDataFactory dataFactory;
@@ -48,12 +45,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
     private final MultiMap<OWLAxiom, OWLAxiomInstantiation> instantiationMap = new MultiMap<>();
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            AxiomBasedDistance.this.buildAxiomMap(ontologies);
-        }
-    };
+    private final OWLOntologyChangeListener listener = changes -> buildAxiomMap(ontologies);
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
     private final RelevancePolicyOWLObjectGeneralisation replacer;

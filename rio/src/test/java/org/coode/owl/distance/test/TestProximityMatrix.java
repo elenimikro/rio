@@ -11,6 +11,7 @@
 package org.coode.owl.distance.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -40,10 +41,10 @@ public class TestProximityMatrix {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(
-            ontologyManager.getOntologies(), ontologyManager.getOWLDataFactory(),
+            asList(ontologyManager.ontologies()), ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
-            new SimpleProximityMatrix<>(ontology.getSignature(), axiomBasedDistance);
+            new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);
         ontology.signature().forEach(owlEntity -> ontology.signature()
             .forEach(anotherOWLEntity -> assertTrue(distanceMatrix.getDistance(owlEntity,
                 anotherOWLEntity) == axiomBasedDistance.getDistance(owlEntity, anotherOWLEntity))));
@@ -55,10 +56,10 @@ public class TestProximityMatrix {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         final AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(
-            ontologyManager.getOntologies(), ontologyManager.getOWLDataFactory(),
+            asList(ontologyManager.ontologies()), ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
-            new SimpleProximityMatrix<>(ontology.getSignature(), axiomBasedDistance);
+            new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);
         PairFilter<Collection<? extends OWLEntity>> pairFilter = (first, second) -> true;
         Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
@@ -82,10 +83,10 @@ public class TestProximityMatrix {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(
-            ontologyManager.getOntologies(), ontologyManager.getOWLDataFactory(),
+            asList(ontologyManager.ontologies()), ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
-            new SimpleProximityMatrix<>(ontology.getSignature(), axiomBasedDistance);
+            new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);
         ProximityMatrix<OWLEntity> reduced = distanceMatrix.reduce((first, second) -> true);
         ontology.signature().forEach(owlEntity -> ontology.signature()
             .forEach(anotherOWLEntity -> assertTrue(reduced.getDistance(owlEntity,

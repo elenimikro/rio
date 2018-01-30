@@ -38,25 +38,24 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     private final OWLEntity replacement;
     private final OWLDataFactory dataFactory;
     private final RelevancePolicy<OWLEntity> relevancePolicy;
-    private final static Properties properties = new Properties();
+    private final Properties properties = new Properties();
     protected final ReplacementStrategy defaultStrategy;
-    static {
-        try {
-            properties.load(ReplacementByKindStrategy.class.getResourceAsStream(
-                SingleOWLObjectReplacementByKindStrategy.class.getName() + ".properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * @param owlEntity owlEntity
-     * @param dataFactory dataFactory
+     * @param df dataFactory
      * @param relevancePolicy relevancePolicy
      */
-    public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity, OWLDataFactory dataFactory,
+    public SingleOWLObjectReplacementByKindStrategy(OWLEntity owlEntity, OWLDataFactory df,
         RelevancePolicy<OWLEntity> relevancePolicy) {
-        if (dataFactory == null) {
+        try {
+            properties.load(getClass().getResourceAsStream(
+                "/org.coode.distance.owl.SingleOWLObjectReplacementByKindStrategy.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (df == null) {
             throw new NullPointerException("The data factory cannot be null");
         }
         if (owlEntity == null) {
@@ -67,63 +66,46 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
         }
         this.relevancePolicy = relevancePolicy;
         this.owlEntity = owlEntity;
-        this.dataFactory = dataFactory;
+        dataFactory = df;
         defaultStrategy = new ReplacementByKindStrategy(getDataFactory());
-        delegate = new ReplacementStrategy() {
-            @Override
-            public <O extends OWLObject> O replace(O owlObject) {
-                return Utils.isEntity(owlObject) && SingleOWLObjectReplacementByKindStrategy.this
-                    .getRelevancePolicy().isRelevant((OWLEntity) owlObject) ? owlObject
-                        : defaultStrategy.replace(owlObject);
-            }
-        };
+        delegate = this::replaceDelegate;
         replacement = owlEntity.accept(new OWLEntityVisitorEx<OWLEntity>() {
             @Override
             public OWLAnnotationProperty visit(OWLAnnotationProperty property) {
-                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                    .getOWLAnnotationProperty(
-                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
+                return df.getOWLAnnotationProperty(getPlaceHolderIRI());
             }
 
             @Override
             public OWLClass visit(OWLClass cls) {
-                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                    .getOWLClass(SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
+                return df.getOWLClass(getPlaceHolderIRI());
             }
 
             @Override
             public OWLDataProperty visit(OWLDataProperty property) {
-                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                    .getOWLDataProperty(
-                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
+                return df.getOWLDataProperty(getPlaceHolderIRI());
             }
 
             @Override
             public OWLObjectProperty visit(OWLObjectProperty property) {
-                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                    .getOWLObjectProperty(
-                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
+                return df.getOWLObjectProperty(getPlaceHolderIRI());
             }
 
             @Override
             public OWLDatatype visit(OWLDatatype datatype) {
-                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                    .getOWLDatatype(
-                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
+                return df.getOWLDatatype(getPlaceHolderIRI());
             }
 
             @Override
             public OWLNamedIndividual visit(OWLNamedIndividual individual) {
-                return SingleOWLObjectReplacementByKindStrategy.this.getDataFactory()
-                    .getOWLNamedIndividual(
-                        SingleOWLObjectReplacementByKindStrategy.this.getPlaceHolderIRI());
+                return df.getOWLNamedIndividual(getPlaceHolderIRI());
+            }
+
+            protected IRI getPlaceHolderIRI() {
+                return IRI.create(properties.getProperty(IRI_PLACE_HOLDER));
             }
         });
     }
 
-    protected IRI getPlaceHolderIRI() {
-        return IRI.create(properties.getProperty(IRI_PLACE_HOLDER));
-    }
 
     /** @return the owlObject */
     public OWLObject getOWLObject() {
@@ -154,5 +136,11 @@ public class SingleOWLObjectReplacementByKindStrategy implements ReplacementStra
     /** @return the relevancePolicy */
     public RelevancePolicy<OWLEntity> getRelevancePolicy() {
         return relevancePolicy;
+    }
+
+    protected <O extends OWLObject> O replaceDelegate(O owlObject) {
+        return owlObject instanceof OWLEntity && relevancePolicy.isRelevant((OWLEntity) owlObject)
+            ? owlObject
+            : defaultStrategy.replace(owlObject);
     }
 }

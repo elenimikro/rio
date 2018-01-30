@@ -91,7 +91,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
                 }
             });
         }
-        OWLOntologyManagerBasedOWLAxiomProvider.this.notifyListeners();
+        notifyListeners();
     };
 
     /**

@@ -15,10 +15,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.AssignmentMap;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObject;
 
 /** @author eleni */
 public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
@@ -37,12 +35,8 @@ public class AssignmentMapBasedOWLEntityProvider implements OWLEntityProvider {
     }
 
     private void loadDelegate() {
-        Set<Variable<?>> variables = assignmentMap.getVariables();
-        for (Variable<?> variable : variables) {
-            Set<OWLObject> set = assignmentMap.get(variable);
-            set.stream().filter(a -> a instanceof OWLEntity)
-                .forEach(a -> delegate.add((OWLEntity) a));
-        }
+        assignmentMap.variables().forEach(v -> assignmentMap.get(v).stream()
+            .filter(a -> a instanceof OWLEntity).forEach(a -> delegate.add((OWLEntity) a)));
     }
 
     @Override

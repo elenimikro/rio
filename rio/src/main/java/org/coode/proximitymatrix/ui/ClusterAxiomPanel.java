@@ -93,17 +93,16 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
         this.add(new JScrollPane(this.axiomList), BorderLayout.CENTER);
         this.axiomList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
             DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
-            Object toRender =
-                String.format("%s [%d] %s", ClusterAxiomPanel.this.render(value.getAxiom()),
-                    Integer.valueOf(value.getCount()), Utils.renderInstantiationsStats(
-                        Utils.buildAssignmentMap(value.getInstantiations())));
+            Object toRender = String.format("%s [%d] %s", render(value.getAxiom()),
+                Integer.valueOf(value.getCount()), Utils.renderInstantiationsStats(
+                    Utils.buildAssignmentMap(value.getInstantiations())));
             return defaultListCellRenderer.getListCellRendererComponent(list, toRender, index,
                 isSelected, cellHasFocus);
         });
         this.variableList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
             DefaultListCellRenderer defaultListCellRenderer = new DefaultListCellRenderer();
-            Object toRender = ClusterAxiomPanel.this.getGeneralisation() != null
-                ? value.render(ClusterAxiomPanel.this.getGeneralisation().getConstraintSystem())
+            Object toRender = getGeneralisation() != null
+                ? value.render(getGeneralisation().getConstraintSystem())
                 : value;
             return defaultListCellRenderer.getListCellRendererComponent(list, toRender, index,
                 isSelected, cellHasFocus);
@@ -111,8 +110,7 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
     }
 
     protected String render(OWLAxiom axiom) {
-        String toReturn = axiom.toString();
-        return toReturn;
+        return axiom.toString();
     }
 
     /**
@@ -138,8 +136,7 @@ public class ClusterAxiomPanel<O extends OWLEntity> extends JPanel {
 
             @Override
             protected String render(OWLAxiom axiom) {
-                String toReturn = renderer.render(axiom);
-                return toReturn;
+                return renderer.render(axiom);
             }
         };
     }

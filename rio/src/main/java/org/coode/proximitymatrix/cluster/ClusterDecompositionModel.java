@@ -93,11 +93,8 @@ public class ClusterDecompositionModel<P> implements RegularitiesDecompositionMo
                     multiMap.get(exampleLogicGeneralisation);
                 OWLAxiomInstantiation exampleInst = collection.iterator().next();
                 AssignmentMap substitutions = exampleInst.getSubstitutions();
-                for (Variable<?> var : substitutions.getVariables()) {
-                    if (cluster.containsAll(substitutions.get(var))) {
-                        variableMap.put(cluster, var);
-                    }
-                }
+                substitutions.variables().filter(var -> cluster.containsAll(substitutions.get(var)))
+                    .forEach(var -> variableMap.put(cluster, var));
             }
         }
     }
@@ -117,9 +114,7 @@ public class ClusterDecompositionModel<P> implements RegularitiesDecompositionMo
     @Override
     public MultiMap<OWLAxiom, OWLAxiomInstantiation> getGeneralisationMap() {
         MultiMap<OWLAxiom, OWLAxiomInstantiation> map = new MultiMap<>();
-        for (Cluster<P> c : fullGeneralisationMap.keySet()) {
-            map.putAll(fullGeneralisationMap.get(c));
-        }
+        fullGeneralisationMap.values().forEach(map::putAll);
         return map;
     }
 }

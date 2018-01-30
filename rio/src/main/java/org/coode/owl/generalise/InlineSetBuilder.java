@@ -489,16 +489,16 @@ public abstract class InlineSetBuilder<O extends OWLObject>
     static <O extends OWLObject> InlineSet<O> buildSingletonInlineSet(O object,
         VariableType<O> variableType, OWLDataFactory dataFactory,
         ConstraintSystem constraintSystem) {
-        Aggregandum<Collection<? extends O>> aggregandums =
-            Adapter.buildAggregandumOfCollection(object);
+        Aggregandum<Collection<O>> aggregandums = Adapter.buildAggregandumOfCollection(object);
         return new InlineSet<>(variableType, Collections.singleton(aggregandums), dataFactory,
             constraintSystem);
     }
 
     protected static <O extends OWLObject> InlineSet<O> buildVariableValuesInlineSet(
         Variable<O> variable, OWLDataFactory dataFactory, ConstraintSystem constraintSystem) {
-        Aggregandum<Collection<? extends O>> aggregandums = Adapter.buildAggregandumCollection(
-            Collections.singleton(ValuesVariableAtttribute.getValuesVariableAtttribute(variable)));
+        ValuesVariableAtttribute<O> valuesVariableAtttribute = ValuesVariableAtttribute.getValuesVariableAtttribute(variable);
+        Aggregandum<Collection<O>> aggregandums = Adapter.buildAggregandumCollection(
+            Collections.singleton(valuesVariableAtttribute));
         return new InlineSet<>(variable.getType(), Collections.singleton(aggregandums), dataFactory,
             constraintSystem);
     }

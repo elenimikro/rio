@@ -62,8 +62,6 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
                 clusterSet.add((OWLEntity) e);
             }
             Variable<?> variable = Utils.getVariable(clusterSet, this.model.get(cluster));
-            // Variable<?> variable = this.model
-            // .getVariableRepresentative(cluster);
             if (variable != null) {
                 variableMap.put(variable, cluster);
             }
@@ -74,12 +72,8 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
             MultiMap<Variable<?>, OWLObject> map = new MultiMap<>();
             for (OWLAxiomInstantiation inst : instantiations) {
                 AssignmentMap substitutions = inst.getSubstitutions();
-                Set<Variable<?>> variables = substitutions.getVariables();
-                for (Variable<?> v : variables) {
-                    map.putAll(v, substitutions.get(v));
-                }
+                substitutions.variables().forEach(v -> map.putAll(v, substitutions.get(v)));
             }
-            // double genCoverage = 0;
             for (Variable<?> v : map.keySet()) {
                 double count = 0;
                 if (v != null) {
@@ -90,7 +84,6 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
                 }
                 genCoverage += count / map.keySet().size();
             }
-            // sumGenCoverage += genCoverage
         }
         if (genMap.keySet().isEmpty()) {
             throw new IllegalStateException("The map cannot be empty at this point");
@@ -123,10 +116,7 @@ public class GeneralisationStatistics<C extends Set<P>, P> {
     }
 
     /** build descriptive statistics */
-    public void buildDescriptiveStatistics() {
-        // DescriptiveStatistics stats = new DescriptiveStatistics();
-        // stats.a
-    }
+    public void buildDescriptiveStatistics() {}
 
     /** @return stats */
     public List<SimpleMetric<?>> getStats() {

@@ -40,8 +40,7 @@ public class OWLClassLeastCommonSubsumer extends LeastCommonSubsumer<OWLClass, O
     private void handleSubClassOf(OWLAxiom a) {
         OWLSubClassOfAxiom ax = (OWLSubClassOfAxiom) a;
         if (!ax.getSubClass().isAnonymous() && !ax.getSuperClass().isAnonymous()) {
-            OWLClassLeastCommonSubsumer.this.addParent(ax.getSubClass().asOWLClass(),
-                ax.getSuperClass().asOWLClass());
+            addParent(ax.getSubClass().asOWLClass(), ax.getSuperClass().asOWLClass());
         }
     }
 
@@ -52,15 +51,12 @@ public class OWLClassLeastCommonSubsumer extends LeastCommonSubsumer<OWLClass, O
             OWLClass owlClass = results.get(0);
             results.remove(owlClass);
             Set<OWLClass> parents = getParents(owlClass);
-            // System.out.println(String.format("Child: %s Parents %s",
-            // owlClass, parents));
             for (OWLClass parent : parents) {
                 removeDescendants(parent, results);
                 if (!results.contains(parent)) {
                     results.add(parent);
                 }
             }
-            // System.out.println(results);
         }
         return results.get(0);
     }

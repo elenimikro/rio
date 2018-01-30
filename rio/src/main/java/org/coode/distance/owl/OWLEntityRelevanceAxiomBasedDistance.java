@@ -15,12 +15,9 @@ package org.coode.distance.owl;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,11 +31,9 @@ import org.coode.owl.generalise.structural.RelevancePolicyOWLObjectGeneralisatio
 import org.coode.owl.generalise.structural.SingleOWLEntityReplacementVariableProvider;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
-import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
@@ -53,17 +48,10 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     private final Set<OWLEntity> ontologySignature = new HashSet<>();
     private final OWLEntityProvider entityProvider;
     private final OPPLFactory factory;
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            OWLEntityRelevanceAxiomBasedDistance.this.buildOntologySignature();
-            OWLEntityRelevanceAxiomBasedDistance.this.buildAxiomEntityMap(ontologies);
-        }
+    private final OWLOntologyChangeListener listener = changes -> {
+        buildOntologySignature();
+        buildAxiomEntityMap(ontologies);
     };
-    private final static List<AxiomType<?>> types = new ArrayList<>(AxiomType.AXIOM_TYPES);
-    static {
-        types.remove(AxiomType.DECLARATION);
-    }
 
     protected void buildAxiomEntityMap(Collection<? extends OWLOntology> ontos) {
         ontos.stream().flatMap(OWLOntology::axioms)

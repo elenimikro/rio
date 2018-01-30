@@ -93,12 +93,8 @@ public class LexicalClusterModel
         }
         OWLAxiomInstantiation inst = multiMap.getAllValues().iterator().next();
         AssignmentMap substitutions = inst.getSubstitutions();
-        for (Variable<?> v : substitutions.getVariables()) {
-            if (c.containsAll(substitutions.get(v))) {
-                return v;
-            }
-        }
-        return null;
+        return substitutions.variables().filter(var -> c.containsAll(substitutions.get(var)))
+            .findAny().orElse(null);
     }
 
     @Override

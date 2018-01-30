@@ -19,7 +19,6 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,7 +39,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
@@ -81,12 +79,9 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
     private final Set<OWLEntity> ontologySignature = new HashSet<>();
     private final AxiomRelevanceMap axiomRelevanceMap;
     private final OPPLFactory opplfactory;
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            StructuralAxiomRelevanceAxiomBasedDistance.this.buildOntologySignature();
-            StructuralAxiomRelevanceAxiomBasedDistance.this.buildAxiomEntityMap(ontologies);
-        }
+    private final OWLOntologyChangeListener listener = changes -> {
+        buildOntologySignature();
+        buildAxiomEntityMap(ontologies);
     };
 
     protected void buildAxiomEntityMap(Collection<? extends OWLOntology> ontos) {

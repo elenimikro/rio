@@ -13,6 +13,8 @@
  */
 package org.coode.proximitymatrix.ui;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -208,15 +210,16 @@ public class ClusteringGUI extends JFrame {
             String fileName = dialog.getFile();
             if (fileName != null) {
                 try {
-                    OWLOntology ontology = manager.getOntologies().iterator().next();
+                    List<OWLOntology> ontologeis = asList(manager.ontologies());
+                    OWLOntology ontology = ontologeis.get(0);
                     OPPLFactory factory = new OPPLFactory(manager, ontology, null);
                     ConstraintSystem constraintSystem = factory.createConstraintSystem();
                     SortedSet<Cluster<OWLEntity>> sortedClusters =
                         new TreeSet<>(ClusterStatisticsTableModel.SIZE_COMPARATOR);
                     sortedClusters.addAll(buildClusters());
-                    OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                        sortedClusters, manager.getOntologies(), constraintSystem);
-                    Document xml = Utils.toXML(sortedClusters, manager.getOntologies(),
+                    OWLObjectGeneralisation generalisation = Utils
+                        .getOWLObjectGeneralisation(sortedClusters, ontologeis, constraintSystem);
+                    Document xml = Utils.toXML(sortedClusters, ontologeis,
                         new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation);
                     Transformer t = TransformerFactory.newInstance().newTransformer();
                     StreamResult result =
@@ -371,7 +374,7 @@ public class ClusteringGUI extends JFrame {
             new OWLEntityReplacer(manager.getOWLDataFactory(),
                 new ReplacementByKindStrategy(manager.getOWLDataFactory()));
         final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-            manager.getOntologies(), owlEntityReplacer, manager);
+            asList(manager.ontologies()), owlEntityReplacer, manager);
         // final Distance<OWLEntity> distance = new EditDistance(
         // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
         // this.manager);
@@ -509,16 +512,17 @@ public class ClusteringGUI extends JFrame {
                         clusterSummaryPanel.setCluster((Cluster<OWLEntity>) valueAt);
                         OWLObjectGeneralisation generalisation;
                         try {
-                            OWLOntology ontology = manager.getOntologies().iterator().next();
+                            List<OWLOntology> ontologies = asList(manager.ontologies());
+                            OWLOntology ontology = ontologies.get(0);
                             OPPLFactory factory = new OPPLFactory(manager, ontology, null);
                             ConstraintSystem constraintSystem = factory.createConstraintSystem();
                             SortedSet<Cluster<OWLEntity>> sortedClusters =
                                 new TreeSet<>(ClusterStatisticsTableModel.SIZE_COMPARATOR);
                             sortedClusters.addAll(ClusteringGUI.this.buildClusters());
                             generalisation = Utils.getOWLObjectGeneralisation(sortedClusters,
-                                manager.getOntologies(), constraintSystem);
-                            clusterAxiomPanel.setCluster((Cluster<OWLEntity>) valueAt,
-                                manager.getOntologies(), generalisation);
+                                ontologies, constraintSystem);
+                            clusterAxiomPanel.setCluster((Cluster<OWLEntity>) valueAt, ontologies,
+                                generalisation);
                         } catch (Exception exception) {
                             JOptionPane.showMessageDialog(ClusteringGUI.this,
                                 exception.getMessage());

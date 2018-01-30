@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,7 +37,6 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
@@ -55,12 +53,9 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
     private final OWLEntityProvider entityProvider;
     private final OWLEntityReplacer replacer;
     private final OPPLFactory factory;
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            AxiomRelevanceAxiomBasedDistance.this.buildOntologySignature();
-            AxiomRelevanceAxiomBasedDistance.this.buildAxiomEntityMap(ontologies);
-        }
+    private final OWLOntologyChangeListener listener = changes -> {
+        buildOntologySignature();
+        buildAxiomEntityMap(ontologies);
     };
     private final static List<AxiomType<?>> types = new ArrayList<>(AxiomType.LOGICAL_AXIOM_TYPES);
 

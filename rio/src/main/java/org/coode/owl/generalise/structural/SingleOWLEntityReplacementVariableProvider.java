@@ -31,6 +31,55 @@ import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 /** @author eleni */
 public class SingleOWLEntityReplacementVariableProvider extends VariableProvider {
+    class VariableVisitor implements VariableTypeVisitorEx<Variable<?>> {
+        @Override
+        public Variable<?> visitCLASSVariableType(CLASSVariableType classVariableType) {
+            return createVariable("?owlClass", classVariableType);
+        }
+
+        /**
+         * @param type type
+         * @return variable
+         */
+        protected Variable<?> createVariable(String name, VariableType<?> type) {
+            try {
+                return getConstraintSystem().createVariableWithVerifiedName(name, type, null);
+            } catch (OPPLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        public Variable<?> visitOBJECTPROPERTYVariableType(
+            OBJECTPROPERTYVariableType objectpropertyVariableType) {
+            return createVariable("?owlObjectproperty", objectpropertyVariableType);
+        }
+
+        @Override
+        public Variable<?> visitDATAPROPERTYVariableType(
+            DATAPROPERTYVariableType datapropertyVariableType) {
+            return createVariable("?owlDatatypeProperty", datapropertyVariableType);
+        }
+
+        @Override
+        public Variable<?> visitINDIVIDUALVariableType(
+            INDIVIDUALVariableType individualVariableType) {
+            return createVariable("?owlIndividual", individualVariableType);
+        }
+
+        @Override
+        public Variable<?> visitCONSTANTVariableType(CONSTANTVariableType constantVariableType) {
+            return createVariable("?owlLiteral", constantVariableType);
+        }
+
+        @Override
+        public Variable<?> visitANNOTATIONPROPERTYVariableType(
+            ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+            return createVariable("?owlAnnotationProperty", annotationpropertyVariableType);
+        }
+    }
+
     private static final class AbstractingVisitor implements OWLObjectVisitorEx<Variable<?>> {
         private SingleOWLEntityReplacementVariableProvider _this;
 
@@ -61,6 +110,7 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
     private OWLObject owlObject;
     private final RelevancePolicy<OWLEntity> relevancePolicy;
     private final AbstractingVisitor abstracter;
+    private VariableVisitor varVisitor = new VariableVisitor();
 
     /**
      * @param relevancePolicy relevancePolicy
@@ -88,56 +138,7 @@ public class SingleOWLEntityReplacementVariableProvider extends VariableProvider
         Variable<?> toReturn = null;
         VariableType<?> variableType = VariableTypeFactory.getVariableType(object);
         if (variableType != null) {
-            toReturn = variableType.accept(new VariableTypeVisitorEx<Variable<?>>() {
-                @Override
-                public Variable<?> visitCLASSVariableType(CLASSVariableType classVariableType) {
-                    return createVariable("?owlClass", classVariableType);
-                }
-
-                /**
-                 * @param type type
-                 * @return variable
-                 */
-                protected Variable<?> createVariable(String name, VariableType<?> type) {
-                    try {
-                        return SingleOWLEntityReplacementVariableProvider.this.getConstraintSystem()
-                            .createVariableWithVerifiedName(name, type, null);
-                    } catch (OPPLException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-                }
-
-                @Override
-                public Variable<?> visitOBJECTPROPERTYVariableType(
-                    OBJECTPROPERTYVariableType objectpropertyVariableType) {
-                    return createVariable("?owlObjectproperty", objectpropertyVariableType);
-                }
-
-                @Override
-                public Variable<?> visitDATAPROPERTYVariableType(
-                    DATAPROPERTYVariableType datapropertyVariableType) {
-                    return createVariable("?owlDatatypeProperty", datapropertyVariableType);
-                }
-
-                @Override
-                public Variable<?> visitINDIVIDUALVariableType(
-                    INDIVIDUALVariableType individualVariableType) {
-                    return createVariable("?owlIndividual", individualVariableType);
-                }
-
-                @Override
-                public Variable<?> visitCONSTANTVariableType(
-                    CONSTANTVariableType constantVariableType) {
-                    return createVariable("?owlLiteral", constantVariableType);
-                }
-
-                @Override
-                public Variable<?> visitANNOTATIONPROPERTYVariableType(
-                    ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
-                    return createVariable("?owlAnnotationProperty", annotationpropertyVariableType);
-                }
-            });
+            toReturn = variableType.accept(varVisitor);
         }
         return toReturn;
     }

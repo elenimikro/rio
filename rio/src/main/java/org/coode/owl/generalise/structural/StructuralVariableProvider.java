@@ -22,6 +22,22 @@ import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 /** @author eleni */
 public class StructuralVariableProvider extends VariableProvider {
+    class VarVisitor implements OWLObjectVisitorEx<VariableType<?>> {
+
+        @Override
+        public <T> VariableType<?> doDefault(T object) {
+            return VariableTypeFactory.getVariableType((OWLObject) object);
+        }
+
+        @Override
+        public VariableType<?> visit(IRI iri) {
+            OWLObject owlEntity = getOWLEntity(iri);
+            return owlEntity != null ? VariableTypeFactory.getVariableType(owlEntity) : null;
+        }
+    }
+
+    private VarVisitor visitor = new VarVisitor();
+
     /**
      * @param entityProvider entityProvider
      * @param constraintSystem constraintSystem
@@ -34,18 +50,7 @@ public class StructuralVariableProvider extends VariableProvider {
 
     @Override
     protected Variable<?> getAbstractingVariable(OWLObject owlObject) {
-        VariableType<?> type = owlObject.accept(new OWLObjectVisitorEx<VariableType<?>>() {
-            @Override
-            public <T> VariableType<?> doDefault(T object) {
-                return VariableTypeFactory.getVariableType(owlObject);
-            }
-
-            @Override
-            public VariableType<?> visit(IRI iri) {
-                OWLObject owlEntity = StructuralVariableProvider.this.getOWLEntity(iri);
-                return owlEntity != null ? VariableTypeFactory.getVariableType(owlEntity) : null;
-            }
-        });
+        VariableType<?> type = owlObject.accept(visitor);
         Variable<?> toReturn = null;
         if (type != null) {
             newVariable(type);

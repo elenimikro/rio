@@ -44,16 +44,13 @@ public class OWLEntityReplacementVariableProvider
             @Override
             public <T> Variable<?> doDefault(T _object) {
                 OWLEntity object = (OWLEntity) _object;
-                return object.equals(OWLEntityReplacementVariableProvider.this.getOWLObject())
-                    ? null
-                    : OWLEntityReplacementVariableProvider.this.getRelevancePolicy()
-                        .isRelevant(object) ? null
-                            : OWLEntityReplacementVariableProvider.this.getVariable(object);
+                return object.equals(getOWLObject()) ? null
+                    : getRelevancePolicy().isRelevant(object) ? null : getVariable(object);
             }
 
             @Override
             public Variable<?> visit(IRI iri) {
-                OWLObject owlEntity = OWLEntityReplacementVariableProvider.this.getOWLEntity(iri);
+                OWLObject owlEntity = getOWLEntity(iri);
                 return owlEntity != null ? owlEntity.accept(this) : null;
             }
         });
@@ -69,7 +66,7 @@ public class OWLEntityReplacementVariableProvider
 
             @Override
             public VariableType<?> visit(IRI iri) {
-                OWLObject owlEntity = OWLEntityReplacementVariableProvider.this.getOWLEntity(iri);
+                OWLObject owlEntity = getOWLEntity(iri);
                 return owlEntity != null ? VariableTypeFactory.getVariableType(owlEntity) : null;
             }
         });

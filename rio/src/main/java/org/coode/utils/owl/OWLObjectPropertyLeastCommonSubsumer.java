@@ -43,8 +43,7 @@ public class OWLObjectPropertyLeastCommonSubsumer
     private void handleSubObjectProperty(OWLAxiom ax) {
         OWLSubObjectPropertyOfAxiom axiom = (OWLSubObjectPropertyOfAxiom) ax;
         if (!axiom.getSubProperty().isAnonymous() && !axiom.getSuperProperty().isAnonymous()) {
-            OWLObjectPropertyLeastCommonSubsumer.this.addParent(
-                axiom.getSubProperty().asOWLObjectProperty(),
+            addParent(axiom.getSubProperty().asOWLObjectProperty(),
                 axiom.getSuperProperty().asOWLObjectProperty());
         }
     }
@@ -55,10 +54,9 @@ public class OWLObjectPropertyLeastCommonSubsumer
         while (results.size() > 1) {
             OWLObject obj = results.get(0);
             if (obj instanceof OWLObjectProperty) {
-                // if(obj.getClass().getName().equals("OWLObjectProperty")){
-                OWLObjectProperty OWLObjectProperty = results.get(0);
-                results.remove(OWLObjectProperty);
-                Set<OWLObjectProperty> parents = getParents(OWLObjectProperty);
+                OWLObjectProperty p = results.get(0);
+                results.remove(p);
+                Set<OWLObjectProperty> parents = getParents(p);
                 for (OWLObjectProperty parent : parents) {
                     removeDescendants(parent, results);
                     if (!results.contains(parent)) {

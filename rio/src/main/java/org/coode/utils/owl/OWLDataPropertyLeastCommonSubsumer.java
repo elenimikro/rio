@@ -42,8 +42,8 @@ public class OWLDataPropertyLeastCommonSubsumer
     private void handleSubDataProperty(OWLAxiom a) {
         OWLSubDataPropertyOfAxiom ax = (OWLSubDataPropertyOfAxiom) a;
         if (!ax.getSubProperty().isAnonymous() && !ax.getSuperProperty().isAnonymous()) {
-            OWLDataPropertyLeastCommonSubsumer.this.addParent(
-                ax.getSubProperty().asOWLDataProperty(), ax.getSuperProperty().asOWLDataProperty());
+            addParent(ax.getSubProperty().asOWLDataProperty(),
+                ax.getSuperProperty().asOWLDataProperty());
         }
     }
 

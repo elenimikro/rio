@@ -208,10 +208,8 @@ public class TestGeneralisation {
         assertTrue(inputVariables.size() == 4);
         assertTrue(generatedVariables.size() == 0);
         AssignmentMap substitutions = generalisation.getSubstitutions();
-        for (Variable<?> v : substitutions.getVariables()) {
-            Set<OWLObject> set = substitutions.get(v);
-            System.out.printf("%s %s\n", v.getName(), set);
-        }
+        substitutions.variables()
+            .forEach(v -> System.out.printf("%s %s\n", v.getName(), substitutions.get(v)));
     }
 
     @Test

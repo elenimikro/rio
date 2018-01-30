@@ -26,9 +26,10 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 /** @author eleni */
-public class ReplacementByKindStrategy implements ReplacementStrategy {
-    private final static Properties properties = new Properties();
-    private final OWLDataFactory dataFactory;
+public class ReplacementByKindStrategy
+    implements ReplacementStrategy, OWLObjectVisitorEx<OWLObject> {
+    private final Properties properties = new Properties();
+    private final OWLDataFactory df;
 
     /**
      * @param dataFactory dataFactory
@@ -37,122 +38,57 @@ public class ReplacementByKindStrategy implements ReplacementStrategy {
         if (dataFactory == null) {
             throw new NullPointerException("The data factory cannot be null");
         }
-        this.dataFactory = dataFactory;
-    }
-
-    static {
+        df = dataFactory;
         try {
-            properties.load(ReplacementByKindStrategy.class.getResourceAsStream(
-                "/" + ReplacementByKindStrategy.class.getName() + ".properties"));
+            properties.load(getClass().getResourceAsStream(
+                "/org.coode.distance.owl.ReplacementByKindStrategy.properties"));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public <O extends OWLObject> O replace(O owlObject) {
-        return owlObject.accept(new OWLObjectVisitorEx<O>() {
-            @Override
-            public <T> O doDefault(T object) {
-                // I am actually sure the cast is safe
-                return (O) object;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public O visit(OWLClass desc) {
-                // I am actually sure the cast is safe
-                return (O) ReplacementByKindStrategy.this.getOWLClassReplacement(desc);
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public O visit(OWLObjectProperty property) {
-                // I am actually sure the cast is safe
-                return (O) ReplacementByKindStrategy.this.getOWLObjectPropertyReplacement(property);
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public O visit(IRI iri) {
-                // I am actually sure the cast is safe
-                return (O) ReplacementByKindStrategy.this.getIRIReplacement(iri);
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public O visit(OWLDataProperty property) {
-                // I am actually sure the cast is safe
-                return (O) ReplacementByKindStrategy.this.getOWLDataPropertyReplacement(property);
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public O visit(OWLNamedIndividual individual) {
-                // I am actually sure the cast is safe
-                return (O) ReplacementByKindStrategy.this
-                    .getOWLNamedIndividualReplacement(individual);
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public O visit(OWLLiteral literal) {
-                // I am actually sure the cast is safe
-                return (O) ReplacementByKindStrategy.this.getOWLLiteralReplacement(literal);
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public O visit(OWLAnnotationProperty property) {
-                // I am actually sure the cast is safe
-                return (O) ReplacementByKindStrategy.this
-                    .getOWLAnnotationPropertyReplacement(property);
-            }
-        });
+    public <T> OWLObject doDefault(T object) {
+        return (OWLObject) object;
     }
 
-    @SuppressWarnings("unused")
-    protected OWLAnnotationProperty getOWLAnnotationPropertyReplacement(
-        OWLAnnotationProperty property) {
-        return getDataFactory()
-            .getOWLAnnotationProperty(IRI.create(properties.getProperty("owlannotationproperty")));
+    @Override
+    public OWLObject visit(OWLClass desc) {
+        return df.getOWLClass(properties.getProperty("owlclass"));
     }
 
-    @SuppressWarnings("unused")
-    protected OWLLiteral getOWLLiteralReplacement(OWLLiteral literal) {
-        return getDataFactory().getOWLLiteral(properties.getProperty("owlliteral"));
+    @Override
+    public OWLObject visit(OWLObjectProperty property) {
+        return df.getOWLObjectProperty(properties.getProperty("owlobjectproperty"));
     }
 
-    @SuppressWarnings("unused")
-    protected OWLNamedIndividual getOWLNamedIndividualReplacement(OWLNamedIndividual individual) {
-        return getDataFactory()
-            .getOWLNamedIndividual(IRI.create(properties.getProperty("owlnamedindividual")));
-    }
-
-    @SuppressWarnings("unused")
-    protected OWLObjectProperty getOWLObjectPropertyReplacement(OWLObjectProperty property) {
-        return getDataFactory()
-            .getOWLObjectProperty(IRI.create(properties.getProperty("owlobjectproperty")));
-    }
-
-    @SuppressWarnings("unused")
-    protected OWLDataProperty getOWLDataPropertyReplacement(OWLDataProperty property) {
-        return getDataFactory()
-            .getOWLDataProperty(IRI.create(properties.getProperty("owldataproperty")));
-    }
-
-    @SuppressWarnings("unused")
-    protected OWLClass getOWLClassReplacement(OWLClass desc) {
-        return getDataFactory().getOWLClass(IRI.create(properties.getProperty("owlclass")));
-    }
-
-    @SuppressWarnings("unused")
-    protected IRI getIRIReplacement(IRI iri) {
+    @Override
+    public OWLObject visit(IRI iri) {
         return IRI.create(properties.getProperty("iri"));
     }
 
-    /** @return the dataFactory */
-    public OWLDataFactory getDataFactory() {
-        return dataFactory;
+    @Override
+    public OWLObject visit(OWLDataProperty property) {
+        return df.getOWLDataProperty(properties.getProperty("owldataproperty"));
+    }
+
+    @Override
+    public OWLObject visit(OWLNamedIndividual individual) {
+        return df.getOWLNamedIndividual(properties.getProperty("owlnamedindividual"));
+    }
+
+    @Override
+    public OWLObject visit(OWLLiteral literal) {
+        return df.getOWLLiteral(properties.getProperty("owlliteral"));
+    }
+
+    @Override
+    public OWLObject visit(OWLAnnotationProperty property) {
+        return df.getOWLAnnotationProperty(properties.getProperty("owlannotationproperty"));
+    }
+
+    @Override
+    public <O extends OWLObject> O replace(O owlObject) {
+        return (O) owlObject.accept(this);
     }
 }

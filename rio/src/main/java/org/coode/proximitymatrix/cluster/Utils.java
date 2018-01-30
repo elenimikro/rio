@@ -260,9 +260,8 @@ public class Utils {
      * @throws OPPLException OPPLException
      */
     public static <O extends OWLObject> OWLObjectGeneralisation getOWLObjectGeneralisation(
-        Collection<? extends Collection<? extends O>> set,
-        Collection<? extends OWLOntology> ontologies, ConstraintSystem constraintSystem)
-        throws OPPLException {
+        Collection<? extends Collection<? extends O>> set, Collection<OWLOntology> ontologies,
+        ConstraintSystem constraintSystem) throws OPPLException {
         // int i = 0;
         Set<BindingNode> bindings = new HashSet<>(set.size());
         // I need to preload all the constants into a variable before I start
@@ -746,9 +745,7 @@ public class Utils {
                     if (!variableExtractor.extractVariables(instantiation).isEmpty()) {
                         for (OWLAxiomInstantiation oldInstantiation : instantiations) {
                             AssignmentMap substitutions = oldInstantiation.getSubstitutions();
-                            for (Variable<?> v : bindingNode.getAssignedVariables()) {
-                                substitutions.remove(v);
-                            }
+                            bindingNode.assignedVariables().forEach(substitutions::remove);
                             generalisationMap.put(instantiation, new OWLAxiomInstantiation(
                                 oldInstantiation.getAxiom(), substitutions));
                         }
@@ -804,16 +801,9 @@ public class Utils {
         AssignmentMap toReturn = new AssignmentMap(Collections.<BindingNode>emptySet());
         for (OWLAxiomInstantiation instantiation : instantiations) {
             AssignmentMap substitutions = instantiation.getSubstitutions();
-            Set<Variable<?>> variables = substitutions.getVariables();
-            for (Variable<?> variable : variables) {
-                Set<OWLObject> substitutionValuesForVariable = substitutions.get(variable);
-                Set<OWLObject> set = toReturn.get(variable);
-                if (set == null) {
-                    set = new HashSet<>();
-                    toReturn.put(variable, set);
-                }
-                set.addAll(substitutionValuesForVariable);
-            }
+            substitutions.variables()
+                .forEach(variable -> toReturn.computeIfAbsent(variable, x -> new HashSet<>())
+                    .addAll(substitutions.get(variable)));
         }
         return toReturn;
     }
@@ -1035,13 +1025,14 @@ public class Utils {
                 }
             }
             Collections.sort(sortedClusters, ClusterStatisticsTableModel.SIZE_COMPARATOR);
-            OWLOntology ontology = manager.getOntologies().iterator().next();
+            List<OWLOntology> ontologies = asList(manager.ontologies());
+            OWLOntology ontology = ontologies.get(0);
             ConstraintSystem constraintSystem =
                 new OPPLFactory(manager, ontology, null).createConstraintSystem();
-            OWLObjectGeneralisation generalisation = Utils.getOWLObjectGeneralisation(
-                sortedClusters, manager.getOntologies(), constraintSystem);
+            OWLObjectGeneralisation generalisation =
+                Utils.getOWLObjectGeneralisation(sortedClusters, ontologies, constraintSystem);
             printExtraStats(file, sortedClusters);
-            Document xml = Utils.toXML(sortedClusters, manager.getOntologies(),
+            Document xml = Utils.toXML(sortedClusters, ontologies,
                 new ManchesterOWLSyntaxOWLObjectRendererImpl(), generalisation);
             Transformer t = TransformerFactory.newInstance().newTransformer();
             StreamResult result = new StreamResult(file);

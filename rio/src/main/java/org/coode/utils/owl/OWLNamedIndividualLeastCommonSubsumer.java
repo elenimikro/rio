@@ -46,8 +46,8 @@ public class OWLNamedIndividualLeastCommonSubsumer
     private void handleClassAssertion(OWLAxiom a) {
         OWLClassAssertionAxiom ax = (OWLClassAssertionAxiom) a;
         if (!ax.getIndividual().isAnonymous() && !ax.getClassExpression().isAnonymous()) {
-            OWLNamedIndividualLeastCommonSubsumer.this.addParent(
-                ax.getIndividual().asOWLNamedIndividual(), ax.getClassExpression().asOWLClass());
+            addParent(ax.getIndividual().asOWLNamedIndividual(),
+                ax.getClassExpression().asOWLClass());
         }
     }
 

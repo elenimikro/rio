@@ -10,24 +10,12 @@
  ******************************************************************************/
 package org.coode.owl.wrappers;
 
-import java.util.List;
-import java.util.Set;
-
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
 public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
     implements OWLEntityProvider {
-    private final OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        @Override
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            clear();
-            OntologyManagerBasedOWLEntityProvider.this.loadDelegate();
-        }
-    };
 
     /**
      * @param ontologyManager ontologyManager
@@ -38,10 +26,7 @@ public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
     }
 
     protected void loadDelegate() {
-        Set<OWLOntology> ontologies = getOntologyManager().getOntologies();
-        for (OWLOntology ontology : ontologies) {
-            addAll(ontology.getSignature());
-        }
+        getOntologyManager().ontologies().flatMap(OWLOntology::signature).forEach(this::add);
     }
 
     /** dispose */

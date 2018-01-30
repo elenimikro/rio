@@ -57,8 +57,8 @@ public abstract class RelevancePolicyPanel extends JPanel {
         rankingList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
             DefaultListCellRenderer renderer = new DefaultListCellRenderer();
             final HashSet<OWLEntity> members = new HashSet<>(Arrays.asList(value.getMembers()));
-            Object toRender = String.format("%s [%s] relevant? %b",
-                RelevancePolicyPanel.this.render(members), Double.valueOf(value.getValue()),
+            Object toRender = String.format("%s [%s] relevant? %b", render(members),
+                Double.valueOf(value.getValue()),
                 Boolean.valueOf(policy.isRelevant(value.getMembers()[0])));
             Component toReturn = renderer.getListCellRendererComponent(list,
                 String.format("%d) %s ", Integer.valueOf(index + 1), toRender), index, isSelected,

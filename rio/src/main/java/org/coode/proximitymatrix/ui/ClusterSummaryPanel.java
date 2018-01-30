@@ -46,20 +46,21 @@ public class ClusterSummaryPanel<O> extends JPanel {
         this.clusterMembers.setText("Members: ");
         this.clusterSize.setText("Size: ");
         if (this.getCluster() != null) {
-            Formatter formatter = new Formatter();
-            boolean first = true;
-            int i = 0;
-            for (O member : this.getCluster()) {
-                String comma = first ? "" : ", ";
-                String newLine = i != 0 && i % 5 == 0 ? "\n" : "";
-                formatter.format("%s%s%s", comma, newLine, this.render(member));
-                first = false;
-                i++;
+            try (Formatter formatter = new Formatter()) {
+                boolean first = true;
+                int i = 0;
+                for (O member : this.getCluster()) {
+                    String comma = first ? "" : ", ";
+                    String newLine = i != 0 && i % 5 == 0 ? "\n" : "";
+                    formatter.format("%s%s%s", comma, newLine, this.render(member));
+                    first = false;
+                    i++;
+                }
+                this.clusterMembers.setText(
+                    String.format("%s %s", this.clusterMembers.getText(), formatter.toString()));
+                this.clusterSize.setText(String.format("%s %d", this.clusterSize.getText(),
+                    Integer.valueOf(this.getCluster().size())));
             }
-            this.clusterMembers.setText(
-                String.format("%s %s", this.clusterMembers.getText(), formatter.toString()));
-            this.clusterSize.setText(String.format("%s %d", this.clusterSize.getText(),
-                Integer.valueOf(this.getCluster().size())));
         }
     }
 

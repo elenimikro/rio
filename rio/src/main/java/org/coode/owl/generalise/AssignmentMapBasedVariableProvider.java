@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-import java.util.Iterator;
-
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.Variable;
 import org.coode.oppl.bindingtree.AssignmentMap;
@@ -40,25 +38,13 @@ public class AssignmentMapBasedVariableProvider extends VariableProvider {
         return owlObject.accept(new OWLObjectVisitorEx<Variable<?>>() {
             @Override
             public <T> Variable<?> doDefault(T object) {
-                boolean found = false;
-                // AssignmentMap anAssignmentMap =
-                // AssignmentMapBasedVariableProvider.this.getAssignmentMap();
-                Iterator<Variable<?>> it = assignmentMap.getVariables().iterator();
-                Variable<?> toReturn = null;
-                Variable<?> aVariable = null;
-                while (!found && it.hasNext()) {
-                    aVariable = it.next();
-                    found = assignmentMap.get(aVariable).contains(object);
-                }
-                if (found) {
-                    toReturn = aVariable;
-                }
-                return toReturn;
+                return assignmentMap.variables().filter(v -> assignmentMap.get(v).contains(object))
+                    .findAny().orElse(null);
             }
 
             @Override
             public Variable<?> visit(IRI iri) {
-                OWLObject owlEntity = AssignmentMapBasedVariableProvider.this.getOWLEntity(iri);
+                OWLObject owlEntity = getOWLEntity(iri);
                 return owlEntity != null ? owlEntity.accept(this) : null;
             }
         });

@@ -42,8 +42,6 @@ public class SparseMatrixSmallSize implements SparseMatrix {
     @Override
     public double get(int _i, int _j) {
         if (_i < size && _j < size) {
-            // int i = _i < _j ? _i : _j;
-            // int j = _i < _j ? _j : _i;
             return matrix[_i][_j];
         }
         throw new IllegalArgumentException(
@@ -70,11 +68,7 @@ public class SparseMatrixSmallSize implements SparseMatrix {
 
     @Override
     public void set(int _i, int _j, double d) {
-        // System.out.println("SparseMatrixSmallSize.set() " + _i + "\t" + _j +
-        // "\t" + d);
         if (_i < size && _j < size) {
-            // int i = _i < _j ? _i : _j;
-            // int j = _i < _j ? _j : _i;
             matrix[_i][_j] = d;
         } else {
             throw new IllegalArgumentException(
