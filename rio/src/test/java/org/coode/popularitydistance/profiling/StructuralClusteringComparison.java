@@ -16,9 +16,9 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.EntityComparator;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.DistanceCreator;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -40,7 +40,7 @@ public class StructuralClusteringComparison {
         String saveTo = "results/" + ontology.getName() + "_" + c.get(Calendar.DAY_OF_MONTH) + "_"
             + c.get(Calendar.HOUR) + ".xml";
         String compareTo = "similarity/profiling_data/compareto_amino.xml";
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
         OWLOntology o = m.loadOntologyFromOntologyDocument(ontology);
         Distance<OWLEntity> distance =
             DistanceCreator.createStructuralAxiomRelevanceAxiomBasedDistance(m);

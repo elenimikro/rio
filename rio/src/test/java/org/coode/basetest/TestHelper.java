@@ -3,7 +3,7 @@ package org.coode.basetest;
 import java.io.File;
 import java.net.URI;
 
-import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.coode.utils.OntologyManagerUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -14,7 +14,7 @@ import org.semanticweb.owlapi.util.AutoIRIMapper;
 public class TestHelper {
     /** @return ontology */
     public static OWLOntology getPizza() {
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
         OWLOntology o;
         try {
             o = m.loadOntologyFromOntologyDocument(

@@ -17,7 +17,6 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import org.coode.basetest.TestHelper;
@@ -29,13 +28,13 @@ import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
-import org.coode.metrics.RankingSlot;
 import org.coode.metrics.owl.OWLEntityPopularityRanking;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.parameters.Imports;
 
 /** @author Luigi Iannone */
@@ -86,7 +85,6 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy());
         List<OWLClass> classes = getClasses(pizza_ns + "Margherita", pizza_ns + "Siciliana");
         properTest(distance, classes);
-        System.out.println(distance.getDistance(classes.get(0), classes.get(1)));
     }
 
     public void testNapoletanaParmaHamTopping() {
@@ -115,15 +113,6 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         List<OWLClass> classes = getClasses(pizza_ns + "Margherita", pizza_ns + "Siciliana");
         properTest(distance, classes);
-        int i = 1;
-        System.out.println(
-            String.format("Average popularity %s", Double.valueOf(ranking.getAverageValue())));
-        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
-                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
-                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
-            i++;
-        }
     }
 
     public void testSpicinessSauceToppingPopularityRelevance() {
@@ -135,18 +124,9 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o, policy);
         List<OWLClass> classes = getClasses(pizza_ns + "Spiciness", pizza_ns + "SauceTopping");
         properTest(distance, classes);
-        int i = 1;
-        System.out.println(
-            String.format("Average popularity %s", Double.valueOf(ranking.getAverageValue())));
-        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
-                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
-                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
-            i++;
-        }
     }
 
-    public void testMolePercentPopularityRelevance() {
+    public void testMolePercentPopularityRelevance() throws OWLOntologyCreationException {
         OWLOntology o = getOntology(
             "http://owl.cs.manchester.ac.uk/repository/download?ontology=http://sweet.jpl.nasa.gov/ontology/units.owl&format=RDF/XML");
         OWLEntityPopularityRanking ranking =
@@ -157,18 +137,9 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         List<OWLClass> classes = getClasses("http://sweet.jpl.nasa.gov/ontology/units.owl#mole",
             "http://sweet.jpl.nasa.gov/ontology/units.owl#percent");
         properTest(distance, classes);
-        int i = 1;
-        System.out.println(
-            String.format("Average popularity %s", Double.valueOf(ranking.getAverageValue())));
-        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
-                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
-                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
-            i++;
-        }
     }
 
-    public void testToyOntology() {
+    public void testToyOntology() throws OWLOntologyCreationException {
         OWLOntology o = getOntology(new File("code/api/test/resources/RegularToyOntology.owl"));
         OWLEntityPopularityRanking ranking =
             OWLEntityPopularityRanking.buildRanking(asList(o.importsClosure()));
@@ -179,19 +150,9 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
             "http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_1",
             "http://www.semanticweb.org/ontologies/2010/11/RegularToyOntology.owl#L_indi_2");
         properTest(distance, classes);
-        int i = 1;
-        System.out.println(String.format("Average popularity %s standard deviation %f",
-            Double.valueOf(ranking.getAverageValue()),
-            Double.valueOf(policy.getStandardDeviation())));
-        for (RankingSlot<OWLEntity> s : ranking.getSortedRanking()) {
-            System.out.println(String.format("%d. %s value %s is relevant: %b", Integer.valueOf(i),
-                Arrays.toString(s.getMembers()), Double.valueOf(s.getValue()),
-                Boolean.valueOf(policy.isRelevant(s.getMembers()[0]))));
-            i++;
-        }
     }
 
-    public void testSNOMEDINtraAbdominalArteryVsHemolosys() {
+    public void testSNOMEDINtraAbdominalArteryVsHemolosys() throws OWLOntologyCreationException {
         // http://www.ihtsdo.org/SCT_122860000 (intra abdominal artery)
         // http://www.ihtsdo.org/SCT_95605009 (Hemolosys)
         OWLOntology o = getOntology(

@@ -1,6 +1,5 @@
 package org.coode.owl.structural.difference.test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -8,13 +7,12 @@ import java.util.List;
 import org.coode.basetest.TestHelper;
 import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.oppl.OPPLShortFormProvider;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.DistanceCreator;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -30,13 +28,13 @@ import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 public class StructuralDistanceTest {
     @Test
     public void differentStructuralDistanceTest() throws OWLOntologyCreationException {
-        try {
-            System.in.read();
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        // try {
+        // System.in.read();
+        // } catch (IOException e1) {
+        // // TODO Auto-generated catch block
+        // e1.printStackTrace();
+        // }
+        OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();
         OWLClass a = f.getOWLClass(IRI.create("urn:test#A"));
@@ -78,19 +76,8 @@ public class StructuralDistanceTest {
         AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
             .createStructuralAxiomRelevanceAxiomBasedDistance(m);
         // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
-        o.axioms().forEach(System.out::println);
         AbstractAxiomBasedDistance popularity_distance =
             (AbstractAxiomBasedDistance) DistanceCreator.createAxiomRelevanceAxiomBasedDistance(m);
-        o.signature().forEach(en -> {
-            System.out.println("Structural Axioms of " + en);
-            for (OWLAxiom ax : distance.getAxioms(en)) {
-                System.out.println("\t " + ax);
-            }
-            System.out.println("Popularity Axioms of " + en);
-            for (OWLAxiom ax : popularity_distance.getAxioms(en)) {
-                System.out.println("\t " + ax);
-            }
-        });
     }
 
     @Test
@@ -107,8 +94,6 @@ public class StructuralDistanceTest {
                 Collections.<OWLAnnotationProperty, List<String>>emptyMap(),
                 o.getOWLOntologyManager()));
         renderer.setShortFormProvider(shortFormProvider);
-        o.signature().peek(e -> System.out.println("Axioms of " + e)).forEach(e -> distance
-            .getAxioms(e).forEach(ax -> System.out.println("\t " + renderer.render(ax))));
     }
 
     @Test
@@ -119,10 +104,6 @@ public class StructuralDistanceTest {
         // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
         ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
             new ManchesterOWLSyntaxOWLObjectRendererImpl();
-        // ToStringRenderer.getInstance().setRenderer(
-        // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        o.signature().peek(e -> System.out.println("Axioms of " + e)).forEach(e -> distance
-            .getAxioms(e).forEach(ax -> System.out.println("\t " + renderer.render(ax))));
     }
 
     @Test
@@ -133,9 +114,5 @@ public class StructuralDistanceTest {
         // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
         ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
             new ManchesterOWLSyntaxOWLObjectRendererImpl();
-        // ToStringRenderer.getInstance().setRenderer(
-        // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        o.signature().peek(e -> System.out.println("Axioms of " + e)).forEach(e -> distance
-            .getAxioms(e).forEach(ax -> System.out.println("\t " + renderer.render(ax))));
     }
 }

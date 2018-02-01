@@ -26,21 +26,19 @@ import org.coode.oppl.OPPLFactory;
 import org.coode.oppl.Variable;
 import org.coode.oppl.VariableVisitor;
 import org.coode.oppl.bindingtree.Assignment;
-import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.oppl.bindingtree.BindingNode;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.oppl.generated.GeneratedVariable;
 import org.coode.oppl.generated.RegexpGeneratedVariable;
-import org.coode.oppl.rendering.ManchesterSyntaxRenderer;
 import org.coode.oppl.utils.VariableExtractor;
 import org.coode.oppl.variabletypes.InputVariable;
 import org.coode.oppl.variabletypes.VariableTypeFactory;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.owl.generalise.structural.StructuralOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
+import org.coode.utils.OntologyManagerUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -105,8 +103,6 @@ public class TestGeneralisation {
             });
 
         assertTrue(generalisationCount.get() > 1);
-        System.out.printf("Generalised over %s axioms\n", generalisationCount);
-        generalisedAxioms.forEach(System.out::println);
 
     }
 
@@ -154,11 +150,6 @@ public class TestGeneralisation {
         }
         assertTrue(generalisationCount > 1);
         assertTrue(generalisedAxioms.size() > 1);
-        System.out.printf("%d Generalisations over %d axioms\n",
-            Integer.valueOf(generalisedAxioms.size()), Integer.valueOf(generalisationCount));
-        for (OWLAxiom owlAxiom : generalisedAxioms) {
-            System.out.println(owlAxiom);
-        }
     }
 
     @Test
@@ -182,7 +173,6 @@ public class TestGeneralisation {
             dataFactory.getOWLSubClassOfAxiom(margerita, dataFactory.getOWLObjectAllValuesFrom(
                 hasTopping, dataFactory.getOWLObjectUnionOf(tomato, mozzarella)));
         OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-        System.out.println(generalised);
         VariableExtractor variableExtractor = new VariableExtractor(constraintSystem, true);
         Set<Variable<?>> variables = variableExtractor.extractVariables(generalised);
         assertTrue(variables.size() == 4);
@@ -207,15 +197,12 @@ public class TestGeneralisation {
         }
         assertTrue(inputVariables.size() == 4);
         assertTrue(generatedVariables.size() == 0);
-        AssignmentMap substitutions = generalisation.getSubstitutions();
-        substitutions.variables()
-            .forEach(v -> System.out.printf("%s %s\n", v.getName(), substitutions.get(v)));
     }
 
     @Test
     public void testSimpleGeneralisation() throws OWLOntologyCreationException, OPPLException {
         BindingNode aBindingNode = BindingNode.createNewEmptyBindingNode();
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         OWLOntology ontology;
         ontology = ontologyManager.createOntology();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
@@ -228,20 +215,17 @@ public class TestGeneralisation {
             new OWLObjectGeneralisation(Collections.singleton(aBindingNode), constraintSystem);
         OWLSubClassOfAxiom axiom = ontologyManager.getOWLDataFactory().getOWLSubClassOfAxiom(a, a);
         OWLObject generalised = axiom.accept(generalisation);
-        ManchesterSyntaxRenderer renderer = factory.getManchesterSyntaxRenderer(constraintSystem);
         VariableExtractor variableExtractor = new VariableExtractor(constraintSystem, false);
         Set<Variable<?>> extractVariables = variableExtractor.extractVariables(generalised);
         assertFalse(extractVariables.isEmpty());
         assertTrue(extractVariables.contains(x));
-        generalised.accept(renderer);
-        System.out.println(renderer.toString());
     }
 
     @Test
     public void testGeneralisationSingleVariableMultipleValues()
         throws OPPLException, OWLOntologyCreationException {
         BindingNode aBindingNode = BindingNode.createNewEmptyBindingNode();
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         OWLOntology ontology = ontologyManager.createOntology();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
@@ -257,20 +241,17 @@ public class TestGeneralisation {
         OWLSubClassOfAxiom axiom = ontologyManager.getOWLDataFactory().getOWLSubClassOfAxiom(
             ontologyManager.getOWLDataFactory().getOWLObjectIntersectionOf(a, b), a);
         OWLObject generalised = axiom.accept(generalisation);
-        ManchesterSyntaxRenderer renderer = factory.getManchesterSyntaxRenderer(constraintSystem);
         VariableExtractor variableExtractor = new VariableExtractor(constraintSystem, false);
         Set<Variable<?>> extractVariables = variableExtractor.extractVariables(generalised);
         assertFalse(extractVariables.isEmpty());
         assertTrue(extractVariables.contains(x));
-        generalised.accept(renderer);
-        System.out.println(renderer.toString());
     }
 
     @Test
     public void testGeneralisationSingleVariableMultipleValuesComplexClassExpression()
         throws OPPLException, OWLOntologyCreationException {
         BindingNode aBindingNode = BindingNode.createNewEmptyBindingNode();
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         OWLOntology ontology;
         ontology = ontologyManager.createOntology();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
@@ -289,18 +270,12 @@ public class TestGeneralisation {
         OWLSubClassOfAxiom axiom = df.getOWLSubClassOfAxiom(df.getOWLObjectIntersectionOf(
             df.getOWLObjectSomeValuesFrom(p, a), df.getOWLObjectSomeValuesFrom(p, b)), a);
         OWLObject generalised = axiom.accept(generalisation);
-        ManchesterSyntaxRenderer renderer = factory.getManchesterSyntaxRenderer(constraintSystem);
         VariableExtractor variableExtractor = new VariableExtractor(constraintSystem, false);
         Set<Variable<?>> extractVariables = variableExtractor.extractVariables(generalised);
         assertFalse(extractVariables.isEmpty());
         assertTrue(extractVariables.contains(x));
-        generalised.accept(renderer);
-        System.out.println(renderer.toString());
         Set<Variable<?>> variables = constraintSystem.getVariables();
         assertTrue(variables.size() == 3);
-        for (Variable<?> variable : variables) {
-            System.out.println(variable.render(constraintSystem));
-        }
     }
 
     @Test
@@ -310,11 +285,9 @@ public class TestGeneralisation {
         String newName = oldName.replaceAll(variableNameChars, "_");
         assertTrue(String.format("old name %s new name %s", oldName, newName),
             oldName.equals(newName));
-        System.out.println(newName);
         oldName = "?'na:me";
         newName = oldName.replaceAll(variableNameChars, "_");
         assertFalse(String.format("old name %s new name %s", oldName, newName),
             oldName.equals(newName));
-        System.out.println(newName);
     }
 }

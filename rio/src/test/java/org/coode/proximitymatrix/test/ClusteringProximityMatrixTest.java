@@ -51,8 +51,6 @@ public class ClusteringProximityMatrixTest {
         add(entities, ontology.signature());
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
-        System.out.println(String.format("Finished computing distance between %d entities",
-            Integer.valueOf(distanceMatrix.getObjects().size())));
         Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();
         for (OWLEntity object : distanceMatrix.getObjects()) {
             newObjects.add(Collections.singleton(object));
@@ -61,7 +59,6 @@ public class ClusteringProximityMatrixTest {
             (a, b) -> distance.getDistance(a.iterator().next(), b.iterator().next());
         PairFilter<Collection<? extends OWLEntity>> filter = DistanceThresholdBasedFilter
             .build(new TableDistance<>(entities, distanceMatrix.getData()), 1);
-        System.out.println("Building clustering matrix....");
         ClusteringProximityMatrix<OWLEntity> clusteringMatrix =
             ClusteringProximityMatrix.build(distanceMatrix, new CentroidProximityMeasureFactory(),
                 filter, PairFilterBasedComparator.build(filter, newObjects, singletonDistance));

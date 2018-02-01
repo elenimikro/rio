@@ -16,8 +16,8 @@ import static org.junit.Assert.assertFalse;
 import org.coode.distance.owl.HashCode;
 import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.distance.owl.StructuralHashCode;
+import org.coode.utils.OntologyManagerUtils;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -27,7 +27,8 @@ import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 /** @author eleni */
 @SuppressWarnings("javadoc")
 public class TestStructuralHashCode {
-    private final static OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+    private final static OWLOntologyManager ontologyManager =
+        OntologyManagerUtils.ontologyManager();
     private final static HashCode hashCode =
         new StructuralHashCode(ontologyManager.getOWLDataFactory(),
             new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));

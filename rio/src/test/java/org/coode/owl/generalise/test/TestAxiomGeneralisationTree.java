@@ -23,7 +23,6 @@ import org.coode.owl.generalise.AxiomGeneralisationTreeNode;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.structural.StructuralOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
-import org.coode.utils.Utils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -65,14 +64,10 @@ public class TestAxiomGeneralisationTree {
             });
 
         assertTrue(generalisationCount.get() > 1);
-        System.out.printf("Generalised over %d axioms\n", generalisationCount);
-        generalisationMap.keySet().forEach(System.out::println);
 
         OWLAxiom generalisation = new ArrayList<>(generalisationMap.keySet()).get(2);
-        System.out.println(generalisation);
         AxiomGeneralisationTreeNode root = new AxiomGeneralisationTreeNode(generalisation,
             generalisationMap.get(generalisation), constraintSystem);
         assertFalse(root.getChildren().isEmpty());
-        Utils.printNode(root, System.out);
     }
 }

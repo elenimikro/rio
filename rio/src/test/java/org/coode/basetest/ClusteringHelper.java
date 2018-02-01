@@ -13,9 +13,9 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
 import org.coode.utils.EntityComparator;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.ClusterCreator;
 import org.coode.utils.owl.DistanceCreator;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -71,7 +71,7 @@ public class ClusteringHelper {
         Set<OWLAxiom> seedAxioms) {
         OWLOntology onto = null;
         try {
-            onto = OWLManager.createOWLOntologyManager().createOntology(seedAxioms);
+            onto = OntologyManagerUtils.ontologyManager().createOntology(seedAxioms);
         } catch (OWLOntologyCreationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

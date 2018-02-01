@@ -45,7 +45,7 @@ import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.proximitymatrix.cluster.commandline.Utility;
 import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
 import org.coode.utils.EntityComparator;
-import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.coode.utils.OntologyManagerUtils;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -73,7 +73,7 @@ public class PopularityBasedDistanceClusteringSlice {
         System.out.println("PopularityBasedDistanceClusteringSlice.main() line: \t" + line);
         boolean correct = true;
         while (line != null && !line.trim().isEmpty()) {
-            OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+            OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
             File ontology = new File(line);
             Calendar c = Calendar.getInstance();
             String saveTo = "results/" + ontology.getName() + "_" + c.get(Calendar.DAY_OF_MONTH)

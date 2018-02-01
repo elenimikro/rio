@@ -20,8 +20,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.coode.owl.wrappers.OWLAxiomProvider;
 import org.coode.owl.wrappers.OWLOntologyManagerBasedOWLAxiomProvider;
 import org.coode.proximitymatrix.cluster.Utils;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.LeastCommonSubsumer;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -37,7 +37,7 @@ public class LeastCommonSubsumerTest {
     public static void main(String[] args) {
         // ToStringRenderer.getInstance().setRenderer(new
         // ManchesterSyntaxRenderer());
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         try {
             ontologyManager.loadOntology(IRI.create(args[1]));
             Set<Set<OWLEntity>> clusters = Utils.readFromXML(

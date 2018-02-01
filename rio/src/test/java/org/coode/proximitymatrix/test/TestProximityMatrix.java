@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
@@ -92,8 +93,7 @@ public class TestProximityMatrix {
         }
         Pair<Collection<? extends OWLEntity>> minimumDistancePair =
             clusteringMatrix.getMinimumDistancePair();
-        System.out.printf("%s distance %f\n", minimumDistancePair,
-            Double.valueOf(clusteringMatrix.getMinimumDistance()));
+        assertEquals(0D, clusteringMatrix.getMinimumDistance(), 0.0001D);
         ClusteringProximityMatrix<OWLEntity> agglomerated = clusteringMatrix.agglomerate(filter);
         for (OWLEntity owlEntity : signature) {
             for (OWLEntity anotherOWLEntity : signature) {

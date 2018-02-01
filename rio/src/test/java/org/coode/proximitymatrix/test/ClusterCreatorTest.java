@@ -65,7 +65,6 @@ public class ClusterCreatorTest {
             totalAverageInternalDistance += stats.getAverageInternalDistance();
             double homogeneity = 1 - stats.getAverageInternalDistance();
             assertFalse(totalAverageInternalDistance < 0);
-            System.out.println("Cluster homogeneity " + homogeneity);
             assertFalse(homogeneity < 0);
             assertFalse(stats.getMaxExternalDistance() < 0);
             assertFalse(stats.getMaxInternalDistance() < 0);
@@ -73,12 +72,8 @@ public class ClusterCreatorTest {
             assertFalse(stats.getMinInternalDistance() < 0);
         }
         double avgInternalDistanceFinal = totalAverageInternalDistance / clNo;
-        System.out.println("ClusterCreatorTest.testClusteringStats() totalAverageInternalDistance "
-            + avgInternalDistanceFinal);
         assertFalse(avgInternalDistanceFinal < 0);
         totalAverageHomogeneity = 1 - avgInternalDistanceFinal;
         assertFalse(totalAverageHomogeneity < 0);
-        System.out.println(
-            "ClusterCreatorTest.testClusteringStats() Homogeneity " + totalAverageHomogeneity);
     }
 }

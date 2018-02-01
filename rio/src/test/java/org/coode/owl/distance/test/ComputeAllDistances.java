@@ -22,8 +22,8 @@ import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
 import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.utils.EntityComparator;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -39,7 +39,7 @@ public class ComputeAllDistances {
      * @throws OWLOntologyCreationException OWLOntologyCreationException
      */
     public static void main(String[] args) throws OWLOntologyCreationException {
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
         List<IRI> iris = new ArrayList<>(args.length);
         for (String string : args) {
             iris.add(IRI.create(string));

@@ -22,7 +22,7 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.structural.StructuralOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
-import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.coode.utils.OntologyManagerUtils;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
@@ -36,7 +36,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistancePerformanceTest {
      * @param args args
      */
     public static void main(String[] args) {
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         try {
             OWLOntology ontology =
                 ontologyManager.loadOntology(IRI.create("http://purl.obolibrary.org/obo/obi.owl"));

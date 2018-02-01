@@ -18,7 +18,6 @@ public class WrappingEquivalenceClassesAgglomerateAllTest {
         WrappingAgglomerateAll agglomerator = new WrappingAgglomerateAll();
         File file = new File(getClass().getResource("/pizza.owl").getFile());
         iris.add(IRI.create(file));
-        System.out.println(iris);
         File outfile = new File("pizza.xml");
         try {
             agglomerator.run(outfile, iris);

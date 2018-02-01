@@ -21,8 +21,8 @@ import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.utils.EntityComparator;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -43,7 +43,7 @@ public class PopularityDistanceSlice {
         "file:/eclipse-workspace/similarity/profiling_ontologies/obi.owl";
 
     public static void main(String[] args) {
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
         String ontology_iri = obi_iri;
         IRI iri = IRI.create(ontology_iri);
         try {

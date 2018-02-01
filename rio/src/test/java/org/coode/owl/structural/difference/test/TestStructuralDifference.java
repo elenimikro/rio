@@ -13,11 +13,9 @@ package org.coode.owl.structural.difference.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.coode.basetest.TestHelper;
-import org.coode.oppl.utils.Position;
 import org.coode.owl.structural.difference.IncomparableObjectsStructuralDifferenceReport;
 import org.coode.owl.structural.difference.NoDifferenceStructuralDifferenceReport;
 import org.coode.owl.structural.difference.SomeDifferenceStructuralDifferenceReport;
@@ -25,8 +23,8 @@ import org.coode.owl.structural.difference.StructuralDifference;
 import org.coode.owl.structural.difference.StructuralDifferenceReport;
 import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorAdapter;
 import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorExAdapter;
+import org.coode.utils.OntologyManagerUtils;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -122,7 +120,7 @@ public class TestStructuralDifference {
     public void testSomeDifference() {
         // ToStringRenderer.getInstance().setRenderer(
         // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         OWLDataFactory dataFactory = ontologyManager.getOWLDataFactory();
         OWLClass a = dataFactory.getOWLClass(IRI.create("A"));
         OWLClass b = dataFactory.getOWLClass(IRI.create("B"));
@@ -136,15 +134,10 @@ public class TestStructuralDifference {
         OWLObjectSomeValuesFrom somePAORC = dataFactory.getOWLObjectSomeValuesFrom(p, aORc);
         StructuralDifference difference = new StructuralDifference();
         StructuralDifferenceReport topDifference = difference.getTopDifference(aANDb, aANDc);
-        System.out.printf("Between {%s, %s} is %s \n", aANDb, aANDc, topDifference);
         topDifference.accept(new Personalized1());
         topDifference = difference.getTopDifference(somePAANDB, somePAANDC);
-        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, somePAANDC, topDifference);
         topDifference.accept(new PersonalizedReportVisitor());
         topDifference = difference.getTopDifference(somePAANDB, somePAORC);
-        System.out.printf("Between {%s, %s} is at %s  which is %s \n", somePAANDB, somePAORC,
-            topDifference, Position.get(somePAANDB,
-                topDifference.accept(new Personalized3(Collections.<Integer>emptyList()))));
         topDifference.accept(new Personalized1());
     }
 
@@ -152,7 +145,7 @@ public class TestStructuralDifference {
     public void testSomeDifferenceComplete() {
         // ToStringRenderer.getInstance().setRenderer(
         // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         OWLDataFactory dataFactory = ontologyManager.getOWLDataFactory();
         OWLClass a = dataFactory.getOWLClass(IRI.create("A"));
         OWLClass b = dataFactory.getOWLClass(IRI.create("B"));
@@ -167,20 +160,18 @@ public class TestStructuralDifference {
         StructuralDifference difference = new StructuralDifference();
         List<StructuralDifferenceReport> topDifferences =
             difference.getTopDifferences(somePAANDB, somePAANDC);
-        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, somePAANDC, topDifferences);
         assertTrue(topDifferences.size() == 1);
         for (StructuralDifferenceReport topDifference : topDifferences) {
             topDifference.accept(new PersonalizedReportVisitor());
         }
         topDifferences = difference.getTopDifferences(somePAANDB, someQAANDC);
-        System.out.printf("Between {%s, %s} is %s \n", somePAANDB, someQAANDC, topDifferences);
         assertTrue(topDifferences.size() == 2);
     }
 
     public void testSomeDifferenceCompleteASubClassAxiom() {
         // ToStringRenderer.getInstance().setRenderer(
         // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         OWLDataFactory dataFactory = ontologyManager.getOWLDataFactory();
         OWLClass a = dataFactory.getOWLClass(IRI.create("blah#A"));
         OWLClass b = dataFactory.getOWLClass(IRI.create("blah#B"));
@@ -195,11 +186,8 @@ public class TestStructuralDifference {
         StructuralDifference difference = new StructuralDifference();
         List<StructuralDifferenceReport> topDifferences =
             difference.getTopDifferences(aSubClassOfb, cSubClassOfd);
-        System.out.printf("Between {%s, %s} is %s \n", aSubClassOfb, cSubClassOfd, topDifferences);
         assertTrue(topDifferences.size() == 2);
         topDifferences = difference.getTopDifferences(aANDcSubClassOfaANDb, aANDbSubClassOfaANDc);
-        System.out.printf("Between {%s, %s} is %s \n", aANDcSubClassOfaANDb, aANDbSubClassOfaANDc,
-            topDifferences);
         assertTrue(topDifferences.size() == 2);
     }
 }

@@ -133,7 +133,6 @@ public class ClusterCreator {
         OWLOntology o, Set<Cluster<OWLEntity>> clusters) throws OPPLException {
         ConstraintSystem constraintSystem =
             new OPPLFactory(o.getOWLOntologyManager(), o, null).createConstraintSystem();
-        System.out.println("ClusterCreator.buildClusterDecompositionModel() clusters " + clusters);
         List<OWLOntology> importsClosure = asList(o.importsClosure());
         OWLObjectGeneralisation generalisation =
             Utils.getOWLObjectGeneralisation(clusters, importsClosure, constraintSystem);

@@ -4,10 +4,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.DistanceCreator;
 import org.junit.Before;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -30,7 +30,7 @@ public class StructuralDistanceCharacterisationTest {
     @Before
     public void setUp() {
         try {
-            OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+            OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
             o = m.createOntology();
             df = m.getOWLDataFactory();
             OWLClass a = createOWLClass("a");
@@ -96,8 +96,6 @@ public class StructuralDistanceCharacterisationTest {
         OWLClass b = df.getOWLClass(IRI.create("urn:test#b"));
         OWLClass c = df.getOWLClass(IRI.create("urn:test#c"));
         OWLClass d = df.getOWLClass(IRI.create("urn:test#d"));
-        System.out.println("Axioms of " + a + " " + distance.getAxioms(a));
-        System.out.println("Axioms of " + d + " " + distance.getAxioms(d));
         assertTrue(distance.getDistance(a, b) == 0);
         assertTrue(distance.getDistance(a, c) == 0);
         assertTrue(distance.getDistance(b, c) == 0);

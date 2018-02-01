@@ -22,6 +22,7 @@ import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 /** @author eleni */
 @SuppressWarnings("javadoc")
@@ -43,7 +44,7 @@ public class StructuralAxiomRelevanceAxiomBasedBasedDistanceTest extends Distanc
         };
     }
 
-    public void testAminoAcid() {
+    public void testAminoAcid() throws OWLOntologyCreationException {
         String ns = "http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#";
         OWLOntology o = getOntology(new File("eswc-ontologies/amino-acid-original.owl"));
         List<OWLClass> classes = getClasses(ns + "Non-Polar", ns + "A");

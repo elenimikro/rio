@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.coode.utils.OntologyManagerUtils;
 import org.semanticweb.owlapi.io.StringDocumentTarget;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
@@ -152,7 +152,7 @@ public class TestOntologies {
                 sub(hasLandBoundary, hasBoundary), domain(hasLandBoundary, Country),
                 range(hasLandBoundary, LandBoundaryFragment), sub(hasWaterBoundary, hasBoundary),
                 domain(hasWaterBoundary, Country), range(hasWaterBoundary, WaterBoundaryFragment),
-                range(size, OWL2Datatype.XSD_INT.getDatatype(dataFactory)),
+                range(size, OWL2Datatype.XSD_INT.getDatatype(df)),
                 ClassAssertion(Country, asinara));
             return country;
         } catch (Exception e) {
@@ -281,7 +281,7 @@ public class TestOntologies {
             OWLOntology _syntax = m.createOntology(IRI(syntax_ns));
             OWLDataProperty p = DataProperty(syntax_ns + "#aDataProperty");
             state(_syntax, label(p, "aDataProperty"));
-            state(_syntax, range(p, OWL2Datatype.XSD_INT.getDatatype(dataFactory)));
+            state(_syntax, range(p, OWL2Datatype.XSD_INT.getDatatype(df)));
             return _syntax;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -464,7 +464,7 @@ public class TestOntologies {
     }
 
     private static OWLDatatype string() {
-        return OWL2Datatype.XSD_STRING.getDatatype(dataFactory);
+        return OWL2Datatype.XSD_STRING.getDatatype(df);
     }
 
     public static OWLOntology pizza(OWLOntologyManager m) {
@@ -975,142 +975,142 @@ public class TestOntologies {
         }
     }
 
-    private static final OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
+    private static final OWLDataFactory df = OntologyManagerUtils.dataFactory();
 
     private static OWLClass Class(String i) {
-        return dataFactory.getOWLClass(IRI(i));
+        return df.getOWLClass(IRI(i));
     }
 
     private static OWLAnnotationProperty RDFSLabel() {
-        return dataFactory.getRDFSLabel();
+        return df.getRDFSLabel();
     }
 
     private static OWLClass OWLThing() {
-        return dataFactory.getOWLThing();
+        return df.getOWLThing();
     }
 
     private static OWLObjectProperty object(String iri) {
-        return dataFactory.getOWLObjectProperty(IRI(iri));
+        return df.getOWLObjectProperty(IRI(iri));
     }
 
     private static OWLDataProperty DataProperty(String iri) {
-        return dataFactory.getOWLDataProperty(IRI(iri));
+        return df.getOWLDataProperty(IRI(iri));
     }
 
     private static OWLNamedIndividual NamedIndividual(String i) {
-        return dataFactory.getOWLNamedIndividual(IRI(i));
+        return df.getOWLNamedIndividual(IRI(i));
     }
 
     private static OWLDeclarationAxiom dec(OWLEntity entity) {
-        return dataFactory.getOWLDeclarationAxiom(entity);
+        return df.getOWLDeclarationAxiom(entity);
     }
 
     private static OWLObjectIntersectionOf and(OWLClassExpression... classExpressions) {
-        return dataFactory.getOWLObjectIntersectionOf(classExpressions);
+        return df.getOWLObjectIntersectionOf(classExpressions);
     }
 
     private static OWLObjectUnionOf or(OWLClassExpression... classExpressions) {
-        return dataFactory.getOWLObjectUnionOf(classExpressions);
+        return df.getOWLObjectUnionOf(classExpressions);
     }
 
     private static OWLObjectComplementOf c(OWLClassExpression classExpression) {
-        return dataFactory.getOWLObjectComplementOf(classExpression);
+        return df.getOWLObjectComplementOf(classExpression);
     }
 
     private static OWLObjectSomeValuesFrom some(OWLObjectPropertyExpression pe,
         OWLClassExpression ce) {
-        return dataFactory.getOWLObjectSomeValuesFrom(pe, ce);
+        return df.getOWLObjectSomeValuesFrom(pe, ce);
     }
 
     private static OWLObjectAllValuesFrom all(OWLObjectPropertyExpression pe,
         OWLClassExpression ce) {
-        return dataFactory.getOWLObjectAllValuesFrom(pe, ce);
+        return df.getOWLObjectAllValuesFrom(pe, ce);
     }
 
     private static OWLObjectHasValue has(OWLObjectPropertyExpression pe, OWLIndividual individual) {
-        return dataFactory.getOWLObjectHasValue(pe, individual);
+        return df.getOWLObjectHasValue(pe, individual);
     }
 
     private static OWLObjectMinCardinality min(int cardinality, OWLObjectPropertyExpression pe,
         OWLClassExpression ce) {
-        return dataFactory.getOWLObjectMinCardinality(cardinality, pe, ce);
+        return df.getOWLObjectMinCardinality(cardinality, pe, ce);
     }
 
     private static OWLObjectOneOf one(OWLIndividual... individuals) {
-        return dataFactory.getOWLObjectOneOf(individuals);
+        return df.getOWLObjectOneOf(individuals);
     }
 
     private static OWLDataSomeValuesFrom some(OWLDataPropertyExpression pe, OWLDataRange dr) {
-        return dataFactory.getOWLDataSomeValuesFrom(pe, dr);
+        return df.getOWLDataSomeValuesFrom(pe, dr);
     }
 
     private static OWLDataHasValue has(OWLDataPropertyExpression pe, OWLLiteral literal) {
-        return dataFactory.getOWLDataHasValue(pe, literal);
+        return df.getOWLDataHasValue(pe, literal);
     }
 
     private static OWLSubClassOfAxiom sub(OWLClassExpression subClass,
         OWLClassExpression superClass) {
-        return dataFactory.getOWLSubClassOfAxiom(subClass, superClass);
+        return df.getOWLSubClassOfAxiom(subClass, superClass);
     }
 
     private static OWLEquivalentClassesAxiom eq(OWLClassExpression... classExpressions) {
-        return dataFactory.getOWLEquivalentClassesAxiom(classExpressions);
+        return df.getOWLEquivalentClassesAxiom(classExpressions);
     }
 
     private static OWLDisjointClassesAxiom disjoint(OWLClassExpression... classExpressions) {
-        return dataFactory.getOWLDisjointClassesAxiom(classExpressions);
+        return df.getOWLDisjointClassesAxiom(classExpressions);
     }
 
     private static OWLSubObjectPropertyOfAxiom sub(OWLObjectPropertyExpression subProperty,
         OWLObjectPropertyExpression superProperty) {
-        return dataFactory.getOWLSubObjectPropertyOfAxiom(subProperty, superProperty);
+        return df.getOWLSubObjectPropertyOfAxiom(subProperty, superProperty);
     }
 
     private static OWLInverseObjectPropertiesAxiom inverse(OWLObjectPropertyExpression peA,
         OWLObjectPropertyExpression peB) {
-        return dataFactory.getOWLInverseObjectPropertiesAxiom(peA, peB);
+        return df.getOWLInverseObjectPropertiesAxiom(peA, peB);
     }
 
     private static OWLObjectPropertyDomainAxiom domain(OWLObjectPropertyExpression property,
         OWLClassExpression domain) {
-        return dataFactory.getOWLObjectPropertyDomainAxiom(property, domain);
+        return df.getOWLObjectPropertyDomainAxiom(property, domain);
     }
 
     private static OWLObjectPropertyRangeAxiom range(OWLObjectPropertyExpression property,
         OWLClassExpression range) {
-        return dataFactory.getOWLObjectPropertyRangeAxiom(property, range);
+        return df.getOWLObjectPropertyRangeAxiom(property, range);
     }
 
     private static OWLFunctionalObjectPropertyAxiom func(OWLObjectPropertyExpression property) {
-        return dataFactory.getOWLFunctionalObjectPropertyAxiom(property);
+        return df.getOWLFunctionalObjectPropertyAxiom(property);
     }
 
     private static OWLInverseFunctionalObjectPropertyAxiom invfunc(
         OWLObjectPropertyExpression property) {
-        return dataFactory.getOWLInverseFunctionalObjectPropertyAxiom(property);
+        return df.getOWLInverseFunctionalObjectPropertyAxiom(property);
     }
 
     private static OWLTransitiveObjectPropertyAxiom transitive(
         OWLObjectPropertyExpression property) {
-        return dataFactory.getOWLTransitiveObjectPropertyAxiom(property);
+        return df.getOWLTransitiveObjectPropertyAxiom(property);
     }
 
     private static OWLDataPropertyRangeAxiom range(OWLDataPropertyExpression property,
         OWLDataRange range) {
-        return dataFactory.getOWLDataPropertyRangeAxiom(property, range);
+        return df.getOWLDataPropertyRangeAxiom(property, range);
     }
 
     private static OWLDifferentIndividualsAxiom diff(OWLIndividual... individuals) {
-        return dataFactory.getOWLDifferentIndividualsAxiom(individuals);
+        return df.getOWLDifferentIndividualsAxiom(individuals);
     }
 
     private static OWLClassAssertionAxiom ClassAssertion(OWLClassExpression ce, OWLIndividual ind) {
-        return dataFactory.getOWLClassAssertionAxiom(ce, ind);
+        return df.getOWLClassAssertionAxiom(ce, ind);
     }
 
     private static OWLAnnotationAssertionAxiom ann(OWLAnnotationProperty property,
         OWLAnnotationSubject subject, OWLAnnotationValue value) {
-        return dataFactory.getOWLAnnotationAssertionAxiom(property, subject, value);
+        return df.getOWLAnnotationAssertionAxiom(property, subject, value);
     }
 
     private static IRI IRI(String iri) {
@@ -1118,7 +1118,7 @@ public class TestOntologies {
     }
 
     private static OWLLiteral Literal(String literal, String lang) {
-        return dataFactory.getOWLLiteral(literal, lang);
+        return df.getOWLLiteral(literal, lang);
     }
 
     public static OWLOntology test;
@@ -1129,25 +1129,24 @@ public class TestOntologies {
     public static OWLOntology ondrejtest;
     public static OWLOntology sequentialUnion;
     public static OWLOntology entire;
-    public static OWLDataFactory df = OWLManager.getOWLDataFactory();
     public static OWLOntologyManager managerForPizzaAndSyntax =
-        OWLManager.createOWLOntologyManager();
+        OntologyManagerUtils.ontologyManager();
     public static OWLOntologyManager managerForPizzaAndOndrej =
-        OWLManager.createOWLOntologyManager();
+        OntologyManagerUtils.ontologyManager();
     static {
         try {
-            naf = naf(OWLManager.createOWLOntologyManager());
-            test = country(OWLManager.createOWLOntologyManager());
-            syntax = syntax(OWLManager.createOWLOntologyManager());
-            siblings = siblings(OWLManager.createOWLOntologyManager());
-            ondrejtest = ondrejtest(OWLManager.createOWLOntologyManager());
-            sequentialUnion = sequentialUnion(OWLManager.createOWLOntologyManager());
-            pizza = pizza(OWLManager.createOWLOntologyManager());
-            entire = entire(OWLManager.createOWLOntologyManager());
+            naf = naf(OntologyManagerUtils.ontologyManager());
+            test = country(OntologyManagerUtils.ontologyManager());
+            syntax = syntax(OntologyManagerUtils.ontologyManager());
+            siblings = siblings(OntologyManagerUtils.ontologyManager());
+            ondrejtest = ondrejtest(OntologyManagerUtils.ontologyManager());
+            sequentialUnion = sequentialUnion(OntologyManagerUtils.ontologyManager());
+            pizza = pizza(OntologyManagerUtils.ontologyManager());
+            entire = entire(OntologyManagerUtils.ontologyManager());
             // load a copy of pizza and patterned pizza on the same manager
-            OWLOntology temp = pizza(OWLManager.createOWLOntologyManager());
+            OWLOntology temp = pizza(OntologyManagerUtils.ontologyManager());
             managerForPizzaAndSyntax = syntax(temp.getOWLOntologyManager()).getOWLOntologyManager();
-            temp = pizza(OWLManager.createOWLOntologyManager());
+            temp = pizza(OntologyManagerUtils.ontologyManager());
             managerForPizzaAndOndrej =
                 ondrejtest(temp.getOWLOntologyManager()).getOWLOntologyManager();
         } catch (Exception e) {

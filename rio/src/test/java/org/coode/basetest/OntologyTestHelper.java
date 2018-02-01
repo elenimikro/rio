@@ -1,6 +1,6 @@
 package org.coode.basetest;
 
-import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.coode.utils.OntologyManagerUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -14,7 +14,7 @@ public class OntologyTestHelper {
     /** @return ontology */
     public static OWLOntology getSmallTestOntology() {
         try {
-            OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+            OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
             OWLOntology o = m.createOntology();
             OWLDataFactory factory = m.getOWLDataFactory();
             OWLClass a = factory.getOWLClass(IRI.create("urn:test#A"));
@@ -52,7 +52,7 @@ public class OntologyTestHelper {
     /** @return ontology */
     public static OWLOntology getSmallMeaningfullTestOntology() {
         try {
-            OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+            OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
             OWLOntology o = m.createOntology();
             OWLDataFactory factory = m.getOWLDataFactory();
             OWLClass a = factory.getOWLClass(IRI.create("urn:test#Freestyle_swimming"));

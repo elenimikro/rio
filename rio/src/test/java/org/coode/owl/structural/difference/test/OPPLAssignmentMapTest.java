@@ -17,8 +17,8 @@ import org.coode.oppl.exceptions.OPPLException;
 import org.coode.oppl.variabletypes.InputVariable;
 import org.coode.oppl.variabletypes.VariableType;
 import org.coode.oppl.variabletypes.VariableTypeFactory;
+import org.coode.utils.OntologyManagerUtils;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -31,7 +31,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 public class OPPLAssignmentMapTest {
     @Test
     public void testAsignmentMapDisjointness() throws OWLOntologyCreationException, OPPLException {
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
         OWLOntology o = manager.createOntology();
         OWLDataFactory df = manager.getOWLDataFactory();
         OPPLFactory factory = new OPPLFactory(manager, o, null);
@@ -62,13 +62,10 @@ public class OPPLAssignmentMapTest {
         List<AssignmentMap> maps = new ArrayList<>();
         maps.add(anothermap);
         maps.add(map);
-        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps " + maps);
         assertTrue(AssignmentMap.areDisjoint(maps));
         maps.clear();
         maps.add(map);
         maps.add(ymap);
-        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps " + maps);
-        // assertFalse(maps.get(0).isDisjointWith(maps.get(1)));
         assertTrue(AssignmentMap.areDisjoint(maps));
         BindingNode thirdBindingNode = BindingNode.createNewEmptyBindingNode();
         thirdBindingNode.addAssignment(new Assignment(var, a));
@@ -78,7 +75,6 @@ public class OPPLAssignmentMapTest {
         maps.clear();
         maps.add(map);
         maps.add(new AssignmentMap(thirdset));
-        System.out.println("OPPLAssignmentMapTest.testAsignmentMapDisjointness() maps " + maps);
         assertFalse(AssignmentMap.areDisjoint(maps));
     }
 }

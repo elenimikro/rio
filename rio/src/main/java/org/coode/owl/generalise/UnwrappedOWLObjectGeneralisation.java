@@ -38,7 +38,6 @@ import java.util.Collection;
 
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.bindingtree.BindingNode;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
@@ -62,8 +61,7 @@ public class UnwrappedOWLObjectGeneralisation extends OWLObjectGeneralisation
 
     @Override
     public OWLClassExpression visit(OWLObjectIntersectionOf desc) {
-        return OWLManager.getOWLDataFactory()
-            .getOWLObjectIntersectionOf(asList(desc.operands().map(this::v)));
+        return factory.getOWLObjectIntersectionOf(asList(desc.operands().map(this::v)));
     }
 
     private <T extends OWLObject> T v(T t) {

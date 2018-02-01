@@ -27,8 +27,8 @@ import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.utils.EntityComparator;
+import org.coode.utils.OntologyManagerUtils;
 import org.junit.Test;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -51,12 +51,6 @@ public class EquivalenceClassTest {
             asList(ontologyManager.ontologies()), owlEntityReplacer, ontologyManager);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
             Utils.getEquivalenceClasses(entities, distance);
-        int i = 0;
-        for (OWLEntity key : equivalenceClasses.keySet()) {
-            Collection<OWLEntity> set = equivalenceClasses.get(key);
-            System.out.println(
-                String.format("Equivalence class no %d %s", Integer.valueOf(i++), render(set)));
-        }
         for (OWLEntity key : equivalenceClasses.keySet()) {
             Collection<OWLEntity> set = equivalenceClasses.get(key);
             for (OWLEntity anotherKey : equivalenceClasses.keySet()) {
@@ -97,12 +91,6 @@ public class EquivalenceClassTest {
             asList(ontologyManager.ontologies()), owlEntityReplacer, ontologyManager);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
             Utils.getEquivalenceClasses(entities, distance);
-        int i = 0;
-        for (OWLEntity key : equivalenceClasses.keySet()) {
-            Collection<OWLEntity> set = equivalenceClasses.get(key);
-            System.out.println(
-                String.format("Equivalence class no %d %s", Integer.valueOf(i++), render(set)));
-        }
         for (OWLEntity key : equivalenceClasses.keySet()) {
             Collection<OWLEntity> set = equivalenceClasses.get(key);
             for (OWLEntity anotherEntity : entities) {
@@ -118,7 +106,7 @@ public class EquivalenceClassTest {
     }
 
     public void testGetEquivalenceClassesTravel() throws Exception {
-        OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
         // File file = new File("code/test/resources//c16.rdf.owl");
         // IOUtils.loadIRIMappers(Collections.singleton(IRI.create(file)),
         // ontologyManager);
@@ -133,12 +121,6 @@ public class EquivalenceClassTest {
             asList(ontologyManager.ontologies()), owlEntityReplacer, ontologyManager);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
             Utils.getEquivalenceClasses(entities, distance);
-        int i = 0;
-        for (OWLEntity key : equivalenceClasses.keySet()) {
-            Collection<OWLEntity> set = equivalenceClasses.get(key);
-            System.out.println(
-                String.format("Equivalence class no %d %s", Integer.valueOf(i++), render(set)));
-        }
         for (OWLEntity key : equivalenceClasses.keySet()) {
             Collection<OWLEntity> set = equivalenceClasses.get(key);
             for (OWLEntity anotherKey : equivalenceClasses.keySet()) {
