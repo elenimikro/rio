@@ -13,8 +13,6 @@
  */
 package org.coode.proximitymatrix.ui;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
-
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,7 +75,7 @@ public class ProximityMatrixGUI extends JFrame {
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         OWLAPIStreamUtils.add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         Distance<OWLEntity> distance =
-            new AxiomBasedDistance(asList(manager.ontologies()), manager.getOWLDataFactory(),
+            new AxiomBasedDistance(manager.ontologies(), manager.getOWLDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
         ProximityMatrix<OWLEntity> matrix = new SimpleProximityMatrix<>(entities, distance);
         Collection<OWLEntity> objects = matrix.getObjects();

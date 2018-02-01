@@ -23,10 +23,10 @@ import org.coode.owl.generalise.AxiomGeneralisationTreeNode;
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.owl.generalise.structural.StructuralOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -51,17 +51,15 @@ public class TestAxiomGeneralisationTree {
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
-        ontology.axioms().filter(ax -> !ax.getAxiomType().equals(AxiomType.DECLARATION))
-            .forEach(axiom -> {
-                StructuralOWLObjectGeneralisation generalisation =
-                    new StructuralOWLObjectGeneralisation(
-                        new OntologyManagerBasedOWLEntityProvider(ontologyManager),
-                        constraintSystem);
-                OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-                generalisationMap.put(generalised,
-                    new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
-                generalisationCount.incrementAndGet();
-            });
+        ontology.axioms().filter(Utils::NOT_DECLARATION).forEach(axiom -> {
+            StructuralOWLObjectGeneralisation generalisation =
+                new StructuralOWLObjectGeneralisation(
+                    new OntologyManagerBasedOWLEntityProvider(ontologyManager), constraintSystem);
+            OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
+            generalisationMap.put(generalised,
+                new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
+            generalisationCount.incrementAndGet();
+        });
 
         assertTrue(generalisationCount.get() > 1);
 

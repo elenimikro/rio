@@ -14,9 +14,7 @@ import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.coode.distance.ReplacementStrategy;
 import org.semanticweb.owlapi.model.IRI;
@@ -60,7 +58,6 @@ import org.semanticweb.owlapi.model.OWLFacetRestriction;
 import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
-import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
@@ -188,11 +185,8 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLDifferentIndividualsAxiom axiom) {
-        Set<OWLIndividual> individuals = new HashSet<>(axiom.getOperandsAsList().size());
-        for (OWLIndividual owlIndividual : axiom.getOperandsAsList()) {
-            individuals.add(v(owlIndividual));
-        }
-        return getDataFactory().getOWLDifferentIndividualsAxiom(individuals);
+        return getDataFactory()
+            .getOWLDifferentIndividualsAxiom(asList(axiom.operands().map(this::v)));
     }
 
     @Override
@@ -310,22 +304,14 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLSameIndividualAxiom axiom) {
-        Set<OWLIndividual> individuals = new HashSet<>(axiom.getOperandsAsList().size());
-        for (OWLIndividual owlIndividual : axiom.getOperandsAsList()) {
-            individuals.add(v(owlIndividual));
-        }
-        return getDataFactory().getOWLSameIndividualAxiom(individuals);
+        return getDataFactory().getOWLSameIndividualAxiom(asList(axiom.operands().map(this::v)));
     }
 
     @Override
     public OWLObject visit(OWLSubPropertyChainOfAxiom axiom) {
-        List<OWLObjectPropertyExpression> properties =
-            new ArrayList<>(axiom.getPropertyChain().size());
-        for (OWLObjectPropertyExpression owlObjectPropertyExpression : axiom.getPropertyChain()) {
-            properties.add(v(owlObjectPropertyExpression));
-        }
-        return getDataFactory().getOWLSubPropertyChainOfAxiom(properties,
-            v(axiom.getSuperProperty()));
+        List<OWLObjectPropertyExpression> l =
+            asList(axiom.getPropertyChain().stream().map(this::v));
+        return getDataFactory().getOWLSubPropertyChainOfAxiom(l, v(axiom.getSuperProperty()));
     }
 
     @Override
@@ -432,11 +418,7 @@ public class OWLEntityReplacer implements OWLObjectVisitorEx<OWLObject> {
 
     @Override
     public OWLObject visit(OWLObjectOneOf ce) {
-        Set<OWLIndividual> individuals = new HashSet<>(ce.getOperandsAsList().size());
-        for (OWLIndividual owlIndividual : ce.getOperandsAsList()) {
-            individuals.add(v(owlIndividual));
-        }
-        return getDataFactory().getOWLObjectOneOf(individuals);
+        return getDataFactory().getOWLObjectOneOf(asList(ce.operands().map(this::v)));
     }
 
     @Override

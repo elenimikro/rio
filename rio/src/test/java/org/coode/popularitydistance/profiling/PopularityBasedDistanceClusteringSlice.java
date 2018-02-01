@@ -89,7 +89,7 @@ public class PopularityBasedDistanceClusteringSlice {
                     new OWLEntityReplacer(manager.getOWLDataFactory(),
                         new ReplacementByKindStrategy(manager.getOWLDataFactory()));
                 AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                    asList(onto.importsClosure()), owlEntityReplacer, manager);
+                    onto.importsClosure(), owlEntityReplacer, manager);
                 Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
                 onto.signature(Imports.INCLUDED).filter(p -> !p.isOWLObjectProperty())
                     .forEach(entities::add);

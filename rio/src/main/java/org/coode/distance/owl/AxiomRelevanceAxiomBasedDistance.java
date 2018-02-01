@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.distance.entityrelevance.owl.AxiomGeneralityDetector;
 import org.coode.distance.entityrelevance.owl.AxiomMap;
@@ -33,7 +34,6 @@ import org.coode.owl.generalise.structural.RelevancePolicyOWLObjectGeneralisatio
 import org.coode.owl.generalise.structural.SingleOWLEntityReplacementVariableProvider;
 import org.coode.owl.wrappers.OWLEntityProvider;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
-import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -44,7 +44,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
 public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
-    protected final Set<OWLOntology> ontologies = new HashSet<>();
+    protected final List<OWLOntology> ontologies = new ArrayList<>();
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
@@ -55,12 +55,12 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
     private final OPPLFactory factory;
     private final OWLOntologyChangeListener listener = changes -> {
         buildOntologySignature();
-        buildAxiomEntityMap(ontologies);
+        buildAxiomEntityMap();
     };
-    private final static List<AxiomType<?>> types = new ArrayList<>(AxiomType.LOGICAL_AXIOM_TYPES);
 
-    protected void buildAxiomEntityMap(Collection<? extends OWLOntology> ontos) {
-        ontos.stream().flatMap(OWLOntology::axioms).filter(ax -> types.contains(ax.getAxiomType()))
+    protected void buildAxiomEntityMap() {
+        ontologies.stream().flatMap(OWLOntology::axioms)
+            .filter(org.coode.proximitymatrix.cluster.Utils::NOT_DECLARATION)
             .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
@@ -76,7 +76,7 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
      * @param replacer replacer
      * @param manager manager
      */
-    public AxiomRelevanceAxiomBasedDistance(Collection<? extends OWLOntology> ontologies,
+    public AxiomRelevanceAxiomBasedDistance(Stream<OWLOntology> ontologies,
         OWLEntityReplacer replacer, OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
@@ -88,11 +88,11 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
             throw new NullPointerException("The replacer cannot be null");
         }
         this.replacer = replacer;
-        axiomMap = new AxiomMap(ontologies, manager, replacer);
-        this.ontologies.addAll(ontologies);
+        add(this.ontologies, ontologies);
+        axiomMap = new AxiomMap(this.ontologies.stream(), replacer);
         ontologyManger = manager;
         buildOntologySignature();
-        buildAxiomEntityMap(ontologies);
+        buildAxiomEntityMap();
         entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
         factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(), null);
     }
@@ -110,11 +110,6 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
      */
     protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
-            // RelevancePolicyOWLObjectGeneralisation generalReplacer = new
-            // RelevancePolicyOWLObjectGeneralisation(
-            // Utils.toOWLObjectRelevancePolicy(new AxiomRelevancePolicy(
-            // (OWLAxiom) axiom.accept(replacer), axiomMap)),
-            // getEntityProvider(), factory.createConstraintSystem());
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);
             if (generalReplacer == null) {
                 generalReplacer = new RelevancePolicyOWLObjectGeneralisation(

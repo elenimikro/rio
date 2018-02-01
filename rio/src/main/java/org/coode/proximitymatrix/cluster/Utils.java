@@ -112,10 +112,12 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-//import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
-//import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
 /** @author ignazio */
 public class Utils {
+    public static boolean NOT_DECLARATION(OWLAxiom ax) {
+        return !ax.getAxiomType().equals(AxiomType.DECLARATION);
+    }
+
     private final static class OWLOntologyAnnotationClusterDetector
         implements OWLObjectVisitorEx<Boolean> {
         private final List<OWLOntology> ontologies = new ArrayList<>();
@@ -523,7 +525,7 @@ public class Utils {
         OWLObjectGeneralisation generalisation) {
         Set<OWLAxiom> ontologyAxioms = asSet(ontologies.stream().flatMap(OWLOntology::axioms)
             .filter(ax -> !ax.getAxiomType().equals(AxiomType.ANNOTATION_ASSERTION))
-            .filter(ax -> !ax.getAxiomType().equals(AxiomType.DECLARATION)));
+            .filter(Utils::NOT_DECLARATION));
         return buildGeneralisationMap(cluster, ontologies, generalisation, ontologyAxioms);
     }
 
@@ -615,8 +617,7 @@ public class Utils {
     protected static void generaliseAxiom(Collection<OWLEntity> cluster,
         Collection<OWLOntology> ontologies, OWLObjectGeneralisation generalisation,
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap, OWLAxiom axiom) {
-        if (axiom.getAxiomType() != AxiomType.DECLARATION
-            && axiom.getAxiomType() != AxiomType.ANNOTATION_ASSERTION) {
+        if (NOT_DECLARATION(axiom) && axiom.getAxiomType() != AxiomType.ANNOTATION_ASSERTION) {
             OWLOntologyAnnotationClusterDetector visitor =
                 new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
             boolean intersection = axiom.signature().anyMatch(cluster::contains);

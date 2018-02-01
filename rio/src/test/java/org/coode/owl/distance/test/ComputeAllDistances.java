@@ -11,7 +11,6 @@
 package org.coode.owl.distance.test;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,7 @@ public class ComputeAllDistances {
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         AxiomBasedDistance distance =
-            new AxiomBasedDistance(asList(manager.ontologies()), manager.getOWLDataFactory(),
+            new AxiomBasedDistance(manager.ontologies(), manager.getOWLDataFactory(),
                 DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);

@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
 import org.coode.basetest.TestHelper;
 import org.coode.distance.Distance;
@@ -43,7 +44,7 @@ public class ClusteringProximityMatrixTest {
     @Test
     public void testReduce() {
         OWLOntology ontology = TestHelper.getPizza();
-        final AxiomBasedDistance distance = new AxiomBasedDistance(Collections.singleton(ontology),
+        final AxiomBasedDistance distance = new AxiomBasedDistance(Stream.of(ontology),
             ontology.getOWLOntologyManager().getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(),
             ontology.getOWLOntologyManager());

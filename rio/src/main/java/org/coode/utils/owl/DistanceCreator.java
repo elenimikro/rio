@@ -1,7 +1,5 @@
 package org.coode.utils.owl;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
-
 import org.coode.distance.Distance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityRelevanceAxiomBasedDistance;
@@ -21,8 +19,8 @@ public class DistanceCreator {
         OWLOntologyManager manager) {
         OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(manager.getOWLDataFactory(),
             new ReplacementByKindStrategy(manager.getOWLDataFactory()));
-        Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-            asList(manager.ontologies()), owlEntityReplacer, manager);
+        Distance<OWLEntity> distance =
+            new AxiomRelevanceAxiomBasedDistance(manager.ontologies(), owlEntityReplacer, manager);
         return distance;
     }
 
@@ -33,7 +31,7 @@ public class DistanceCreator {
     public static Distance<OWLEntity> createOWLEntityRelevanceAxiomBasedDistance(
         OWLOntologyManager manager) {
         Distance<OWLEntity> distance =
-            new OWLEntityRelevanceAxiomBasedDistance(asList(manager.ontologies()), manager);
+            new OWLEntityRelevanceAxiomBasedDistance(manager.ontologies(), manager);
         return distance;
     }
 
@@ -44,7 +42,7 @@ public class DistanceCreator {
     public static Distance<OWLEntity> createStructuralAxiomRelevanceAxiomBasedDistance(
         OWLOntologyManager manager) {
         Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
-            asList(manager.ontologies()), manager.getOWLDataFactory(), manager);
+            manager.ontologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
 }

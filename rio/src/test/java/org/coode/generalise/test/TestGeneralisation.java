@@ -36,10 +36,9 @@ import org.coode.oppl.variabletypes.VariableTypeFactory;
 import org.coode.owl.generalise.OWLObjectGeneralisation;
 import org.coode.owl.generalise.structural.StructuralOWLObjectGeneralisation;
 import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.OntologyManagerUtils;
-import org.junit.Before;
 import org.junit.Test;
-import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -76,13 +75,6 @@ public class TestGeneralisation {
         }
     }
 
-    @Before
-    public void setUp() {
-        // super.setUp();
-        // ToStringRenderer.getInstance().setRenderer(
-        // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-    }
-
     @Test
     public void testMultipleStructuralGeneralisationWholeOntology() {
         AtomicInteger generalisationCount = new AtomicInteger(0);
@@ -91,16 +83,14 @@ public class TestGeneralisation {
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
         Set<OWLAxiom> generalisedAxioms = new HashSet<>();
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
-        ontology.axioms().filter(ax -> !ax.getAxiomType().equals(AxiomType.DECLARATION))
-            .forEach(axiom -> {
-                StructuralOWLObjectGeneralisation generalisation =
-                    new StructuralOWLObjectGeneralisation(
-                        new OntologyManagerBasedOWLEntityProvider(ontologyManager),
-                        constraintSystem);
-                OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-                generalisedAxioms.add(generalised);
-                generalisationCount.incrementAndGet();
-            });
+        ontology.axioms().filter(Utils::NOT_DECLARATION).forEach(axiom -> {
+            StructuralOWLObjectGeneralisation generalisation =
+                new StructuralOWLObjectGeneralisation(
+                    new OntologyManagerBasedOWLEntityProvider(ontologyManager), constraintSystem);
+            OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
+            generalisedAxioms.add(generalised);
+            generalisationCount.incrementAndGet();
+        });
 
         assertTrue(generalisationCount.get() > 1);
 

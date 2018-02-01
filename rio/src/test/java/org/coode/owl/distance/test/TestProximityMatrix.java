@@ -40,8 +40,8 @@ public class TestProximityMatrix {
     public void testAllDistances() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-        AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(
-            asList(ontologyManager.ontologies()), ontologyManager.getOWLDataFactory(),
+        AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(ontologyManager.ontologies(),
+            ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);
@@ -56,7 +56,7 @@ public class TestProximityMatrix {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         final AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(
-            asList(ontologyManager.ontologies()), ontologyManager.getOWLDataFactory(),
+            ontologyManager.ontologies(), ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);
@@ -82,8 +82,8 @@ public class TestProximityMatrix {
     public void testAllDistancesReduced() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-        AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(
-            asList(ontologyManager.ontologies()), ontologyManager.getOWLDataFactory(),
+        AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(ontologyManager.ontologies(),
+            ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);

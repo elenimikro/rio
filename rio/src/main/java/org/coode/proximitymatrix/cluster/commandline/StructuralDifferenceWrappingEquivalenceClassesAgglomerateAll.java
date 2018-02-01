@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster.commandline;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
-
 import org.coode.distance.Distance;
 import org.coode.distance.owl.StructuralAxiomRelevanceAxiomBasedDistance;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
@@ -34,7 +32,7 @@ public class StructuralDifferenceWrappingEquivalenceClassesAgglomerateAll extend
     @Override
     public Distance<OWLEntity> getDistance(OWLOntologyManager manager) {
         Distance<OWLEntity> distance = new StructuralAxiomRelevanceAxiomBasedDistance(
-            asList(manager.ontologies()), manager.getOWLDataFactory(), manager);
+            manager.ontologies(), manager.getOWLDataFactory(), manager);
         return distance;
     }
 

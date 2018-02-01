@@ -15,8 +15,9 @@ package org.coode.metrics.owl;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.metrics.AbstractRanking;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -28,7 +29,7 @@ public class OWLEntityPopularityRanking extends AbstractRanking<OWLEntity> {
      * @param ontologies ontologies
      * @param objects objects
      */
-    public OWLEntityPopularityRanking(Set<OWLEntity> objects, Collection<OWLOntology> ontologies) {
+    public OWLEntityPopularityRanking(Set<OWLEntity> objects, Stream<OWLOntology> ontologies) {
         super(new OWLEntityPopularity(ontologies), objects, OWLEntity.class);
     }
 
@@ -41,8 +42,8 @@ public class OWLEntityPopularityRanking extends AbstractRanking<OWLEntity> {
      * @param ontologies ontologies
      * @return popularity ranking
      */
-    public static OWLEntityPopularityRanking buildRanking(Collection<OWLOntology> ontologies) {
+    public static OWLEntityPopularityRanking buildRanking(List<OWLOntology> ontologies) {
         Set<OWLEntity> entities = asSet(ontologies.stream().flatMap(OWLOntology::signature));
-        return new OWLEntityPopularityRanking(entities, ontologies);
+        return new OWLEntityPopularityRanking(entities, ontologies.stream());
     }
 }

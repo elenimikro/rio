@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
-
 import java.util.List;
 
 import org.coode.basetest.TestHelper;
@@ -35,8 +33,8 @@ public class AxiomRelevanceAxiomBasedDistanceTest extends DistanceTestCase {
                 final OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                     o.getOWLOntologyManager().getOWLDataFactory(),
                     new ReplacementByKindStrategy(o.getOWLOntologyManager().getOWLDataFactory()));
-                return new AxiomRelevanceAxiomBasedDistance(asList(o.importsClosure()),
-                    owlEntityReplacer, o.getOWLOntologyManager());
+                return new AxiomRelevanceAxiomBasedDistance(o.importsClosure(), owlEntityReplacer,
+                    o.getOWLOntologyManager());
             }
 
             @Override

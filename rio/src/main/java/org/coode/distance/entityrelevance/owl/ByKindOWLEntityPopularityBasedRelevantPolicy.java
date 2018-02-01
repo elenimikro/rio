@@ -13,9 +13,7 @@ package org.coode.distance.entityrelevance.owl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +31,9 @@ import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import gnu.trove.set.TDoubleSet;
+import gnu.trove.set.hash.TDoubleHashSet;
 
 /** @author eleni */
 public final class ByKindOWLEntityPopularityBasedRelevantPolicy
@@ -64,7 +65,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy
 
         @Override
         public double[] getValues() {
-            Set<Double> values = new HashSet<>();
+            TDoubleSet values = new TDoubleHashSet();
             if (owlClassesPopularityRanking != null) {
                 owlClassesPopularityRanking.getRanking().collect(values);
             }
@@ -83,13 +84,7 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy
             if (owlDatatypesPopularityRanking != null) {
                 owlDatatypesPopularityRanking.getRanking().collect(values);
             }
-            double[] doubles = new double[] {values.size()};
-            Iterator<Double> it = values.iterator();
-            int i = 0;
-            while (it.hasNext()) {
-                doubles[i++] = it.next().doubleValue();
-            }
-            return doubles;
+            return values.toArray();
         }
 
         public OWLEntity[] getMaxValues() {
@@ -206,15 +201,11 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy
         @Override
         public List<RankingSlot<OWLEntity>> getSortedRanking() {
             List<RankingSlot<OWLEntity>> toReturn = getUnorderedRanking();
-            Collections.sort(toReturn,
-                Collections.reverseOrder(new Comparator<RankingSlot<OWLEntity>>() {
-                    @Override
-                    public int compare(RankingSlot<OWLEntity> o1, RankingSlot<OWLEntity> o2) {
-                        double difference = o1.getValue() - o2.getValue();
-                        return difference == 0 ? o1.getMembersHashCode() - o2.getMembersHashCode()
-                            : (int) Math.signum(difference);
-                    }
-                }));
+            Collections.sort(toReturn, Collections.reverseOrder((o1, o2) -> {
+                double difference = o1.getValue() - o2.getValue();
+                return difference == 0 ? o1.getMembersHashCode() - o2.getMembersHashCode()
+                    : (int) Math.signum(difference);
+            }));
             return toReturn;
         }
     }
@@ -266,22 +257,22 @@ public final class ByKindOWLEntityPopularityBasedRelevantPolicy
         }
         owlClassesPopularityRanking = owlClasses.isEmpty() ? null
             : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(owlClasses, ontologies));
+                new OWLEntityPopularityRanking(owlClasses, ontologies.stream()));
         owlObjectPropertiesPopularityRanking = owlObjectProperties.isEmpty() ? null
             : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(owlObjectProperties, ontologies));
+                new OWLEntityPopularityRanking(owlObjectProperties, ontologies.stream()));
         owlDataPropertiesPopularityRanking = owlDataProperties.isEmpty() ? null
             : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(owlDataProperties, ontologies));
+                new OWLEntityPopularityRanking(owlDataProperties, ontologies.stream()));
         owlAnnotationPropertiesPopularityRanking = owlAnnotationProperties.isEmpty() ? null
             : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(owlAnnotationProperties, ontologies));
+                new OWLEntityPopularityRanking(owlAnnotationProperties, ontologies.stream()));
         owlNamedIndividualsPopularityRanking = owlNamedIndividuals.isEmpty() ? null
             : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(owlNamedIndividuals, ontologies));
+                new OWLEntityPopularityRanking(owlNamedIndividuals, ontologies.stream()));
         owlDatatypesPopularityRanking = owlDatatypes.isEmpty() ? null
             : AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(owlDatatypes, ontologies));
+                new OWLEntityPopularityRanking(owlDatatypes, ontologies.stream()));
     }
 
     @Override

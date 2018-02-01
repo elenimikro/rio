@@ -10,90 +10,65 @@
  ******************************************************************************/
 package org.coode.distance.entityrelevance.owl;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
-
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import org.coode.distance.owl.OWLEntityReplacer;
-import org.semanticweb.owlapi.model.AxiomType;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 /** @author eleni */
 public class AxiomMap {
-    private final Map<OWLAxiom, Map<OWLEntity, AtomicInteger>> delegate = new HashMap<>();
-    private final Map<OWLAxiom, AtomicInteger> axiomCountMap = new HashMap<>();
+    private final Map<OWLAxiom, TObjectIntMap<OWLEntity>> delegate = new HashMap<>();
+    private final TObjectIntMap<OWLAxiom> axiomCountMap = new TObjectIntHashMap<>();
     private final OWLEntityReplacer replacer;
-    private final Set<OWLAxiom> axioms;
 
     /**
      * @param ontologies ontologies
-     * @param ontologyManager ontologyManager
      * @param replacer replacer
      */
-    public AxiomMap(Collection<? extends OWLOntology> ontologies,
-        OWLOntologyManager ontologyManager, OWLEntityReplacer replacer) {
+    public AxiomMap(Stream<? extends OWLOntology> ontologies, OWLEntityReplacer replacer) {
         if (ontologies == null) {
             throw new NullPointerException("The ontology colleciton cannot be null");
         }
-        if (ontologyManager == null) {
-            throw new NullPointerException("The ontology manager cannot be null");
-        }
         this.replacer = replacer;
-        // ontologyManager.addOntologyChangeListener(listener);
-        axioms = asSet(ontologies.stream().flatMap(OWLOntology::axioms));
-        buildMaps(axioms);
+        buildMaps(ontologies.flatMap(OWLOntology::axioms));
     }
 
-    /**
-     * @param axioms axioms
-     * @param replacer replacer
-     */
-    public AxiomMap(Set<OWLAxiom> axioms, OWLEntityReplacer replacer) {
-        if (axioms == null) {
-            throw new NullPointerException("The set of axioms cannot be null");
-        }
-        this.replacer = replacer;
-        this.axioms = new HashSet<>(axioms);
-        buildMaps(axioms);
-    }
-
-    void buildMaps(Set<OWLAxiom> axs) {
+    void buildMaps(Stream<OWLAxiom> axs) {
         delegate.clear();
         axiomCountMap.clear();
-        for (OWLAxiom axiom : axs) {
-            if (axiom.getAxiomType() != AxiomType.DECLARATION) {
-                OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
-                axiomCountMap.computeIfAbsent(replaced, x -> new AtomicInteger()).incrementAndGet();
-                countAxioms(axiom, delegate.computeIfAbsent(replaced, x -> new HashMap<>()));
-            }
-        }
+        axs.filter(Utils::NOT_DECLARATION).forEach(this::replaceAndCount);
     }
 
-    protected void countAxioms(OWLAxiom axiom, Map<OWLEntity, AtomicInteger> entityMap) {
-        axiom.signature()
-            .forEach(e -> entityMap.computeIfAbsent(e, x -> new AtomicInteger()).incrementAndGet());
+    protected void replaceAndCount(OWLAxiom axiom) {
+        OWLAxiom replaced = (OWLAxiom) axiom.accept(replacer);
+        add(replaced, axiomCountMap);
+        countAxioms(axiom, delegate.computeIfAbsent(replaced, x -> new TObjectIntHashMap<>()));
     }
+
+    protected void countAxioms(OWLAxiom ax, TObjectIntMap<OWLEntity> map) {
+        ax.signature().forEach(e -> add(e, map));
+    }
+
+    private static <T> void add(T t, TObjectIntMap<T> map) {
+        map.adjustOrPutValue(t, 1, 1);
+    }
+
+    private static final TObjectIntMap<OWLEntity> EMPTY = new TObjectIntHashMap<>();
 
     /**
      * @param object object
      * @return map
      */
-    public Map<OWLEntity, AtomicInteger> get(OWLAxiom object) {
-        Map<OWLEntity, AtomicInteger> map = delegate.get(object);
-        if (map == null) {
-            return Collections.emptyMap();
-            // map = new HashMap<OWLEntity, Integer>();
-        }
-        return map; // new HashMap<OWLEntity, Integer>(map);
+    public TObjectIntMap<OWLEntity> get(OWLAxiom object) {
+        return delegate.getOrDefault(object, EMPTY);
     }
 
     int lastElement = -1;
@@ -107,24 +82,14 @@ public class AxiomMap {
         if (object == lastRequest) {
             return lastElement;
         }
-        AtomicInteger toReturn = axiomCountMap.get(object);
-        if (toReturn == null) {
+        int toReturn = axiomCountMap.get(object);
+        if (toReturn == 0) {
             lastRequest = object;
             lastElement = 0;
             return 0;
         }
         lastRequest = object;
-        lastElement = toReturn.intValue();
+        lastElement = toReturn;
         return lastElement;
-    }
-
-    /** dispose */
-    public void dispose() {
-        // ontologyManager.removeOntologyChangeListener(listener);
-    }
-
-    /** @return axioms */
-    public Set<OWLAxiom> getAxioms() {
-        return axioms;
     }
 }

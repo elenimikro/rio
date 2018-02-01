@@ -11,7 +11,6 @@
 package org.coode.proximitymatrix.cluster.commandline;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.io.File;
 import java.util.Collection;
@@ -68,8 +67,8 @@ public class AgglomerateAll extends AgglomeratorBase {
         add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(manager.getOWLDataFactory(),
             new ReplacementByKindStrategy(manager.getOWLDataFactory()));
-        final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-            asList(manager.ontologies()), owlEntityReplacer, manager);
+        final Distance<OWLEntity> distance =
+            new AxiomRelevanceAxiomBasedDistance(manager.ontologies(), owlEntityReplacer, manager);
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",

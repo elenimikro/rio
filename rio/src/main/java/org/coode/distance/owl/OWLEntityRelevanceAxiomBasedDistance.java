@@ -15,11 +15,14 @@ package org.coode.distance.owl;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.distance.entityrelevance.DefaultOWLEntityTypeRelevancePolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
@@ -41,7 +44,7 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
 public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
-    protected final Set<OWLOntology> ontologies = new HashSet<>();
+    protected final List<OWLOntology> ontologies = new ArrayList<>();
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
@@ -50,11 +53,11 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     private final OPPLFactory factory;
     private final OWLOntologyChangeListener listener = changes -> {
         buildOntologySignature();
-        buildAxiomEntityMap(ontologies);
+        buildAxiomEntityMap();
     };
 
-    protected void buildAxiomEntityMap(Collection<? extends OWLOntology> ontos) {
-        ontos.stream().flatMap(OWLOntology::axioms)
+    protected void buildAxiomEntityMap() {
+        ontologies.stream().flatMap(OWLOntology::axioms)
             .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
@@ -70,7 +73,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
      * @param ontologies ontologies
      * @param manager manager
      */
-    public OWLEntityRelevanceAxiomBasedDistance(Collection<? extends OWLOntology> ontologies,
+    public OWLEntityRelevanceAxiomBasedDistance(Stream<OWLOntology> ontologies,
         OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
@@ -78,11 +81,10 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
         if (manager == null) {
             throw new NullPointerException("The ontolgy manager cannot be null");
         }
-        // axiomMap = new AxiomMap(ontologies, manager, replacer);
-        this.ontologies.addAll(ontologies);
+        add(this.ontologies, ontologies);
         ontologyManger = manager;
         buildOntologySignature();
-        buildAxiomEntityMap(ontologies);
+        buildAxiomEntityMap();
         entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
         factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(), null);
         policy = DefaultOWLEntityTypeRelevancePolicy.getPropertiesAlwaysRelevantPolicy();

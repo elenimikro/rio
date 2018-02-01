@@ -23,6 +23,8 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.MultiMap;
 
+import gnu.trove.set.TDoubleSet;
+
 /**
  * @author eleni
  * @param <T> type
@@ -122,9 +124,9 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
             return keyset;
         }
 
-        public void collect(Set<Double> set) {
+        public void collect(TDoubleSet set) {
             for (int i = 0; i < size; i++) {
-                set.add(Double.valueOf(keyset[i]));
+                set.add(keyset[i]);
             }
         }
 
@@ -234,7 +236,7 @@ public abstract class AbstractRanking<T> implements Ranking<T> {
     /**
      * @param set set
      */
-    public void collect(Set<Double> set) {
+    public void collect(TDoubleSet set) {
         dmap.collect(set);
     }
 

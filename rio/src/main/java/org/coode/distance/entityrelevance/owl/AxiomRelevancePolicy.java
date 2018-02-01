@@ -13,15 +13,14 @@
  */
 package org.coode.distance.entityrelevance.owl;
 
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.coode.distance.entityrelevance.AbstractRankingRelevancePolicy;
 import org.coode.distance.entityrelevance.RelevancePolicy;
 import org.coode.metrics.AbstractRanking;
 import org.coode.metrics.Metric;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
+
+import gnu.trove.map.TObjectIntMap;
 
 /** @author Luigi Iannone */
 public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
@@ -43,27 +42,15 @@ public class AxiomRelevancePolicy implements RelevancePolicy<OWLEntity> {
      */
     public static AbstractRanking<OWLEntity> buildRanking(final OWLAxiom replacedAxiom,
         final AxiomMap axiomMap) {
-        final Map<OWLEntity, AtomicInteger> entityMap = axiomMap.get(replacedAxiom);
-        Metric<OWLEntity> m = new Metric<OWLEntity>() {
+        final TObjectIntMap<OWLEntity> entityMap = axiomMap.get(replacedAxiom);
+        Metric<OWLEntity> m =
+            o -> (double) entityMap.get(o) / axiomMap.getAxiomCount(replacedAxiom);
+        return new AbstractRanking<OWLEntity>(m, entityMap.keySet(), OWLEntity.class) {
             @Override
-            public double getValue(OWLEntity object) {
-                AtomicInteger value = entityMap.get(object);
-                double d = 0;
-                if (value != null) {
-                    d = value.doubleValue();
-                }
-                double total = axiomMap.getAxiomCount(replacedAxiom);
-                return d / total;
+            public boolean isAverageable() {
+                return true;
             }
         };
-        AbstractRanking<OWLEntity> ranking =
-            new AbstractRanking<OWLEntity>(m, entityMap.keySet(), OWLEntity.class) {
-                @Override
-                public boolean isAverageable() {
-                    return true;
-                }
-            };
-        return ranking;
     }
 
     @Override

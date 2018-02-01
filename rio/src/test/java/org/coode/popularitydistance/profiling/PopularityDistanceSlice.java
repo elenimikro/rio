@@ -1,7 +1,5 @@
 package org.coode.popularitydistance.profiling;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -54,7 +52,7 @@ public class PopularityDistanceSlice {
             OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(manager.getOWLDataFactory(),
                 new ReplacementByKindStrategy(manager.getOWLDataFactory()));
             AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-                asList(onto.importsClosure()), owlEntityReplacer, manager);
+                onto.importsClosure(), owlEntityReplacer, manager);
             System.out.println("PopularityDistanceSlice.main() Distance measure was built");
             Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
             onto.signature(Imports.INCLUDED).filter(p -> !p.isOWLObjectProperty())

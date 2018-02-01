@@ -10,14 +10,18 @@
  ******************************************************************************/
 package org.coode.distance.owl;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
-import org.semanticweb.owlapi.model.AxiomType;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -29,16 +33,15 @@ import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
 public class EditDistance implements AbstractAxiomBasedDistance {
-    protected final Set<OWLOntology> ontologies = new HashSet<>();
+    protected final List<OWLOntology> ontologies = new ArrayList<>();
     private final OWLDataFactory dataFactory;
     private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
     private final OWLOntologyManager ontologyManger;
     private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
-    private final OWLOntologyChangeListener listener = changes -> buildAxiomMap(ontologies);
+    private final OWLOntologyChangeListener listener = changes -> buildAxiomMap();
 
-    protected void buildAxiomMap(Collection<? extends OWLOntology> ontos) {
-        ontos.stream().flatMap(OWLOntology::axioms)
-            .filter(a -> !a.getAxiomType().equals(AxiomType.DECLARATION))
+    protected void buildAxiomMap() {
+        ontologies.stream().flatMap(OWLOntology::axioms).filter(Utils::NOT_DECLARATION)
             .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
@@ -47,7 +50,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
      * @param dataFactory dataFactory
      * @param manager manager
      */
-    public EditDistance(Collection<? extends OWLOntology> ontologies, OWLDataFactory dataFactory,
+    public EditDistance(Stream<OWLOntology> ontologies, OWLDataFactory dataFactory,
         OWLOntologyManager manager) {
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
@@ -58,9 +61,9 @@ public class EditDistance implements AbstractAxiomBasedDistance {
         if (manager == null) {
             throw new NullPointerException("The ontolgy manager cannot be null");
         }
-        this.ontologies.addAll(ontologies);
+        add(this.ontologies, ontologies);
         ontologyManger = manager;
-        buildAxiomMap(ontologies);
+        buildAxiomMap();
         this.dataFactory = dataFactory;
     }
 
@@ -130,24 +133,13 @@ public class EditDistance implements AbstractAxiomBasedDistance {
      * @return axioms
      */
     protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
-        Set<OWLAxiom> toReturn = new HashSet<>();
         if (!cache.get(owlEntity).isEmpty()) {
-            toReturn.addAll(cache.get(owlEntity));
-        } else {
-            Set<AxiomType<?>> types = new HashSet<>(AxiomType.AXIOM_TYPES);
-            types.remove(AxiomType.DECLARATION);
-            for (OWLAxiom owlAxiom : candidates.get(owlEntity)) {
-                if (types.contains(owlAxiom.getAxiomType())) {
-                    cache.put(owlEntity, owlAxiom);
-                }
-            }
+            return CollectionFactory
+                .getCopyOnRequestSetFromImmutableCollection(cache.get(owlEntity));
         }
+        candidates.get(owlEntity).stream().filter(Utils::NOT_DECLARATION)
+            .forEach(ax -> cache.put(owlEntity, ax));
         return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache.get(owlEntity));
-    }
-
-    /** @return the ontologies */
-    public Set<OWLOntology> getOntologies() {
-        return new HashSet<>(ontologies);
     }
 
     /** @return the dataFactory */

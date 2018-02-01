@@ -48,14 +48,14 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
                 OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(
                     o.getOWLOntologyManager().getOWLDataFactory(),
                     new ReplacementByKindStrategy(o.getOWLOntologyManager().getOWLDataFactory()));
-                return new AxiomRelevanceAxiomBasedDistance(asList(o.importsClosure()),
-                    owlEntityReplacer, o.getOWLOntologyManager());
+                return new AxiomRelevanceAxiomBasedDistance(o.importsClosure(), owlEntityReplacer,
+                    o.getOWLOntologyManager());
             }
 
             @Override
             public AbstractAxiomBasedDistance getDistance(OWLOntology o,
                 RelevancePolicy<OWLEntity> rp) {
-                return new AxiomBasedDistance(asList(o.importsClosure()),
+                return new AxiomBasedDistance(o.importsClosure(),
                     o.getOWLOntologyManager().getOWLDataFactory(), rp, o.getOWLOntologyManager());
             }
         };
@@ -99,7 +99,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
         OWLOntology o = TestHelper.getPizza();
         AbstractAxiomBasedDistance distance = getDistanceBuilder().getDistance(o,
             AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
-                new OWLEntityPopularityRanking(asSet(o.signature()), asList(o.importsClosure()))));
+                new OWLEntityPopularityRanking(asSet(o.signature()), o.importsClosure())));
         List<OWLClass> classes = getClasses(pizza_ns + "UnclosedPizza", pizza_ns + "IceCream");
         properTest(distance, classes);
     }

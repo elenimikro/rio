@@ -55,9 +55,4 @@ public abstract class CollectionBasedRelevantPolicy implements RelevancePolicy<O
             }
         };
     }
-
-    /** @return the objects */
-    public Set<OWLEntity> getObjects() {
-        return new HashSet<>(objects);
-    }
 }

@@ -364,20 +364,11 @@ public class ClusteringGUI extends JFrame {
         OWLAPIStreamUtils.add(entities, manager.ontologies().flatMap(OWLOntology::signature));
         System.out.println(String.format("Computing distance between %d entities ...",
             Integer.valueOf(entities.size())));
-        // ByKindOWLEntityPopularityBasedRelevantPolicy policy = new
-        // ByKindOWLEntityPopularityBasedRelevantPolicy(
-        // entities, this.manager.getOntologies());
-        // Distance<OWLEntity> distance = new AxiomBasedDistance(
-        // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
-        // policy, this.manager);
         final OWLEntityReplacer owlEntityReplacer =
             new OWLEntityReplacer(manager.getOWLDataFactory(),
                 new ReplacementByKindStrategy(manager.getOWLDataFactory()));
-        final Distance<OWLEntity> distance = new AxiomRelevanceAxiomBasedDistance(
-            asList(manager.ontologies()), owlEntityReplacer, manager);
-        // final Distance<OWLEntity> distance = new EditDistance(
-        // this.manager.getOntologies(), this.manager.getOWLDataFactory(),
-        // this.manager);
+        final Distance<OWLEntity> distance =
+            new AxiomRelevanceAxiomBasedDistance(manager.ontologies(), owlEntityReplacer, manager);
         distanceMatrix = new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Computing distance between %d entities finished",
             Integer.valueOf(entities.size())));

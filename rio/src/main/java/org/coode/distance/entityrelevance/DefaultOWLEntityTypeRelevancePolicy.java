@@ -21,7 +21,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author Luigi Iannone */
 public class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolicy<OWLEntity> {
-    // private EntityType<?> type;
     private final Set<EntityType<?>> types = new HashSet<>();
     private final boolean relevant;
     private final static RelevancePolicy<OWLEntity> OBJECT_PROPERTIES_ALWAYS_RELEVANT_POLICY =
@@ -35,17 +34,15 @@ public class DefaultOWLEntityTypeRelevancePolicy implements RelevancePolicy<OWLE
             EntityType.DATA_PROPERTY, EntityType.DATATYPE, EntityType.ANNOTATION_PROPERTY);
 
     private DefaultOWLEntityTypeRelevancePolicy(boolean relevant, EntityType<?>... types) {
-        if (types.length != 0) {
-            for (EntityType<?> t : types) {
-                this.types.add(t);
-            }
+        for (EntityType<?> t : types) {
+            this.types.add(t);
         }
         this.relevant = relevant;
     }
 
     @Override
     public boolean isRelevant(OWLEntity object) {
-        if (types == null || types.contains(object.getEntityType()) || types.isEmpty()) {
+        if (types.contains(object.getEntityType()) || types.isEmpty()) {
             return relevant;
         } else {
             return !relevant;
