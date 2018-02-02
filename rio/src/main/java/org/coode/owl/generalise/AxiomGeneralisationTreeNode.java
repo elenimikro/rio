@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.Variable;
@@ -47,8 +50,7 @@ public class AxiomGeneralisationTreeNode extends DefaultTreeNode<OWLAxiom>
      * @param constraintSystem constraintSystem
      */
     public AxiomGeneralisationTreeNode(OWLAxiom userObject,
-        Collection<? extends OWLAxiomInstantiation> instantiations,
-        ConstraintSystem constraintSystem) {
+        Stream<? extends OWLAxiomInstantiation> instantiations, ConstraintSystem constraintSystem) {
         super(userObject);
         if (instantiations == null) {
             throw new NullPointerException("The colleciton of instantioations cannot be null");
@@ -57,11 +59,11 @@ public class AxiomGeneralisationTreeNode extends DefaultTreeNode<OWLAxiom>
             throw new NullPointerException("The constraint system cannot be null");
         }
         this.constraintSystem = constraintSystem;
-        this.instantiations.addAll(instantiations);
-        Set<OWLAxiom> extractedAxioms = Utils.extractAxioms(instantiations);
+        add(this.instantiations, instantiations);
+        Set<OWLAxiom> extractedAxioms = Utils.extractAxioms(this.instantiations);
         // check the structural differences. if they differ in more than one
         // positions then doIt=true
-        boolean doIt = instantiations.size() > 1 && areDifferencesWorthIt(extractedAxioms);
+        boolean doIt = this.instantiations.size() > 1 && areDifferencesWorthIt(extractedAxioms);
         if (doIt) {
             VariableExtractor variableExtractor = new VariableExtractor(constraintSystem, false);
             // the userObject is the generalised axiom: e.g. ?class_1 SubClassOf
@@ -76,11 +78,9 @@ public class AxiomGeneralisationTreeNode extends DefaultTreeNode<OWLAxiom>
             // ?class_2, ?objectproperty_1 etc)
             for (Variable<?> inputVariable : variables) {
                 Map<BindingNode, AssignmentMap> map = new HashMap<>();
-                Set<Variable<?>> otherVariables = new HashSet<>(variables);
-                otherVariables.remove(inputVariable);
                 Set<BindingNode> bindingNodes = new HashSet<>();
                 Set<BindingNode> agreeingBindingNodes = new HashSet<>();
-                for (OWLAxiomInstantiation owlAxiomInstantiation : instantiations) {
+                for (OWLAxiomInstantiation owlAxiomInstantiation : this.instantiations) {
                     // get the value of the variable
                     OWLObject value = owlAxiomInstantiation.getSubstitutions().get(inputVariable)
                         .iterator().next();
@@ -89,7 +89,7 @@ public class AxiomGeneralisationTreeNode extends DefaultTreeNode<OWLAxiom>
                     // ?class_1, ?class_2, ?objectProperty].
                     BindingNode key =
                         new BindingNode(Collections.singleton(new Assignment(inputVariable, value)),
-                            otherVariables);
+                            variables.stream().filter(o -> o.equals(inputVariable)));
                     bindingNodes.add(key);
                     MultiMap<BindingNode, OWLAxiomInstantiation> inputVariableInstantiationMap =
                         instantiationsMap.get(inputVariable);
@@ -103,22 +103,24 @@ public class AxiomGeneralisationTreeNode extends DefaultTreeNode<OWLAxiom>
                 }
                 for (BindingNode bindingNode : bindingNodes) {
                     Set<BindingNode> set = new HashSet<>();
-                    for (OWLAxiomInstantiation owlAxiomInstantiation : instantiations) {
+                    for (OWLAxiomInstantiation owlAxiomInstantiation : this.instantiations) {
                         if (owlAxiomInstantiation.agreesWith(bindingNode,
                             new SimpleValueComputationParameters(constraintSystem,
                                 BindingNode.createNewEmptyBindingNode(),
                                 new QuickFailRuntimeExceptionHandler()))) {
                             agreeingBindingNodes.add(bindingNode);
-                            for (Variable<?> otherVariable : otherVariables) {
-                                Set<Variable<?>> remainingVariables = new HashSet<>(otherVariables);
-                                remainingVariables.remove(otherVariable);
-                                OWLObject otherVariableValue = owlAxiomInstantiation
-                                    .getSubstitutions().get(otherVariable).iterator().next();
-                                set.add(new BindingNode(
-                                    Collections.singleton(
-                                        new Assignment(otherVariable, otherVariableValue)),
-                                    remainingVariables));
-                            }
+                            variables.stream().filter(o -> o.equals(inputVariable))
+                                .forEach(otherVariable -> {
+                                    Stream<Variable<?>> remainingVariables =
+                                        variables.stream().filter(o -> o.equals(inputVariable))
+                                            .filter(o -> o.equals(otherVariable));
+                                    OWLObject otherVariableValue = owlAxiomInstantiation
+                                        .getSubstitutions().get(otherVariable).iterator().next();
+                                    set.add(new BindingNode(
+                                        Collections.singleton(
+                                            new Assignment(otherVariable, otherVariableValue)),
+                                        remainingVariables));
+                                });
                         }
                     }
                     map.put(bindingNode, new AssignmentMap(set));

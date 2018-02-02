@@ -13,10 +13,11 @@ package org.coode.proximitymatrix.test;
 import static org.junit.Assert.assertTrue;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
@@ -66,8 +67,8 @@ public class ClusteringProximityMatrixTest {
         ClusteringProximityMatrix<OWLEntity> reducedSingleFilter = clusteringMatrix.reduce(filter);
         ClusteringProximityMatrix<OWLEntity> reducedMultipleFilter = clusteringMatrix
             .reduce(OrPairFilter.build((first, second) -> first.size() > 1, filter));
-        Set<Collection<? extends OWLEntity>> difference =
-            new HashSet<>(reducedMultipleFilter.getObjects());
+        List<Collection<? extends OWLEntity>> difference =
+            new ArrayList<>(reducedMultipleFilter.getObjects());
         difference.removeAll(reducedSingleFilter.getObjects());
         assertTrue(String.format("Non identical, the difference is %s", difference),
             reducedSingleFilter.getObjects().size() == reducedMultipleFilter.getObjects().size());

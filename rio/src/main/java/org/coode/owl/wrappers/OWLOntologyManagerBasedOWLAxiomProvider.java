@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AddImport;
@@ -119,8 +120,8 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     }
 
     @Override
-    public Set<OWLEntity> getSignature() {
-        return new HashSet<>(entityAxiomMap.keySet());
+    public Stream<OWLEntity> getSignature() {
+        return entityAxiomMap.keySet().stream();
     }
 
     /**

@@ -125,6 +125,162 @@ import org.semanticweb.owlapi.util.ShortFormProvider;
 public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisitorEx<OWLObject> {
     private abstract class FunctionGeneralisation
         implements OWLClassExpressionVisitorEx<OWLClassExpression> {
+        class FunctionVisitor implements OPPLFunction<Collection<OWLClassExpression>> {
+            private final ValuesVariableAtttribute<OWLClassExpression> values;
+
+            FunctionVisitor(ValuesVariableAtttribute<OWLClassExpression> values) {
+                this.values = values;
+            }
+
+            @Override
+            public Collection<OWLClassExpression> compute(ValueComputationParameters params) {
+                return values.compute(params);
+            }
+
+            @Override
+            public <P> P accept(OPPLFunctionVisitorEx<P> visitor) {
+                return visitor.visitValuesVariableAtttribute(values);
+            }
+
+            @Override
+            public void accept(OPPLFunctionVisitor visitor) {
+                visitor.visitValuesVariableAtttribute(values);
+            }
+
+            @Override
+            public String render(ConstraintSystem c) {
+                return values.render(c);
+            }
+
+            @Override
+            public String render(ShortFormProvider shortFormProvider) {
+                return values.render(shortFormProvider);
+            }
+        }
+
+        class CollectionAgg implements Aggregandum<Collection<OWLClassExpression>> {
+            private final ValuesVariableAtttribute<OWLClassExpression> values;
+            private final OPPLFunction<Collection<OWLClassExpression>> opplFunction;
+
+            CollectionAgg(ValuesVariableAtttribute<OWLClassExpression> values,
+                OPPLFunction<Collection<OWLClassExpression>> opplFunction) {
+                this.values = values;
+                this.opplFunction = opplFunction;
+            }
+
+            @Override
+            public Set<OPPLFunction<Collection<OWLClassExpression>>> getOPPLFunctions() {
+                return Collections.singleton(opplFunction);
+            }
+
+            @Override
+            public Stream<OPPLFunction<Collection<OWLClassExpression>>> opplFunctions() {
+                return Stream.of(opplFunction);
+            }
+
+            @Override
+            public boolean isCompatible(VariableType<?> variableType) {
+                return values.getVariable().getType() == variableType;
+            }
+
+            @Override
+            public String render(ConstraintSystem c) {
+                return values.render(c);
+            }
+
+            @Override
+            public String render(ShortFormProvider shortFormProvider) {
+                return values.render(shortFormProvider);
+            }
+        }
+
+        class VarVisitor implements VariableTypeVisitorEx<OWLClassExpression> {
+            private final OWLClass ce;
+            private final Variable<?> variable;
+
+            VarVisitor(OWLClass ce, Variable<?> variable) {
+                this.ce = ce;
+                this.variable = variable;
+            }
+
+            @Override
+            public OWLClassExpression visitCLASSVariableType(CLASSVariableType classVariableType) {
+                @SuppressWarnings("unchecked")
+                Variable<OWLClassExpression> v = (Variable<OWLClassExpression>) variable;
+                final ValuesVariableAtttribute<OWLClassExpression> values =
+                    ValuesVariableAtttribute.getValuesVariableAtttribute(v);
+                Set<Aggregandum<Collection<OWLClassExpression>>> aggregandums = new HashSet<>();
+                aggregandums.add(new AggCollection(values));
+                GeneratedVariable<OWLClassExpression> generatedVariable =
+                    aggregate(variable, aggregandums);
+                getConstraintSystem().importVariable(generatedVariable);
+                return factory.getOWLClass(generatedVariable.getIRI());
+            }
+
+            @Override
+            public OWLClassExpression visitOBJECTPROPERTYVariableType(
+                OBJECTPROPERTYVariableType objectpropertyVariableType) {
+                return ce;
+            }
+
+            @Override
+            public OWLClassExpression visitDATAPROPERTYVariableType(
+                DATAPROPERTYVariableType datapropertyVariableType) {
+                return ce;
+            }
+
+            @Override
+            public OWLClassExpression visitINDIVIDUALVariableType(
+                INDIVIDUALVariableType individualVariableType) {
+                return ce;
+            }
+
+            @Override
+            public OWLClassExpression visitCONSTANTVariableType(
+                CONSTANTVariableType constantVariableType) {
+                return ce;
+            }
+
+            @Override
+            public OWLClassExpression visitANNOTATIONPROPERTYVariableType(
+                ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
+                return ce;
+            }
+        }
+
+        class AggCollection implements Aggregandum<Collection<OWLClassExpression>> {
+            private final ValuesVariableAtttribute<OWLClassExpression> values;
+
+            AggCollection(ValuesVariableAtttribute<OWLClassExpression> values) {
+                this.values = values;
+            }
+
+            @Override
+            public Set<OPPLFunction<Collection<OWLClassExpression>>> getOPPLFunctions() {
+                return Collections.<OPPLFunction<Collection<OWLClassExpression>>>singleton(values);
+            }
+
+            @Override
+            public Stream<OPPLFunction<Collection<OWLClassExpression>>> opplFunctions() {
+                return Stream.of(values);
+            }
+
+            @Override
+            public boolean isCompatible(VariableType<?> variableType) {
+                return values.getVariable().getType() == variableType;
+            }
+
+            @Override
+            public String render(ConstraintSystem c) {
+                return values.render(c);
+            }
+
+            @Override
+            public String render(ShortFormProvider shortFormProvider) {
+                return values.render(shortFormProvider);
+            }
+        }
+
         public FunctionGeneralisation() {
             // TODO Auto-generated constructor stub
         }
@@ -134,82 +290,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             OWLClassExpression toReturn = ce;
             final Variable<?> variable = getConstraintSystem().getVariable(ce.getIRI());
             if (variable != null) {
-                toReturn =
-                    variable.getType().accept(new VariableTypeVisitorEx<OWLClassExpression>() {
-                        @Override
-                        public OWLClassExpression visitCLASSVariableType(
-                            CLASSVariableType classVariableType) {
-                            @SuppressWarnings("unchecked")
-                            Variable<OWLClassExpression> v =
-                                (Variable<OWLClassExpression>) variable;
-                            final ValuesVariableAtttribute<OWLClassExpression> values =
-                                ValuesVariableAtttribute.getValuesVariableAtttribute(v);
-                            Set<Aggregandum<Collection<OWLClassExpression>>> aggregandums =
-                                new HashSet<>();
-                            aggregandums.add(new Aggregandum<Collection<OWLClassExpression>>() {
-                                @Override
-                                public Set<OPPLFunction<Collection<OWLClassExpression>>> getOPPLFunctions() {
-                                    return Collections
-                                        .<OPPLFunction<Collection<OWLClassExpression>>>singleton(
-                                            values);
-                                }
-
-                                @Override
-                                public Stream<OPPLFunction<Collection<OWLClassExpression>>> opplFunctions() {
-                                    return Stream.of(values);
-                                }
-
-                                @Override
-                                public boolean isCompatible(VariableType<?> variableType) {
-                                    return values.getVariable().getType() == variableType;
-                                }
-
-                                @Override
-                                public String render(ConstraintSystem c) {
-                                    return values.render(c);
-                                }
-
-                                @Override
-                                public String render(ShortFormProvider shortFormProvider) {
-                                    return values.render(shortFormProvider);
-                                }
-                            });
-                            GeneratedVariable<OWLClassExpression> generatedVariable =
-                                aggregate(variable, aggregandums);
-                            getConstraintSystem().importVariable(generatedVariable);
-                            return factory.getOWLClass(generatedVariable.getIRI());
-                        }
-
-                        @Override
-                        public OWLClassExpression visitOBJECTPROPERTYVariableType(
-                            OBJECTPROPERTYVariableType objectpropertyVariableType) {
-                            return ce;
-                        }
-
-                        @Override
-                        public OWLClassExpression visitDATAPROPERTYVariableType(
-                            DATAPROPERTYVariableType datapropertyVariableType) {
-                            return ce;
-                        }
-
-                        @Override
-                        public OWLClassExpression visitINDIVIDUALVariableType(
-                            INDIVIDUALVariableType individualVariableType) {
-                            return ce;
-                        }
-
-                        @Override
-                        public OWLClassExpression visitCONSTANTVariableType(
-                            CONSTANTVariableType constantVariableType) {
-                            return ce;
-                        }
-
-                        @Override
-                        public OWLClassExpression visitANNOTATIONPROPERTYVariableType(
-                            ANNOTATIONPROPERTYVariableType annotationpropertyVariableType) {
-                            return ce;
-                        }
-                    });
+                toReturn = variable.getType().accept(new VarVisitor(ce, variable));
             }
             return toReturn;
         }
@@ -302,61 +383,8 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             }
             final ValuesVariableAtttribute<OWLClassExpression> values =
                 ValuesVariableAtttribute.getValuesVariableAtttribute(expressionGeneratedVariable);
-            OPPLFunction<Collection<OWLClassExpression>> opplFunction =
-                new OPPLFunction<Collection<OWLClassExpression>>() {
-                    @Override
-                    public Collection<OWLClassExpression> compute(
-                        ValueComputationParameters params) {
-                        return values.compute(params);
-                    }
-
-                    @Override
-                    public <P> P accept(OPPLFunctionVisitorEx<P> visitor) {
-                        return visitor.visitValuesVariableAtttribute(values);
-                    }
-
-                    @Override
-                    public void accept(OPPLFunctionVisitor visitor) {
-                        visitor.visitValuesVariableAtttribute(values);
-                    }
-
-                    @Override
-                    public String render(ConstraintSystem c) {
-                        return values.render(c);
-                    }
-
-                    @Override
-                    public String render(ShortFormProvider shortFormProvider) {
-                        return values.render(shortFormProvider);
-                    }
-                };
-            Aggregandum<Collection<OWLClassExpression>> a =
-                new Aggregandum<Collection<OWLClassExpression>>() {
-                    @Override
-                    public Set<OPPLFunction<Collection<OWLClassExpression>>> getOPPLFunctions() {
-                        return Collections.singleton(opplFunction);
-                    }
-
-                    @Override
-                    public Stream<OPPLFunction<Collection<OWLClassExpression>>> opplFunctions() {
-                        return Stream.of(opplFunction);
-                    }
-
-                    @Override
-                    public boolean isCompatible(VariableType<?> variableType) {
-                        return values.getVariable().getType() == variableType;
-                    }
-
-                    @Override
-                    public String render(ConstraintSystem c) {
-                        return values.render(c);
-                    }
-
-                    @Override
-                    public String render(ShortFormProvider shortFormProvider) {
-                        return values.render(shortFormProvider);
-                    }
-                };
+            OPPLFunction<Collection<OWLClassExpression>> opplFunction = new FunctionVisitor(values);
+            Aggregandum<Collection<OWLClassExpression>> a = new CollectionAgg(values, opplFunction);
             GeneratedVariable<OWLClassExpression> aggreationGeneratedVariable =
                 aggregate(expressionGeneratedVariable, Collections.singleton(a));
             return factory.getOWLClass(aggreationGeneratedVariable.getIRI());
@@ -579,13 +607,13 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
 
     @Override
     public OWLObject visit(OWLDifferentIndividualsAxiom axiom) {
-        Set<OWLIndividual> instatiatedDescriptions = new HashSet<>();
+        List<OWLIndividual> instatiatedDescriptions = new ArrayList<>();
         MultiMap<OWLIndividual, OWLIndividual> generalisationMap = new MultiMap<>();
         for (OWLIndividual individual : axiom.getOperandsAsList()) {
             OWLIndividual generalised = v(individual);
             generalisationMap.put(generalised, individual);
         }
-        Set<InlineSet<OWLIndividual>> inlineSets = new HashSet<>(generalisationMap.keySet().size());
+        Set<InlineSet<OWLIndividual>> inlineSets = new HashSet<>(generalisationMap.size());
         for (OWLIndividual generalisation : generalisationMap.keySet()) {
             Collection<OWLIndividual> set = generalisationMap.get(generalisation);
             if (set.size() > 1) {
@@ -603,7 +631,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             OPPLOWLDataFactory dataFactory = new OPPLOWLDataFactory(factory);
             InlineSet<OWLIndividual> set = InlineSet.buildInlineSet(dataFactory,
                 getConstraintSystem(), VariableTypeFactory.getINDIVIDUALVariableType(), inlineSets,
-                instatiatedDescriptions.toArray(new OWLIndividual[instatiatedDescriptions.size()]));
+                instatiatedDescriptions);
             toReturn = dataFactory.getOWLDifferentIndividualsAxiom(set,
                 axiom.getOperandsAsList().size() == 2);
         }
@@ -612,14 +640,13 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
 
     @Override
     public OWLObject visit(OWLDisjointClassesAxiom axiom) {
-        Set<OWLClassExpression> instatiatedDescriptions = new HashSet<>();
+        List<OWLClassExpression> instatiatedDescriptions = new ArrayList<>();
         MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
         for (OWLClassExpression classExpression : axiom.getOperandsAsList()) {
             OWLClassExpression generalised = v(classExpression);
             generalisationMap.put(generalised, classExpression);
         }
-        Set<InlineSet<OWLClassExpression>> inlineSets =
-            new HashSet<>(generalisationMap.keySet().size());
+        Set<InlineSet<OWLClassExpression>> inlineSets = new HashSet<>(generalisationMap.size());
         for (OWLClassExpression generalisation : generalisationMap.keySet()) {
             Collection<OWLClassExpression> set = generalisationMap.get(generalisation);
             if (set.size() > 1) {
@@ -635,10 +662,9 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             factory.getOWLDisjointClassesAxiom(instatiatedDescriptions);
         if (!inlineSets.isEmpty()) {
             OPPLOWLDataFactory dataFactory = new OPPLOWLDataFactory(factory);
-            InlineSet<OWLClassExpression> set =
-                InlineSet.buildInlineSet(dataFactory, getConstraintSystem(),
-                    VariableTypeFactory.getCLASSVariableType(), inlineSets, instatiatedDescriptions
-                        .toArray(new OWLClassExpression[instatiatedDescriptions.size()]));
+            InlineSet<OWLClassExpression> set = InlineSet.buildInlineSet(dataFactory,
+                getConstraintSystem(), VariableTypeFactory.getCLASSVariableType(), inlineSets,
+                instatiatedDescriptions);
             toReturn =
                 dataFactory.getOWLDisjointClassesAxiom(set, axiom.getOperandsAsList().size() == 2);
         }
@@ -647,14 +673,14 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
 
     @Override
     public OWLObject visit(OWLDisjointDataPropertiesAxiom axiom) {
-        Set<OWLDataPropertyExpression> instatiatedProperties = new HashSet<>();
+        List<OWLDataPropertyExpression> instatiatedProperties = new ArrayList<>();
         MultiMap<OWLDataPropertyExpression, OWLDataProperty> generalisationMap = new MultiMap<>();
         for (OWLDataPropertyExpression property : axiom.getOperandsAsList()) {
             OWLDataPropertyExpression generalised = v(property);
             generalisationMap.put(generalised, property.asOWLDataProperty());
         }
         Set<InlineSet<OWLDataPropertyExpression>> inlineSets =
-            new HashSet<>(generalisationMap.keySet().size());
+            new HashSet<>(generalisationMap.size());
         for (OWLDataPropertyExpression generalisation : generalisationMap.keySet()) {
             Collection<OWLDataProperty> set = generalisationMap.get(generalisation);
             if (set.size() > 1) {
@@ -672,8 +698,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             OPPLOWLDataFactory dataFactory = new OPPLOWLDataFactory(factory);
             InlineSet<OWLDataPropertyExpression> set = InlineSet.buildInlineSet(dataFactory,
                 getConstraintSystem(), VariableTypeFactory.getDATAPROPERTYVariableType(),
-                inlineSets,
-                instatiatedProperties.toArray(new OWLDataProperty[instatiatedProperties.size()]));
+                inlineSets, instatiatedProperties);
             toReturn = dataFactory.getOWLDisjointDataPropertiesAxiom(set,
                 axiom.getOperandsAsList().size() == 2);
         }
@@ -682,7 +707,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
 
     @Override
     public OWLObject visit(OWLDisjointObjectPropertiesAxiom axiom) {
-        Set<OWLObjectPropertyExpression> instatiatedProperties = new HashSet<>();
+        List<OWLObjectPropertyExpression> instatiatedProperties = new ArrayList<>();
         MultiMap<OWLObjectPropertyExpression, OWLObjectPropertyExpression> generalisationMap =
             new MultiMap<>();
         for (OWLObjectPropertyExpression property : axiom.getOperandsAsList()) {
@@ -690,7 +715,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             generalisationMap.put(generalised, property);
         }
         Set<InlineSet<OWLObjectPropertyExpression>> inlineSets =
-            new HashSet<>(generalisationMap.keySet().size());
+            new HashSet<>(generalisationMap.size());
         for (OWLObjectPropertyExpression generalisation : generalisationMap.keySet()) {
             Collection<OWLObjectPropertyExpression> set = generalisationMap.get(generalisation);
             if (set.size() > 1) {
@@ -708,8 +733,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             OPPLOWLDataFactory dataFactory = new OPPLOWLDataFactory(factory);
             InlineSet<OWLObjectPropertyExpression> set = InlineSet.buildInlineSet(dataFactory,
                 getConstraintSystem(), VariableTypeFactory.getOBJECTPROPERTYTypeVariableType(),
-                inlineSets, instatiatedProperties
-                    .toArray(new OWLObjectPropertyExpression[instatiatedProperties.size()]));
+                inlineSets, instatiatedProperties);
             toReturn = dataFactory.getOWLDisjointObjectPropertiesAxiom(set,
                 axiom.getOperandsAsList().size() == 2);
         }
@@ -849,7 +873,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     public OWLClassExpression visit(OWLObjectIntersectionOf desc) {
         MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
         desc.operands().forEach(c -> generalisationMap.put(v(c), c));
-        Set<OWLClassExpression> newOperands = new HashSet<>();
+        List<OWLClassExpression> newOperands = new ArrayList<>();
         for (OWLClassExpression generalisation : generalisationMap.keySet()) {
             if (generalisationMap.get(generalisation).size() > 1) {
                 newOperands.add(generalisation.accept(new FunctionGeneralisation() {
@@ -874,7 +898,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
                 newOperands.add(generalisation);
             }
         }
-        return factory.getOWLObjectIntersectionOf(new HashSet<>(newOperands));
+        return factory.getOWLObjectIntersectionOf(newOperands);
     }
 
     @Override
@@ -901,9 +925,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
 
     @Override
     public OWLObject visit(OWLObjectOneOf desc) {
-        Set<OWLIndividual> instantiatedIndividuals =
-            new HashSet<>(this.generaliseCollection(desc.getOperandsAsList()));
-        return factory.getOWLObjectOneOf(instantiatedIndividuals);
+        return factory.getOWLObjectOneOf(this.generaliseCollection(desc.getOperandsAsList()));
     }
 
     @Override
@@ -954,13 +976,13 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
 
     @Override
     public OWLObject visit(OWLSameIndividualAxiom axiom) {
-        Set<OWLIndividual> instatiatedDescriptions = new HashSet<>();
+        List<OWLIndividual> instatiatedDescriptions = new ArrayList<>();
         MultiMap<OWLIndividual, OWLIndividual> generalisationMap = new MultiMap<>();
         for (OWLIndividual individual : axiom.getOperandsAsList()) {
             OWLIndividual generalised = v(individual);
             generalisationMap.put(generalised, individual);
         }
-        Set<InlineSet<OWLIndividual>> inlineSets = new HashSet<>(generalisationMap.keySet().size());
+        Set<InlineSet<OWLIndividual>> inlineSets = new HashSet<>(generalisationMap.size());
         for (OWLIndividual generalisation : generalisationMap.keySet()) {
             Collection<OWLIndividual> set = generalisationMap.get(generalisation);
             if (set.size() > 1) {
@@ -978,7 +1000,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
             OPPLOWLDataFactory dataFactory = new OPPLOWLDataFactory(factory);
             InlineSet<OWLIndividual> set = InlineSet.buildInlineSet(dataFactory,
                 getConstraintSystem(), VariableTypeFactory.getINDIVIDUALVariableType(), inlineSets,
-                instatiatedDescriptions.toArray(new OWLIndividual[instatiatedDescriptions.size()]));
+                instatiatedDescriptions);
             toReturn =
                 dataFactory.getOWLSameIndividualAxiom(set, axiom.getOperandsAsList().size() == 2);
         }
@@ -1063,7 +1085,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
     public OWLClassExpression visit(OWLObjectUnionOf desc) {
         MultiMap<OWLClassExpression, OWLClassExpression> generalisationMap = new MultiMap<>();
         desc.operands().forEach(c -> generalisationMap.put(v(c), c));
-        Set<OWLClassExpression> newOperands = new HashSet<>();
+        List<OWLClassExpression> newOperands = new ArrayList<>();
         for (OWLClassExpression generalisation : generalisationMap.keySet()) {
             if (generalisationMap.get(generalisation).size() > 1) {
                 newOperands.add(generalisation.accept(new FunctionGeneralisation() {
@@ -1088,16 +1110,11 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
                 newOperands.add(generalisation);
             }
         }
-        return factory.getOWLObjectUnionOf(new HashSet<>(newOperands));
+        return factory.getOWLObjectUnionOf(newOperands);
     }
 
     private void storeSubstitution(Variable<?> variable, OWLObject owlObject) {
-        Set<OWLObject> assignments = substitutions.get(variable);
-        if (assignments == null) {
-            assignments = new HashSet<>();
-            substitutions.put(variable, assignments);
-        }
-        assignments.add(owlObject);
+        substitutions.computeIfAbsent(variable, x -> new HashSet<>()).add(owlObject);
     }
 
     /** @return the variableProvider */

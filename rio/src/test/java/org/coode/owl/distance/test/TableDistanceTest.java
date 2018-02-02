@@ -13,9 +13,9 @@ package org.coode.owl.distance.test;
 import static org.junit.Assert.assertTrue;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -166,8 +166,8 @@ public class TableDistanceTest {
         while (minimumDistancePair != null
             && filter.accept(minimumDistancePair.getFirst(), minimumDistancePair.getSecond())) {
             clusteringMatrix = clusteringMatrix.agglomerate(filter);
-            for (OWLEntity owlEntity : new HashSet<>(entities)) {
-                for (OWLEntity otherEntity : new HashSet<>(entities)) {
+            for (OWLEntity owlEntity : new ArrayList<>(entities)) {
+                for (OWLEntity otherEntity : new ArrayList<>(entities)) {
                     if (!minimumDistancePair.getFirst().contains(owlEntity)
                         && !minimumDistancePair.getSecond().contains(owlEntity)
                         && !minimumDistancePair.getFirst().contains(otherEntity)

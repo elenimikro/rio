@@ -11,6 +11,7 @@
 package org.coode.owl.wrappers;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -28,5 +29,5 @@ public interface OWLAxiomProvider extends Set<OWLAxiom> {
     public void removeOWLAxiomsChangedListener(OWLAxiomsChangedListener l);
 
     /** @return signature */
-    public Set<OWLEntity> getSignature();
+    public Stream<OWLEntity> getSignature();
 }

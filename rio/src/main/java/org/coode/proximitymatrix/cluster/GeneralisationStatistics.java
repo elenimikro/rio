@@ -25,7 +25,7 @@ import org.semanticweb.owlapi.util.MultiMap;
  */
 public class GeneralisationStatistics<C extends Set<P>, P> {
     private final RegularitiesDecompositionModel<C, P> model;
-    private final Set<OWLOntology> ontologies = new HashSet<>();
+    private final List<OWLOntology> ontologies = new ArrayList<>();
     private final MultiMap<OWLAxiom, OWLAxiomInstantiation> genMap = new MultiMap<>();
 
     private GeneralisationStatistics(RegularitiesDecompositionModel<C, P> model) {

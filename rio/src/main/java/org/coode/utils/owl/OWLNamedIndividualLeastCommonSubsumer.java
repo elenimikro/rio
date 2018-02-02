@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.coode.utils.owl;
 
-import java.util.ArrayList;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.coode.owl.wrappers.OWLAxiomProvider;
@@ -53,18 +53,13 @@ public class OWLNamedIndividualLeastCommonSubsumer
 
     @Override
     public OWLClass get(Collection<? extends OWLNamedIndividual> c) {
-        List<OWLClass> results = new ArrayList<>();
-        for (OWLNamedIndividual owlNamedIndividual : c) {
-            results.addAll(getParents(owlNamedIndividual));
-        }
-        results = new ArrayList<>(new HashSet<>(results));
-        if (results.size() == 0) {
+        List<OWLClass> results = asList(c.stream().flatMap(this::getParents).distinct());
+        if (results.isEmpty()) {
             return null;
         }
-        return results.size() > 1
-            ? results.size() == 2 ? delegate.get(results.get(0), results.get(1))
-                : delegate.get(results.get(0), results.get(1),
-                    results.subList(2, results.size()).toArray(new OWLClass[results.size() - 2]))
-            : results.get(0);
+        if (results.size() == 1) {
+            return results.get(0);
+        }
+        return delegate.get(results);
     }
 }

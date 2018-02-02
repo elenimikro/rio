@@ -13,7 +13,6 @@ package org.coode.utils.owl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.coode.owl.wrappers.OWLAxiomProvider;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -56,13 +55,10 @@ public class OWLObjectPropertyLeastCommonSubsumer
             if (obj instanceof OWLObjectProperty) {
                 OWLObjectProperty p = results.get(0);
                 results.remove(p);
-                Set<OWLObjectProperty> parents = getParents(p);
-                for (OWLObjectProperty parent : parents) {
+                getParents(p).forEach(parent -> {
                     removeDescendants(parent, results);
-                    if (!results.contains(parent)) {
-                        results.add(parent);
-                    }
-                }
+                    results.add(parent);
+                });
             }
         }
         return results.get(0);

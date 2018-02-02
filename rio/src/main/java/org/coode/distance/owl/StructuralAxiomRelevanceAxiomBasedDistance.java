@@ -67,7 +67,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
             for (OWLAxiom generalisedAxiom : generalisedAxioms) {
                 AxiomGeneralisationTreeNode generalisationTreeNode =
                     new AxiomGeneralisationTreeNode(generalisedAxiom,
-                        instantionMap.get(generalisedAxiom), constraintSystem);
+                        instantionMap.get(generalisedAxiom).stream(), constraintSystem);
                 relevanceMap.setEntry(generalisedAxiom, extractValues(generalisationTreeNode));
             }
         }

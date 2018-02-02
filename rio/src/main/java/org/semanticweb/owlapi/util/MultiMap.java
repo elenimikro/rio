@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * @param <Key> key type
@@ -92,6 +94,10 @@ public class MultiMap<Key, Value> implements Serializable {
             toReturn.addAll(s);
         }
         return toReturn;
+    }
+
+    public <T> Stream<T> allValuesTransformed(Function<Value, T> f) {
+        return this.map.values().stream().flatMap(Collection::stream).map(f);
     }
 
     /**

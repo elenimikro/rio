@@ -1,7 +1,8 @@
 package org.coode.proximitymatrix.cluster;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.coode.owl.generalise.OWLAxiomInstantiation;
@@ -63,19 +64,10 @@ public class GeneralisedAtomicDecompositionMetrics {
     public double getMeanMergedAxiomsPerGeneralisation() {
         MultiMap<OWLAxiom, OWLAxiomInstantiation> logicalRegularities = getLogicalRegularities();
         MultiMap<Collection<OWLAxiom>, Atom> mergedAtoms = gad.getMergedAtoms();
-        Set<Atom> atoms = mergedAtoms.getAllValues();
-        Set<OWLAxiom> axioms = new HashSet<>();
-        for (Atom a : atoms) {
-            axioms.addAll(a.getAxioms());
-        }
-        Set<OWLAxiomInstantiation> instantiations = logicalRegularities.getAllValues();
-        // Set<OWLAxiom> instSet = new HashSet<OWLAxiom>();
-        int mergedAxiomsNo = 0;
-        for (OWLAxiomInstantiation i : instantiations) {
-            if (axioms.contains(i.getAxiom())) {
-                mergedAxiomsNo++;
-            }
-        }
+        Set<OWLAxiom> instantiations =
+            asSet(logicalRegularities.allValuesTransformed(OWLAxiomInstantiation::getAxiom));
+        long mergedAxiomsNo = mergedAtoms.allValuesTransformed(Atom::getAxioms)
+            .flatMap(Collection::stream).distinct().filter(instantiations::contains).count();
         return (double) mergedAxiomsNo / logicalRegularities.size();
     }
 

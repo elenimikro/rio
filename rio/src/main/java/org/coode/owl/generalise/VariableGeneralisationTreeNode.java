@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.coode.oppl.ConstraintSystem;
@@ -60,7 +59,7 @@ public class VariableGeneralisationTreeNode extends DefaultTreeNode<Variable<?>>
                 new PartialOWLObjectInstantiator(parameters);
             OWLAxiom instantiation = (OWLAxiom) generalisation.accept(instantiator);
             this.addChild(new BindingNodeGeneralisationTreeNode(bindingNode, instantiation,
-                bindingNodes.get(bindingNode), constraintSystem));
+                bindingNodes.get(bindingNode).stream(), constraintSystem));
         }
     }
 
@@ -77,11 +76,6 @@ public class VariableGeneralisationTreeNode extends DefaultTreeNode<Variable<?>>
     /** @return the generalisation */
     public OWLAxiom getGeneralisation() {
         return generalisation;
-    }
-
-    /** @return the bindingNodes */
-    public Set<BindingNode> getBindingNodes() {
-        return new HashSet<>(bindingNodes.keySet());
     }
 
     /** @return the constraintSystem */

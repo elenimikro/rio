@@ -10,10 +10,12 @@
  ******************************************************************************/
 package org.coode.owl.generalise;
 
-import java.util.Collection;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.bindingtree.Assignment;
@@ -35,8 +37,7 @@ public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNo
      * @param constraintSystem constraintSystem
      */
     public BindingNodeGeneralisationTreeNode(BindingNode userObject, OWLAxiom generalisation,
-        Collection<? extends OWLAxiomInstantiation> instantiations,
-        ConstraintSystem constraintSystem) {
+        Stream<? extends OWLAxiomInstantiation> instantiations, ConstraintSystem constraintSystem) {
         super(userObject);
         if (generalisation == null) {
             throw new NullPointerException("The generalisation cannot be null");
@@ -49,10 +50,10 @@ public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNo
         }
         this.constraintSystem = constraintSystem;
         this.generalisation = generalisation;
-        this.instantiations.addAll(instantiations);
-        if (!instantiations.isEmpty()) {
-            this.addChild(
-                new AxiomGeneralisationTreeNode(generalisation, instantiations, constraintSystem));
+        add(this.instantiations, instantiations);
+        if (!this.instantiations.isEmpty()) {
+            this.addChild(new AxiomGeneralisationTreeNode(generalisation,
+                this.instantiations.stream(), constraintSystem));
         }
     }
 
@@ -69,11 +70,6 @@ public class BindingNodeGeneralisationTreeNode extends DefaultTreeNode<BindingNo
     /** @return the generalisation */
     public OWLAxiom getGeneralisation() {
         return generalisation;
-    }
-
-    /** @return the instantiations */
-    public Set<OWLAxiomInstantiation> getInstantiations() {
-        return new HashSet<>(instantiations);
     }
 
     /** @return the constraintSystem */

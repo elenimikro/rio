@@ -13,16 +13,14 @@
  */
 package org.coode.owl.generalise;
 
-import java.util.HashSet;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+
 import java.util.Set;
 
 import org.coode.oppl.Variable;
-import org.coode.oppl.VariableVisitor;
 import org.coode.oppl.bindingtree.AssignmentMap;
 import org.coode.oppl.bindingtree.BindingNode;
 import org.coode.oppl.function.ValueComputationParameters;
-import org.coode.oppl.generated.GeneratedVariable;
-import org.coode.oppl.generated.RegexpGeneratedVariable;
 import org.coode.oppl.variabletypes.InputVariable;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -59,23 +57,8 @@ public class OWLAxiomInstantiation {
 
     /** @return input variables */
     public Set<InputVariable<?>> getInputVariables() {
-        final Set<InputVariable<?>> toReturn = new HashSet<>();
-        for (Variable<?> v : substitutions.keySet()) {
-            v.accept(new VariableVisitor() {
-                @Override
-                public <P extends OWLObject> void visit(
-                    RegexpGeneratedVariable<P> regExpGenerated) {}
-
-                @Override
-                public <P extends OWLObject> void visit(GeneratedVariable<P> gv) {}
-
-                @Override
-                public <P extends OWLObject> void visit(InputVariable<P> iv) {
-                    toReturn.add(iv);
-                }
-            });
-        }
-        return toReturn;
+        return asSet(substitutions.keySet().stream().filter(v -> v instanceof InputVariable)
+            .map(p -> (InputVariable<?>) p));
     }
 
     @Override

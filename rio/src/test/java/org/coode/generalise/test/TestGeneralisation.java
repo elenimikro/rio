@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.coode.basetest.TestHelper;
 import org.coode.oppl.ConstraintSystem;
@@ -77,7 +76,6 @@ public class TestGeneralisation {
 
     @Test
     public void testMultipleStructuralGeneralisationWholeOntology() {
-        AtomicInteger generalisationCount = new AtomicInteger(0);
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
@@ -89,16 +87,14 @@ public class TestGeneralisation {
                     new OntologyManagerBasedOWLEntityProvider(ontologyManager), constraintSystem);
             OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
             generalisedAxioms.add(generalised);
-            generalisationCount.incrementAndGet();
         });
 
-        assertTrue(generalisationCount.get() > 1);
+        assertTrue(generalisedAxioms.size() > 1);
 
     }
 
     @Test
     public void testMultipleStructuralGeneralisation() {
-        int generalisationCount = 0;
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
@@ -135,10 +131,8 @@ public class TestGeneralisation {
             if (doIt) {
                 OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
                 generalisedAxioms.add(generalised);
-                generalisationCount++;
             }
         }
-        assertTrue(generalisationCount > 1);
         assertTrue(generalisedAxioms.size() > 1);
     }
 

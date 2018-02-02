@@ -10,12 +10,9 @@
  ******************************************************************************/
 package org.coode.utils.owl.test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.coode.owl.wrappers.OWLAxiomProvider;
 import org.coode.owl.wrappers.OWLOntologyManagerBasedOWLAxiomProvider;
@@ -25,9 +22,7 @@ import org.coode.utils.owl.LeastCommonSubsumer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.xml.sax.SAXException;
 
 /** @author eleni */
 public class LeastCommonSubsumerTest {
@@ -53,22 +48,13 @@ public class LeastCommonSubsumerTest {
                         axiomProvider, ontologyManager.getOWLDataFactory());
                     if (lcs != null) {
                         OWLObject x = lcs.get(set);
-                        System.out.println(String.format("lcs for %s is %s", set, x));
                         createName(x.toString(), names, rootNames);
                     } else {
                         createName(null, names, rootNames);
-                        System.out.println(String.format("No lcs for %s", set));
                     }
                 }
             }
-            System.out.println(names);
-        } catch (OWLOntologyCreationException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -175,9 +175,8 @@ public class ClusterCreator {
             new SimpleProximityMatrix<>(entities, distance);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
             org.coode.distance.Utils.getEquivalenceClasses(entities, distance);
-        entities = new HashSet<>(equivalenceClasses.keySet());
         final SimpleProximityMatrix<OWLEntity> distanceMatrix =
-            new SimpleProximityMatrix<>(entities, distance);
+            new SimpleProximityMatrix<>(equivalenceClasses.keySet(), distance);
         System.out.println(String.format("Finished computing distance between %d entities",
             Integer.valueOf(distanceMatrix.getObjects().size())));
         final SimpleProximityMatrix<DistanceTableObject<OWLEntity>> wrappedMatrix =

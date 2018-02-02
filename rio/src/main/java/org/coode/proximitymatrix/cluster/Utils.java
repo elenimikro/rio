@@ -201,7 +201,7 @@ public class Utils {
         public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
             if (qName.compareToIgnoreCase("Cluster") == 0) {
-                Set<OWLEntity> cluster = new HashSet<OWLEntity>();
+                Set<OWLEntity> cluster = new HashSet<>();
                 stack.push(cluster);
             } else if (qName.compareToIgnoreCase("Item") == 0) {
                 if (!stack.isEmpty()) {
@@ -216,7 +216,7 @@ public class Utils {
                 pairStack.clear();
             } else if (qName.compareToIgnoreCase("First") == 0
                 || qName.compareToIgnoreCase("Second") == 0) {
-                pairStack.push(new HashSet<OWLEntity>());
+                pairStack.push(new HashSet<>());
             } else if (qName.compareToIgnoreCase("PairItem") == 0) {
                 if (!pairStack.isEmpty()) {
                     Collection<OWLEntity> currentCluster = pairStack.peek();
@@ -229,7 +229,7 @@ public class Utils {
             } else if (qName.compareToIgnoreCase("HistoryItemClusters") == 0) {
                 itemsStack.clear();
             } else if (qName.compareToIgnoreCase("HistoryItemCluster") == 0) {
-                itemsStack.push(new HashSet<OWLEntity>());
+                itemsStack.push(new HashSet<>());
             } else if (qName.compareToIgnoreCase("HistoryItemClusterItem") == 0) {
                 if (!itemsStack.isEmpty()) {
                     Set<OWLEntity> currentCluster = itemsStack.peek();
@@ -244,7 +244,7 @@ public class Utils {
 
         /** @return the clusters */
         public Set<Set<OWLEntity>> getClusters() {
-            return new LinkedHashSet<Set<OWLEntity>>(clusters);
+            return new LinkedHashSet<>(clusters);
         }
 
         /** @return the history */
@@ -401,7 +401,8 @@ public class Utils {
                 generalisedAxiomNode.setAttribute("count",
                     Integer.toString(generalisationChildren.size()));
                 generalisedAxiomNode.setAttribute("instantiationStats",
-                    Utils.renderInstantiationsStats(buildAssignmentMap(generalisationChildren)));
+                    Utils.renderInstantiationsStats(
+                        buildAssignmentMap(generalisationChildren.stream())));
                 for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
                     Element axiomNode = document.createElement("Axiom");
                     axiomNode.setAttribute("axiom",
@@ -569,35 +570,6 @@ public class Utils {
         return generalisationMap;
     }
 
-    // public static MultiMap<OWLAxiom, OWLAxiomInstantiation>
-    // buildGeneralisationMap(
-    // Collection<? extends OWLEntity> cluster,
-    // Collection<? extends OWLOntology> ontologies,
-    // OWLObjectGeneralisation generalisation,
-    // RuntimeExceptionHandler runtimeExceptionHandler) {
-    // MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new
-    // MultiMap<OWLAxiom, OWLAxiomInstantiation>();
-    // Set<OWLAxiom> ontologyAxioms = new HashSet<OWLAxiom>();
-    // for (OWLOntology ontology : ontologies) {
-    // ontologyAxioms.addAll(ontology.getAxioms());
-    // }
-    // for (OWLAxiom axiom : ontologyAxioms) {
-    // if (axiom.getAxiomType() != AxiomType.DECLARATION) {
-    // OWLOntologyAnnotationClusterDetector visitor = new
-    // OWLOntologyAnnotationClusterDetector(
-    // cluster, ontologies);
-    // Set<OWLEntity> signature = new HashSet<OWLEntity>(axiom.getSignature());
-    // signature.retainAll(cluster);
-    // if (!signature.isEmpty() || axiom.accept(visitor)) {
-    // generalisation.clearSubstitutions();
-    // OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-    // generalisationMap.put(generalised, new OWLAxiomInstantiation(axiom,
-    // generalisation.getSubstitutions()));
-    // }
-    // }
-    // }
-    // return generalisationMap;
-    // }
     /**
      * @param cluster cluster
      * @param ontologies ontologies
@@ -692,9 +664,6 @@ public class Utils {
             new ManchesterOWLSyntaxOWLObjectRendererImpl();
         ToStringRenderer.setRenderer(() -> renderer);
         for (OWLAxiom axiom : generalisations) {
-            // if (axiom.toString().contains("cluster_1 ")) {
-            // System.out.println(axiom);
-            // }
             Collection<OWLAxiomInstantiation> instantiations = generalisationMap.get(axiom);
             if (instantiations.size() == 1) {
                 // A single instantiation is not a generalisation hence I
@@ -708,12 +677,7 @@ public class Utils {
                     for (Variable<?> variable : substitutions.keySet()) {
                         Set<OWLObject> values = substitutions.get(variable);
                         if (values.size() == 1) {
-                            Set<OWLObject> set = map.get(variable);
-                            if (set == null) {
-                                set = new HashSet<>();
-                                map.put(variable, set);
-                            }
-                            set.add(values.iterator().next());
+                            map.computeIfAbsent(variable, x -> new HashSet<>()).addAll(values);
                         }
                     }
                 }
@@ -798,14 +762,12 @@ public class Utils {
      * @return assignment map
      */
     public static AssignmentMap buildAssignmentMap(
-        Collection<? extends OWLAxiomInstantiation> instantiations) {
+        Stream<? extends OWLAxiomInstantiation> instantiations) {
         AssignmentMap toReturn = new AssignmentMap(Collections.<BindingNode>emptySet());
-        for (OWLAxiomInstantiation instantiation : instantiations) {
-            AssignmentMap substitutions = instantiation.getSubstitutions();
-            substitutions.variables()
-                .forEach(variable -> toReturn.computeIfAbsent(variable, x -> new HashSet<>())
-                    .addAll(substitutions.get(variable)));
-        }
+        instantiations.forEach(instantiation -> instantiation.getSubstitutions().variables()
+            .forEach(variable -> toReturn.computeIfAbsent(variable, x -> new HashSet<>())
+                .addAll(instantiation.getSubstitutions().get(variable))));
+
         return toReturn;
     }
 
@@ -994,7 +956,8 @@ public class Utils {
                 generalisedAxiomNode.setAttribute("count",
                     Integer.toString(generalisationChildren.size()));
                 generalisedAxiomNode.setAttribute("instantiationStats",
-                    Utils.renderInstantiationsStats(buildAssignmentMap(generalisationChildren)));
+                    Utils.renderInstantiationsStats(
+                        buildAssignmentMap(generalisationChildren.stream())));
                 for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
                     Element axiomNode = document.createElement("Axiom");
                     axiomNode.setAttribute("axiom",

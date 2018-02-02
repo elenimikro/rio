@@ -16,6 +16,7 @@ package org.coode.proximitymatrix.ui;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -57,7 +58,7 @@ public class OWLAxiomListItem {
     }
 
     /** @return the instantiations */
-    public Set<OWLAxiomInstantiation> getInstantiations() {
-        return new HashSet<>(instantiations);
+    public Stream<OWLAxiomInstantiation> getInstantiations() {
+        return instantiations.stream();
     }
 }

@@ -65,7 +65,7 @@ public class TestAxiomGeneralisationTree {
 
         OWLAxiom generalisation = new ArrayList<>(generalisationMap.keySet()).get(2);
         AxiomGeneralisationTreeNode root = new AxiomGeneralisationTreeNode(generalisation,
-            generalisationMap.get(generalisation), constraintSystem);
+            generalisationMap.get(generalisation).stream(), constraintSystem);
         assertFalse(root.getChildren().isEmpty());
     }
 }

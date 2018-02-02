@@ -10,13 +10,16 @@
  ******************************************************************************/
 package org.coode.utils.owl;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.coode.owl.wrappers.OWLAxiomProvider;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -54,7 +57,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         }
         this.axiomProvider = axiomProvider;
         this.defaultRoot = defaultRoot;
-        this.signature.addAll(axiomProvider.getSignature());
+        add(this.signature, axiomProvider.getSignature());
         this.rebuild();
     }
 
@@ -91,29 +94,28 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
      * @param node node
      * @return parents
      */
-    public Set<R> getParents(O node) {
+    public Stream<R> getParents(O node) {
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
         }
         Collection<R> parents = this.nodeParentIndex.get(node);
         // If the parents are null I will return the default root only if the
         // node is in the signature of the axiom provider.
-        Set<R> toReturn;
+        Stream<R> toReturn;
         if (parents.isEmpty()) {
             if (node.equals(this.getDefaultRoot())) {
-                toReturn = Collections.<R>emptySet();
+                toReturn = Stream.empty();
             } else {
                 if (this.signature.contains(node)) {
-                    toReturn = Collections.singleton(this.getDefaultRoot());
+                    toReturn = Stream.of(this.getDefaultRoot());
                 } else {
-                    toReturn = Collections.<R>emptySet();
+                    toReturn = Stream.empty();
                 }
             }
         } else {
-            toReturn = new HashSet<>(parents);
+            toReturn = parents.stream();
         }
-        toReturn.remove(node);
-        return toReturn;
+        return toReturn.filter(o -> !o.equals(node));
     }
 
     /**
@@ -139,8 +141,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         if (parent == null) {
             throw new NullPointerException("The parent cannot be null");
         }
-        Set<R> parents = this.getParents(node);
-        return parents != null && parents.contains(parent);
+        return this.getParents(node).anyMatch(parent::equals);
     }
 
     /**
@@ -167,7 +168,7 @@ public abstract class LeastCommonSubsumer<O extends OWLObject, R extends OWLObje
         if (node == null) {
             throw new NullPointerException("The node cannot be null");
         }
-        Set<R> parents = this.getParents(node);
+        Set<R> parents = asSet(this.getParents(node));
         Set<R> ancestors = new HashSet<>(parents);
         for (R r : parents) {
             ancestors.addAll(this.getAncestors((O) r));
