@@ -55,7 +55,7 @@ public class AxiomBasedDistance implements AbstractAxiomBasedDistance {
     private final RelevancePolicyOWLObjectGeneralisation replacer;
 
     void buildAxiomMap() {
-        ontologies.stream().flatMap(OWLOntology::axioms).filter(Utils::NOT_DECLARATION)
+        Utils.axiomsSkipDeclarations(ontologies)
             .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 

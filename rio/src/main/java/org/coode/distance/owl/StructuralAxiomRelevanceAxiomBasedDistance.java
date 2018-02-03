@@ -14,7 +14,7 @@
 package org.coode.distance.owl;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asSet;
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,7 +88,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
     };
 
     protected void buildAxiomEntityMap() {
-        ontologies.stream().flatMap(OWLOntology::axioms).filter(Utils::NOT_DECLARATION)
+        Utils.axiomsSkipDeclarations(ontologies)
             .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
@@ -126,8 +126,7 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
     }
 
     protected AxiomRelevanceMap buildAxiomRelevanceMap() {
-        Set<OWLAxiom> axioms =
-            asSet(ontologies.stream().flatMap(OWLOntology::axioms).filter(Utils::NOT_DECLARATION));
+        List<OWLAxiom> axioms = asList(Utils.axiomsSkipDeclarations(ontologies));
         ConstraintSystem constraintSystem = opplfactory.createConstraintSystem();
         return new AxiomRelevanceMap(axioms,
             new OntologyManagerBasedOWLEntityProvider(ontologyManger), constraintSystem);

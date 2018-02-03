@@ -41,7 +41,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
     private final OWLOntologyChangeListener listener = changes -> buildAxiomMap();
 
     protected void buildAxiomMap() {
-        ontologies.stream().flatMap(OWLOntology::axioms).filter(Utils::NOT_DECLARATION)
+        Utils.axiomsSkipDeclarations(ontologies)
             .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 
@@ -137,8 +137,7 @@ public class EditDistance implements AbstractAxiomBasedDistance {
             return CollectionFactory
                 .getCopyOnRequestSetFromImmutableCollection(cache.get(owlEntity));
         }
-        candidates.get(owlEntity).stream().filter(Utils::NOT_DECLARATION)
-            .forEach(ax -> cache.put(owlEntity, ax));
+        candidates.get(owlEntity).forEach(ax -> cache.put(owlEntity, ax));
         return CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cache.get(owlEntity));
     }
 

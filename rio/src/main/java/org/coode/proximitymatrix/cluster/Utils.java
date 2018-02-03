@@ -114,8 +114,36 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /** @author ignazio */
 public class Utils {
-    public static boolean NOT_DECLARATION(OWLAxiom ax) {
-        return !ax.getAxiomType().equals(AxiomType.DECLARATION);
+
+    public static Stream<OWLAxiom> axioms(OWLOntologyManager m) {
+        return axioms(m.ontologies());
+    }
+
+    public static Stream<OWLAxiom> axioms(Stream<OWLOntology> c) {
+        return c.flatMap(OWLOntology::axioms).distinct();
+    }
+
+    private static final List<AxiomType> TYPES = baseAxiomTypes();
+
+    public static Stream<OWLAxiom> axiomsSkipDeclarations(Stream<OWLOntology> c) {
+        return axiomsSkipDeclarations(asList(c));
+    }
+
+    public static Stream<OWLAxiom> axiomsSkipDeclarations(Collection<OWLOntology> c) {
+        return Stream.concat(axiomsSkipDeclarationsAndAnnotations(c),
+            c.stream().flatMap(o -> o.axioms(AxiomType.ANNOTATION_ASSERTION)).distinct());
+    }
+
+    protected static List<AxiomType> baseAxiomTypes() {
+        List<AxiomType> l = new ArrayList<>(AxiomType.AXIOM_TYPES);
+        l.remove(AxiomType.DECLARATION);
+        l.remove(AxiomType.ANNOTATION_ASSERTION);
+        return l;
+    }
+
+    public static Stream<OWLAxiom> axiomsSkipDeclarationsAndAnnotations(Collection<OWLOntology> c) {
+        return TYPES.stream()
+            .flatMap(a -> c.stream().flatMap(o -> (Stream<OWLAxiom>) o.axioms(a)).distinct());
     }
 
     private final static class OWLOntologyAnnotationClusterDetector
@@ -524,27 +552,25 @@ public class Utils {
     public static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
         Collection<OWLEntity> cluster, Collection<OWLOntology> ontologies,
         OWLObjectGeneralisation generalisation) {
-        Set<OWLAxiom> ontologyAxioms = asSet(ontologies.stream().flatMap(OWLOntology::axioms)
-            .filter(ax -> !ax.getAxiomType().equals(AxiomType.ANNOTATION_ASSERTION))
-            .filter(Utils::NOT_DECLARATION));
+        Stream<OWLAxiom> ontologyAxioms = axiomsSkipDeclarationsAndAnnotations(ontologies);
         return buildGeneralisationMap(cluster, ontologies, generalisation, ontologyAxioms);
     }
 
     private static MultiMap<OWLAxiom, OWLAxiomInstantiation> buildGeneralisationMap(
         Collection<OWLEntity> cluster, Collection<OWLOntology> ontologies,
-        OWLObjectGeneralisation generalisation, Set<OWLAxiom> ontologyAxioms) {
+        OWLObjectGeneralisation generalisation, Stream<OWLAxiom> ontologyAxioms) {
         OWLOntologyAnnotationClusterDetector visitor =
             new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
-        for (OWLAxiom axiom : ontologyAxioms) {
-            boolean intersection = axiom.signature().anyMatch(cluster::contains);
-            if (intersection || axiom.accept(visitor).booleanValue()) {
+        ontologyAxioms.forEach(ax -> {
+            boolean intersection = ax.signature().anyMatch(cluster::contains);
+            if (intersection || ax.accept(visitor).booleanValue()) {
                 generalisation.clearSubstitutions();
-                OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
+                OWLAxiom generalised = (OWLAxiom) ax.accept(generalisation);
                 generalisationMap.put(generalised,
-                    new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
+                    new OWLAxiomInstantiation(ax, generalisation.getSubstitutions()));
             }
-        }
+        });
         return generalisationMap;
     }
 
@@ -589,16 +615,14 @@ public class Utils {
     protected static void generaliseAxiom(Collection<OWLEntity> cluster,
         Collection<OWLOntology> ontologies, OWLObjectGeneralisation generalisation,
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap, OWLAxiom axiom) {
-        if (NOT_DECLARATION(axiom) && axiom.getAxiomType() != AxiomType.ANNOTATION_ASSERTION) {
-            OWLOntologyAnnotationClusterDetector visitor =
-                new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
-            boolean intersection = axiom.signature().anyMatch(cluster::contains);
-            if (intersection || axiom.accept(visitor).booleanValue()) {
-                generalisation.clearSubstitutions();
-                OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
-                generalisationMap.put(generalised,
-                    new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
-            }
+        OWLOntologyAnnotationClusterDetector visitor =
+            new OWLOntologyAnnotationClusterDetector(cluster, ontologies);
+        boolean intersection = axiom.signature().anyMatch(cluster::contains);
+        if (intersection || axiom.accept(visitor).booleanValue()) {
+            generalisation.clearSubstitutions();
+            OWLAxiom generalised = (OWLAxiom) axiom.accept(generalisation);
+            generalisationMap.put(generalised,
+                new OWLAxiomInstantiation(axiom, generalisation.getSubstitutions()));
         }
     }
 

@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.AddImport;
 import org.semanticweb.owlapi.model.AddOntologyAnnotation;
@@ -108,7 +109,7 @@ public class OWLOntologyManagerBasedOWLAxiomProvider extends AbstractOWLAxiomPro
     }
 
     private void rebuild() {
-        getOntologyManager().ontologies().flatMap(OWLOntology::axioms).forEach(ax -> {
+        Utils.axioms(ontologyManager).forEach(ax -> {
             axiomsDelegate.add(ax);
             ax.signature().forEach(e -> entityAxiomMap.put(e, ax));
         });

@@ -56,7 +56,7 @@ public class ClusterAxiomListModel implements ListModel<OWLAxiomListItem> {
         DefaultListModel<OWLAxiomListItem> defaultListModel = new DefaultListModel<>();
         final MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
             Utils.buildGeneralisationMap(cluster, ontologies,
-                ontologies.stream().flatMap(OWLOntology::axioms).distinct(), generalisation);
+                Utils.axiomsSkipDeclarationsAndAnnotations(ontologies), generalisation);
         Comparator<OWLAxiom> comparator = (axiom, anotherAxiom) -> {
             int toReturn = axiom.hashCode() - anotherAxiom.hashCode();
             Collection<OWLAxiomInstantiation> genAxioms = generalisationMap.get(axiom);

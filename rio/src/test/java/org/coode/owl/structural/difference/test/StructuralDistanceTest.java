@@ -28,12 +28,6 @@ import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 public class StructuralDistanceTest {
     @Test
     public void differentStructuralDistanceTest() throws OWLOntologyCreationException {
-        // try {
-        // System.in.read();
-        // } catch (IOException e1) {
-        // // TODO Auto-generated catch block
-        // e1.printStackTrace();
-        // }
         OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
         OWLOntology o = m.createOntology();
         OWLDataFactory f = m.getOWLDataFactory();

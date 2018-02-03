@@ -59,8 +59,7 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
     };
 
     protected void buildAxiomEntityMap() {
-        ontologies.stream().flatMap(OWLOntology::axioms)
-            .filter(org.coode.proximitymatrix.cluster.Utils::NOT_DECLARATION)
+        org.coode.proximitymatrix.cluster.Utils.axiomsSkipDeclarations(ontologies)
             .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
     }
 

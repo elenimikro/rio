@@ -35,8 +35,8 @@ import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.proximitymatrix.ProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.utils.EntityComparator;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -48,7 +48,7 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 /** @author Luigi Iannone */
 public class ProximityMatrixGUI extends JFrame {
     private static final long serialVersionUID = 3154241412745213737L;
-    private final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+    private final OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
     private final JTable table = new JTable();
     private final JList<Collection<? extends OWLEntity>> clusterList = new JList<>();
 

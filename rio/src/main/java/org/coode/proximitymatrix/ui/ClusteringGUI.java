@@ -84,8 +84,8 @@ import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.ui.GlassPane;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -317,7 +317,7 @@ public class ClusteringGUI extends JFrame {
     }
 
     private static final long serialVersionUID = 3154241412745213737L;
-    protected final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+    protected final OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
     protected final ClusterSummaryPanel<OWLEntity> clusterSummaryPanel =
         ClusterSummaryPanel.buildOWLEntityClusterSummaryPanel(new SimpleShortFormProvider());
     protected ClusterAxiomPanel<OWLEntity> clusterAxiomPanel;

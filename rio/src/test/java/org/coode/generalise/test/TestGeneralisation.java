@@ -81,7 +81,7 @@ public class TestGeneralisation {
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
         Set<OWLAxiom> generalisedAxioms = new HashSet<>();
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
-        ontology.axioms().filter(Utils::NOT_DECLARATION).forEach(axiom -> {
+        Utils.axiomsSkipDeclarations(Collections.singleton(ontology)).forEach(axiom -> {
             StructuralOWLObjectGeneralisation generalisation =
                 new StructuralOWLObjectGeneralisation(
                     new OntologyManagerBasedOWLEntityProvider(ontologyManager), constraintSystem);

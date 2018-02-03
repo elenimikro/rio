@@ -33,18 +33,18 @@ public class AxiomMap {
      * @param ontologies ontologies
      * @param replacer replacer
      */
-    public AxiomMap(Stream<? extends OWLOntology> ontologies, OWLEntityReplacer replacer) {
+    public AxiomMap(Stream<OWLOntology> ontologies, OWLEntityReplacer replacer) {
         if (ontologies == null) {
             throw new NullPointerException("The ontology colleciton cannot be null");
         }
         this.replacer = replacer;
-        buildMaps(ontologies.flatMap(OWLOntology::axioms));
+        buildMaps(Utils.axiomsSkipDeclarations(ontologies));
     }
 
     void buildMaps(Stream<OWLAxiom> axs) {
         delegate.clear();
         axiomCountMap.clear();
-        axs.filter(Utils::NOT_DECLARATION).forEach(this::replaceAndCount);
+        axs.forEach(this::replaceAndCount);
     }
 
     protected void replaceAndCount(OWLAxiom axiom) {

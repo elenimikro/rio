@@ -36,8 +36,8 @@ import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.EntityComparator;
+import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -57,7 +57,7 @@ public class WrappingAgglomerateAll extends AgglomeratorBase {
 
     @Override
     public void run(File outfile, java.util.List<IRI> iris) throws OWLOntologyCreationException {
-        OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
         IOUtils.loadIRIMappers(iris, manager);
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         add(entities, manager.ontologies().flatMap(OWLOntology::signature));

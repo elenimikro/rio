@@ -14,6 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.coode.basetest.TestHelper;
@@ -51,7 +52,7 @@ public class TestAxiomGeneralisationTree {
         OPPLFactory factory = new OPPLFactory(ontologyManager, ontology, null);
         MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = new MultiMap<>();
         ConstraintSystem constraintSystem = factory.createConstraintSystem();
-        ontology.axioms().filter(Utils::NOT_DECLARATION).forEach(axiom -> {
+        Utils.axiomsSkipDeclarations(Collections.singleton(ontology)).forEach(axiom -> {
             StructuralOWLObjectGeneralisation generalisation =
                 new StructuralOWLObjectGeneralisation(
                     new OntologyManagerBasedOWLEntityProvider(ontologyManager), constraintSystem);

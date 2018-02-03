@@ -45,7 +45,7 @@ import org.coode.oppl.variabletypes.VariableType;
 import org.coode.oppl.variabletypes.VariableTypeFactory;
 import org.coode.oppl.variabletypes.VariableTypeVisitorEx;
 import org.coode.parsers.oppl.VariableIRI;
-import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.coode.utils.OntologyManagerUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
@@ -434,7 +434,7 @@ public abstract class AbstractOWLObjectGeneralisation implements OWLObjectVisito
      * @param variableProvider variableProvider
      */
     public AbstractOWLObjectGeneralisation(VariableProvider variableProvider) {
-        factory = OWLManager.getOWLDataFactory();
+        factory = OntologyManagerUtils.dataFactory();
         if (variableProvider == null) {
             throw new NullPointerException("The variable provider cannot be null");
         }
