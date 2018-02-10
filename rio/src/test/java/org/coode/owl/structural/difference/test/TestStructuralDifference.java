@@ -23,7 +23,6 @@ import org.coode.owl.structural.difference.SomeDifferenceStructuralDifferenceRep
 import org.coode.owl.structural.difference.StructuralDifference;
 import org.coode.owl.structural.difference.StructuralDifferenceReport;
 import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorAdapter;
-import org.coode.owl.structural.difference.StructuralDifferenceReportVisitorExAdapter;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.OntologyManagerUtils;
 import org.junit.Test;
@@ -37,6 +36,8 @@ import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+
+import gnu.trove.list.TIntList;
 
 /** @author eleni */
 @SuppressWarnings("javadoc")
@@ -57,28 +58,15 @@ public class TestStructuralDifference {
         }
     }
 
-    private final class Personalized3
-        extends StructuralDifferenceReportVisitorExAdapter<List<Integer>> {
-        public Personalized3(List<Integer> defaultValue) {
-            super(defaultValue);
-        }
-
-        @Override
-        public List<Integer> visitSomeDifferenceStructuralDifferenceReport(
-            SomeDifferenceStructuralDifferenceReport report) {
-            return report.getPosition();
-        }
-    }
-
     private final class Personalized1 extends DiffAdapter {
         public Personalized1() {}
 
         @Override
         public void visitSomeDifferenceStructuralDifferenceReport(
             SomeDifferenceStructuralDifferenceReport report) {
-            List<Integer> position = report.getPosition();
+            TIntList position = report.getPosition();
             assertTrue(position.size() == 1);
-            assertTrue(position.get(0).intValue() == 2);
+            assertTrue(position.get(0) == 2);
         }
     }
 
@@ -88,10 +76,10 @@ public class TestStructuralDifference {
         @Override
         public void visitSomeDifferenceStructuralDifferenceReport(
             SomeDifferenceStructuralDifferenceReport report) {
-            List<Integer> position = report.getPosition();
+            TIntList position = report.getPosition();
             assertTrue(position.size() == 2);
-            assertTrue(position.get(0).intValue() == 2);
-            assertTrue(position.get(1).intValue() == 2);
+            assertTrue(position.get(0) == 2);
+            assertTrue(position.get(1) == 2);
         }
     }
 

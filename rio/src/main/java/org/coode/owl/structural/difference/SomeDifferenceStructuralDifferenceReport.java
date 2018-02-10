@@ -10,23 +10,25 @@
  ******************************************************************************/
 package org.coode.owl.structural.difference;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 
 /** @author eleni */
 public class SomeDifferenceStructuralDifferenceReport implements StructuralDifferenceReport {
     private static Map<SomeDifferenceStructuralDifferenceReport, SomeDifferenceStructuralDifferenceReport> cache =
         new HashMap<>();
-    private final List<Integer> position = new ArrayList<>();
+    private final TIntList position = new TIntArrayList();
 
     /**
      * @param position position
      * @return report
      */
-    public static SomeDifferenceStructuralDifferenceReport build(List<? extends Integer> position) {
+    public static SomeDifferenceStructuralDifferenceReport build(TIntList position) {
         SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport =
             new SomeDifferenceStructuralDifferenceReport(position);
         SomeDifferenceStructuralDifferenceReport toReturn =
@@ -39,7 +41,7 @@ public class SomeDifferenceStructuralDifferenceReport implements StructuralDiffe
         return toReturn;
     }
 
-    private SomeDifferenceStructuralDifferenceReport(List<? extends Integer> position) {
+    private SomeDifferenceStructuralDifferenceReport(TIntList position) {
         if (position == null) {
             throw new NullPointerException("The position cannot be null");
         }
@@ -60,14 +62,14 @@ public class SomeDifferenceStructuralDifferenceReport implements StructuralDiffe
     }
 
     /** @return the position */
-    public List<Integer> getPosition() {
-        return new ArrayList<>(position);
+    public TIntList getPosition() {
+        return new TIntArrayList(position);
     }
 
     @Override
     public String toString() {
-        return "Difference at position "
-            + position.stream().map(i -> i.toString()).collect(Collectors.joining(", "));
+        return "Difference at position " + Arrays.stream(position.toArray())
+            .mapToObj(i -> Integer.toString(i)).collect(Collectors.joining(", "));
     }
 
     @Override

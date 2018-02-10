@@ -14,7 +14,6 @@ import static org.junit.Assert.assertTrue;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
 import java.util.Collection;
-import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -28,7 +27,6 @@ import org.coode.distance.owl.ReplacementByKindStrategy;
 import org.coode.utils.EntityComparator;
 import org.coode.utils.OntologyManagerUtils;
 import org.junit.Test;
-import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -132,17 +130,5 @@ public class EquivalenceClassTest {
             }
         }
         distance.dispose();
-    }
-
-    private static String render(Collection<? extends OWLEntity> cluster) {
-        Formatter out = new Formatter();
-        Iterator<? extends OWLEntity> iterator = cluster.iterator();
-        while (iterator.hasNext()) {
-            ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
-                new ManchesterOWLSyntaxOWLObjectRendererImpl();
-            OWLEntity owlEntity = iterator.next();
-            out.format("%s%s", renderer.render(owlEntity), iterator.hasNext() ? ", " : "");
-        }
-        return out.toString();
     }
 }

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.coode.basetest.TestHelper;
-import org.coode.distance.owl.AbstractAxiomBasedDistance;
 import org.coode.oppl.OPPLShortFormProvider;
 import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.DistanceCreator;
@@ -65,20 +64,14 @@ public class StructuralDistanceTest {
         m.addAxiom(o, A3Subp1someB3);
         m.addAxiom(o, A3Subp1someC);
         m.addAxiom(o, ASubp2someE);
-        // ToStringRenderer.getInstance().setRenderer(
-        // new ManchesterOWLSyntaxOWLObjectRendererImpl());
-        AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
-            .createStructuralAxiomRelevanceAxiomBasedDistance(m);
-        // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
-        AbstractAxiomBasedDistance popularity_distance =
-            (AbstractAxiomBasedDistance) DistanceCreator.createAxiomRelevanceAxiomBasedDistance(m);
+        DistanceCreator.createStructuralAxiomRelevanceAxiomBasedDistance(m);
+        DistanceCreator.createAxiomRelevanceAxiomBasedDistance(m);
     }
 
     @Test
     public void testStructuralPizza() {
         OWLOntology o = TestHelper.getPizza();
-        AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
-            .createStructuralAxiomRelevanceAxiomBasedDistance(o.getOWLOntologyManager());
+        DistanceCreator.createStructuralAxiomRelevanceAxiomBasedDistance(o.getOWLOntologyManager());
         // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
         ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
             new ManchesterOWLSyntaxOWLObjectRendererImpl();
@@ -93,20 +86,12 @@ public class StructuralDistanceTest {
     @Test
     public void testStructuralPeople() {
         OWLOntology o = TestHelper.getPizza();
-        AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
-            .createStructuralAxiomRelevanceAxiomBasedDistance(o.getOWLOntologyManager());
-        // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
-        ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
-            new ManchesterOWLSyntaxOWLObjectRendererImpl();
+        DistanceCreator.createStructuralAxiomRelevanceAxiomBasedDistance(o.getOWLOntologyManager());
     }
 
     @Test
     public void testPopularityPeople() {
         OWLOntology o = TestHelper.getPizza();
-        AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
-            .createAxiomRelevanceAxiomBasedDistance(o.getOWLOntologyManager());
-        // Collection<OWLAxiom> a1_axioms = distance.getAxioms(a1);
-        ManchesterOWLSyntaxOWLObjectRendererImpl renderer =
-            new ManchesterOWLSyntaxOWLObjectRendererImpl();
+        DistanceCreator.createAxiomRelevanceAxiomBasedDistance(o.getOWLOntologyManager());
     }
 }

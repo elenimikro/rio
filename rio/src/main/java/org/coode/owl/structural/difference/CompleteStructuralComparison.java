@@ -105,17 +105,20 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 final class CompleteStructuralComparison
     implements OWLObjectVisitorEx<List<StructuralDifferenceReport>> {
     private final OWLObject objectToCompare;
-    private final List<Integer> position = new ArrayList<>();
+    private final TIntList position = new TIntArrayList();
     private final StructuralDifference difference;
 
     /**
      * @param owlObject owlObject
      * @param position position
      */
-    public CompleteStructuralComparison(OWLObject owlObject, List<Integer> position) {
+    public CompleteStructuralComparison(OWLObject owlObject, TIntList position) {
         if (owlObject == null) {
             throw new NullPointerException("The OWL Object cannot be null");
         }
@@ -182,8 +185,8 @@ final class CompleteStructuralComparison
                 startIndex++;
                 if (!differenceReports.isEmpty()) {
                     for (StructuralDifferenceReport differenceReport : differenceReports) {
-                        final List<Integer> newPositions = getPosition();
-                        newPositions.add(Integer.valueOf(startIndex));
+                        final TIntList newPositions = getPosition();
+                        newPositions.add(startIndex);
                         differenceReport.accept(new StructuralDifferenceReportVisitorAdapter() {
                             @Override
                             public void visitSomeDifferenceStructuralDifferenceReport(
@@ -578,8 +581,8 @@ final class CompleteStructuralComparison
             pairs.add(new SimplePair<>(owlObject.getProperty(), arg2.getProperty()));
             List<StructuralDifferenceReport> toReturn = compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
-                List<Integer> newPositions = getPosition();
-                newPositions.add(Integer.valueOf(2));
+                TIntList newPositions = getPosition();
+                newPositions.add(2);
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -594,8 +597,8 @@ final class CompleteStructuralComparison
             pairs.add(new SimplePair<>(owlObject.getProperty(), arg(owlObject).getProperty()));
             List<StructuralDifferenceReport> toReturn = compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
-                List<Integer> newPositions = getPosition();
-                newPositions.add(Integer.valueOf(2));
+                TIntList newPositions = getPosition();
+                newPositions.add(2);
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -610,8 +613,8 @@ final class CompleteStructuralComparison
             pairs.add(new SimplePair<>(owlObject.getProperty(), arg(owlObject).getProperty()));
             List<StructuralDifferenceReport> toReturn = compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
-                List<Integer> newPositions = getPosition();
-                newPositions.add(Integer.valueOf(2));
+                TIntList newPositions = getPosition();
+                newPositions.add(2);
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -663,8 +666,8 @@ final class CompleteStructuralComparison
             pairs.add(new SimplePair<>(owlObject.getProperty(), arg(owlObject).getProperty()));
             List<StructuralDifferenceReport> toReturn = compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
-                List<Integer> newPositions = getPosition();
-                newPositions.add(Integer.valueOf(2));
+                TIntList newPositions = getPosition();
+                newPositions.add(2);
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -679,8 +682,8 @@ final class CompleteStructuralComparison
             pairs.add(new SimplePair<>(owlObject.getProperty(), arg(owlObject).getProperty()));
             List<StructuralDifferenceReport> toReturn = compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
-                List<Integer> newPositions = getPosition();
-                newPositions.add(Integer.valueOf(2));
+                TIntList newPositions = getPosition();
+                newPositions.add(2);
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -695,8 +698,8 @@ final class CompleteStructuralComparison
             pairs.add(new SimplePair<>(owlObject.getProperty(), arg(owlObject).getProperty()));
             List<StructuralDifferenceReport> toReturn = compare(pairs);
             if (owlObject.getCardinality() != arg(owlObject).getCardinality()) {
-                List<Integer> newPositions = getPosition();
-                newPositions.add(Integer.valueOf(2));
+                TIntList newPositions = getPosition();
+                newPositions.add(2);
                 toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
             }
             pairs.clear();
@@ -1333,8 +1336,8 @@ final class CompleteStructuralComparison
     }
 
     /** @return the position */
-    public List<Integer> getPosition() {
-        return new ArrayList<>(position);
+    public TIntList getPosition() {
+        return new TIntArrayList(position);
     }
 
     /** @return the difference */

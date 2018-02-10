@@ -63,7 +63,6 @@ import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
@@ -104,16 +103,19 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
 final class StructuralComparison implements OWLObjectVisitorEx<StructuralDifferenceReport> {
     private final OWLObject objectToCompare;
-    private final List<Integer> position = new ArrayList<>();
+    private final TIntList position = new TIntArrayList();
     private final StructuralDifference difference;
 
     /**
      * @param owlObject owlObject
      * @param position position
      */
-    public StructuralComparison(OWLObject owlObject, List<Integer> position) {
+    public StructuralComparison(OWLObject owlObject, TIntList position) {
         if (owlObject == null) {
             throw new NullPointerException("The OWL Object cannot be null");
         }
@@ -521,8 +523,8 @@ final class StructuralComparison implements OWLObjectVisitorEx<StructuralDiffere
                     pairs.add(new SimplePair<>(owlObject.getFiller(), arg2.getFiller()));
                     toReturn = compare(pairs, 2);
                 } else {
-                    List<Integer> newPositions = getPosition();
-                    newPositions.add(Integer.valueOf(2));
+                    TIntList newPositions = getPosition();
+                    newPositions.add(2);
                     toReturn = SomeDifferenceStructuralDifferenceReport.build(newPositions);
                 }
             }
@@ -820,9 +822,9 @@ final class StructuralComparison implements OWLObjectVisitorEx<StructuralDiffere
                 toReturn = structDifference.getTopDifference(first, second);
                 startIndex++;
             }
-            final List<Integer> newPositions = getPosition();
+            final TIntList newPositions = getPosition();
             if (toReturn != StructuralDifferenceReport.NO_DIFFERENCE) {
-                newPositions.add(Integer.valueOf(startIndex));
+                newPositions.add(startIndex);
                 toReturn.accept(new StructuralDifferenceReportVisitorAdapter() {
                     @Override
                     public void visitSomeDifferenceStructuralDifferenceReport(
@@ -861,423 +863,13 @@ final class StructuralComparison implements OWLObjectVisitorEx<StructuralDiffere
     }
 
     @Override
-    public StructuralDifferenceReport visit(final OWLNegativeObjectPropertyAssertionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLAsymmetricObjectPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLReflexiveObjectPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDisjointClassesAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataPropertyDomainAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectPropertyDomainAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLEquivalentObjectPropertiesAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLNegativeDataPropertyAssertionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDifferentIndividualsAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDisjointDataPropertiesAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDisjointObjectPropertiesAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectPropertyRangeAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectPropertyAssertionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLFunctionalObjectPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLSubObjectPropertyOfAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDisjointUnionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDeclarationAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLAnnotationAssertionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLSymmetricObjectPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataPropertyRangeAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLFunctionalDataPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLEquivalentDataPropertiesAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLClassAssertionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLEquivalentClassesAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataPropertyAssertionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLTransitiveObjectPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLIrreflexiveObjectPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLSubDataPropertyOfAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLInverseFunctionalObjectPropertyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLSameIndividualAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLSubPropertyChainOfAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLInverseObjectPropertiesAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLHasKeyAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDatatypeDefinitionAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLRule rule) {
-        return getOWLObject().accept(new StructuralDiffVisitor(rule));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLSubAnnotationPropertyOfAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLAnnotationPropertyDomainAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLAnnotationPropertyRangeAxiom axiom) {
-        return getOWLObject().accept(new StructuralDiffVisitor(axiom));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLClass ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectIntersectionOf ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectUnionOf ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectComplementOf ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectSomeValuesFrom ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectAllValuesFrom ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectHasValue ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectMinCardinality ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectExactCardinality ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectMaxCardinality ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectHasSelf ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectOneOf ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataSomeValuesFrom ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataAllValuesFrom ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataHasValue ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataMinCardinality ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataExactCardinality ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataMaxCardinality ce) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ce));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDatatype node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataComplementOf node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataOneOf node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataIntersectionOf node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataUnionOf node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDatatypeRestriction node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLLiteral node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLFacetRestriction node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectProperty property) {
-        return getOWLObject().accept(new StructuralDiffVisitor(property));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLObjectInverseOf property) {
-        return getOWLObject().accept(new StructuralDiffVisitor(property));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLDataProperty property) {
-        return getOWLObject().accept(new StructuralDiffVisitor(property));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLNamedIndividual individual) {
-        return getOWLObject().accept(new StructuralDiffVisitor(individual));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLAnnotationProperty property) {
-        return getOWLObject().accept(new StructuralDiffVisitor(property));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLAnnotation node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final IRI iri) {
-        return getOWLObject().accept(new StructuralDiffVisitor(iri));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLAnonymousIndividual individual) {
-        return getOWLObject().accept(new StructuralDiffVisitor(individual));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLClassAtom node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLDataRangeAtom node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLObjectPropertyAtom node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLDataPropertyAtom node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLBuiltInAtom node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLVariable node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLIndividualArgument node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLLiteralArgument node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLSameIndividualAtom node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final SWRLDifferentIndividualsAtom node) {
-        return getOWLObject().accept(new StructuralDiffVisitor(node));
-    }
-
-    @Override
-    public StructuralDifferenceReport visit(final OWLOntology ontology) {
-        return getOWLObject().accept(new StructuralDiffVisitor(ontology));
+    public <T> StructuralDifferenceReport doDefault(T object) {
+        return getOWLObject().accept(new StructuralDiffVisitor((OWLObject) object));
     }
 
     /** @return the position */
-    public List<Integer> getPosition() {
-        return new ArrayList<>(position);
+    public TIntList getPosition() {
+        return new TIntArrayList(position);
     }
 
     /** @return the difference */
