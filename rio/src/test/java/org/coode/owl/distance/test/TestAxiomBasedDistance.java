@@ -55,8 +55,7 @@ public class TestAxiomBasedDistance extends DistanceTestCase {
             @Override
             public AbstractAxiomBasedDistance getDistance(OWLOntology o,
                 RelevancePolicy<OWLEntity> rp) {
-                return new AxiomBasedDistance(o.importsClosure(),
-                    o.getOWLOntologyManager().getOWLDataFactory(), rp, o.getOWLOntologyManager());
+                return new AxiomBasedDistance(o.importsClosure(), rp, o.getOWLOntologyManager());
             }
         };
     }

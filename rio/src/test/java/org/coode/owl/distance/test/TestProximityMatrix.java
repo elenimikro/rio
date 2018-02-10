@@ -41,7 +41,6 @@ public class TestProximityMatrix {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(ontologyManager.ontologies(),
-            ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);
@@ -55,9 +54,9 @@ public class TestProximityMatrix {
     public void testAllDistancesClustering() {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-        final AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(
-            ontologyManager.ontologies(), ontologyManager.getOWLDataFactory(),
-            DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
+        final AxiomBasedDistance axiomBasedDistance =
+            new AxiomBasedDistance(ontologyManager.ontologies(),
+                DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);
         PairFilter<Collection<? extends OWLEntity>> pairFilter = (first, second) -> true;
@@ -83,7 +82,6 @@ public class TestProximityMatrix {
         OWLOntology ontology = TestHelper.getPizza();
         OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
         AxiomBasedDistance axiomBasedDistance = new AxiomBasedDistance(ontologyManager.ontologies(),
-            ontologyManager.getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysRelevantPolicy(), ontologyManager);
         ProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(asList(ontology.signature()), axiomBasedDistance);

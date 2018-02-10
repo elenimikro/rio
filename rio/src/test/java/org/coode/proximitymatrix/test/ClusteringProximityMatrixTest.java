@@ -46,7 +46,6 @@ public class ClusteringProximityMatrixTest {
     public void testReduce() {
         OWLOntology ontology = TestHelper.getPizza();
         final AxiomBasedDistance distance = new AxiomBasedDistance(Stream.of(ontology),
-            ontology.getOWLOntologyManager().getOWLDataFactory(),
             DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(),
             ontology.getOWLOntologyManager());
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());

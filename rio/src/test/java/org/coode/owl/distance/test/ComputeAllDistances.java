@@ -46,9 +46,8 @@ public class ComputeAllDistances {
         IOUtils.loadIRIMappers(iris, manager);
         Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
         add(entities, manager.ontologies().flatMap(OWLOntology::signature));
-        AxiomBasedDistance distance =
-            new AxiomBasedDistance(manager.ontologies(), manager.getOWLDataFactory(),
-                DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
+        AxiomBasedDistance distance = new AxiomBasedDistance(manager.ontologies(),
+            DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         System.out.println(String.format("Finished computing distance between %d entities",

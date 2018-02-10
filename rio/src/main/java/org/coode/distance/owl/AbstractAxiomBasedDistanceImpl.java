@@ -3,13 +3,25 @@ package org.coode.distance.owl;
 import java.util.Collection;
 import java.util.Set;
 
+import org.coode.oppl.OPPLFactory;
+import org.coode.owl.wrappers.OWLEntityProvider;
+import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
-public abstract class AbstractAxiomBasedDistanceImpl implements AbstractAxiomBasedDistance {
+public abstract class AbstractAxiomBasedDistanceImpl extends AbstractAxiomBasedDistance {
+
     OWLEntity last;
     Set<OWLAxiom> lastset;
+    protected final OWLEntityProvider entityProvider;
+    protected OPPLFactory opplfactory;
+
+    protected AbstractAxiomBasedDistanceImpl(OWLOntologyManager m) {
+        super(m);
+        entityProvider = new OntologyManagerBasedOWLEntityProvider(manager);
+    }
 
     @Override
     public double getDistance(OWLEntity a, OWLEntity b) {
@@ -36,5 +48,10 @@ public abstract class AbstractAxiomBasedDistanceImpl implements AbstractAxiomBas
             }
         }
         return toReturn;
+    }
+
+    /** @return the entityProvider */
+    public OWLEntityProvider getEntityProvider() {
+        return entityProvider;
     }
 }

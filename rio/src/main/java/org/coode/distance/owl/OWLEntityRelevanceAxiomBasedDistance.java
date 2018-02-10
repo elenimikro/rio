@@ -15,11 +15,9 @@ package org.coode.distance.owl;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -32,34 +30,15 @@ import org.coode.oppl.ConstraintSystem;
 import org.coode.oppl.OPPLFactory;
 import org.coode.owl.generalise.structural.RelevancePolicyOWLObjectGeneralisation;
 import org.coode.owl.generalise.structural.SingleOWLEntityReplacementVariableProvider;
-import org.coode.owl.wrappers.OWLEntityProvider;
-import org.coode.owl.wrappers.OntologyManagerBasedOWLEntityProvider;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
-import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
 public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
-    protected final List<OWLOntology> ontologies = new ArrayList<>();
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
-    private final OWLOntologyManager ontologyManger;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
     private final Set<OWLEntity> ontologySignature = new HashSet<>();
-    private final OWLEntityProvider entityProvider;
-    private final OPPLFactory factory;
-    private final OWLOntologyChangeListener listener = changes -> {
-        buildOntologySignature();
-        buildAxiomEntityMap();
-    };
-
-    protected void buildAxiomEntityMap() {
-        org.coode.proximitymatrix.cluster.Utils.axioms(ontologies.stream())
-            .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
-    }
 
     protected void buildOntologySignature() {
         ontologySignature.clear();
@@ -75,18 +54,15 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
      */
     public OWLEntityRelevanceAxiomBasedDistance(Stream<OWLOntology> ontologies,
         OWLOntologyManager manager) {
+        super(manager);
+        listeners.add(changes -> buildOntologySignature());
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
-        if (manager == null) {
-            throw new NullPointerException("The ontolgy manager cannot be null");
-        }
         add(this.ontologies, ontologies);
-        ontologyManger = manager;
         buildOntologySignature();
-        buildAxiomEntityMap();
-        entityProvider = new OntologyManagerBasedOWLEntityProvider(getOntologyManger());
-        factory = new OPPLFactory(getOntologyManger(), this.ontologies.iterator().next(), null);
+        buildAxiomMap();
+        opplfactory = new OPPLFactory(manager, this.ontologies.iterator().next(), null);
         policy = DefaultOWLEntityTypeRelevancePolicy.getPropertiesAlwaysRelevantPolicy();
     }
 
@@ -111,7 +87,7 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
             }
             ((SingleOWLEntityReplacementVariableProvider) generalReplacer.getVariableProvider())
                 .setOWLObject(owlEntity);
-            ConstraintSystem cs = factory.createConstraintSystem();
+            ConstraintSystem cs = opplfactory.createConstraintSystem();
             generalReplacer.getVariableProvider().setConstraintSystem(cs);
             generalReplacer.setConstraintSystem(cs);
             OWLAxiom replaced = (OWLAxiom) axiom.accept(generalReplacer);
@@ -125,22 +101,5 @@ public class OWLEntityRelevanceAxiomBasedDistance extends AbstractAxiomBasedDist
     protected boolean isRelevant(OWLAxiom replaced) {
         return replaced.signature().anyMatch(ontologySignature::contains)
             || replaced.accept(AxiomGeneralityDetector.getInstance()).booleanValue();
-    }
-
-    /**
-     * 
-     */
-    public void dispose() {
-        ontologyManger.removeOntologyChangeListener(listener);
-    }
-
-    /** @return the ontologyManger */
-    public OWLOntologyManager getOntologyManger() {
-        return ontologyManger;
-    }
-
-    /** @return the entityProvider */
-    public OWLEntityProvider getEntityProvider() {
-        return entityProvider;
     }
 }

@@ -10,17 +10,52 @@
  ******************************************************************************/
 package org.coode.distance.owl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.coode.distance.Distance;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
-public interface AbstractAxiomBasedDistance extends Distance<OWLEntity> {
+public abstract class AbstractAxiomBasedDistance implements Distance<OWLEntity> {
+    protected final List<OWLOntology> ontologies = new ArrayList<>();
+    protected final OWLOntologyManager manager;
+    protected final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
+    protected final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
+    protected final List<OWLOntologyChangeListener> listeners =
+        new ArrayList<>(Arrays.asList(changes -> buildAxiomMap()));
+
+    protected void buildAxiomMap() {
+        Utils.axiomsSkipDeclarations(ontologies)
+            .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
+    }
+
+    protected AbstractAxiomBasedDistance(OWLOntologyManager m) {
+        if (m == null) {
+            throw new NullPointerException("The ontology mnager cannot be null");
+        }
+        manager = m;
+    }
+
+    /**
+     * 
+     */
+    public void dispose() {
+        listeners.forEach(manager::removeOntologyChangeListener);
+    }
+
+
     /**
      * @param owlEntity owlEntity
      * @return axioms
      */
-    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity);
+    public abstract Set<OWLAxiom> getAxioms(OWLEntity owlEntity);
 }

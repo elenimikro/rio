@@ -51,7 +51,7 @@ public class TestProximityMatrix {
         List<OWLOntology> ontologies = asList(ontology.importsClosure());
         Set<OWLEntity> signature = asSet(ontology.signature());
         final AxiomBasedDistance axiomBasedDistance =
-            new AxiomBasedDistance(ontologies.stream(), ontologyManager.getOWLDataFactory(),
+            new AxiomBasedDistance(ontologies.stream(),
                 AbstractRankingRelevancePolicy.getAbstractRankingRelevancePolicy(
                     new OWLEntityPopularityRanking(signature, ontologies.stream())),
                 ontologyManager);

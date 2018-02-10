@@ -16,7 +16,6 @@ package org.coode.distance.owl;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,10 +41,8 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.CollectionFactory;
-import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author Luigi Iannone */
 public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistanceImpl {
@@ -73,31 +70,14 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
         }
     }
 
-    protected final List<OWLOntology> ontologies = new ArrayList<>();
-    private final OWLDataFactory dataFactory;
-    private final MultiMap<OWLEntity, OWLAxiom> cache = new MultiMap<>();
-    private final OWLOntologyManager ontologyManger;
-    private final OWLEntityProvider entityProvider;
-    private final MultiMap<OWLEntity, OWLAxiom> candidates = new MultiMap<>();
     private final Set<OWLEntity> ontologySignature = new HashSet<>();
     private final AxiomRelevanceMap axiomRelevanceMap;
-    private final OPPLFactory opplfactory;
-    private final OWLOntologyChangeListener listener = changes -> {
-        buildOntologySignature();
-        buildAxiomEntityMap();
-    };
-
-    protected void buildAxiomEntityMap() {
-        Utils.axiomsSkipDeclarations(ontologies)
-            .forEach(ax -> ax.signature().forEach(e -> candidates.put(e, ax)));
-    }
+    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<>();
 
     protected void buildOntologySignature() {
         ontologySignature.clear();
         add(ontologySignature, ontologies.stream().flatMap(OWLOntology::signature));
     }
-
-    private final Map<OWLAxiom, RelevancePolicyOWLObjectGeneralisation> replacers = new HashMap<>();
 
     /**
      * @param ontologies ontologies
@@ -106,30 +86,26 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
      */
     public StructuralAxiomRelevanceAxiomBasedDistance(Stream<? extends OWLOntology> ontologies,
         OWLDataFactory dataFactory, OWLOntologyManager manager) {
+        super(manager);
+        listeners.add(changes -> buildOntologySignature());
         if (ontologies == null) {
             throw new NullPointerException("The ontolgies canont be null");
         }
         if (dataFactory == null) {
             throw new NullPointerException("The data factory cannot be null");
         }
-        if (manager == null) {
-            throw new NullPointerException("The ontolgy manager cannot be null");
-        }
         add(this.ontologies, ontologies);
-        ontologyManger = manager;
-        opplfactory = new OPPLFactory(ontologyManger, this.ontologies.iterator().next(), null);
+        opplfactory = new OPPLFactory(manager, this.ontologies.iterator().next(), null);
         buildOntologySignature();
-        buildAxiomEntityMap();
+        buildAxiomMap();
         axiomRelevanceMap = buildAxiomRelevanceMap();
-        this.dataFactory = dataFactory;
-        entityProvider = new OntologyManagerBasedOWLEntityProvider(ontologyManger);
     }
 
     protected AxiomRelevanceMap buildAxiomRelevanceMap() {
         List<OWLAxiom> axioms = asList(Utils.axiomsSkipDeclarations(ontologies));
         ConstraintSystem constraintSystem = opplfactory.createConstraintSystem();
-        return new AxiomRelevanceMap(axioms,
-            new OntologyManagerBasedOWLEntityProvider(ontologyManger), constraintSystem);
+        return new AxiomRelevanceMap(axioms, new OntologyManagerBasedOWLEntityProvider(manager),
+            constraintSystem);
     }
 
     @Override
@@ -173,22 +149,5 @@ public class StructuralAxiomRelevanceAxiomBasedDistance extends AbstractAxiomBas
     protected boolean isRelevant(OWLAxiom replaced) {
         return replaced.signature().anyMatch(ontologySignature::contains)
             || replaced.accept(AxiomGeneralityDetector.getInstance()).booleanValue();
-    }
-
-    /** @return the dataFactory */
-    public OWLDataFactory getDataFactory() {
-        return dataFactory;
-    }
-
-    /**
-     * 
-     */
-    public void dispose() {
-        ontologyManger.removeOntologyChangeListener(listener);
-    }
-
-    /** @return the entityProvider */
-    public OWLEntityProvider getEntityProvider() {
-        return entityProvider;
     }
 }
