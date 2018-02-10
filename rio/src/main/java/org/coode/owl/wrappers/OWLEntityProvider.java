@@ -10,10 +10,55 @@
  ******************************************************************************/
 package org.coode.owl.wrappers;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 
 /** @author eleni */
-public interface OWLEntityProvider extends Set<OWLEntity> {
+public class OWLEntityProvider {
+    private Set<OWLEntity> delegate = new HashSet<>();
+
+    /**
+     * @param e entity to add
+     * @return true if added
+     */
+    public boolean add(OWLEntity e) {
+        return delegate.add(e);
+    }
+
+    /**
+     * @param c entities to add
+     * @return true if added
+     */
+    public boolean addAll(Collection<OWLEntity> c) {
+        return delegate.addAll(c);
+    }
+
+    /**
+     * Clear the collection.
+     */
+    public void clear() {
+        delegate.clear();
+    }
+
+    /**
+     * @return Stream of entities
+     */
+    public Stream<OWLEntity> stream() {
+        return delegate.stream();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return delegate.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return delegate.hashCode();
+    }
+
 }

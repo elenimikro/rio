@@ -18,8 +18,7 @@ import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
-public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase
-    implements OWLEntityProvider {
+public class GeneralisationBasedOWLEntityProvider extends OWLEntityProviderBase {
     private final Set<OWLAxiom> axioms = new HashSet<>();
     private final OWLOntologyChangeListener listener = changes -> {
         clear();

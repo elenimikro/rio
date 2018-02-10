@@ -14,8 +14,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /** @author eleni */
-public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase
-    implements OWLEntityProvider {
+public class OntologyManagerBasedOWLEntityProvider extends OWLEntityProviderBase {
 
     /**
      * @param ontologyManager ontologyManager
