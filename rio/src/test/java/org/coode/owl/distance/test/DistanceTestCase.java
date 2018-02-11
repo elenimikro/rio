@@ -85,9 +85,9 @@ public abstract class DistanceTestCase {
         }
     }
 
-    protected OWLOntology getOntology(File f) throws OWLOntologyCreationException {
+    protected OWLOntology getOntology(File file) throws OWLOntologyCreationException {
         ontologyManager = OntologyManagerUtils.ontologyManager();
-        return ontologyManager.loadOntologyFromOntologyDocument(f);
+        return ontologyManager.loadOntologyFromOntologyDocument(file);
     }
 
     protected OWLOntology getOntology(String iri) throws OWLOntologyCreationException {

@@ -12,6 +12,7 @@ package org.coode.distance.owl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
@@ -52,10 +54,19 @@ public abstract class AbstractAxiomBasedDistance implements Distance<OWLEntity> 
         listeners.forEach(manager::removeOntologyChangeListener);
     }
 
+    /**
+     * @param owlEntity owlEntity
+     * @return axioms
+     */
+    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
+        Collection<OWLAxiom> cached = cache.get(owlEntity);
+        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
+            : CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cached);
+    }
 
     /**
      * @param owlEntity owlEntity
      * @return axioms
      */
-    public abstract Set<OWLAxiom> getAxioms(OWLEntity owlEntity);
+    protected abstract Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity);
 }

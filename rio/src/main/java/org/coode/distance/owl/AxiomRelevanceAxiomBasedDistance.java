@@ -15,7 +15,6 @@ package org.coode.distance.owl;
 
 import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -73,16 +72,6 @@ public class AxiomRelevanceAxiomBasedDistance extends AbstractAxiomBasedDistance
     }
 
     @Override
-    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
-        Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-            : CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cached);
-    }
-
-    /**
-     * @param owlEntity owlEntity
-     * @return axioms
-     */
     protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         for (OWLAxiom axiom : candidates.get(owlEntity)) {
             RelevancePolicyOWLObjectGeneralisation generalReplacer = replacers.get(axiom);

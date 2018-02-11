@@ -597,37 +597,28 @@ class CompleteStructuralComparison implements OWLObjectVisitorEx<List<Structural
         }
 
         @Override
+        public List<StructuralDifferenceReport> visit(OWLDataMinCardinality owlObject) {
+            return visitCardinalty(owlObject);
+        }
+
+        @Override
+        public List<StructuralDifferenceReport> visit(OWLDataExactCardinality owlObject) {
+            return visitCardinalty(owlObject);
+        }
+
+        @Override
+        public List<StructuralDifferenceReport> visit(OWLDataMaxCardinality owlObject) {
+            return visitCardinalty(owlObject);
+        }
+
+        @Override
         public List<StructuralDifferenceReport> visit(OWLObjectExactCardinality owlObject) {
-            OWLObjectExactCardinality arg2 = arg(owlObject);
-            List<SimplePair<OWLObject>> pairs = new ArrayList<>();
-            pairs.add(p(owlObject.getProperty(), arg2.getProperty()));
-            List<StructuralDifferenceReport> toReturn = compare(pairs);
-            if (owlObject.getCardinality() != arg2.getCardinality()) {
-                TIntList newPositions = new TIntArrayList(position);
-                newPositions.add(2);
-                toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
-            }
-            pairs.clear();
-            pairs.add(p(owlObject.getFiller(), arg2.getFiller()));
-            toReturn.addAll(compare(pairs, 2));
-            return toReturn;
+            return visitCardinalty(owlObject);
         }
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLObjectMaxCardinality owlObject) {
-            OWLObjectMaxCardinality arg2 = arg(owlObject);
-            List<SimplePair<OWLObject>> pairs = new ArrayList<>();
-            pairs.add(p(owlObject.getProperty(), arg2.getProperty()));
-            List<StructuralDifferenceReport> toReturn = compare(pairs);
-            if (owlObject.getCardinality() != arg2.getCardinality()) {
-                TIntList newPositions = new TIntArrayList(position);
-                newPositions.add(2);
-                toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
-            }
-            pairs.clear();
-            pairs.add(p(owlObject.getFiller(), arg2.getFiller()));
-            toReturn.addAll(compare(pairs, 2));
-            return toReturn;
+            return visitCardinalty(owlObject);
         }
 
         @Override
@@ -668,56 +659,6 @@ class CompleteStructuralComparison implements OWLObjectVisitorEx<List<Structural
             return compare(pairs);
         }
 
-        @Override
-        public List<StructuralDifferenceReport> visit(OWLDataMinCardinality owlObject) {
-            OWLDataMinCardinality arg2 = arg(owlObject);
-            List<SimplePair<OWLObject>> pairs = new ArrayList<>();
-            pairs.add(p(owlObject.getProperty(), arg2.getProperty()));
-            List<StructuralDifferenceReport> toReturn = compare(pairs);
-            if (owlObject.getCardinality() != arg2.getCardinality()) {
-                TIntList newPositions = new TIntArrayList(position);
-                newPositions.add(2);
-                toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
-            }
-            pairs.clear();
-            pairs.add(p(owlObject.getFiller(), arg2.getFiller()));
-            toReturn.addAll(compare(pairs, 2));
-            return toReturn;
-        }
-
-        @Override
-        public List<StructuralDifferenceReport> visit(OWLDataExactCardinality owlObject) {
-            OWLDataExactCardinality arg2 = arg(owlObject);
-            List<SimplePair<OWLObject>> pairs = new ArrayList<>();
-            pairs.add(p(owlObject.getProperty(), arg2.getProperty()));
-            List<StructuralDifferenceReport> toReturn = compare(pairs);
-            if (owlObject.getCardinality() != arg2.getCardinality()) {
-                TIntList newPositions = new TIntArrayList(position);
-                newPositions.add(2);
-                toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
-            }
-            pairs.clear();
-            pairs.add(p(owlObject.getFiller(), arg2.getFiller()));
-            toReturn.addAll(compare(pairs, 2));
-            return toReturn;
-        }
-
-        @Override
-        public List<StructuralDifferenceReport> visit(OWLDataMaxCardinality owlObject) {
-            OWLDataMaxCardinality arg2 = arg(owlObject);
-            List<SimplePair<OWLObject>> pairs = new ArrayList<>();
-            pairs.add(p(owlObject.getProperty(), arg2.getProperty()));
-            List<StructuralDifferenceReport> toReturn = compare(pairs);
-            if (owlObject.getCardinality() != arg2.getCardinality()) {
-                TIntList newPositions = new TIntArrayList(position);
-                newPositions.add(2);
-                toReturn.add(SomeDifferenceStructuralDifferenceReport.build(newPositions));
-            }
-            pairs.clear();
-            pairs.add(p(owlObject.getFiller(), arg2.getFiller()));
-            toReturn.addAll(compare(pairs, 2));
-            return toReturn;
-        }
 
         @Override
         public List<StructuralDifferenceReport> visit(OWLDatatype owlObject) {

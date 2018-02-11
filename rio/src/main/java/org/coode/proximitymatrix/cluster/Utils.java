@@ -421,27 +421,30 @@ public class Utils {
             Element generalisations = document.createElement("Generalisations");
             MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap =
                 buildGeneralisationMap((Collection<OWLEntity>) cluster, ontologies, generalisation);
-            for (OWLAxiom generalisedAxiom : generalisationMap.keySet()) {
-                Element generalisedAxiomNode = document.createElement("Generalisation");
-                generalisedAxiomNode.setAttribute("axiom", renderer.render(generalisedAxiom));
-                Collection<OWLAxiomInstantiation> generalisationChildren =
-                    generalisationMap.get(generalisedAxiom);
-                generalisedAxiomNode.setAttribute("count",
-                    Integer.toString(generalisationChildren.size()));
-                generalisedAxiomNode.setAttribute("instantiationStats",
-                    Utils.renderInstantiationsStats(
-                        buildAssignmentMap(generalisationChildren.stream())));
-                for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
-                    Element axiomNode = document.createElement("Axiom");
-                    axiomNode.setAttribute("axiom",
-                        renderer.render(owlAxiomInstantiation.getAxiom()));
-                    generalisedAxiomNode.appendChild(axiomNode);
-                }
-                generalisations.appendChild(generalisedAxiomNode);
-            }
+            addGeneralisations(renderer, document, generalisations, generalisationMap);
             clusterNode.appendChild(generalisations);
         }
         return document;
+    }
+
+    protected static void addGeneralisations(OWLObjectRenderer renderer, Document document,
+        Element generalisations, MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap) {
+        for (OWLAxiom generalisedAxiom : generalisationMap.keySet()) {
+            Element generalisedAxiomNode = document.createElement("Generalisation");
+            generalisedAxiomNode.setAttribute("axiom", renderer.render(generalisedAxiom));
+            Collection<OWLAxiomInstantiation> generalisationChildren =
+                generalisationMap.get(generalisedAxiom);
+            generalisedAxiomNode.setAttribute("count",
+                Integer.toString(generalisationChildren.size()));
+            generalisedAxiomNode.setAttribute("instantiationStats", Utils
+                .renderInstantiationsStats(buildAssignmentMap(generalisationChildren.stream())));
+            for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
+                Element axiomNode = document.createElement("Axiom");
+                axiomNode.setAttribute("axiom", renderer.render(owlAxiomInstantiation.getAxiom()));
+                generalisedAxiomNode.appendChild(axiomNode);
+            }
+            generalisations.appendChild(generalisedAxiomNode);
+        }
     }
 
     /**
@@ -972,24 +975,7 @@ public class Utils {
             clusterNode.setAttribute("size", Integer.toString(cluster.size()));
             Element generalisations = document.createElement("Generalisations");
             MultiMap<OWLAxiom, OWLAxiomInstantiation> generalisationMap = model.get(cluster);
-            for (OWLAxiom generalisedAxiom : generalisationMap.keySet()) {
-                Element generalisedAxiomNode = document.createElement("Generalisation");
-                generalisedAxiomNode.setAttribute("axiom", renderer.render(generalisedAxiom));
-                Collection<OWLAxiomInstantiation> generalisationChildren =
-                    generalisationMap.get(generalisedAxiom);
-                generalisedAxiomNode.setAttribute("count",
-                    Integer.toString(generalisationChildren.size()));
-                generalisedAxiomNode.setAttribute("instantiationStats",
-                    Utils.renderInstantiationsStats(
-                        buildAssignmentMap(generalisationChildren.stream())));
-                for (OWLAxiomInstantiation owlAxiomInstantiation : generalisationChildren) {
-                    Element axiomNode = document.createElement("Axiom");
-                    axiomNode.setAttribute("axiom",
-                        renderer.render(owlAxiomInstantiation.getAxiom()));
-                    generalisedAxiomNode.appendChild(axiomNode);
-                }
-                generalisations.appendChild(generalisedAxiomNode);
-            }
+            addGeneralisations(renderer, document, generalisations, generalisationMap);
             clusterNode.appendChild(generalisations);
         }
         return document;

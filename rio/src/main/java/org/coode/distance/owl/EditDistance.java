@@ -95,17 +95,11 @@ public class EditDistance extends AbstractAxiomBasedDistance {
         return toReturn;
     }
 
-    @Override
-    public Set<OWLAxiom> getAxioms(OWLEntity owlEntity) {
-        Collection<OWLAxiom> cached = cache.get(owlEntity);
-        return cached.isEmpty() ? computeAxiomsForEntity(owlEntity)
-            : CollectionFactory.getCopyOnRequestSetFromImmutableCollection(cached);
-    }
-
     /**
      * @param owlEntity owlEntity
      * @return axioms
      */
+    @Override
     protected Set<OWLAxiom> computeAxiomsForEntity(OWLEntity owlEntity) {
         if (!cache.get(owlEntity).isEmpty()) {
             return CollectionFactory
