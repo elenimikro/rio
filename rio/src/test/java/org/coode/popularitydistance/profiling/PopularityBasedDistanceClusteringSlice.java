@@ -44,14 +44,12 @@ import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.proximitymatrix.cluster.commandline.Utility;
 import org.coode.proximitymatrix.ui.ClusterStatisticsTableModel;
-import org.coode.utils.EntityComparator;
 import org.coode.utils.OntologyManagerUtils;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.MultiMap;
 import org.w3c.dom.Document;
 
@@ -90,9 +88,8 @@ public class PopularityBasedDistanceClusteringSlice {
                         new ReplacementByKindStrategy(manager.getOWLDataFactory()));
                 AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
                     onto.importsClosure(), owlEntityReplacer, manager);
-                Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-                onto.signature(Imports.INCLUDED).filter(p -> !p.isOWLObjectProperty())
-                    .forEach(entities::add);
+                Collection<OWLEntity> entities = asList(
+                    Utils.getSortedSignature(onto).stream().filter(p -> !p.isOWLObjectProperty()));
                 MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
                     org.coode.distance.Utils.getEquivalenceClasses(entities, distance);
                 entities = new HashSet<>(equivalenceClasses.keySet());

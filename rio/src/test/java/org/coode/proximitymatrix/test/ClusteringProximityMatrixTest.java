@@ -11,7 +11,6 @@
 package org.coode.proximitymatrix.test;
 
 import static org.junit.Assert.assertTrue;
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +18,6 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import org.coode.basetest.TestHelper;
@@ -34,7 +32,7 @@ import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
-import org.coode.utils.EntityComparator;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -48,8 +46,7 @@ public class ClusteringProximityMatrixTest {
         final AxiomBasedDistance distance = new AxiomBasedDistance(Stream.of(ontology),
             DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(),
             ontology.getOWLOntologyManager());
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        add(entities, ontology.signature());
+        Collection<OWLEntity> entities = Utils.getSortedSignature(ontology);
         SimpleProximityMatrix<OWLEntity> distanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         Set<Collection<? extends OWLEntity>> newObjects = new LinkedHashSet<>();

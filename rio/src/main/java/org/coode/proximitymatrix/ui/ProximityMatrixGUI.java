@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -34,15 +33,13 @@ import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
 import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.proximitymatrix.ProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
-import org.coode.utils.EntityComparator;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /** @author Luigi Iannone */
@@ -72,8 +69,7 @@ public class ProximityMatrixGUI extends JFrame {
 
     private void reset() {
         SimpleShortFormProvider shortFormProvider = new SimpleShortFormProvider();
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        OWLAPIStreamUtils.add(entities, manager.ontologies().flatMap(OWLOntology::signature));
+        List<OWLEntity> entities = Utils.getSortedSignature(manager);
         Distance<OWLEntity> distance = new AxiomBasedDistance(manager.ontologies(),
             DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
         ProximityMatrix<OWLEntity> matrix = new SimpleProximityMatrix<>(entities, distance);

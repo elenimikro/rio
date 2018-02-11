@@ -1,11 +1,12 @@
 package org.coode.popularitydistance.profiling;
 
+import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.asList;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.coode.distance.Distance;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
@@ -18,7 +19,7 @@ import org.coode.proximitymatrix.CentroidProximityMeasureFactory;
 import org.coode.proximitymatrix.ClusteringProximityMatrix;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
-import org.coode.utils.EntityComparator;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.model.IRI;
@@ -26,7 +27,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.MultiMap;
 
 @SuppressWarnings("javadoc")
@@ -54,9 +54,8 @@ public class PopularityDistanceSlice {
             AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
                 onto.importsClosure(), owlEntityReplacer, manager);
             System.out.println("PopularityDistanceSlice.main() Distance measure was built");
-            Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-            onto.signature(Imports.INCLUDED).filter(p -> !p.isOWLObjectProperty())
-                .forEach(entities::add);
+            Collection<OWLEntity> entities = asList(
+                Utils.getSortedSignature(onto).stream().filter(p -> !p.isOWLObjectProperty()));
             System.out.println("PopularityDistanceSlice.main() Creating baseDistanceMatrix...");
             // the baseDistanceMatrix is needed for clustering
             // SimpleProximityMatrix<OWLEntity> baseDistanceMatrix = new

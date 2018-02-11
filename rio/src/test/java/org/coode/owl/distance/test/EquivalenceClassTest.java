@@ -11,20 +11,18 @@
 package org.coode.owl.distance.test;
 
 import static org.junit.Assert.assertTrue;
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.coode.basetest.TestHelper;
 import org.coode.distance.Utils;
 import org.coode.distance.owl.AxiomRelevanceAxiomBasedDistance;
 import org.coode.distance.owl.OWLEntityReplacer;
 import org.coode.distance.owl.ReplacementByKindStrategy;
-import org.coode.utils.EntityComparator;
 import org.coode.utils.OntologyManagerUtils;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -38,14 +36,12 @@ public class EquivalenceClassTest {
     @Test
     public void testGetEquivalenceClassesPizza() {
         OWLOntology ontology = TestHelper.getPizza();
-        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        add(entities, ontologyManager.ontologies().flatMap(OWLOntology::signature));
-        OWLEntityReplacer owlEntityReplacer =
-            new OWLEntityReplacer(ontologyManager.getOWLDataFactory(),
-                new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));
-        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-            ontologyManager.ontologies(), owlEntityReplacer, ontologyManager);
+        OWLOntologyManager m = ontology.getOWLOntologyManager();
+        List<OWLEntity> entities = org.coode.proximitymatrix.cluster.Utils.getSortedSignature(m);
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(m.getOWLDataFactory(),
+            new ReplacementByKindStrategy(m.getOWLDataFactory()));
+        AxiomRelevanceAxiomBasedDistance distance =
+            new AxiomRelevanceAxiomBasedDistance(m.ontologies(), owlEntityReplacer, m);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
             Utils.getEquivalenceClasses(entities, distance);
         for (OWLEntity key : equivalenceClasses.keySet()) {
@@ -78,14 +74,12 @@ public class EquivalenceClassTest {
     @Test
     public void testGetEquivalenceClassesSameDistancePizza() {
         OWLOntology ontology = TestHelper.getPizza();
-        OWLOntologyManager ontologyManager = ontology.getOWLOntologyManager();
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        add(entities, ontologyManager.ontologies().flatMap(OWLOntology::signature));
-        OWLEntityReplacer owlEntityReplacer =
-            new OWLEntityReplacer(ontologyManager.getOWLDataFactory(),
-                new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));
-        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-            ontologyManager.ontologies(), owlEntityReplacer, ontologyManager);
+        OWLOntologyManager m = ontology.getOWLOntologyManager();
+        List<OWLEntity> entities = org.coode.proximitymatrix.cluster.Utils.getSortedSignature(m);
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(m.getOWLDataFactory(),
+            new ReplacementByKindStrategy(m.getOWLDataFactory()));
+        AxiomRelevanceAxiomBasedDistance distance =
+            new AxiomRelevanceAxiomBasedDistance(m.ontologies(), owlEntityReplacer, m);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
             Utils.getEquivalenceClasses(entities, distance);
         for (OWLEntity key : equivalenceClasses.keySet()) {
@@ -103,19 +97,16 @@ public class EquivalenceClassTest {
     }
 
     public void testGetEquivalenceClassesTravel() throws Exception {
-        OWLOntologyManager ontologyManager = OntologyManagerUtils.ontologyManager();
+        OWLOntologyManager m = OntologyManagerUtils.ontologyManager();
         // File file = new File("code/test/resources//c16.rdf.owl");
         // IOUtils.loadIRIMappers(Collections.singleton(IRI.create(file)),
         // ontologyManager);
-        ontologyManager
-            .loadOntologyFromOntologyDocument(getClass().getResourceAsStream("/c16.rdf.owl"));
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        add(entities, ontologyManager.ontologies().flatMap(OWLOntology::signature));
-        OWLEntityReplacer owlEntityReplacer =
-            new OWLEntityReplacer(ontologyManager.getOWLDataFactory(),
-                new ReplacementByKindStrategy(ontologyManager.getOWLDataFactory()));
-        AxiomRelevanceAxiomBasedDistance distance = new AxiomRelevanceAxiomBasedDistance(
-            ontologyManager.ontologies(), owlEntityReplacer, ontologyManager);
+        m.loadOntologyFromOntologyDocument(getClass().getResourceAsStream("/c16.rdf.owl"));
+        List<OWLEntity> entities = org.coode.proximitymatrix.cluster.Utils.getSortedSignature(m);
+        OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(m.getOWLDataFactory(),
+            new ReplacementByKindStrategy(m.getOWLDataFactory()));
+        AxiomRelevanceAxiomBasedDistance distance =
+            new AxiomRelevanceAxiomBasedDistance(m.ontologies(), owlEntityReplacer, m);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =
             Utils.getEquivalenceClasses(entities, distance);
         for (OWLEntity key : equivalenceClasses.keySet()) {

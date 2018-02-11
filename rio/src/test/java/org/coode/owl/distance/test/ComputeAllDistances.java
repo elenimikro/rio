@@ -10,22 +10,17 @@
  ******************************************************************************/
 package org.coode.owl.distance.test;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.coode.distance.entityrelevance.DefaultOWLEntityRelevancePolicy;
 import org.coode.distance.owl.AxiomBasedDistance;
 import org.coode.proximitymatrix.SimpleProximityMatrix;
-import org.coode.utils.EntityComparator;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
@@ -44,8 +39,7 @@ public class ComputeAllDistances {
             iris.add(IRI.create(string));
         }
         IOUtils.loadIRIMappers(iris, manager);
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        add(entities, manager.ontologies().flatMap(OWLOntology::signature));
+        List<OWLEntity> entities = Utils.getSortedSignature(manager);
         AxiomBasedDistance distance = new AxiomBasedDistance(manager.ontologies(),
             DefaultOWLEntityRelevancePolicy.getAlwaysIrrelevantPolicy(), manager);
         SimpleProximityMatrix<OWLEntity> distanceMatrix =

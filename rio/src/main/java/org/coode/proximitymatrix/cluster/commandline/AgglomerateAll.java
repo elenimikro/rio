@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster.commandline;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,7 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.coode.distance.Distance;
 import org.coode.distance.TableDistance;
@@ -38,13 +35,11 @@ import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.SimpleCluster;
 import org.coode.proximitymatrix.cluster.Utils;
-import org.coode.utils.EntityComparator;
 import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxOWLObjectRendererImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
@@ -63,8 +58,7 @@ public class AgglomerateAll extends AgglomeratorBase {
     public void run(File outfile, List<IRI> iris) throws OWLOntologyCreationException {
         OWLOntologyManager manager = OntologyManagerUtils.ontologyManager();
         IOUtils.loadIRIMappers(iris, manager);
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        add(entities, manager.ontologies().flatMap(OWLOntology::signature));
+        List<OWLEntity> entities = Utils.getSortedSignature(manager);
         OWLEntityReplacer owlEntityReplacer = new OWLEntityReplacer(manager.getOWLDataFactory(),
             new ReplacementByKindStrategy(manager.getOWLDataFactory()));
         final Distance<OWLEntity> distance =

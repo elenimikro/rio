@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.coode.proximitymatrix.cluster.commandline;
 
-import static org.semanticweb.owlapi.util.OWLAPIStreamUtils.add;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.coode.distance.Distance;
 import org.coode.distance.wrapping.DistanceTableObject;
@@ -33,12 +30,10 @@ import org.coode.proximitymatrix.SimpleProximityMatrix;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.PairFilterBasedComparator;
 import org.coode.proximitymatrix.cluster.Utils;
-import org.coode.utils.EntityComparator;
 import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.IOUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.MultiMap;
@@ -71,8 +66,7 @@ public abstract class AgglomeratorBase implements Agglomerator {
         IOUtils.loadIRIMappers(iris, manager);
         // Set the policy and the distance
         Distance<OWLEntity> distance = getDistance(manager);
-        Set<OWLEntity> entities = new TreeSet<>(new EntityComparator());
-        add(entities, manager.ontologies().flatMap(OWLOntology::signature));
+        List<OWLEntity> entities = Utils.getSortedSignature(manager);
         SimpleProximityMatrix<OWLEntity> baseDistanceMatrix =
             new SimpleProximityMatrix<>(entities, distance);
         MultiMap<OWLEntity, OWLEntity> equivalenceClasses =

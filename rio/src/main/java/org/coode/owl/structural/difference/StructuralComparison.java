@@ -13,7 +13,6 @@ package org.coode.owl.structural.difference;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.coode.pair.SimplePair;
 import org.semanticweb.owlapi.model.HasOperands;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
@@ -147,10 +146,6 @@ class StructuralComparison implements OWLObjectVisitorEx<StructuralDifferenceRep
 
         private <T extends OWLObject> T arg(T o) {
             return (T) o.getClass().cast(arg);
-        }
-
-        protected <P extends OWLObject> SimplePair<OWLObject> p(P first, P second) {
-            return new SimplePair<>(first, second);
         }
 
         protected StructuralDifferenceReport plainEqual(OWLObject owlObject) {

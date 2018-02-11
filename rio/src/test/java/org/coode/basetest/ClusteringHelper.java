@@ -12,6 +12,7 @@ import org.coode.owl.generalise.OWLAxiomInstantiation;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
 import org.coode.proximitymatrix.cluster.RegularitiesDecompositionModel;
+import org.coode.proximitymatrix.cluster.Utils;
 import org.coode.utils.EntityComparator;
 import org.coode.utils.OntologyManagerUtils;
 import org.coode.utils.owl.ClusterCreator;
@@ -21,7 +22,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.MultiMap;
 
 /** @author eleni */
@@ -36,8 +36,7 @@ public class ClusteringHelper {
             OWLOntologyManager m = o.getOWLOntologyManager();
             AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
                 .createStructuralAxiomRelevanceAxiomBasedDistance(m);
-            List<OWLEntity> entities = asList(m.ontologies().flatMap(OWLOntology::signature)
-                .distinct().sorted(new EntityComparator()));
+            List<OWLEntity> entities = Utils.getSortedSignature(m);
             return getClusterDecompositionModel(o, distance, entities);
         } catch (OPPLException e) {
             throw new RuntimeException(e);
@@ -54,9 +53,7 @@ public class ClusteringHelper {
             OWLOntologyManager m = o.getOWLOntologyManager();
             AbstractAxiomBasedDistance distance = (AbstractAxiomBasedDistance) DistanceCreator
                 .createOWLEntityRelevanceAxiomBasedDistance(m);
-            List<OWLEntity> entities =
-                asList(o.signature(Imports.INCLUDED).filter(s -> s.isOWLClass() || s.isIndividual())
-                    .distinct().sorted(new EntityComparator()));
+            List<OWLEntity> entities = Utils.getSortedSignature(o);
             return getClusterDecompositionModel(o, distance, entities);
         } catch (OPPLException e) {
             throw new RuntimeException(e);

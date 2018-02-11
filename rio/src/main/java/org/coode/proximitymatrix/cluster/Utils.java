@@ -1103,6 +1103,15 @@ public class Utils {
      * @param o o
      * @return signature
      */
+    public static List<OWLEntity> getSortedSignature(OWLOntologyManager o) {
+        return asList(o.ontologies().flatMap(x -> x.signature(Imports.INCLUDED)).distinct()
+            .sorted(new EntityComparator()));
+    }
+
+    /**
+     * @param o o
+     * @return signature
+     */
     public static List<OWLEntity> getSortedSignature(OWLOntology o) {
         return asList(o.signature(Imports.INCLUDED).distinct().sorted(new EntityComparator()));
     }
