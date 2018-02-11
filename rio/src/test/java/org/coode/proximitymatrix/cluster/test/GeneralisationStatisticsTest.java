@@ -10,7 +10,6 @@ import java.util.Set;
 import org.coode.basetest.ClusteringHelper;
 import org.coode.basetest.OntologyTestHelper;
 import org.coode.distance.Distance;
-import org.coode.oppl.Variable;
 import org.coode.oppl.exceptions.OPPLException;
 import org.coode.proximitymatrix.cluster.Cluster;
 import org.coode.proximitymatrix.cluster.ClusterDecompositionModel;
@@ -53,9 +52,7 @@ public class GeneralisationStatisticsTest {
         ClusterDecompositionModel<OWLEntity> model =
             ClusteringHelper.getSyntacticPopularityClusterModel(o);
         List<Cluster<OWLEntity>> clusterList = model.getClusterList();
-        for (Cluster<OWLEntity> c : clusterList) {
-            Variable<?> var = model.getVariableRepresentative(c);
-        }
+        clusterList.forEach(model::getVariableRepresentative);
         GeneralisationStatistics<Cluster<OWLEntity>, OWLEntity> stats =
             GeneralisationStatistics.buildStatistics(model);
         double meanClusterCoveragePerGeneralisation =

@@ -39,9 +39,7 @@ public class StructuralDifference {
     /**
      * 
      */
-    public StructuralDifference() {
-        this(new TIntArrayList());
-    }
+    public StructuralDifference() {}
 
     /**
      * Retrieves the position of the top-most difference between the two input object, relative to
@@ -111,7 +109,6 @@ public class StructuralDifference {
      * @param anotherOWLObject Another input object
      * @return {@code true} if the input objects are of the same kind.
      */
-    @SuppressWarnings("boxing")
     public boolean areComparable(OWLObject anOWLObject, final OWLObject anotherOWLObject) {
         boolean toReturn = false;
         if (anOWLObject == null) {
@@ -120,10 +117,5 @@ public class StructuralDifference {
             toReturn = anOWLObject.typeIndex() == anotherOWLObject.typeIndex();
         }
         return toReturn;
-    }
-
-    /** @return the position */
-    public TIntList getPosition() {
-        return new TIntArrayList(position);
     }
 }

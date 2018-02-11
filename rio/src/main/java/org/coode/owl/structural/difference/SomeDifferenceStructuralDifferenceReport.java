@@ -22,21 +22,19 @@ import gnu.trove.list.array.TIntArrayList;
 public class SomeDifferenceStructuralDifferenceReport implements StructuralDifferenceReport {
     private static Map<SomeDifferenceStructuralDifferenceReport, SomeDifferenceStructuralDifferenceReport> cache =
         new HashMap<>();
-    private final TIntList position = new TIntArrayList();
+    protected final TIntList position = new TIntArrayList();
 
     /**
      * @param position position
      * @return report
      */
     public static SomeDifferenceStructuralDifferenceReport build(TIntList position) {
-        SomeDifferenceStructuralDifferenceReport someDifferenceStructuralDifferenceReport =
+        SomeDifferenceStructuralDifferenceReport report =
             new SomeDifferenceStructuralDifferenceReport(position);
-        SomeDifferenceStructuralDifferenceReport toReturn =
-            cache.get(someDifferenceStructuralDifferenceReport);
+        SomeDifferenceStructuralDifferenceReport toReturn = cache.get(report);
         if (toReturn == null) {
-            cache.put(someDifferenceStructuralDifferenceReport,
-                someDifferenceStructuralDifferenceReport);
-            toReturn = someDifferenceStructuralDifferenceReport;
+            cache.put(report, report);
+            toReturn = report;
         }
         return toReturn;
     }
@@ -61,11 +59,6 @@ public class SomeDifferenceStructuralDifferenceReport implements StructuralDiffe
         return visitor.visitSomeDifferenceStructuralDifferenceReport(this);
     }
 
-    /** @return the position */
-    public TIntList getPosition() {
-        return new TIntArrayList(position);
-    }
-
     @Override
     public String toString() {
         return "Difference at position " + Arrays.stream(position.toArray())
@@ -76,7 +69,7 @@ public class SomeDifferenceStructuralDifferenceReport implements StructuralDiffe
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (position == null ? 0 : position.hashCode());
+        result = prime * result + position.hashCode();
         return result;
     }
 
@@ -93,13 +86,6 @@ public class SomeDifferenceStructuralDifferenceReport implements StructuralDiffe
         }
         SomeDifferenceStructuralDifferenceReport other =
             (SomeDifferenceStructuralDifferenceReport) obj;
-        if (position == null) {
-            if (other.position != null) {
-                return false;
-            }
-        } else if (!position.equals(other.position)) {
-            return false;
-        }
-        return true;
+        return position.equals(other.position);
     }
 }

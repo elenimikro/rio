@@ -8,7 +8,7 @@
  * Contributors:
  *     Eleni Mikroyannidi, Luigi Iannone - initial API and implementation
  ******************************************************************************/
-package org.coode.owl.structural.difference.test;
+package org.coode.owl.structural.difference;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -64,7 +64,7 @@ public class TestStructuralDifference {
         @Override
         public void visitSomeDifferenceStructuralDifferenceReport(
             SomeDifferenceStructuralDifferenceReport report) {
-            TIntList position = report.getPosition();
+            TIntList position = report.position;
             assertTrue(position.size() == 1);
             assertTrue(position.get(0) == 2);
         }
@@ -76,7 +76,7 @@ public class TestStructuralDifference {
         @Override
         public void visitSomeDifferenceStructuralDifferenceReport(
             SomeDifferenceStructuralDifferenceReport report) {
-            TIntList position = report.getPosition();
+            TIntList position = report.position;
             assertTrue(position.size() == 2);
             assertTrue(position.get(0) == 2);
             assertTrue(position.get(1) == 2);
